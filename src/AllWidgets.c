@@ -67,7 +67,9 @@ extern WidgetClass treeWidgetClass;
 extern WidgetClass vendorShellWidgetClass;
 extern WidgetClass viewportWidgetClass;
 extern WidgetClass wmShellWidgetClass;
+#ifndef OLDXAW
 extern WidgetClass xawPrintShellWidgetClass;
+#endif
 
 XmuWidgetNode XawWidgetArray[] = {
 { "applicationShell", &applicationShellWidgetClass },
@@ -112,7 +114,9 @@ XmuWidgetNode XawWidgetArray[] = {
 { "vendorShell", &vendorShellWidgetClass },
 { "viewport", &viewportWidgetClass },
 { "wmShell", &wmShellWidgetClass },
+#ifndef OLDXAW
 { "printShell", &xawPrintShellWidgetClass },
+#endif
 };
 
 int XawWidgetCount = XtNumber(XawWidgetArray);

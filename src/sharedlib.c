@@ -169,7 +169,9 @@ WidgetClass vendorShellWidgetClass = (WidgetClass) &vendorShellClassRec;
 extern ViewportClassRec viewportClassRec;
 WidgetClass viewportWidgetClass = (WidgetClass)&viewportClassRec;
 
+#ifndef OLDXAW
 extern XawPrintShellClassRec xawPrintShellClassRec;
 WidgetClass xawPrintShellWidgetClass = (WidgetClass) &xawPrintShellClassRec;
+#endif
  
 #endif /* SUNSHLIB */
