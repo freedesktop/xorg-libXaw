@@ -24,10 +24,11 @@ in this Software without prior written authorization from The Open Group.
  */
 /* $XFree86: xc/lib/Xaw/XawInit.h,v 1.12 2001/01/17 19:42:36 dawes Exp $ */
 
+/* $XdotOrg: xc/lib/Xaw/XawInit.h,v 1.1.4.1.6.2 2004/04/02 21:47:11 eich Exp $ */
 #ifndef _XawInit_h
 #define _XawInit_h
 
-#define XawVendor	"XFree86"
+#define XawVendor	XVENDORNAMESHORT
 
 #ifdef OLDXAW
 #define XawVersion	6700002L
