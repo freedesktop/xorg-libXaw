@@ -46,7 +46,7 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
-/* $XFree86: xc/lib/Xaw/StripChart.c,v 1.8 2001/12/14 19:54:44 dawes Exp $ */
+/* $XFree86$ */
 
 #include <stdio.h>
 #include <X11/IntrinsicP.h>

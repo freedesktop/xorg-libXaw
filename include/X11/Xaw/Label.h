@@ -46,7 +46,7 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
-/* $XFree86: xc/lib/Xaw/Label.h,v 1.7 2001/12/14 19:54:40 dawes Exp $ */
+/* $XFree86$ */
 
 #ifndef _XawLabel_h
 #define _XawLabel_h

@@ -25,7 +25,7 @@
  * XFree86 Project.
  */
 
-/* $XFree86: xc/lib/Xaw/Converters.c,v 3.14 1999/06/20 08:40:59 dawes Exp $ */
+/* $XFree86$ */
 
 #include <stdio.h>
 #include <X11/IntrinsicP.h>

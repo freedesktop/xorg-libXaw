@@ -53,7 +53,7 @@ used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
 
 */
-/* $XFree86: xc/lib/Xaw/XawI18n.c,v 1.8 2001/12/14 19:54:46 dawes Exp $ */
+/* $XFree86$ */
 
 #include <X11/IntrinsicP.h>
 #include "XawI18n.h"

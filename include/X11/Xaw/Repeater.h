@@ -25,7 +25,7 @@ in this Software without prior written authorization from The Open Group.
  *
  * Author:  Jim Fulton, MIT X Consortium
  */
-/* $XFree86: xc/lib/Xaw/Repeater.h,v 1.6 2001/12/14 19:54:42 dawes Exp $ */
+/* $XFree86$ */
 
 #ifndef _XawRepeater_h
 #define _XawRepeater_h

@@ -25,7 +25,7 @@ used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
 
 */
-/* $XFree86: xc/lib/Xaw/AllWidgets.c,v 1.4 2001/12/14 19:54:38 dawes Exp $ */
+/* $XFree86$ */
 
 #include <X11/IntrinsicP.h>
 #include <X11/Xmu/WidgetNode.h>

@@ -47,7 +47,7 @@ SOFTWARE.
 
 ******************************************************************/
 
-/* $XFree86: xc/lib/Xaw/Simple.c,v 1.17 2001/12/14 19:54:42 dawes Exp $ */
+/* $XFree86$ */
 
 #include <stdio.h>
 #include <X11/IntrinsicP.h>

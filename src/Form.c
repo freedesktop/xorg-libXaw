@@ -47,7 +47,7 @@ SOFTWARE.
 
 ******************************************************************/
 
-/* $XFree86: xc/lib/Xaw/Form.c,v 1.21 2001/12/14 19:54:39 dawes Exp $ */
+/* $XFree86$ */
 
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>

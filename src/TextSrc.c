@@ -25,7 +25,7 @@ in this Software without prior written authorization from The Open Group.
 
 */
 
-/* $XFree86: xc/lib/Xaw/TextSrc.c,v 1.34 2002/09/22 07:09:05 paulo Exp $ */
+/* $XFree86$ */
 
 /*
  * Author:  Chris Peterson, MIT X Consortium.
