@@ -70,15 +70,14 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
+/* $XFree86: xc/lib/Xaw/MultiSink.h,v 1.6 2001/12/14 19:54:41 dawes Exp $ */
 
 #ifndef _XawMultiSink_h
 #define _XawMultiSink_h
 
-/***********************************************************************
- *
+/*
  * MultiSink Object
- *
- ***********************************************************************/
+ */
 
 #include <X11/Xaw/TextSink.h>
 
@@ -106,12 +105,9 @@ SOFTWARE.
 #endif
 
 /* Class record constants */
-
 extern WidgetClass multiSinkObjectClass;
 
 typedef struct _MultiSinkClassRec *MultiSinkObjectClass;
 typedef struct _MultiSinkRec      *MultiSinkObject;
 
-
-#endif /* _XawMultiSrc_h */
-/* DON'T ADD STUFF AFTER THIS #endif */
+#endif /* _XawMultiSink_h */

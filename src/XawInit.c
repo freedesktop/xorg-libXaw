@@ -32,17 +32,24 @@ in this Software without prior written authorization from The Open Group.
  * call this routine from their ClassInitialize procs (this routine may be
  * used as the class init proc).
  */
+/* $XFree86: xc/lib/Xaw/XawInit.c,v 1.10 2001/12/14 19:54:46 dawes Exp $ */
 
 #include <X11/Intrinsic.h>
 #include <X11/Vendor.h>
 #include <X11/Xaw/XawInit.h>
+#include "Private.h"
 
-void XawInitializeWidgetSet ()
+void
+XawInitializeWidgetSet(void)
 {
-    static int firsttime = 1;
+    static Boolean firsttime = True;
 
     if (firsttime) {
-	firsttime = 0;
-	XtInitializeWidgetClass (vendorShellWidgetClass);
+	firsttime = False;
+#ifndef OLDXAW
+	XawPixmapsInitialize();
+	XawInitializeDefaultConverters();
+#endif
+	XtInitializeWidgetClass(vendorShellWidgetClass);
     }
 }

@@ -25,10 +25,9 @@ used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
 
 */
+/* $XFree86: xc/lib/Xaw/ToggleP.h,v 1.8 2001/12/14 19:54:45 dawes Exp $ */
 
 /* 
- * ToggleP.h - Private definitions for Toggle widget
- * 
  * Author: Chris D. Peterson
  *         MIT X Consortium
  *         kit@expo.lcs.mit.edu
@@ -43,68 +42,54 @@ in this Software without prior written authorization from The Open Group.
 #include <X11/Xaw/Toggle.h>
 #include <X11/Xaw/CommandP.h>
 
-/***********************************************************************
- *
+/*
  * Toggle Widget Private Data
- *
- ***********************************************************************/
-
-#define streq(a, b) ( strcmp((a), (b)) == 0 )
+ */
+#define streq(a, b)	(strcmp((a), (b)) == 0)
 
 typedef struct _RadioGroup {
-  struct _RadioGroup *prev, *next; /* Pointers to other elements in group. */
-  Widget widget;		  /* Widget corrosponding to this element. */
+    struct _RadioGroup *prev, *next; /* Pointers to other elements in group  */
+    Widget widget;		     /* Widget corrosponding to this element */
 } RadioGroup;
 
-/************************************
- *
- *  Class structure
- *
- ***********************************/
-
-   /* New fields for the Toggle widget class record */
+/* New fields for the Toggle widget class */
 typedef struct _ToggleClass  {
     XtActionProc Set;
     XtActionProc Unset;
     XtPointer extension;
 } ToggleClassPart;
 
-   /* Full class record declaration */
+/* class record declaration */
 typedef struct _ToggleClassRec {
     CoreClassPart	core_class;
     SimpleClassPart	simple_class;
     LabelClassPart	label_class;
     CommandClassPart	command_class;
-    ToggleClassPart     toggle_class;
+    ToggleClassPart	toggle_class;
 } ToggleClassRec;
 
 extern ToggleClassRec toggleClassRec;
 
-/***************************************
- *
- *  Instance (widget) structure 
- *
- **************************************/
-
-    /* New fields for the Toggle widget record */
+/* New fields for the Toggle widget */
 typedef struct {
     /* resources */
-    Widget      widget;
-    XtPointer   radio_data;
+    Widget widget;
+    XtPointer radio_data;
 
-    /* private data */
-    RadioGroup * radio_group;
+    /* private */
+    RadioGroup *radio_group;
+#ifndef OLDXAW
+    XtPointer pad[4];	/* for future use and keep binary compatability */
+#endif
 } TogglePart;
 
-   /* Full widget declaration */
+/* Full widget declaration */
 typedef struct _ToggleRec {
-    CorePart         core;
-    SimplePart	     simple;
-    LabelPart	     label;
-    CommandPart	     command;
-    TogglePart       toggle;
+    CorePart	core;
+    SimplePart	simple;
+    LabelPart	label;
+    CommandPart	command;
+    TogglePart	toggle;
 } ToggleRec;
 
 #endif /* _XawToggleP_h */
-
-

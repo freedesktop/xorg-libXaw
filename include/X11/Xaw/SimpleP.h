@@ -47,17 +47,27 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
+/* $XFree86: xc/lib/Xaw/SimpleP.h,v 1.13 2001/12/19 21:37:31 dawes Exp $ */
 
 #ifndef _SimpleP_h
 #define _SimpleP_h
 
+#include <X11/Xfuncproto.h>
+
 #include <X11/Xaw/Simple.h>
 
+_XFUNCPROTOBEGIN
+
+#include <X11/Xaw/XawInit.h>
+
 typedef struct {
-    Boolean	(*change_sensitive)(/* widget */);
+    Bool (*change_sensitive)(Widget);
+#ifndef OLDXAW
+    XtPointer extension;
+#endif
 } SimpleClassPart;
 
-#define XtInheritChangeSensitive ((Boolean (*)())_XtInherit)
+#define XtInheritChangeSensitive	((Bool (*)(Widget))_XtInherit)
 
 typedef struct _SimpleClassRec {
     CoreClassPart	core_class;
@@ -68,18 +78,25 @@ extern SimpleClassRec simpleClassRec;
 
 typedef struct {
     /* resources */
-    Cursor	cursor;
-    Pixmap	insensitive_border;
-    String      cursor_name;	/* cursor specified by name. */
+    Cursor cursor;
+    Pixmap insensitive_border;
+    String cursor_name;			/* cursor specified by name */
+    Pixel pointer_fg, pointer_bg;	/* Pointer colors */
+    Boolean international;
 
-    Pixel       pointer_fg, pointer_bg;	/* Pointer colors. */
-    Boolean     international;
-    /* private state */
+    /* private */
+#ifndef OLDXAW
+    XawDisplayList *display_list;
+    String tip;
+    XtPointer pad[3];	/* for future use and keep binary compatability */
+#endif
 } SimplePart;
 
 typedef struct _SimpleRec {
     CorePart	core;
     SimplePart	simple;
 } SimpleRec;
+
+_XFUNCPROTOEND
 
 #endif /* _SimpleP_h */

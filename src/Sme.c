@@ -23,10 +23,9 @@ Except as contained in this notice, the name of The Open Group shall not be
 used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
  */
+/* $XFree86: xc/lib/Xaw/Sme.c,v 1.7 2001/12/14 19:54:43 dawes Exp $ */
 
 /*
- * Sme.c - Source code for the generic menu entry
- *
  * Date:    September 26, 1989
  *
  * By:      Chris D. Peterson
@@ -37,101 +36,116 @@ in this Software without prior written authorization from The Open Group.
 #include <stdio.h>
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
-
-#include <X11/Xaw/XawInit.h>
-#include <X11/Xaw/SmeP.h>
 #include <X11/Xaw/Cardinals.h>
+#include <X11/Xaw/SmeP.h>
+#include <X11/Xaw/XawInit.h>
+#include "Private.h"
 
+/*
+ * Class Methods
+ */
+static void Highlight(Widget);
+static void Notify(Widget);
+static void Unhighlight(Widget);
+static void XawSmeClassPartInitialize(WidgetClass);
+static void XawSmeInitialize(Widget, Widget, ArgList, Cardinal*);
+static XtGeometryResult XawSmeQueryGeometry(Widget, XtWidgetGeometry*,
+					    XtWidgetGeometry*);
+
+/*
+ * Initialization
+ */
 #define offset(field) XtOffsetOf(SmeRec, sme.field)
 static XtResource resources[] = {
-  {XtNcallback, XtCCallback, XtRCallback, sizeof(XtPointer),
-     offset(callbacks), XtRCallback, (XtPointer)NULL},
-  {XtNinternational, XtCInternational, XtRBoolean, sizeof(Boolean),
-     offset(international), XtRImmediate, (XtPointer) FALSE},
+  {
+    XtNcallback,
+    XtCCallback,
+    XtRCallback,
+    sizeof(XtPointer),
+    offset(callbacks),
+    XtRCallback,
+    NULL
+  },
+  {
+    XtNinternational,
+    XtCInternational,
+    XtRBoolean,
+    sizeof(Boolean),
+    offset(international),
+    XtRImmediate,
+    (XtPointer)False
+  },
 };   
 #undef offset
 
-/*
- * Semi Public function definitions. 
- */
-
-static void Unhighlight(), Highlight(), Notify(), ClassPartInitialize();
-static void Initialize();
-static XtGeometryResult QueryGeometry();
-
-#define SUPERCLASS (&rectObjClassRec)
-
+#define Superclass	(&rectObjClassRec)
 SmeClassRec smeClassRec = {
+  /* rectangle */
   {
-    /* superclass         */    (WidgetClass) SUPERCLASS,
-    /* class_name         */    "Sme",
-    /* size               */    sizeof(SmeRec),
-    /* class_initialize   */	XawInitializeWidgetSet,
-    /* class_part_initialize*/	ClassPartInitialize,
-    /* Class init'ed      */	FALSE,
-    /* initialize         */    Initialize,
-    /* initialize_hook    */	NULL,
-    /* realize            */    NULL,
-    /* actions            */    NULL,
-    /* num_actions        */    ZERO,
-    /* resources          */    resources,
-    /* resource_count     */	XtNumber(resources),
-    /* xrm_class          */    NULLQUARK,
-    /* compress_motion    */    FALSE, 
-    /* compress_exposure  */    FALSE,
-    /* compress_enterleave*/ 	FALSE,
-    /* visible_interest   */    FALSE,
-    /* destroy            */    NULL,
-    /* resize             */    NULL,
-    /* expose             */    NULL,
-    /* set_values         */    NULL,
-    /* set_values_hook    */	NULL,
-    /* set_values_almost  */	XtInheritSetValuesAlmost,  
-    /* get_values_hook    */	NULL,			
-    /* accept_focus       */    NULL,
-    /* intrinsics version */	XtVersion,
-    /* callback offsets   */    NULL,
-    /* tm_table		  */    NULL,
-    /* query_geometry	  */    QueryGeometry,
-    /* display_accelerator*/    NULL,
-    /* extension	  */    NULL
-  },{
-    /* Simple Menu Entry Fields */
-      
-    /* highlight */             Highlight,
-    /* unhighlight */           Unhighlight,
-    /* notify */		Notify,		
-    /* extension */             NULL				
+    (WidgetClass)Superclass,		/* superclass */
+    "Sme",				/* class_name */
+    sizeof(SmeRec),			/* widget_size */
+    XawInitializeWidgetSet,		/* class_initialize */
+    XawSmeClassPartInitialize,		/* class_part_initialize */
+    False,				/* class_initialized */
+    XawSmeInitialize,			/* initialize */
+    NULL,				/* initialize_hook */
+    NULL,				/* realize */
+    NULL,				/* actions */
+    0,					/* num_actions */
+    resources,				/* resources */
+    XtNumber(resources),		/* num_resources */
+    NULLQUARK,				/* xrm_class */
+    False,				/* compress_motion */
+    False,				/* compress_exposure */
+    False,				/* compress_enterleave */
+    False,				/* visible_interest */
+    NULL,				/* destroy */
+    NULL,				/* resize */
+    NULL,				/* expose */
+    NULL,				/* set_values */
+    NULL,				/* set_values_hook */
+    XtInheritSetValuesAlmost,		/* set_values_almost */
+    NULL,				/* get_values_hook */
+    NULL,				/* accept_focus */
+    XtVersion,				/* intrinsics_version */
+    NULL,				/* callback offsets */
+    NULL,				/* tm_table */
+    XawSmeQueryGeometry,		/* query_geometry */
+    NULL,				/* display_accelerator */
+    NULL,				/* extension */
+  },
+  /* sme */
+  {
+    Highlight,				/* highlight */
+    Unhighlight,			/* unhighlight */
+    Notify,				/* notify */
+    NULL,				/* extension */
   }
 };
 
-WidgetClass smeObjectClass = (WidgetClass) &smeClassRec;
+WidgetClass smeObjectClass = (WidgetClass)&smeClassRec;
 
-/************************************************************
- *
- * Semi-Public Functions.
- *
- ************************************************************/
-
-/*	Function Name: ClassPartInitialize
- *	Description: handles inheritance of class functions.
- *	Arguments: class - the widget classs of this widget.
- *	Returns: none.
+/*
+ * Implementation
  */
-
+/*
+ * Function:
+ *	XawSmeClassPartInitialize
+ *
+ * Parameters:
+ *	cclass - widget classs of this widget
+ *
+ * Description:
+ *	Handles inheritance of class functions.
+ */
 static void
-ClassPartInitialize(class)
-WidgetClass class;
+XawSmeClassPartInitialize(WidgetClass cclass)
 {
     SmeObjectClass m_ent, superC;
 
-    m_ent = (SmeObjectClass) class;
-    superC = (SmeObjectClass) m_ent->rect_class.superclass;
-
-/* 
- * We don't need to check for null super since we'll get to TextSink
- * eventually.
- */
+    m_ent = (SmeObjectClass)cclass;
+    superC = (SmeObjectClass)m_ent->rect_class.superclass;
 
     if (m_ent->sme_class.highlight == XtInheritHighlight) 
 	m_ent->sme_class.highlight = superC->sme_class.highlight;
@@ -143,101 +157,113 @@ WidgetClass class;
 	m_ent->sme_class.notify = superC->sme_class.notify;
 }
 
-/*      Function Name: Initialize
- *      Description: Initializes the simple menu widget
- *      Arguments: request - the widget requested by the argument list.
- *                 new     - the new widget with both resource and non
- *                           resource values.
- *      Returns: none.
+/*
+ * Function:
+ *	XawSmeInitialize
+ *
+ * Parameters:
+ *	request - widget requested by the argument list
+ *	cnew	- new widget with both resource and non  resource values
  * 
- * MENU ENTRIES CANNOT HAVE BORDERS.
+ * Description:
+ *	Initializes the simple menu widget entry
  */
-
-/* ARGSUSED */
+/*ARGSUSED*/
 static void
-Initialize(request, new, args, num_args)
-Widget request, new;
-ArgList args;
-Cardinal *num_args;
+XawSmeInitialize(Widget request, Widget cnew,
+		 ArgList args, Cardinal *num_args)
 {
-    SmeObject entry = (SmeObject) new;
+    SmeObject entry = (SmeObject)cnew;
 
     entry->rectangle.border_width = 0;
 }
 
-/*	Function Name: Highlight
- *	Description: The default highlight proceedure for menu entries.
- *	Arguments: w - the menu entry.
- *	Returns: none.
- */
-
-/* ARGSUSED */
-static void
-Highlight(w)
-Widget w;
-{
-/* This space intentionally left blank. */
-}
-
-/*	Function Name: Unhighlight
- *	Description: The default unhighlight proceedure for menu entries.
- *	Arguments: w - the menu entry.
- *	Returns: none.
- */
-
-/* ARGSUSED */
-static void
-Unhighlight(w)
-Widget w;
-{
-/* This space intentionally left blank. */
-}
-
-/*	Function Name: Notify
- *	Description: calls the callback proceedures for this entry.
- *	Arguments: w - the menu entry.
- *	Returns: none.
- */
-
-static void
-Notify(w) 
-Widget w;
-{
-    XtCallCallbacks(w, XtNcallback, (XtPointer)NULL);
-}
-
-/*	Function Name: QueryGeometry.
- *	Description: Returns the preferred geometry for this widget.
- *	Arguments: w - the menu entry object.
- *                 itended, return - the intended and return geometry info.
- *	Returns: A Geometry Result.
+/*
+ * Function:
+ *	Highlight
  *
- * See the Intrinsics manual for details on what this function is for.
- * 
- * I just return the height and a width of 1.
+ * Parameters:
+ *	w - menu entry
+ *
+ * Description:
+ *	Default highlight proceedure for menu entries.
  */
-
-static XtGeometryResult
-QueryGeometry(w, intended, return_val) 
-Widget w;
-XtWidgetGeometry *intended, *return_val;
+/*ARGSUSED*/
+static void
+Highlight(Widget w)
 {
-    SmeObject entry = (SmeObject) w;
+}
+
+/*
+ * Function:
+ *	Unhighlight
+ *
+ * Parameters:
+ *	w - menu entry
+ *
+ * Description:
+ *	Default unhighlight proceedure for menu entries.
+ */
+/*ARGSUSED*/
+static void
+Unhighlight(Widget w)
+{
+}
+
+/*
+ * Function:
+ *	Notify
+ *
+ * Parameters:
+ *	w - menu entry
+ *
+ * Description:
+ *	Calls the callback proceedures for this entry.
+ */
+static void
+Notify(Widget w)
+{
+    XtCallCallbacks(w, XtNcallback, NULL);
+}
+
+/*
+ * Function:
+ *	QueryGeometry
+ *
+ * Parameeters:
+ *	w	   - menu entry object
+ *	itended	   - intended and return geometry info
+ *	return_val -
+ * 
+ * Description:
+ *	Returns the preferred geometry for this widget.
+ *
+ * Returns:
+ *	Geometry Result
+ *
+ * Note:
+ *	See the Intrinsics manual for details on what this function is for.
+ */
+static XtGeometryResult
+XawSmeQueryGeometry(Widget w, XtWidgetGeometry *intended,
+		    XtWidgetGeometry *return_val)
+{
+    SmeObject entry = (SmeObject)w;
     Dimension width;
     XtGeometryResult ret_val = XtGeometryYes;
     XtGeometryMask mode = intended->request_mode;
 
-    width = 1;			/* we can be really small. */
+    width = 1;
 
-    if ( ((mode & CWWidth) && (intended->width != width)) ||
-	 !(mode & CWWidth) ) {
+    if (((mode & CWWidth) && intended->width != width) || !(mode & CWWidth)) {
 	return_val->request_mode |= CWWidth;
 	return_val->width = width;
 	mode = return_val->request_mode;
 	
-	if ( (mode & CWWidth) && (width == entry->rectangle.width) )
-	    return(XtGeometryNo);
-	return(XtGeometryAlmost);
+	if ((mode & CWWidth) && width == XtWidth(entry))
+	    return (XtGeometryNo);
+	return (XtGeometryAlmost);
     }
-    return(ret_val);
+
+    return (ret_val);
 }

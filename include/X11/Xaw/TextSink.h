@@ -48,6 +48,7 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
+/* $XFree86: xc/lib/Xaw/TextSink.h,v 1.10 2001/12/14 19:54:45 dawes Exp $ */
 
 #ifndef _XawTextSink_h
 #define _XawTextSink_h
@@ -67,7 +68,7 @@ SOFTWARE.
  font                Font            XFontStruct *      XtDefaultFont
  foreground          Foreground      Pixel              XtDefaultForeground
  background          Background      Pixel              XtDefaultBackground
-
+ cursorColor	     Color	      Pixel		XtDefaultForeground
 */
  
 /* Class record constants */
@@ -79,239 +80,285 @@ typedef struct _TextSinkRec      *TextSinkObject;
 
 typedef enum {XawisOn, XawisOff} XawTextInsertState;
 
-/************************************************************
- *
- * Public Functions.
- *
- ************************************************************/
+#ifndef OLDXAW
+#ifndef XtNcursorColor
+#define XtNcursorColor		"cursorColor"
+#endif
 
+#define XawNtextProperties	"textProperties"
+#define XawCTextProperties	"TextProperties"
+#define XawRTextProperties	"XawTextProperties"
+#endif
+
+/*
+ * Public Functions
+ */
 _XFUNCPROTOBEGIN
 
-/*	Function Name: XawTextSinkDisplayText
- *	Description: Stub function that in subclasses will display text. 
- *	Arguments: w - the TextSink Object.
- *                 x, y - location to start drawing text.
- *                 pos1, pos2 - location of starting and ending points
- *                              in the text buffer.
- *                 highlight - hightlight this text?
- *	Returns: none.
+/*
+ * Function:
+ *	XawTextSinkDisplayText
  *
- * This function doesn't actually display anything, it is only a place
- * holder.
- */
-
-extern void XawTextSinkDisplayText(
-#if NeedFunctionPrototypes
-    Widget		/* w */,
-#if NeedWidePrototypes
-    /* Position */ int	/* x */,
-    /* Position	*/ int	/* y */,
-#else
-    Position		/* x */,
-    Position		/* y */,
-#endif
-    XawTextPosition	/* pos1 */,
-    XawTextPosition	/* pos2 */,
-#if NeedWidePrototypes
-    /* Boolean */ int	/* highlight */
-#else
-    Boolean		/* highlight */
-#endif
-#endif
-);
-
-/*	Function Name: XawTextSinkInsertCursor
- *	Description: Places the InsertCursor.
- *	Arguments: w - the TextSink Object.
- *                 x, y - location for the cursor.
- *                 staye - whether to turn the cursor on, or off.
- *	Returns: none.
+ * Parameters:
+ *	w	  - the TextSink Object
+ *	x	  - location to start drawing text
+ *	y	  - ""
+ *	pos1	  - location of starting and ending points in the text buffer
+ *	pos2	  - ""
+ *	highlight - hightlight this text?
  *
- * This function doesn't actually display anything, it is only a place
- * holder.
- */
-
-extern void XawTextSinkInsertCursor(
-#if NeedFunctionPrototypes
-    Widget		/* w */,
-#if NeedWidePrototypes
-    /* Position */ int	/* x */,
-    /* Position	*/ int	/* y */,
-    /* XawTextInsertState */ int /* state */
-#else
-    Position		/* x */,
-    Position		/* y */,
-    XawTextInsertState	/* state */
-#endif
-#endif
-);
-
-/*	Function Name: XawTextSinkClearToBackground
- *	Description: Clears a region of the sink to the background color.
- *	Arguments: w - the TextSink Object.
- *                 x, y  - location of area to clear.
- *                 width, height - size of area to clear
- *	Returns: void.
+ * Description:
+ *	Stub function that in subclasses will display text. 
  *
- * This function doesn't actually display anything, it is only a place
- * holder.
+ * Note:
+ *	  This function doesn't actually display anything, it is only a place
+ *	holder.
  */
-
-extern void XawTextSinkClearToBackground(
-#if NeedFunctionPrototypes
-    Widget		/* w */,
+void XawTextSinkDisplayText
+(
+ Widget			w,
 #if NeedWidePrototypes
-    /* Position */ int	/* x */,
-    /* Position */ int	/* y */,
-    /* Dimension */ int	/* width */,
-    /* Dimension */ int	/* height */
+ int			x,
+ int			y,
 #else
-    Position		/* x */,
-    Position		/* y */,
-    Dimension		/* width */,
-    Dimension		/* height */
+ Position		x,
+ Position		y,
 #endif
-#endif
-);
-
-/*	Function Name: XawTextSinkFindPosition
- *	Description: Finds a position in the text.
- *	Arguments: w - the TextSink Object.
- *                 fromPos - reference position.
- *                 fromX   - reference location.
- *                 width,  - width of section to paint text.
- *                 stopAtWordBreak - returned position is a word break?
- *                 resPos - Position to return.      *** RETURNED ***
- *                 resWidth - Width actually used.   *** RETURNED ***
- *                 resHeight - Height actually used. *** RETURNED ***
- *	Returns: none (see above).
- */
-
-extern void XawTextSinkFindPosition(
-#if NeedFunctionPrototypes
-    Widget		/* w */,
-    XawTextPosition	/* fromPos */,
-    int			/* fromX */,
-    int			/* width */,
+ XawTextPosition	pos1,
+ XawTextPosition	pos2,
 #if NeedWidePrototypes
-    /* Boolean */ int	/* stopAtWordBreak */,
+ int			highlight
 #else
-    Boolean		/* stopAtWordBreak */,
+ Boolean		highlight
 #endif
-    XawTextPosition*	/* pos_return */,
-    int*		/* width_return */,
-    int*		/* height_return */
-#endif
-);
+ );
 
-/*	Function Name: XawTextSinkFindDistance
- *	Description: Find the Pixel Distance between two text Positions.
- *	Arguments: w - the TextSink Object.
- *                 fromPos - starting Position.
- *                 fromX   - x location of starting Position.
- *                 toPos   - end Position.
- *                 resWidth - Distance between fromPos and toPos.
- *                 resPos   - Acutal toPos used.
- *                 resHeight - Height required by this text.
- *	Returns: none.
+/*
+ * Function:
+ *	XawTextSinkInsertCursor
+ *
+ * Parameters:
+ *	w	- the TextSink Object.
+ *	x	- location for the cursor.
+ *	y	- ""
+ *	state	- whether to turn the cursor on, or off
+ *
+ * Description:
+ *	Places the InsertCursor.
+ *
+ * Note:
+ *	  This function doesn't actually display anything, it is only a place
+ *	holder.
  */
-
-extern void XawTextSinkFindDistance (
-#if NeedFunctionPrototypes
-    Widget		/* w */,
-    XawTextPosition	/* fromPos */,
-    int			/* fromX */,
-    XawTextPosition     /* toPos */,
-    int*		/* width_return */,
-    XawTextPosition*	/* pos_return */,
-    int*		/* height_return */
-#endif
-);
-
-/*	Function Name: XawTextSinkResolve
- *	Description: Resloves a location to a position.
- *	Arguments: w - the TextSink Object.
- *                 pos - a reference Position.
- *                 fromx - a reference Location.
- *                 width - width to move.
- *                 resPos - the resulting position.
- *	Returns: none
- */
-
-extern void XawTextSinkResolve(
-#if NeedFunctionPrototypes
-    Widget		/* w */,
-    XawTextPosition	/* fromPos */,
-    int			/* fromX */,
-    int			/* width */,
-    XawTextPosition*	/* pos_return */
-#endif
-);
-
-/*	Function Name: XawTextSinkMaxLines
- *	Description: Finds the Maximum number of lines that will fit in
- *                   a given height.
- *	Arguments: w - the TextSink Object.
- *                 height - height to fit lines into.
- *	Returns: the number of lines that will fit.
- */
-
-extern int XawTextSinkMaxLines(
-#if NeedFunctionPrototypes
-    Widget		/* w */,
+void XawTextSinkInsertCursor
+(
+ Widget			w,
 #if NeedWidePrototypes
-    /* Dimension */ int	/* height */
+ int			x,
+ int			y,
+ int			state
 #else
-    Dimension		/* height */
+ Position		x,
+ Position		y,
+ XawTextInsertState	state
 #endif
+ );
+
+/*
+ * Function:
+ *	XawTextSinkClearToBackground
+ *
+ * Parameters:
+ *	w	- TextSink Object
+ *	x	- location of area to clear
+ *	y	- ""
+ *	width	- size of area to clear
+ *	height	- ""
+ *
+ * Description:
+ *	Clears a region of the sink to the background color.
+ *
+ * Note:
+ *	  This function doesn't actually display anything, it is only a place
+ *	holder.
+ */
+void XawTextSinkClearToBackground
+(
+ Widget			w,
+#if NeedWidePrototypes
+ int			x,
+ int			y,
+ unsigned int		width,
+ unsigned int		height
+#else
+ Position		x,
+ Position		y,
+ Dimension		width,
+ Dimension		height
 #endif
+ );
+
+/*
+ * Function:
+ *	XawTextSinkFindPosition
+ *
+ * Parameters:
+ *	w		- TextSink Object
+ *	fromPos		- reference position
+ *	fromX		- reference location
+ *	width		- width of section to paint text
+ *	stopAtWordBreak - returned position is a word break?
+ *	resPos		- Position to return
+ *	resWidth	- Width actually used
+ *	resHeight	- Height actually used
+ *
+ * Description:
+ *	Finds a position in the text.
+ */
+void XawTextSinkFindPosition
+(
+ Widget			w,
+ XawTextPosition	fromPos,
+ int			fromX,
+ int			width,
+#if NeedWidePrototypes
+ int			stopAtWordBreak,
+#else
+ Boolean		stopAtWordBreak,
+#endif
+ XawTextPosition*	pos_return,
+ int			*width_return,
+ int			*height_return
+ );
+
+/*
+ * Function:
+ *	XawTextSinkFindDistance
+ *
+ * Parameters:
+ *	w		- TextSink Object
+ *	fromPos		- starting Position
+ *	fromX		- x location of starting Position
+ *	toPos		- end Position
+ *	resWidth	- Distance between fromPos and toPos
+ *	resPos		- Acutal toPos used
+ *	resHeight	- Height required by this text
+ *
+ * Description:
+ *	Find the Pixel Distance between two text Positions.
+ */
+void XawTextSinkFindDistance
+(
+ Widget			w,
+ XawTextPosition	fromPos,
+ int			fromX,
+ XawTextPosition	toPos,
+ int			*width_return,
+ XawTextPosition	*pos_return,
+ int			*height_return
+ );
+
+/*
+ * Function:
+ *	XawTextSinkResolve
+ *
+ * Parameters:
+ *	w	- TextSink Object
+ *	pos	- reference Position
+ *	fromx	- reference Location
+ *	width	- width to move
+ *	resPos	- resulting position
+ *
+ * Description:
+ *	Resloves a location to a position.
+ */
+void XawTextSinkResolve
+(
+ Widget			w,
+ XawTextPosition	fromPos,
+ int			fromX,
+ int			width,
+ XawTextPosition	*pos_return
+ );
+
+/*
+ * Function:
+ *	XawTextSinkMaxLines
+ *
+ * Parameters:
+ *	w	- TextSink Object
+ *	height	- height to fit lines into
+ *
+ * Returns:
+ *	Number of lines that will fit
+ *
+ * Description:
+ *	Finds the Maximum number of lines that will fit in a given height.
+ */
+int XawTextSinkMaxLines
+(
+ Widget			w,
+#if NeedWidePrototypes
+ unsigned int		height
+#else
+ Dimension		height
+#endif
+ );
+
+/*
+ * Function:
+ *	XawTextSinkMaxHeight
+ *
+ * Parameters:
+ *	w	- TextSink Object
+ *	lines	- number of lines
+ *
+ * Returns:
+ *	Height
+ *
+ * Description:
+ *	Finds the Minium height that will contain a given number lines.
+ */
+int XawTextSinkMaxHeight
+(
+ Widget			w,
+ int			lines
 );
 
-/*	Function Name: XawTextSinkMaxHeight
- *	Description: Finds the Minium height that will contain a given number 
- *                   lines.
- *	Arguments: w - the TextSink Object.
- *                 lines - the number of lines.
- *	Returns: the height.
+/*
+ * Function:
+ *	XawTextSinkSetTabs
+ *
+ * Parameters:
+ *	w		- TextSink Object
+ *	tab_count	- number of tabs in the list
+ *	tabs		- text positions of the tabs
+ * Description:
+ *	Sets the Tab stops.
  */
-
-extern int XawTextSinkMaxHeight(
-#if NeedFunctionPrototypes
-    Widget		/* w */,
-    int			/* lines */
-#endif
-);
-
-/*	Function Name: XawTextSinkSetTabs
- *	Description: Sets the Tab stops.
- *	Arguments: w - the TextSink Object.
- *                 tab_count - the number of tabs in the list.
- *                 tabs - the text positions of the tabs.
- *	Returns: none
- */
-
-extern void XawTextSinkSetTabs(
-#if NeedFunctionPrototypes
-    Widget		/* w */,
-    int			/* tab_count */,
-    int*		/* tabs */
-#endif
+void XawTextSinkSetTabs
+(
+ Widget			w,
+ int			tab_count,
+ int			*tabs
 );
 						  
-/*	Function Name: XawTextSinkGetCursorBounds
- *	Description: Finds the bounding box for the insert curor (caret).
- *	Arguments: w - the TextSinkObject.
- *                 rect - an X rectance containing the cursor bounds.
- *	Returns: none (fills in rect).
+/*
+ * Function:
+ *	XawTextSinkGetCursorBounds
+ *
+ * Parameters:
+ *	w	- TextSink Object
+ *	rect	- X rectance containing the cursor bounds
+ * Description:
+ *	Finds the bounding box for the insert curor (caret).
  */
-
-extern void XawTextSinkGetCursorBounds(
-#if NeedFunctionPrototypes
-    Widget		/* w */,
-    XRectangle*		/* rect_return */
-#endif
+void XawTextSinkGetCursorBounds
+(
+ Widget			w,
+ XRectangle		*rect_return
 );
 
 _XFUNCPROTOEND
 
-#endif /* _XawTextSrc_h */
+#endif /* _XawTextSink_h */

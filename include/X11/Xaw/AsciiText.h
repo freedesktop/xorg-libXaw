@@ -48,18 +48,13 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
-
-/***********************************************************************
- *
- * AsciiText Widget
- *
- ***********************************************************************/
+/* $XFree86: xc/lib/Xaw/AsciiText.h,v 1.6 2001/12/14 19:54:39 dawes Exp $ */
 
 /*
- * AsciiText.c - Public header file for AsciiText Widget.
+ * AsciiText.h - Public header file for AsciiText Widget
  *
  * This Widget is intended to be used as a simple front end to the 
- * text widget with an ascii source and ascii sink attached to it.
+ * text widget with an ascii source and ascii sink attached to it
  *
  * Date:    June 29, 1989
  *
@@ -67,17 +62,10 @@ SOFTWARE.
  *          MIT X Consortium 
  *          kit@expo.lcs.mit.edu
  */
-
 #ifndef _AsciiText_h
 #define _AsciiText_h
 
-/****************************************************************
- *
- * AsciiText widgets
- *
- ****************************************************************/
-
-#include <X11/Xaw/Text.h>		/* AsciiText is a subclass of Text */
+#include <X11/Xaw/Text.h>
 #include <X11/Xaw/AsciiSrc.h>
 #include <X11/Xaw/MultiSrc.h>
 
@@ -121,21 +109,14 @@ SOFTWARE.
  (see also *Src.h and *Sink.h)
 */
 
-/*
- * Everything else we need is in StringDefs.h or Text.h
- */
-
 typedef struct _AsciiTextClassRec	*AsciiTextWidgetClass;
 typedef struct _AsciiRec	        *AsciiWidget;
 
 extern WidgetClass asciiTextWidgetClass;
 
-/************************************************************
- *
- * Disk and String Emulation Info.
- * 
- ************************************************************/
-
+/*
+ * Disk and String Emulation Info
+ */
 #ifdef ASCII_STRING
 extern WidgetClass asciiStringWidgetClass;
 #endif

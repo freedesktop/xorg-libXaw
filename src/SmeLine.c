@@ -25,6 +25,7 @@ in this Software without prior written authorization from The Open Group.
  *
  * Author:  Chris D. Peterson, MIT X Consortium
  */
+/* $XFree86: xc/lib/Xaw/SmeLine.c,v 1.8 2001/12/14 19:54:43 dawes Exp $ */
 
 /*
  * Sme.c - Source code for the generic menu entry
@@ -39,131 +40,152 @@ in this Software without prior written authorization from The Open Group.
 #include <stdio.h>
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
-
-#include <X11/Xaw/XawInit.h>
-#include <X11/Xaw/SmeLineP.h>
 #include <X11/Xaw/Cardinals.h>
-
-#define offset(field) XtOffsetOf(SmeLineRec, sme_line.field)
-static XtResource resources[] = {
-  {XtNlineWidth, XtCLineWidth, XtRDimension, sizeof(Dimension),
-     offset(line_width), XtRImmediate, (XtPointer) 1},
-  {XtNstipple, XtCStipple, XtRBitmap, sizeof(Pixmap),
-     offset(stipple), XtRImmediate, (XtPointer) XtUnspecifiedPixmap},
-  {XtNforeground, XtCForeground, XtRPixel, sizeof(Pixel),
-     offset(foreground), XtRString, XtDefaultForeground},
-};   
-#undef offset
+#include <X11/Xaw/SmeLineP.h>
+#include <X11/Xaw/XawInit.h>
+#include "Private.h"
 
 /*
- * Function definitions. 
+ * Class Methods
  */
+static void XawSmeLineDestroy(Widget);
+static void XawSmeLineInitialize(Widget, Widget, ArgList, Cardinal*);
+static void XawSmeLineRedisplay(Widget, XEvent*, Region);
+static Boolean XawSmeLineSetValues(Widget, Widget, Widget,
+				   ArgList, Cardinal*);
 
-static void Redisplay(), Initialize();
-static void DestroyGC(), CreateGC();
-static Boolean SetValues();
-static XtGeometryResult QueryGeometry();
+/*
+ * Prototypes
+ */
+static void CreateGC(Widget);
+static void DestroyGC(Widget);
 
-
-#define SUPERCLASS (&smeClassRec)
-
-SmeLineClassRec smeLineClassRec = {
+/*
+ * Initialization
+ */
+#define offset(field)	XtOffsetOf(SmeLineRec, sme_line.field)
+static XtResource resources[] = {
   {
-    /* superclass         */    (WidgetClass) SUPERCLASS,
-    /* class_name         */    "SmeLine",
-    /* size               */    sizeof(SmeLineRec),
-    /* class_initialize   */	XawInitializeWidgetSet,
-    /* class_part_initialize*/	NULL,
-    /* Class init'ed      */	FALSE,
-    /* initialize         */    Initialize,
-    /* initialize_hook    */	NULL,
-    /* realize            */    NULL,
-    /* actions            */    NULL,
-    /* num_actions        */    ZERO,
-    /* resources          */    resources,
-    /* resource_count     */	XtNumber(resources),
-    /* xrm_class          */    NULLQUARK,
-    /* compress_motion    */    FALSE, 
-    /* compress_exposure  */    FALSE,
-    /* compress_enterleave*/ 	FALSE,
-    /* visible_interest   */    FALSE,
-    /* destroy            */    DestroyGC,
-    /* resize             */    NULL,
-    /* expose             */    Redisplay,
-    /* set_values         */    SetValues,
-    /* set_values_hook    */	NULL,
-    /* set_values_almost  */	XtInheritSetValuesAlmost,  
-    /* get_values_hook    */	NULL,			
-    /* accept_focus       */    NULL,
-    /* intrinsics version */	XtVersion,
-    /* callback offsets   */    NULL,
-    /* tm_table		  */    NULL,
-    /* query_geometry	  */    QueryGeometry,
-    /* display_accelerator*/    NULL,
-    /* extension	  */    NULL
-  },{
-    /* Menu Entry Fields */
-      
-    /* highlight */             XtInheritHighlight,
-    /* unhighlight */           XtInheritUnhighlight,
-    /* notify */		XtInheritNotify,		
-    /* extension */             NULL				
-  },{
-    /* Line Menu Entry Fields */
-    /* extension */             NULL				
+    XtNlineWidth,
+    XtCLineWidth,
+    XtRDimension,
+    sizeof(Dimension),
+    offset(line_width),
+    XtRImmediate,
+    (XtPointer)1
+  },
+  {
+    XtNstipple,
+    XtCStipple,
+    XtRBitmap,
+    sizeof(Pixmap),
+    offset(stipple),
+    XtRImmediate,
+    (XtPointer)XtUnspecifiedPixmap
+  },
+  {
+    XtNforeground,
+    XtCForeground,
+    XtRPixel,
+    sizeof(Pixel),
+    offset(foreground),
+    XtRString,
+    XtDefaultForeground
+  },
+};
+#undef offset
+
+#define Superclass	(&smeClassRec)
+SmeLineClassRec smeLineClassRec = {
+  /* rectangle */
+  {
+    (WidgetClass)Superclass,		/* superclass */
+    "SmeLine",				/* class_name */
+    sizeof(SmeLineRec),			/* widget_size */
+    XawInitializeWidgetSet,		/* class_initialize */
+    NULL,				/* class_part_initialize */
+    False,				/* class inited */
+    XawSmeLineInitialize,		/* initialize */
+    NULL,				/* initialize_hook */
+    NULL,				/* realize */
+    NULL,				/* actions */
+    0,					/* num_actions */
+    resources,				/* resources */
+    XtNumber(resources),		/* num_resources */
+    NULLQUARK,				/* xrm_class */
+    False,				/* compress_motion */
+    False,				/* compress_exposure */
+    False,				/* compress_enterleave */
+    False,				/* visible_interest */
+    XawSmeLineDestroy,			/* destroy */
+    NULL,				/* resize */
+    XawSmeLineRedisplay,		/* expose */
+    XawSmeLineSetValues,		/* set_values */
+    NULL,				/* set_values_hook */
+    XtInheritSetValuesAlmost,		/* set_values_almost */
+    NULL,				/* get_values_hook */
+    NULL,				/* accept_focus */
+    XtVersion,				/* intrinsics version */
+    NULL,				/* callback offsets */
+    NULL,				/* tm_table */
+    XtInheritQueryGeometry,		/* query_geometry */
+    NULL,				/* display_accelerator */
+    NULL,				/* extension */
+  },
+  /* sme */
+  {
+    XtInheritHighlight,			/* highlight */
+    XtInheritUnhighlight,		/* unhighlight */
+    XtInheritNotify,			/* notify */
+    NULL,				/* extension */
+  },
+  /* sme_line */
+  {
+    NULL,				/* extension */
   }
 };
 
-WidgetClass smeLineObjectClass = (WidgetClass) &smeLineClassRec;
+WidgetClass smeLineObjectClass = (WidgetClass)&smeLineClassRec;
 
-/************************************************************
- *
- * Semi-Public Functions.
- *
- ************************************************************/
-
-/*      Function Name: Initialize
- *      Description: Initializes the simple menu widget
- *      Arguments: request - the widget requested by the argument list.
- *                 new     - the new widget with both resource and non
- *                           resource values.
- *      Returns: none.
+/*
+ * Implementation
  */
-
-/* ARGSUSED */
+/*ARGSUSED*/
 static void
-Initialize(request, new, args, num_args)
-Widget request, new;
-ArgList args;
-Cardinal *num_args;
+XawSmeLineInitialize(Widget request, Widget cnew,
+		     ArgList args, Cardinal *num_args)
 {
-    SmeLineObject entry = (SmeLineObject) new;
+    SmeLineObject entry = (SmeLineObject)cnew;
 
-    if (entry->rectangle.height == 0)
-	entry->rectangle.height = entry->sme_line.line_width;
+    if (XtHeight(entry) == 0)
+	XtHeight(entry) = entry->sme_line.line_width;
 
-    CreateGC(new);
+    CreateGC(cnew);
 }
 
-/*	Function Name: CreateGC
- *	Description: Creates the GC for the line entry widget.
- *	Arguments: w - the Line entry widget.
- *	Returns: none
+/*
+ * Function:
+ *	CreateGC
  *
+ * Parameters:
+ *	w - Line entry widget
+ *
+ * Description:
+ *	Creates the GC for the line entry widget.
+ *
+ * Note:
  *      We can only share the GC if there is no stipple, because
- *      we need to change the stipple origin when drawing.
+ *	we need to change the stipple origin when drawing
  */
-
 static void
-CreateGC(w)
-Widget w;
+CreateGC(Widget w)
 {
-    SmeLineObject entry = (SmeLineObject) w;
+    SmeLineObject entry = (SmeLineObject)w;
     XGCValues values;
-    XtGCMask mask = GCForeground | GCGraphicsExposures | GCLineWidth ;
+    XtGCMask mask = GCForeground | GCGraphicsExposures | GCLineWidth;
     
     values.foreground = entry->sme_line.foreground;
-    values.graphics_exposures = FALSE;
+    values.graphics_exposures = False;
     values.line_width = entry->sme_line.line_width;
     
     if (entry->sme_line.stipple != XtUnspecifiedPixmap) {
@@ -179,17 +201,16 @@ Widget w;
 	entry->sme_line.gc = XtGetGC(w, mask, &values);
 }
 
-/*	Function Name: DestroyGC
- *	Description: Destroys the GC when we are done with it.
- *	Arguments: w - the Line entry widget.
- *	Returns: none
- */
+static void
+XawSmeLineDestroy(Widget w)
+{
+    DestroyGC(w);
+}
 
 static void
-DestroyGC(w)
-Widget w;
+DestroyGC(Widget w)
 {
-    SmeLineObject entry = (SmeLineObject) w;
+    SmeLineObject entry = (SmeLineObject)w;
 
     if (entry->sme_line.stipple != XtUnspecifiedPixmap) 
 	XFreeGC(XtDisplayOfObject(w), entry->sme_line.gc);
@@ -197,92 +218,47 @@ Widget w;
 	XtReleaseGC(w, entry->sme_line.gc);
 }
 
-/*	Function Name: Redisplay
- *	Description: Paints the Line
- *	Arguments: w - the menu entry.
- *                 event, region - NOT USED.
- *	Returns: none
- */
-
 /*ARGSUSED*/
 static void
-Redisplay(w, event, region)
-Widget w;
-XEvent * event;
-Region region;
+XawSmeLineRedisplay(Widget w, XEvent *event, Region region)
 {
-    SmeLineObject entry = (SmeLineObject) w;
-    int y = entry->rectangle.y + 
-	    (int)(entry->rectangle.height - entry->sme_line.line_width) / 2;
+    SmeLineObject entry = (SmeLineObject)w;
+    int y = XtY(w) + (((int)XtHeight(w) - entry->sme_line.line_width) >> 1);
 
     if (entry->sme_line.stipple != XtUnspecifiedPixmap) 
 	XSetTSOrigin(XtDisplayOfObject(w), entry->sme_line.gc, 0, y);
 
     XFillRectangle(XtDisplayOfObject(w), XtWindowOfObject(w),
-		   entry->sme_line.gc, 
-		   0, y, (unsigned int) entry->rectangle.width, 
-		   (unsigned int) entry->sme_line.line_width );
+		   entry->sme_line.gc, XtX(w), y,
+		   XtWidth(w), entry->sme_line.line_width);
 }
 
-/*      Function Name: SetValues
- *      Description: Relayout the menu when one of the resources is changed.
- *      Arguments: current - current state of the widget.
- *                 request - what was requested.
- *                 new - what the widget will become.
- *      Returns: none
- */
-
-/* ARGSUSED */
-static Boolean
-SetValues(current, request, new, args, num_args)
-Widget current, request, new;
-ArgList args;
-Cardinal *num_args;
-{
-    SmeLineObject entry = (SmeLineObject) new;
-    SmeLineObject old_entry = (SmeLineObject) current;
-  
-    if ( (entry->sme_line.line_width != old_entry->sme_line.line_width) &&
-	 (entry->sme_line.stipple != old_entry->sme_line.stipple) ) {
-	DestroyGC(current);
-	CreateGC(new);
-	return(TRUE);
-    }
-    return(FALSE);
-}
-
-/*	Function Name: QueryGeometry.
- *	Description: Returns the preferred geometry for this widget.
- *	Arguments: w - the menu entry object.
- *                 itended, return - the intended and return geometry info.
- *	Returns: A Geometry Result.
+/*
+ * Function:
+ *	XawSmeLineSetValues
  *
- * See the Intrinsics manual for details on what this function is for.
- * 
- * I just return the height and a width of 1.
+ * Parameters:
+ *	current - current state of the widget
+ *	request - what was requested
+ *	cnew	- what the widget will become
+ *
+ * Description:
+ *	Relayout the menu when one of the resources is changed.
  */
-
-static XtGeometryResult
-QueryGeometry(w, intended, return_val) 
-Widget w;
-XtWidgetGeometry *intended, *return_val;
+/*ARGSUSED*/
+static Boolean
+XawSmeLineSetValues(Widget current, Widget request, Widget cnew,
+		    ArgList args, Cardinal *num_args)
 {
-    SmeObject entry = (SmeObject) w;
-    Dimension width;
-    XtGeometryResult ret_val = XtGeometryYes;
-    XtGeometryMask mode = intended->request_mode;
-
-    width = 1;			/* we can be really small. */
-
-    if ( ((mode & CWWidth) && (intended->width != width)) ||
-	 !(mode & CWWidth) ) {
-	return_val->request_mode |= CWWidth;
-	return_val->width = width;
-	mode = return_val->request_mode;
-	
-	if ( (mode & CWWidth) && (width == entry->rectangle.width) )
-	    return(XtGeometryNo);
-	return(XtGeometryAlmost);
+    SmeLineObject entry = (SmeLineObject)cnew;
+    SmeLineObject old_entry = (SmeLineObject)current;
+  
+    if (entry->sme_line.line_width != old_entry->sme_line.line_width &&
+	entry->sme_line.stipple != old_entry->sme_line.stipple) {
+	DestroyGC(current);
+	CreateGC(cnew);
+	return (True);
     }
-    return(ret_val);
+
+    return (False);
 }

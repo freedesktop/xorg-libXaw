@@ -53,16 +53,16 @@ used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
 
 */
+/* $XFree86: xc/lib/Xaw/XawI18n.c,v 1.8 2001/12/14 19:54:46 dawes Exp $ */
 
 #include <X11/IntrinsicP.h>
 #include "XawI18n.h"
 
-#if NeedFunctionPrototypes
-wchar_t _Xaw_atowc(
-    unsigned char c)
+wchar_t
+#if NeedWidePrototypes
+_Xaw_atowc(int c)
 #else
-wchar_t _Xaw_atowc(c)
-    unsigned char c;
+_Xaw_atowc(unsigned char c)
 #endif
 {
     wchar_t  wc;
@@ -72,16 +72,30 @@ wchar_t _Xaw_atowc(c)
     str[1] = '\0';
 
     mbtowc(&wc, str, 1);
-    return wc;
+
+    return (wc);
 }
 
 #ifdef NCR
-int _Xaw_iswspace(wchar_t w)
+int
+_Xaw_iswspace(wchar_t w)
 {
     int ret = 0;
     wchar_t s = _Xaw_atowc(' ');
+
     if (s == w)
 	ret = 1;
-    return ret;
+
+  return (ret);
 }
 #endif
+
+int
+_Xaw_iswalnum(wchar_t ch)
+{
+    unsigned char mb[sizeof(wchar_t)];
+
+    wctomb((char*)mb, ch);
+
+    return (isalnum(*mb));
+}

@@ -47,8 +47,7 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
-
-/* Private definitions for Dialog widget */
+/* $XFree86: xc/lib/Xaw/DialogP.h,v 1.9 2001/12/14 19:54:39 dawes Exp $ */
 
 #ifndef _DialogP_h
 #define _DialogP_h
@@ -56,7 +55,9 @@ SOFTWARE.
 #include <X11/Xaw/Dialog.h>
 #include <X11/Xaw/FormP.h>
 
-typedef struct {int empty;} DialogClassPart;
+typedef struct {
+    XtPointer extension;
+} DialogClassPart;
 
 typedef struct _DialogClassRec {
     CoreClassPart	core_class;
@@ -70,13 +71,17 @@ extern DialogClassRec dialogClassRec;
 
 typedef struct _DialogPart {
     /* resources */
-    String	label;		/* description of the dialog	*/
-    String	value;		/* for the user response	*/
-    Pixmap	icon;		/* icon bitmap			*/
-    /* private data */
-    Widget	iconW;		/* widget to display the icon	*/
-    Widget	labelW;		/* widget to display description*/
-    Widget	valueW;		/* user response TextWidget	*/
+    String	label;		/* description of the dialog	 */
+    String	value;		/* for the user response	 */
+    Pixmap	icon;		/* icon bitmap			 */
+
+    /* private */
+    Widget	iconW;		/* widget to display the icon	 */
+    Widget	labelW;		/* widget to display description */
+    Widget	valueW;		/* user response TextWidget	 */
+#ifndef OLDXAW
+    XtPointer pad[4];	/* for future use and keep binary compatability */
+#endif
 } DialogPart;
 
 typedef struct _DialogRec {
@@ -87,7 +92,9 @@ typedef struct _DialogRec {
     DialogPart		dialog;
 } DialogRec;
 
-typedef struct {int empty;} DialogConstraintsPart;
+typedef struct {
+    XtPointer extension;
+} DialogConstraintsPart;
 
 typedef struct _DialogConstraintsRec {
     FormConstraintsPart	  form;

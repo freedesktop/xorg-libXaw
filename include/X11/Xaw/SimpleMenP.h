@@ -24,6 +24,7 @@ used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
  *
  */
+/* $XFree86: xc/lib/Xaw/SimpleMenP.h,v 1.13 2001/12/14 19:54:42 dawes Exp $ */
 
 /*
  * SimpleMenuP.h - Private Header file for SimpleMenu widget.
@@ -41,58 +42,60 @@ in this Software without prior written authorization from The Open Group.
 #include <X11/Xaw/SimpleMenu.h>
 #include <X11/Xaw/SmeP.h>
 #include <X11/ShellP.h>
+#include <X11/Xaw/XawInit.h>
 
 typedef struct {
-    XtPointer extension;		/* For future needs. */
+    XtPointer extension;		/* For future needs */
 } SimpleMenuClassPart;
 
 typedef struct _SimpleMenuClassRec {
-  CoreClassPart	          core_class;
-  CompositeClassPart      composite_class;
-  ShellClassPart          shell_class;
-  OverrideShellClassPart  override_shell_class;
-  SimpleMenuClassPart	  simpleMenu_class;
+    CoreClassPart	    core_class;
+    CompositeClassPart	    composite_class;
+    ShellClassPart	    shell_class;
+    OverrideShellClassPart  override_shell_class;
+    SimpleMenuClassPart	    simpleMenu_class;
 } SimpleMenuClassRec;
 
 extern SimpleMenuClassRec simpleMenuClassRec;
 
 typedef struct _SimpleMenuPart {
-
   /* resources */
+    String	label_string;	/* The string for the label or NULL */
+    SmeObject	label;		/* If label_string is non-NULL then this is
+				   the label widget */
+    WidgetClass	label_class;	/* Widget Class of the menu label object */
+    Dimension	top_margin;	/* Top and bottom margins */
+    Dimension	bottom_margin;
+    Dimension	row_height;	/* height of each row (menu entry) */
+    Cursor	cursor;		/* The menu's cursor */
+    SmeObject	popup_entry;	/* The entry to position the cursor on for
+				   when using XawPositionSimpleMenu */
+    Boolean	menu_on_screen;	/* Force the menus to be fully on the screen*/
+    int		backing_store;	/* What type of backing store to use */
 
-  String       label_string;	/* The string for the label or NULL. */
-  SmeObject   label;		/* If label_string is non-NULL then this is
-				   the label widget. */
-  WidgetClass  label_class;	/* Widget Class of the menu label object. */
-
-  Dimension    top_margin;	/* Top and bottom margins. */
-  Dimension    bottom_margin;
-  Dimension    row_height;	/* height of each row (menu entry) */
-
-  Cursor       cursor;		/* The menu's cursor. */
-  SmeObject popup_entry;	/* The entry to position the cursor on for
-				   when using XawPositionSimpleMenu. */
-  Boolean      menu_on_screen;	/* Force the menus to be fully on the screen.*/
-  int          backing_store;	/* What type of backing store to use. */
-
-  /* private state */
-
-  Boolean recursive_set_values;	/* contain a possible infinite loop. */
-
-  Boolean menu_width;		/* If true then force width to remain 
+    /* private */
+    Boolean	recursive_set_values; /* contain a possible infinite loop */
+    Boolean	menu_width;	/* If true then force width to remain 
 				   core.width */
-  Boolean menu_height;		/* Just like menu_width, but for height. */
-
-  SmeObject entry_set;		/* The entry that is currently set or
-				   highlighted. */
+    Boolean	menu_height;	/* Just like menu_width, but for height */
+    SmeObject	entry_set;	/* The entry that is currently set or
+				   highlighted */
+#ifndef OLDXAW
+    Dimension	left_margin;
+    Dimension	right_margin;
+    XawDisplayList *display_list;
+    Widget	sub_menu;
+    unsigned	char state;
+    XtPointer pad[4];	/* for future use and keep binary compatability */
+#endif
 } SimpleMenuPart;
 
 typedef struct _SimpleMenuRec {
-  CorePart		core;
-  CompositePart 	composite;
-  ShellPart 	        shell;
-  OverrideShellPart     override;
-  SimpleMenuPart	simple_menu;
+    CorePart		core;
+    CompositePart 	composite;
+    ShellPart		shell;
+    OverrideShellPart	override;
+    SimpleMenuPart	simple_menu;
 } SimpleMenuRec;
 
 #endif /* _SimpleMenuP_h */

@@ -46,15 +46,14 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
+/* $XFree86: xc/lib/Xaw/Label.h,v 1.7 2001/12/14 19:54:40 dawes Exp $ */
 
 #ifndef _XawLabel_h
 #define _XawLabel_h
 
-/***********************************************************************
- *
+/*
  * Label Widget
- *
- ***********************************************************************/
+ */
 
 #include <X11/Xaw/Simple.h>
 
@@ -69,7 +68,7 @@ SOFTWARE.
  cursor		     Cursor		Cursor		None
  cursorName	     Cursor		String		NULL
  destroyCallback     Callback		XtCallbackList	NULL
- encoding	     Encoding		unsigned char	XawTextEncoding8bit
+ encoding	     Encoding		UnsignedChar	XawTextEncoding8bit
  font		     Font		XFontStruct*	XtDefaultFont
  foreground	     Foreground		Pixel		XtDefaultForeground
  height		     Height		Dimension	text height
@@ -116,6 +115,14 @@ SOFTWARE.
 #define XtNresize "resize"
 #define XtCResize "Resize"
 #define XtCBitmap "Bitmap"
+#endif
+
+#ifndef XtNlabelX
+#define XtNlabelX "labelX"
+#endif
+
+#ifndef XtNlabelY
+#define XtNlabelY "labelY"
 #endif
 
 /* Class record constants */

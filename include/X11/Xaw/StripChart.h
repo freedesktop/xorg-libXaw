@@ -46,6 +46,7 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
+/* $XFree86: xc/lib/Xaw/StripChart.h,v 1.6 2001/12/14 19:54:44 dawes Exp $ */
 
 #ifndef _XawStripChart_h
 #define _XawStripChart_h
@@ -116,4 +117,3 @@ typedef struct _StripChartClassRec *StripChartWidgetClass;
 extern WidgetClass stripChartWidgetClass;
 
 #endif /* _XawStripChart_h */
-/* DON'T ADD STUFF AFTER THIS #endif */

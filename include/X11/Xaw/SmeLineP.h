@@ -25,35 +25,23 @@ in this Software without prior written authorization from The Open Group.
  *
  * Author:  Chris D. Peterson, MIT X Consortium
  */
-
-/* 
- * SmeLineP.h - Private definitions for SmeLine widget
- * 
- */
+/* $XFree86: xc/lib/Xaw/SmeLineP.h,v 1.8 2001/12/14 19:54:43 dawes Exp $ */
 
 #ifndef _XawSmeLineP_h
 #define _XawSmeLineP_h
 
-/***********************************************************************
- *
+/*
  * SmeLine Widget Private Data
- *
- ***********************************************************************/
-
+ */
 #include <X11/Xaw/SmeP.h>
 #include <X11/Xaw/SmeLine.h>
 
-/************************************************************
- *
- * New fields for the SmeLine widget class record.
- *
- ************************************************************/
-
+/* New fields for the SmeLine widget class */
 typedef struct _SmeLineClassPart {
-  XtPointer extension;
+    XtPointer extension;
 } SmeLineClassPart;
 
-/* Full class record declaration */
+/* Full class record */
 typedef struct _SmeLineClassRec {
     RectObjClassPart    rect_class;
     SmeClassPart	sme_class;
@@ -62,35 +50,26 @@ typedef struct _SmeLineClassRec {
 
 extern SmeLineClassRec smeLineClassRec;
 
-/* New fields for the SmeLine widget record */
+/* New fields for the SmeLine widget */
 typedef struct {
     /* resources */
-    Pixel foreground;		/* Foreground color. */
-    Pixmap stipple;		/* Line Stipple. */
-    Dimension line_width;	/* Width of the line. */
+    Pixel foreground;		/* Foreground color */
+    Pixmap stipple;		/* Line Stipple */
+    Dimension line_width;	/* Width of the line */
 
-    /* private data.  */
-
-    GC gc;			/* Graphics context for drawing line. */
+    /* private */
+    GC gc;			/* Graphics context for drawing line */
+#ifndef OLDXAW
+    XtPointer pad[4];	/* for future use and keep binary compatability */
+#endif
 } SmeLinePart;
 
-/****************************************************************
- *
- * Full instance record declaration
- *
- ****************************************************************/
-
+/* Full instance record */
 typedef struct _SmeLineRec {
-  ObjectPart     object;
-  RectObjPart    rectangle;
-  SmePart	 sme;
-  SmeLinePart	 sme_line;
+    ObjectPart	object;
+    RectObjPart	rectangle;
+    SmePart	sme;
+    SmeLinePart	sme_line;
 } SmeLineRec;
-
-/************************************************************
- *
- * Private declarations.
- *
- ************************************************************/
 
 #endif /* _XawSmeLineP_h */

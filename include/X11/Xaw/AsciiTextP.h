@@ -48,12 +48,7 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
-
-/***********************************************************************
- *
- * AsciiText Widget
- *
- ***********************************************************************/
+/* $XFree86: xc/lib/Xaw/AsciiTextP.h,v 1.9 2001/12/14 19:54:39 dawes Exp $ */
 
 /*
  * AsciiText.c - Private header file for AsciiText Widget.
@@ -76,7 +71,9 @@ SOFTWARE.
 #include <X11/Xaw/AsciiSrc.h>
 #include <X11/Xaw/MultiSrc.h>
 
-typedef struct {int empty;} AsciiClassPart;
+typedef struct {
+  XtPointer extension;
+} AsciiClassPart;
 
 typedef struct _AsciiTextClassRec {
     CoreClassPart	core_class;
@@ -87,7 +84,12 @@ typedef struct _AsciiTextClassRec {
 
 extern AsciiTextClassRec asciiTextClassRec;
 
-typedef struct { char foo; /* keep compiler happy. */ } AsciiPart;
+typedef struct {
+    int resource;
+#ifndef OLDXAW
+    XtPointer pad[4];	/* for future use and keep binary compatability */
+#endif
+} AsciiPart;
 
 typedef struct _AsciiRec {
     CorePart		core;
@@ -96,15 +98,13 @@ typedef struct _AsciiRec {
     AsciiPart		ascii;
 } AsciiRec;
 
-/************************************************************
- *
- * Ascii String Emulation widget.
- *
- ************************************************************/ 
-
+/*
+ * Ascii String Emulation widget
+ */
 #ifdef ASCII_STRING
-
-typedef struct {int empty;} AsciiStringClassPart;
+typedef struct {
+  XtPointer extension;
+} AsciiStringClassPart;
 
 typedef struct _AsciiStringClassRec {
     CoreClassPart	core_class;
@@ -116,7 +116,12 @@ typedef struct _AsciiStringClassRec {
 
 extern AsciiStringClassRec asciiStringClassRec;
 
-typedef struct { char foo; /* keep compiler happy. */ } AsciiStringPart;
+typedef struct {
+    int resource;
+#ifndef OLDXAW
+    XtPointer pad[4];	/* for future use and keep binary compatability */
+#endif
+} AsciiStringPart;
 
 typedef struct _AsciiStringRec {
     CorePart		core;
@@ -125,18 +130,15 @@ typedef struct _AsciiStringRec {
     AsciiPart           ascii;
     AsciiStringPart     ascii_str;
 } AsciiStringRec;
-
 #endif /* ASCII_STRING */
 
 #ifdef ASCII_DISK
-
-/************************************************************
- *
- * Ascii Disk Emulation widget.
- *
- ************************************************************/ 
-
-typedef struct {int empty;} AsciiDiskClassPart;
+/*
+ * Ascii Disk Emulation widget
+ */
+typedef struct {
+    XtPointer extension;
+} AsciiDiskClassPart;
 
 typedef struct _AsciiDiskClassRec {
     CoreClassPart	core_class;
@@ -148,7 +150,12 @@ typedef struct _AsciiDiskClassRec {
 
 extern AsciiDiskClassRec asciiDiskClassRec;
 
-typedef struct { char foo; /* keep compiler happy. */ } AsciiDiskPart;
+typedef struct {
+    char resource;
+#ifndef OLDXAW
+    XtPointer pad[4];	/* for future use and keep binary compatability */
+#endif
+} AsciiDiskPart;
 
 typedef struct _AsciiDiskRec {
     CorePart		core;

@@ -71,36 +71,25 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
-
-/* 
- * multiSinkP.h - Private definitions for multiSink object
- * 
- */
+/* $XFree86: xc/lib/Xaw/MultiSinkP.h,v 1.9 2001/12/14 19:54:41 dawes Exp $ */
 
 #ifndef _XawMultiSinkP_h
 #define _XawMultiSinkP_h
 
-/***********************************************************************
- *
- * MultiSink Object Private Data
- *
- ***********************************************************************/
+#include <X11/Xfuncproto.h>
 
+/*
+ * MultiSink Object Private Data
+ */
 #include <X11/Xaw/TextSinkP.h> 
 #include <X11/Xaw/MultiSink.h> 
 
-/************************************************************
- *
- * New fields for the MultiSink object class record.
- *
- ************************************************************/
-
+/* new fields for the MultiSink object class */
 typedef struct _MultiSinkClassPart {
-  int foo;
+    XtPointer extension;
 } MultiSinkClassPart;
 
 /* Full class record declaration */
-
 typedef struct _MultiSinkClassRec {
     ObjectClassPart     object_class;
     TextSinkClassPart	text_sink_class;
@@ -111,46 +100,42 @@ extern MultiSinkClassRec multiSinkClassRec;
 
 /* New fields for the MultiSink object record */
 typedef struct {
-    /* public resources */
+    /* resources */
     Boolean echo;
     Boolean display_nonprinting;
 
-    /* private state */
+    /* private */
     GC normgc, invgc, xorgc;
-    Pixmap insertCursorOn;
+    XawTextPosition cursor_position;
     XawTextInsertState laststate;
-    short cursor_x, cursor_y;	/* Cursor Location. */
-    XFontSet fontset; /* font set to draw */
+    short cursor_x, cursor_y;		/* Cursor Location */
+    XFontSet fontset;			/* font set to draw */
+#ifndef OLDXAW
+    XtPointer pad[4];	/* for future use and keep binary compatability */
+#endif
 } MultiSinkPart;
 
-/****************************************************************
- *
- * Full instance record declaration
- *
- ****************************************************************/
-
+/* Full instance record declaration */
 typedef struct _MultiSinkRec {
     ObjectPart          object;
     TextSinkPart	text_sink;
     MultiSinkPart	multi_sink;
 } MultiSinkRec;
 
-
-/********************************************
- *
+/*
  * Semi-private functions
  * for use by other Xaw modules only
- *
- *******************************************/
+ */
+_XFUNCPROTOBEGIN
 
-extern void _XawMultiSinkPosToXY(
-#if NeedFunctionPrototypes
-    Widget			/* w */,
-    XawTextPosition		/* pos */,
-    Position *			/* x */,
-    Position *			/*y */
-#endif
+void _XawMultiSinkPosToXY
+(
+ Widget			w,
+ XawTextPosition	pos,
+ Position		*x,
+ Position		*y
 );
 
-#endif /* _XawMultiSinkP_h */
+_XFUNCPROTOEND
 
+#endif /* _XawMultiSinkP_h */

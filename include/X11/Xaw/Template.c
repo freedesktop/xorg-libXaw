@@ -25,69 +25,171 @@ used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
 
 */
+/* $XFree86: xc/lib/Xaw/Template.c,v 1.9 2001/12/14 19:54:44 dawes Exp $ */
 
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
-#include "TemplateP.h"
+#include <X11/Xaw/TemplateP.h>
 
-static XtResource resources[] = {
+/*
+ * Class Methods
+ */
+static void TemplateInitialize(Widget, Widget, ArgList, Cardinal*);
+
+/*
+ * Prototypes
+ */
+static Bool TemplateFunction(TemplateWidget, int, int, Bool);
+
+/*
+ * Actions
+ */
+static void TemplateAction(Widget, XEvent*, String*, Cardinal*);
+
+/*
+ * Initialization
+ */
 #define offset(field) XtOffsetOf(TemplateRec, template.field)
-    /* {name, class, type, size, offset, default_type, default_addr}, */
-    { XtNtemplateResource, XtCTemplateResource, XtRTemplateResource,
-	  sizeof(char*), offset(resource), XtRString, (XtPointer) "default" },
-#undef offset
+static XtResource resources[] = {
+/*{
+    name,
+    class,
+    type,
+    size,
+    offset,
+    default_type,
+    default_addr
+  },*/
+  {
+    XtNtemplateResource,
+    XtCTemplateResource,
+    XtRTemplateResource,
+    sizeof(char*),
+    offset(resource),
+    XtRString,
+    (XtPointer)"default"
+  },
 };
-
-static void TemplateAction(/* Widget, XEvent*, String*, Cardinal* */);
+#undef offset
 
 static XtActionsRec actions[] =
 {
-  /* {name, procedure}, */
+    /*{name,		procedure},*/
     {"template",	TemplateAction},
 };
 
 static char translations[] =
-"<Key>:		template()	\n\
-";
+"<Key>:"	"template()\n"
+;
 
+#define Superclass	(&widgetClassRec)
 TemplateClassRec templateClassRec = {
-  { /* core fields */
-    /* superclass		*/	(WidgetClass) &widgetClassRec,
-    /* class_name		*/	"Template",
-    /* widget_size		*/	sizeof(TemplateRec),
-    /* class_initialize		*/	NULL,
-    /* class_part_initialize	*/	NULL,
-    /* class_inited		*/	FALSE,
-    /* initialize		*/	NULL,
-    /* initialize_hook		*/	NULL,
-    /* realize			*/	XtInheritRealize,
-    /* actions			*/	actions,
-    /* num_actions		*/	XtNumber(actions),
-    /* resources		*/	resources,
-    /* num_resources		*/	XtNumber(resources),
-    /* xrm_class		*/	NULLQUARK,
-    /* compress_motion		*/	TRUE,
-    /* compress_exposure	*/	TRUE,
-    /* compress_enterleave	*/	TRUE,
-    /* visible_interest		*/	FALSE,
-    /* destroy			*/	NULL,
-    /* resize			*/	NULL,
-    /* expose			*/	NULL,
-    /* set_values		*/	NULL,
-    /* set_values_hook		*/	NULL,
-    /* set_values_almost	*/	XtInheritSetValuesAlmost,
-    /* get_values_hook		*/	NULL,
-    /* accept_focus		*/	NULL,
-    /* version			*/	XtVersion,
-    /* callback_private		*/	NULL,
-    /* tm_table			*/	translations,
-    /* query_geometry		*/	XtInheritQueryGeometry,
-    /* display_accelerator	*/	XtInheritDisplayAccelerator,
-    /* extension		*/	NULL
+  /* core */
+  {
+    (WidgetClass)Superclass,		/* superclass */
+    "Template",				/* class_name */
+    sizeof(TemplateRec),		/* widget_size */
+    NULL,				/* class_initialize */
+    NULL,				/* class_part_initialize */
+    False,				/* class_inited */
+    TemplateInitialize,			/* initialize */
+    NULL,				/* initialize_hook */
+    XtInheritRealize,			/* realize */
+    actions,				/* actions */
+    XtNumber(actions),			/* num_actions */
+    resources,				/* resources */
+    XtNumber(resources),		/* num_resources */
+    NULLQUARK,				/* xrm_class */
+    True,				/* compress_motion */
+    True,				/* compress_exposure */
+    True,				/* compress_enterleave */
+    False,				/* visible_interest */
+    NULL,				/* destroy */
+    NULL,				/* resize */
+    NULL,				/* expose */
+    NULL,				/* set_values */
+    NULL,				/* set_values_hook */
+    XtInheritSetValuesAlmost,		/* set_values_almost */
+    NULL,				/* get_values_hook */
+    NULL,				/* accept_focus */
+    XtVersion,				/* version */
+    NULL,				/* callback_private */
+    translations,			/* tm_table */
+    XtInheritQueryGeometry,		/* query_geometry */
+    XtInheritDisplayAccelerator,	/* display_accelerator */
+    NULL,				/* extension */
   },
-  { /* template fields */
-    /* empty			*/	0
+  /* template */
+  {
+    NULL,				/* extension */
   }
 };
 
 WidgetClass templateWidgetClass = (WidgetClass)&templateClassRec;
+
+/*
+ * Implementation
+ */
+/*
+ * Function:
+ *	TemplateInitialize
+ *
+ * Parameters:
+ *	request - requested widget
+ *	w	- the widget
+ *	args	- arguments
+ *	num_args - number of arguments
+ *
+ * Description:
+ *	Initializes widget instance.
+ */
+/*ARGSUSED*/
+static void
+TemplateInitialize(Widget request, Widget w, ArgList args, Cardinal *num_args)
+{
+    TemplateWidget tw = (TemplateWidget)w;
+
+    tw->template.private = NULL;
+}
+
+/*
+ * Function:
+ *	TemplateFunction
+ *
+ * Parameters:
+ *	tw    - template widget
+ *	x     - x coordinate
+ *	y     - y coordinate
+ *	force - force action
+ *
+ * Description:
+ *	This function does nothing.
+ *
+ * Return:
+ *	Parameter force
+ */
+/*ARGSUSED*/
+static Bool
+TemplateFunction(TemplateWidget tw, int x, int y, Bool force)
+{
+    return (force);
+}
+
+/*
+ * Function:
+ *	TemplateAction
+ *
+ * Parameters:
+ *	w	   - template widget
+ *	event	   - event that caused this action
+ *	params	   - parameters
+ *	num_params - number of parameters
+ *
+ * Description:
+ *	This function does nothing.
+ */
+/*ARGSUSED*/
+static void
+TemplateAction(Widget w, XEvent *event, String *params, Cardinal *num_params)
+{
+}

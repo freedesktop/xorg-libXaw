@@ -25,6 +25,7 @@ in this Software without prior written authorization from The Open Group.
  *
  * Author:  Jim Fulton, MIT X Consortium
  */
+/* $XFree86: xc/lib/Xaw/Porthole.h,v 1.6 2001/12/14 19:54:41 dawes Exp $ */
 
 #ifndef _XawPorthole_h
 #define _XawPorthole_h
@@ -54,8 +55,6 @@ in this Software without prior written authorization from The Open Group.
  *  y			Position	Position	0
  * 
  *****************************************************************************/
-
-					/* external declarations */
 
 extern WidgetClass portholeWidgetClass;
 typedef struct _PortholeClassRec *PortholeWidgetClass;

@@ -25,6 +25,7 @@ in this Software without prior written authorization from The Open Group.
  *
  * Author:  Chris D. Peterson, MIT X Consortium
  */
+/* $XFree86: xc/lib/Xaw/SimpleMenu.h,v 1.8 2001/12/14 19:54:43 dawes Exp $ */
 
 /*
  * SimpleMenu.h - Public Header file for SimpleMenu widget.
@@ -49,13 +50,11 @@ in this Software without prior written authorization from The Open Group.
 #include <X11/Shell.h>
 #include <X11/Xmu/Converters.h>
 
-/****************************************************************
- *
+/*
  * SimpleMenu widget
- *
- ****************************************************************/
+ */
 
-/* SimpleMenu Resources:
+/* Resources:
 
  Name		     Class		RepType		Default Value
  ----		     -----		-------		-------------
@@ -68,15 +67,18 @@ in this Software without prior written authorization from The Open Group.
  columnWidth         ColumnWidth        Dimension       Width of widest text
  cursor              Cursor             Cursor          None
  destroyCallback     Callback		Pointer		NULL
+ displayList	     DisplayList	XawDisplayList*	NULL
  height		     Height		Dimension	0
  label               Label              String          NULL (No label)
  labelClass          LabelClass         Pointer         smeBSBObjectClass
+ leftMargin	     HorizontalMargins	Dimension	0
  mappedWhenManaged   MappedWhenManaged	Boolean		True
+ rightMargin	     HorizontalMargins	Dimension	0
  rowHeight           RowHeight          Dimension       Height of Font
  sensitive	     Sensitive		Boolean		True
  topMargin           VerticalMargins    Dimension       VerticalSpace
  width		     Width		Dimension	0
- x		     Position		Position	0n
+ x		     Position		Position	0
  y		     Position		Position	0
 
 */
@@ -94,56 +96,76 @@ extern WidgetClass simpleMenuWidgetClass;
 #define XtNpopupOnEntry "popupOnEntry"
 #define XtNrowHeight "rowHeight"
 #define XtNtopMargin "topMargin"
+#define XtNleftMargin "leftMargin"
+#define XtNrightMargin "rightMargin"
 
 #define XtCColumnWidth "ColumnWidth"
 #define XtCLabelClass "LabelClass"
 #define XtCMenuOnScreen "MenuOnScreen"
 #define XtCPopupOnEntry "PopupOnEntry"
 #define XtCRowHeight "RowHeight"
+
 #define XtCVerticalMargins "VerticalMargins"
 
-/************************************************************
- *
- * Public Functions.
- *
- ************************************************************/
+#ifndef OLDXAW
+#define XtCHorizontalMargins "HorizontalMargins"
+#define XawNdisplayList "displayList"
+#define XawCDisplayList "DisplayList"
+#define XawRDisplayList "XawDisplayList"
+#endif
+
+/*
+ * Public Functions
+ */
 
 _XFUNCPROTOBEGIN
 
-/*	Function Name: XawSimpleMenuAddGlobalActions
- *	Description: adds the global actions to the simple menu widget.
- *	Arguments: app_con - the appcontext.
- *	Returns: none.
+/*
+ * Function:
+ *	XawSimpleMenuAddGlobalActions
+ *
+ * Parameters:
+ *	app_con - appcontext
+ *
+ * Description:
+ *	Adds the global actions to the simple menu widget.
  */
+void XawSimpleMenuAddGlobalActions
+(
+ XtAppContext		app_con
+ );
 
-extern void XawSimpleMenuAddGlobalActions(
-#if NeedFunctionPrototypes
-    XtAppContext	/* app_con */
-#endif
-);
- 
-/*	Function Name: XawSimpleMenuGetActiveEntry
- *	Description: Gets the currently active (set) entry.
- *	Arguments: w - the smw widget.
- *	Returns: the currently set entry or NULL if none is set.
+/*
+ * Function:
+ *	XawSimpleMenuGetActiveEntry
+ *
+ * Parameters:
+ *	w - smw widget
+ *
+ * Description:
+ *	Gets the currently active (set) entry.
+ *
+ * Returns:
+ *	The currently set entry or NULL if none is set
  */
+Widget XawSimpleMenuGetActiveEntry
+(
+ Widget			w
+ );
 
-extern Widget XawSimpleMenuGetActiveEntry(
-#if NeedFunctionPrototypes
-    Widget		/* w */
-#endif
-);
-
-/*	Function Name: XawSimpleMenuClearActiveEntry
- *	Description: Unsets the currently active (set) entry.
- *	Arguments: w - the smw widget.
- *	Returns: none.
+/*
+ * Function:
+ *	XawSimpleMenuClearActiveEntry
+ *
+ * Parameters:
+ *	w - smw widget
+ *
+ * Description:
+ *	Unsets the currently active (set) entry.
  */
-
-extern void XawSimpleMenuClearActiveEntry(
-#if NeedFunctionPrototypes
-    Widget		/* w */
-#endif
+void XawSimpleMenuClearActiveEntry
+(
+ Widget			w
 );
 
 _XFUNCPROTOEND

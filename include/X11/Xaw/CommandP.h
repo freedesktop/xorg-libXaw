@@ -49,47 +49,32 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
-
-/* 
- * CommandP.h - Private definitions for Command widget
- * 
- */
+/* $XFree86: xc/lib/Xaw/CommandP.h,v 1.8 2001/12/14 19:54:39 dawes Exp $ */
 
 #ifndef _XawCommandP_h
 #define _XawCommandP_h
 
+/*
+ * Command Widget Private Data
+ */
 #include <X11/Xaw/Command.h>
 #include <X11/Xaw/LabelP.h>
 
-/***********************************************************************
- *
- * Command Widget Private Data
- *
- ***********************************************************************/
-
 typedef enum {
-  HighlightNone,		/* Do not highlight. */
-  HighlightWhenUnset,		/* Highlight only when unset, this is
+    HighlightNone,		/* Do not highlight */
+    HighlightWhenUnset,		/* Highlight only when unset, this is
 				   to preserve current command widget 
-				   functionality. */
-  HighlightAlways		/* Always highlight, lets the toggle widget
-				   and other subclasses do the right thing. */
+				   functionality */
+    HighlightAlways		/* Always highlight, lets the toggle widget
+				   and other subclasses do the right thing */
 } XtCommandHighlight;
 
-/************************************
- *
- *  Class structure
- *
- ***********************************/
+/* New fields for the Command widget class record */
+typedef struct _CommandClass {
+    XtPointer extension;
+} CommandClassPart;
 
-
-   /* New fields for the Command widget class record */
-typedef struct _CommandClass 
-  {
-    int makes_compiler_happy;  /* not used */
-  } CommandClassPart;
-
-   /* Full class record declaration */
+/* Full class record declaration */
 typedef struct _CommandClassRec {
     CoreClassPart	core_class;
     SimpleClassPart	simple_class;
@@ -99,13 +84,7 @@ typedef struct _CommandClassRec {
 
 extern CommandClassRec commandClassRec;
 
-/***************************************
- *
- *  Instance (widget) structure 
- *
- **************************************/
-
-    /* New fields for the Command widget record */
+/* New fields for the Command widget record */
 typedef struct {
     /* resources */
     Dimension   highlight_thickness;
@@ -117,16 +96,17 @@ typedef struct {
     GC          	inverse_GC;
     Boolean     	set;
     XtCommandHighlight	highlighted;
+
     /* more resources */
     int			shape_style;    
     Dimension		corner_round;
+
+#ifndef OLDXAW
+    XtPointer pad[4];	/* for future use and keep binary compatability */
+#endif
 } CommandPart;
 
-
-/*    XtEventsPtr eventTable;*/
-
-
-   /* Full widget declaration */
+/* Full widget declaration */
 typedef struct _CommandRec {
     CorePart         core;
     SimplePart	     simple;
@@ -135,5 +115,3 @@ typedef struct _CommandRec {
 } CommandRec;
 
 #endif /* _XawCommandP_h */
-
-

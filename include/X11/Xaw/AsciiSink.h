@@ -48,15 +48,14 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
+/* $XFree86: xc/lib/Xaw/AsciiSink.h,v 1.6 2001/12/14 19:54:38 dawes Exp $ */
 
 #ifndef _XawAsciiSink_h
 #define _XawAsciiSink_h
 
-/***********************************************************************
- *
+/*
  * AsciiSink Object
- *
- ***********************************************************************/
+ */
 
 #include <X11/Xaw/TextSink.h>
 
@@ -75,16 +74,9 @@ SOFTWARE.
 #define XtNecho "echo"
 
 /* Class record constants */
-
 extern WidgetClass asciiSinkObjectClass;
 
 typedef struct _AsciiSinkClassRec *AsciiSinkObjectClass;
 typedef struct _AsciiSinkRec      *AsciiSinkObject;
 
-/************************************************************
- *
- * Public Functions.
- *
- ************************************************************/
-
-#endif /* _XawAsciiSrc_h */
+#endif /* _XawAsciiSink_h */

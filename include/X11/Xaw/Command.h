@@ -46,6 +46,7 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
+/* $XFree86: xc/lib/Xaw/Command.h,v 1.6 2001/12/14 19:54:39 dawes Exp $ */
 
 #ifndef _XawCommand_h
 #define _XawCommand_h
@@ -71,6 +72,7 @@ SOFTWARE.
  cursorName	     Cursor		String		NULL
  depth		     Depth		int		parent's depth
  destroyCallback     Callback		XtCallbackList	NULL
+ displayList	     DisplayList	XawDisplayList*	NULL
  encoding	     Encoding		UnsignedChar	XawTextEncoding8bit
  font		     Font		XFontStruct*	XtDefaultFont
  foreground	     Foreground		Pixel		XtDefaultForeground

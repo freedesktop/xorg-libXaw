@@ -71,6 +71,7 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
+/* $XFree86: xc/lib/Xaw/MultiSrcP.h,v 1.9 2001/12/14 19:54:41 dawes Exp $ */
 
 /*
  * MultiSrcP.h - Private Header for Multi Text Source.
@@ -87,11 +88,6 @@ SOFTWARE.
  */
 
 /* 
- * TextSrcP.h - Private definitions for MultiSrc object
- * 
- */
-
-/*
  * This file was changed from AsciiSrcP.h.
  *
  * By Li Yuhong, Sept. 18, 1990
@@ -100,14 +96,9 @@ SOFTWARE.
 #ifndef _XawMultiSrcP_h
 #define _XawMultiSrcP_h
 
+#include <X11/Xfuncproto.h>
 #include <X11/Xaw/TextSrcP.h>
 #include <X11/Xaw/MultiSrc.h>
-
-/************************************************************
- *
- * Private declarations.
- *
- ************************************************************/
 
 #ifdef L_tmpnam
 #define TMPSIZ L_tmpnam
@@ -119,27 +110,20 @@ SOFTWARE.
 #endif
 #endif
 
-#define MAGIC_VALUE ((XawTextPosition) -1) /* Magic value. */
-
-#define streq(a, b)        ( strcmp((a), (b)) == 0 )
-
 typedef struct _MultiPiece {	/* Piece of the text file of BUFSIZ allocated 
-				   characters. */
-  wchar_t* text;		/* The text in this buffer. */
-  XawTextPosition used;		/* The number of characters of this buffer 
-				   that have been used. */
-  struct _MultiPiece *prev, *next;	/* linked list pointers. */
+				   characters */
+    wchar_t* text;		/* The text in this buffer */
+    XawTextPosition used;	/* The number of characters of this buffer 
+				   that have been used */
+    struct _MultiPiece *prev, *next;	/* linked list pointers */
 } MultiPiece;
 
-/************************************************************
- *
- * New fields for the MultiSrc object class record.
- *
- ************************************************************/
+/* New fields for the MultiSrc object class */
+typedef struct _MultiSrcClassPart {
+    XtPointer extension;
+} MultiSrcClassPart;
 
-typedef struct _MultiSrcClassPart { char foo; } MultiSrcClassPart;
-
-/* Full class record declaration */
+/* Full class record */
 typedef struct _MultiSrcClassRec {
     ObjectClassPart     object_class;
     TextSrcClassPart	text_src_class;
@@ -148,50 +132,51 @@ typedef struct _MultiSrcClassRec {
 
 extern MultiSrcClassRec multiSrcClassRec;
 
-/* New fields for the MultiSrc object record */
-
+/* New fields for the MultiSrc object */
 typedef struct _MultiSrcPart {
-
-  /* Resources. */
-
-  XIC ic;			/* for X Input Method. */
-  XtPointer string;		/* either the string, or the file name, depend-
-                                 ing upon the `type'.  ALWAYS IN MB FORMAT. */
-  XawAsciiType type;		/* either string or disk. */
-  XawTextPosition piece_size;	/* Size of text buffer for each piece. */
-  Boolean data_compression;	/* compress to minimum memory automatically
+    /* resources */
+    XIC ic;			/* for X Input Method */
+    XtPointer string;		/* either the string, or the file name, depend-
+				   ing upon the `type'.  ALWAYS IN MB FORMAT */
+    XawAsciiType type;		/* either string or disk */
+    XawTextPosition piece_size;	/* Size of text buffer for each piece */
+    Boolean data_compression;	/* compress to minimum memory automatically
 				   on save? */
-  XtCallbackList callback;	/* A callback list to call when the source is
-				   changed. */
-  Boolean use_string_in_place;	/* Use the string passed in place. */
-  int     multi_length;		/* length field for multi string emulation. */
+#ifdef OLDXAW
+    XtCallbackList callback;
+#endif
+    Boolean use_string_in_place;/* Use the string passed in place */
+    int multi_length;		/* length field for multi string emulation */
 
-/* Private data. */
+    /* private */
 
-  Boolean	is_tempfile;	  /* Is this a temporary file? */
-  Boolean       changes;	  /* Has this file been edited? */
-  Boolean       allocated_string; /* Have I allocated the
-				     string in multi_src->string? */
-  XawTextPosition length; 	/* length of file - IN CHARACTERS, NOT BYTES. */
-  MultiPiece * first_piece;	/* first piece of the text. */
+    Boolean is_tempfile;	  /* Is this a temporary file? */
+#ifdef OLDXAW
+    Boolean changes;
+#endif
+    Boolean allocated_string;	/* Have I allocated the
+				   string in multi_src->string? */
+    XawTextPosition length; 	/* length of file - IN CHARACTERS, NOT BYTES */
+    MultiPiece *first_piece;	/* first piece of the text */
+#ifndef OLDXAW
+    XtPointer pad[4];	/* for future use and keep binary compatability */
+#endif
 } MultiSrcPart;
 
-/****************************************************************
- *
- * Full instance record declaration
- *
- ****************************************************************/
-
+/* Full instance record */
 typedef struct _MultiSrcRec {
   ObjectPart    object;
   TextSrcPart	text_src;
   MultiSrcPart	multi_src;
 } MultiSrcRec;
 
-#if NeedFunctionPrototypes
-extern void _XawMultiSourceFreeString( Widget );
-#else
-extern void _XawMultiSourceFreeString();
-#endif
+_XFUNCPROTOBEGIN
 
-#endif /* _XawMultiSrcP_h  --- Don't add anything after this line. */
+void _XawMultiSourceFreeString
+(
+ Widget		w
+ );
+
+_XFUNCPROTOEND
+
+#endif /* _XawMultiSrcP_h */

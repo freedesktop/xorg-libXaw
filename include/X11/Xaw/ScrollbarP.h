@@ -49,6 +49,7 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
+/* $XFree86: xc/lib/Xaw/ScrollbarP.h,v 1.8 2001/12/14 19:54:42 dawes Exp $ */
 
 #ifndef _ScrollbarP_h
 #define _ScrollbarP_h
@@ -57,32 +58,34 @@ SOFTWARE.
 #include <X11/Xaw/SimpleP.h>
 
 typedef struct {
-     /* public */
-    Pixel	  foreground;	/* thumb foreground color */
-    XtOrientation orientation;	/* horizontal or vertical */
+    /* resources */
+    Pixel	   foreground;	/* thumb foreground color */
+    XtOrientation  orientation;	/* horizontal or vertical */
     XtCallbackList scrollProc;	/* proportional scroll */
     XtCallbackList thumbProc;	/* jump (to position) scroll */
     XtCallbackList jumpProc;	/* same as thumbProc but pass data by ref */
-    Pixmap	  thumb;	/* thumb color */
-    Cursor	  upCursor;	/* scroll up cursor */
-    Cursor	  downCursor;	/* scroll down cursor */
-    Cursor	  leftCursor;	/* scroll left cursor */
-    Cursor	  rightCursor;	/* scroll right cursor */
-    Cursor	  verCursor;	/* scroll vertical cursor */
-    Cursor	  horCursor;	/* scroll horizontal cursor */
-    float	  top;		/* What percent is above the win's top */
-    float	  shown;	/* What percent is shown in the win */
-    Dimension	  length;	/* either height or width */
-    Dimension	  thickness;	/* either width or height */
-    Dimension	  min_thumb;	/* minium size for the thumb. */
+    Pixmap	   thumb;			/* thumb pixmap */
+    Cursor	   upCursor;	/* scroll up cursor */
+    Cursor	   downCursor;	/* scroll down cursor */
+    Cursor	   leftCursor;	/* scroll left cursor */
+    Cursor	   rightCursor;	/* scroll right cursor */
+    Cursor	   verCursor;	/* scroll vertical cursor */
+    Cursor	   horCursor;	/* scroll horizontal cursor */
+    float	   top;
+    float	   shown;
+    Dimension	   length;	/* either height or width */
+    Dimension	   thickness;	/* either width or height */
+    Dimension	   min_thumb;	/* minium size for the thumb */
 
      /* private */
-    Cursor	  inactiveCursor; /* The normal cursor for scrollbar */
-    char	  direction;	/* a scroll has started; which direction */
-    GC		  gc;		/* a (shared) gc */
-    Position	  topLoc;	/* Pixel that corresponds to top */
-    Dimension	  shownLength;	/* Num pixels corresponding to shown */
-
+    Cursor	   inactiveCursor; /* The normal cursor for scrollbar */
+    char	   direction;	/* a scroll has started; which direction */
+    GC		   gc;		/* a (shared) gc */
+    Position	   topLoc;	/* Pixel that corresponds to top */
+    Dimension	   shownLength;	/* Num pixels corresponding to shown */
+#ifndef OLDXAW
+    XtPointer pad[4];	/* for future use and keep binary compatability */
+#endif
 } ScrollbarPart;
 
 typedef struct _ScrollbarRec {
@@ -91,7 +94,9 @@ typedef struct _ScrollbarRec {
     ScrollbarPart	scrollbar;
 } ScrollbarRec;
 
-typedef struct {int empty;} ScrollbarClassPart;
+typedef struct {
+  XtPointer extension;
+} ScrollbarClassPart;
 
 typedef struct _ScrollbarClassRec {
     CoreClassPart		core_class;
