@@ -808,8 +808,10 @@ CreateIC(Widget w, XawVendorShellExtPart *ve)
 	    pe_a[pe_cnt] = (XPointer) p->font_set; pe_cnt++;
 	    st_a[st_cnt] = (XPointer) XNFontSet; st_cnt++;
 	    st_a[st_cnt] = (XPointer) p->font_set; st_cnt++;
-	    height = maxAscentOfFontSet(p->font_set)
-		   + maxDescentOfFontSet(p->font_set);
+	    if (p->font_set) {
+		height = maxAscentOfFontSet(p->font_set)
+		    + maxDescentOfFontSet(p->font_set);
+	    }
 	    height = SetVendorShellHeight(ve, height);
 	}
 	if (p->flg & CIFg) {
@@ -938,7 +940,7 @@ SetICValues(Widget w, XawVendorShellExtPart *ve, Bool focus)
     XPointer		ic_a[20], pe_a[20], st_a[20];
     int			ic_cnt = 0, pe_cnt = 0, st_cnt = 0;
     XawTextMargin	*margin;
-    int			height;
+    int			height = 0;
 
     if ((ve->im.xim == NULL) || ((p = GetIcTableShared(w, ve)) == NULL) ||
 	(p->xic == NULL)) return;
@@ -965,8 +967,10 @@ SetICValues(Widget w, XawVendorShellExtPart *ve, Bool focus)
 	    pe_a[pe_cnt] = (XPointer) p->font_set; pe_cnt++;
 	    st_a[st_cnt] = (XPointer) XNFontSet; st_cnt++;
 	    st_a[st_cnt] = (XPointer) p->font_set; st_cnt++;
-	    height = maxAscentOfFontSet(p->font_set)
-		   + maxDescentOfFontSet(p->font_set);
+	    if (p->font_set) {
+		height = maxAscentOfFontSet(p->font_set)
+		    + maxDescentOfFontSet(p->font_set);
+	    }
 	    height = SetVendorShellHeight(ve, height);
 	}
 	if (p->flg & CIFg) {
