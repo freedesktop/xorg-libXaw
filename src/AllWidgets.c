@@ -67,10 +67,8 @@ extern WidgetClass treeWidgetClass;
 extern WidgetClass vendorShellWidgetClass;
 extern WidgetClass viewportWidgetClass;
 extern WidgetClass wmShellWidgetClass;
-#ifndef OLDXAW
-#ifdef XPRINT_IN_XAW
+#if !defined(OLDXAW) && !defined(XAW7)
 extern WidgetClass xawPrintShellWidgetClass;
-#endif
 #endif
 
 XmuWidgetNode XawWidgetArray[] = {
@@ -116,10 +114,8 @@ XmuWidgetNode XawWidgetArray[] = {
 { "vendorShell", &vendorShellWidgetClass },
 { "viewport", &viewportWidgetClass },
 { "wmShell", &wmShellWidgetClass },
-#ifndef OLDXAW
-#ifdef XPRINT_IN_XAW
+#if !defined(OLDXAW) && !defined(XAW7)
 { "printShell", &xawPrintShellWidgetClass },
-#endif
 #endif
 };
 
