@@ -2083,7 +2083,7 @@ TextConvertSelection(Widget w, Atom *selection, Atom *target, Atom *type,
 	    textprop.value = (unsigned char *)*value;
 	    textprop.nitems = strlen(*value);
 	    textprop.format = 8;
-	    if (Xutf8TextPropertyToTextList(d, &textprop, &list, &count)
+	    if (XFree86utf8TextPropertyToTextList(d, &textprop, &list, &count)
 		 < Success
 		|| count < 1) {
 		XtFree((char *)*value);
