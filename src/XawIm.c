@@ -52,7 +52,7 @@ used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
 
 */
-/* $XFree86: xc/lib/Xaw/XawIm.c,v 1.15 2003/05/27 22:26:38 tsi Exp $ */
+/* $XFree86: xc/lib/Xaw/XawIm.c,v 1.14tsi Exp $ */
 
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>

@@ -47,7 +47,7 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
-/* $XFree86: xc/lib/Xaw/SimpleP.h,v 1.13 2001/12/19 21:37:31 dawes Exp $ */
+/* $XFree86: xc/lib/Xaw/SimpleP.h,v 1.12 2001/12/14 19:54:43 dawes Exp $ */
 
 #ifndef _SimpleP_h
 #define _SimpleP_h

@@ -46,7 +46,7 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
-/* $XFree86: xc/lib/Xaw/Viewport.c,v 1.11 2001/12/14 19:54:45 dawes Exp $ */
+/* $XFree86: xc/lib/Xaw/Viewport.c,v 1.10 2001/08/23 00:03:20 dawes Exp $ */
 
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>

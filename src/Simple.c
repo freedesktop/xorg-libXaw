@@ -47,7 +47,7 @@ SOFTWARE.
 
 ******************************************************************/
 
-/* $XFree86: xc/lib/Xaw/Simple.c,v 1.17 2001/12/14 19:54:42 dawes Exp $ */
+/* $XFree86: xc/lib/Xaw/Simple.c,v 1.16 2001/09/29 04:36:02 paulo Exp $ */
 
 #include <stdio.h>
 #include <X11/IntrinsicP.h>

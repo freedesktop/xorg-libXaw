@@ -49,7 +49,7 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
-/* $XFree86: xc/lib/Xaw/BoxP.h,v 1.11 2001/12/14 19:54:39 dawes Exp $ */
+/* $XFree86: xc/lib/Xaw/BoxP.h,v 1.10 2001/01/17 19:42:25 dawes Exp $ */
 
 #ifndef _XawBoxP_h
 #define _XawBoxP_h
