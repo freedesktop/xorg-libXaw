@@ -47,7 +47,7 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
-/* $XFree86: xc/lib/Xaw/Scrollbar.h,v 1.7 2001/12/14 19:54:42 dawes Exp $ */
+/* $XFree86: xc/lib/Xaw/Scrollbar.h,v 1.6 2001/01/17 19:42:29 dawes Exp $ */
 
 #ifndef _Scrollbar_h
 #define _Scrollbar_h
