@@ -68,7 +68,9 @@ extern WidgetClass vendorShellWidgetClass;
 extern WidgetClass viewportWidgetClass;
 extern WidgetClass wmShellWidgetClass;
 #ifndef OLDXAW
+#ifdef XPRINT_IN_XAW
 extern WidgetClass xawPrintShellWidgetClass;
+#endif
 #endif
 
 XmuWidgetNode XawWidgetArray[] = {
@@ -115,7 +117,9 @@ XmuWidgetNode XawWidgetArray[] = {
 { "viewport", &viewportWidgetClass },
 { "wmShell", &wmShellWidgetClass },
 #ifndef OLDXAW
+#ifdef XPRINT_IN_XAW
 { "printShell", &xawPrintShellWidgetClass },
+#endif
 #endif
 };
 
