@@ -46,7 +46,7 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
-/* $XFree86: xc/lib/Xaw/Paned.c,v 1.12 2001/12/14 19:54:41 dawes Exp $ */
+/* $XFree86: xc/lib/Xaw/Paned.c,v 1.11 2001/08/23 00:03:19 dawes Exp $ */
 
 /*
  * Updated and significantly modified from the Athena VPaned Widget.

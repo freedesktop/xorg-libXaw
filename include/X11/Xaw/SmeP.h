@@ -23,7 +23,7 @@ Except as contained in this notice, the name of The Open Group shall not be
 used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
  */
-/* $XFree86: xc/lib/Xaw/SmeP.h,v 1.9 2001/12/19 21:37:31 dawes Exp $ */
+/* $XFree86: xc/lib/Xaw/SmeP.h,v 1.8 2001/12/14 19:54:43 dawes Exp $ */
 
 /*
  * This is the private header file for the Athena Sme object.

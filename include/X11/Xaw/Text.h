@@ -46,7 +46,7 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
-/* $XFree86: xc/lib/Xaw/Text.h,v 1.15 2001/12/14 19:54:44 dawes Exp $ */
+/* $XFree86: xc/lib/Xaw/Text.h,v 1.14 2001/01/17 19:42:34 dawes Exp $ */
 
 #ifndef _XawText_h
 #define _XawText_h

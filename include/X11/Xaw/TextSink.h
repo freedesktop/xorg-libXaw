@@ -48,7 +48,7 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
-/* $XFree86: xc/lib/Xaw/TextSink.h,v 1.10 2001/12/14 19:54:45 dawes Exp $ */
+/* $XFree86: xc/lib/Xaw/TextSink.h,v 1.9 2001/01/17 19:42:35 dawes Exp $ */
 
 #ifndef _XawTextSink_h
 #define _XawTextSink_h

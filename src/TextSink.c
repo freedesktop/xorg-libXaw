@@ -1330,7 +1330,7 @@ _XawTextSinkAddProperty(XawTextPropertyList *list, XawTextProperty *property,
     else
 	xlfd = null;
 
-    XmuSnprintf(identifier, sizeof(identifier), "%08x%08x%s%s%d%d%d%d%s",
+    XmuSnprintf(identifier, sizeof(identifier), "%08lx%08lx%s%s%d%d%d%d%s",
 		property->mask, property->xlfd_mask,
 		foreground, background,
 		(result->mask & XAW_TPROP_UNDERLINE) != 0,

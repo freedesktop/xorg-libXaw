@@ -25,7 +25,7 @@ in this Software without prior written authorization from The Open Group.
  *
  */
 
-/* $XFree86: xc/lib/Xaw/MenuButton.c,v 3.10 2001/12/14 19:54:41 dawes Exp $ */
+/* $XFree86: xc/lib/Xaw/MenuButton.c,v 3.9 2001/10/11 21:17:00 paulo Exp $ */
 
 /*
  * MenuButton.c - Source code for MenuButton widget.

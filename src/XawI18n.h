@@ -1,3 +1,4 @@
+/* $XdotOrg: xc/lib/Xaw/XawI18n.h,v 1.1.4.2.4.1 2004/03/04 17:46:50 eich Exp $ */
 /* $Xorg: XawI18n.h,v 1.4 2001/02/09 02:03:47 xorgcvs Exp $ */
 
 /************************************************************
@@ -41,7 +42,7 @@ in this Software without prior written authorization from The Open Group.
 #include <wchar.h>
 #endif
 
-#ifdef AIXV3
+#if defined(AIXV3) || defined(SCO325)
 #include <ctype.h>
 #endif
 

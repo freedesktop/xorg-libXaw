@@ -74,7 +74,7 @@ SOFTWARE.
  * XFree86 Project.
  */
 
-/* $XFree86: xc/lib/Xaw/Text.c,v 3.53 2003/10/02 13:29:38 eich Exp $ */
+/* $XFree86: xc/lib/Xaw/Text.c,v 3.53tsi Exp $ */
 
 #include <stdio.h>
 #include <X11/IntrinsicP.h>
@@ -171,7 +171,9 @@ static Boolean CvtJustifyModeToString(Display*, XrmValue*, Cardinal*,
 				      XrmValue*, XrmValue*, XtPointer*);
 static void DestroyHScrollBar(TextWidget);
 static void DestroyVScrollBar(TextWidget);
+#ifndef OLDXAW
 static void DisplayText(Widget, XawTextPosition, XawTextPosition);
+#endif
 static void OldDisplayText(Widget, XawTextPosition, XawTextPosition);
 static void DisplayTextWindow(Widget);
 static void DoCopyArea(TextWidget, int, int, unsigned int, unsigned int,
@@ -2743,11 +2745,11 @@ OldDisplayText(Widget w, XawTextPosition left, XawTextPosition right)
     }
 }
 
+#ifndef OLDXAW
 /*ARGSUSED*/
 static void
 DisplayText(Widget w, XawTextPosition left, XawTextPosition right)
 {
-#ifndef OLDXAW
     static XmuSegment segment;
     static XmuScanline next;
     static XmuScanline scanline = {0, &segment, &next};
@@ -2817,8 +2819,8 @@ DisplayText(Widget w, XawTextPosition left, XawTextPosition right)
 	    XmuAreaOr(paint_list->clip, &area);
 	}
     }
-#endif
 }
+#endif
 
 /*
  * This routine implements multi-click selection in a hardwired manner.

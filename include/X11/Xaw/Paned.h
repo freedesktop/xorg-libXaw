@@ -49,7 +49,7 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
-/* $XFree86: xc/lib/Xaw/Paned.h,v 1.7 2001/12/14 19:54:41 dawes Exp $ */
+/* $XFree86: xc/lib/Xaw/Paned.h,v 1.6 2001/01/17 19:42:28 dawes Exp $ */
 
 /*
  * Paned.h - Paned Composite Widget's public header file.

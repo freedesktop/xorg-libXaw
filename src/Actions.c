@@ -651,7 +651,7 @@ XawPrintActionErrorMsg(String action_name, Widget w,
   unsigned int size, idx;
 
   size = XmuSnprintf(msg, sizeof(msg), "%s(): bad number of parameters.\n\t(",
-		     action_name, action_name);
+		     action_name);
 
   idx = 0;
   while (idx < *num_params - 1 && size < sizeof(msg))

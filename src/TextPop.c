@@ -26,7 +26,7 @@ in this Software without prior written authorization from The Open Group.
 
 */
 
-/* $XFree86: xc/lib/Xaw/TextPop.c,v 1.21 2003/10/23 21:33:54 tsi Exp $ */
+/* $XFree86: xc/lib/Xaw/TextPop.c,v 1.20tsi Exp $ */
 
 /*
  * This file is broken up into three sections one dealing with
