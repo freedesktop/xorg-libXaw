@@ -718,6 +718,8 @@ XawMultiSinkInitialize(Widget request, Widget cnew,
 
     GetGC(sink);
 
+    if (!sink->multi_sink.fontset) XtError("Aborting: no fontset found\n");
+
     sink->multi_sink.cursor_position = 0;
     sink->multi_sink.laststate = XawisOff;
     sink->multi_sink.cursor_x = sink->multi_sink.cursor_y = 0;

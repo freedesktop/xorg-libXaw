@@ -527,6 +527,8 @@ XawLabelInitialize(Widget request, Widget cnew,
     LabelWidget lw = (LabelWidget)cnew;
 
     if (!lw->label.font) XtError("Aborting: no font found\n");
+    if (lw->simple.international && !lw->label.fontset) 
+	XtError("Aborting: no fontset found\n");
     
     if (lw->label.label == NULL) 
 	lw->label.label = XtNewString(lw->core.name);
@@ -722,8 +724,8 @@ XawLabelSetValues(Widget current, Widget request, Widget cnew,
     if (curlw->label.encoding != newlw->label.encoding)
 	was_resized = True;
 
-    if (curlw->label.fontset != newlw->label.fontset &&
-        curlw->simple.international)
+    if (curlw->simple.international 
+	&& curlw->label.fontset != newlw->label.fontset)
 	was_resized = True;
 
     if (curlw->label.label != newlw->label.label) {
