@@ -25,7 +25,7 @@
  * XFree86 Project.
  */
 
-/* $XFree86: xc/lib/Xaw/Actions.c,v 3.16 2001/10/30 04:56:38 paulo Exp $ */
+/* $XFree86: xc/lib/Xaw/Actions.c,v 3.17 2003/03/25 04:18:10 dawes Exp $ */
 
 #include <ctype.h>
 #include <stdio.h>
@@ -40,6 +40,10 @@
 #include <X11/Xmu/SysUtil.h>
 #include <X11/Xfuncs.h>
 #include "Private.h"
+
+#ifdef __UNIXOS2__
+static char dummy;
+#endif
 
 #ifndef OLDXAW
 

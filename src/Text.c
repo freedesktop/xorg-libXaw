@@ -74,7 +74,7 @@ SOFTWARE.
  * XFree86 Project.
  */
 
-/* $XFree86: xc/lib/Xaw/Text.c,v 3.52 2002/11/03 20:10:25 paulo Exp $ */
+/* $XFree86: xc/lib/Xaw/Text.c,v 3.53 2003/10/02 13:29:38 eich Exp $ */
 
 #include <stdio.h>
 #include <X11/IntrinsicP.h>
@@ -923,7 +923,7 @@ XawTextInitialize(Widget request, Widget cnew,
     ctx->text.file_insert = NULL;
     ctx->text.search = NULL;
     ctx->text.update = XmuNewScanline(0, 0, 0);
-    ctx->text.gc = DefaultGCOfScreen(XtScreen(ctx));
+    ctx->text.gc = XtGetGC(cnew, 0, 0);
     ctx->text.hasfocus = False;
     ctx->text.margin = ctx->text.r_margin; /* Strucure copy */
     ctx->text.left_margin = ctx->text.r_margin.left;
@@ -3619,6 +3619,7 @@ XawTextDestroy(Widget w)
     XtFree((char *)ctx->text.lt.info);
     XtFree((char *)ctx->text.search);
     XmuDestroyScanline(ctx->text.update);
+    XtReleaseGC((Widget)ctx, ctx->text.gc);
 }
 
 /*
