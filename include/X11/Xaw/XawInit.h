@@ -1,6 +1,7 @@
 /* $Xorg: XawInit.h,v 1.5 2001/02/09 02:03:47 xorgcvs Exp $
  *
 Copyright 1989, 1994, 1998  The Open Group
+Copyright 2003-2004 Roland Mainz <roland.mainz@nrubsig.org>
 
 Permission to use, copy, modify, distribute, and sell this software and its
 documentation for any purpose is hereby granted without fee, provided that
@@ -24,7 +25,7 @@ in this Software without prior written authorization from The Open Group.
  */
 /* $XFree86: xc/lib/Xaw/XawInit.h,v 1.12 2001/01/17 19:42:36 dawes Exp $ */
 
-/* $XdotOrg$ */
+/* $XdotOrg: xc/lib/Xaw/XawInit.h,v 1.1.4.1.6.1.6.2 2004/04/12 12:20:50 gisburn Exp $ */
 #ifndef _XawInit_h
 #define _XawInit_h
 
@@ -46,6 +47,17 @@ void XawInitializeWidgetSet(void);
 #ifndef OLDXAW
 void XawInitializeDefaultConverters(void);
 #endif
+
+extern Widget XawOpenApplication(
+    XtAppContext *app_context_return,
+    Display      *dpy,
+    Screen       *screen,
+    String        application_name,
+    String        application_class,
+    WidgetClass   widget_class,
+    int          *argc,
+    String       *argv
+);
 
 _XFUNCPROTOEND
 
