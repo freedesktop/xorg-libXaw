@@ -32,7 +32,7 @@ in this Software without prior written authorization from The Open Group.
  * call this routine from their ClassInitialize procs (this routine may be
  * used as the class init proc).
  */
-/* $XFree86: xc/lib/Xaw/XawInit.c,v 1.9 2001/01/17 19:42:36 dawes Exp $ */
+/* $XFree86: xc/lib/Xaw/XawInit.c,v 1.10 2001/12/14 19:54:46 dawes Exp $ */
 
 #include <X11/Intrinsic.h>
 #include <X11/Vendor.h>
