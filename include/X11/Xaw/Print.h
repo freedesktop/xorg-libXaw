@@ -36,6 +36,10 @@
 
 #include <X11/extensions/Print.h>
 
+/* Resources:
+   NOT WRITTEN YET
+*/
+
 /* XawPrintConfigureLayoutMode - define how the shell resizes/moves itself
  * to match the paper size
  * Values:
@@ -56,28 +60,28 @@ enum
 } XawPrintConfigureLayoutMode;
 
 
-#define XawNstartJobCallback             "XawNstartJobCallback"
-#define XawNendJobCallback               "XawNendJobCallback"
-#define XawNdocSetupCallback             "XawNdocSetupCallback"
-#define XawNpageSetupCallback            "XawNpageSetupCallback"
-#define XawNlayoutMode                   "XawNlayoutMode"
-#define XawCLayoutMode                   "XawCLayoutMode"
-#define XawNminX                         "XawNminX"
-#define XawCMinX                         "XawCMinX"
-#define XawNminY                         "XawNminY"
-#define XawCMinY                         "XawCMinY"
-#define XawNmaxX                         "XawNmaxX"
-#define XawCMaxX                         "XawCMaxX"
-#define XawNmaxY                         "XawNmaxY"
-#define XawCMaxY                         "XawCMaxY"
-#define XawNcurrDocNumInJob              "XawNcurrDocNumInJob"
-#define XawCCurrDocNumInJob              "XawCCurrDocNumInJob"
-#define XawNcurrPageNumInDoc             "XawNcurrPageNumInDoc"
-#define XawCCurrPageNumInDoc             "XawCCurrPageNumInDoc"
-#define XawNcurrPageNumInJob             "XawNcurrPageNumInJob"
-#define XawCCurrPageNumInJob             "XawCCurrPageNumInJob"
-#define XawNdefaultPixmapResolution      "XawNdefaultPixmapResolution"
-#define XawCDefaultPixmapResolution      "XawCDefaultPixmapResolution"
+#define XawNstartJobCallback             "startJobCallback"
+#define XawNendJobCallback               "endJobCallback"
+#define XawNdocSetupCallback             "docSetupCallback"
+#define XawNpageSetupCallback            "pageSetupCallback"
+#define XawNlayoutMode                   "layoutMode"
+#define XawCLayoutMode                   "LayoutMode"
+#define XawNminX                         "minX"
+#define XawCMinX                         "MinX"
+#define XawNminY                         "minY"
+#define XawCMinY                         "MinY"
+#define XawNmaxX                         "maxX"
+#define XawCMaxX                         "MaxX"
+#define XawNmaxY                         "maxY"
+#define XawCMaxY                         "MaxY"
+#define XawNcurrDocNumInJob              "currDocNumInJob"
+#define XawCCurrDocNumInJob              "CurrDocNumInJob"
+#define XawNcurrPageNumInDoc             "currPageNumInDoc"
+#define XawCCurrPageNumInDoc             "CurrPageNumInDoc"
+#define XawNcurrPageNumInJob             "currPageNumInJob"
+#define XawCCurrPageNumInJob             "CurrPageNumInJob"
+#define XawNdefaultPixmapResolution      "defaultPixmapResolution"
+#define XawCDefaultPixmapResolution      "DefaultPixmapResolution"
 
 #define XawCR_START_JOB         70
 #define XawCR_END_JOB           71
