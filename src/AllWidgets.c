@@ -25,7 +25,7 @@ used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
 
 */
-/* $XFree86: xc/lib/Xaw/AllWidgets.c,v 1.4 2001/12/14 19:54:38 dawes Exp $ */
+/* $XFree86: xc/lib/Xaw/AllWidgets.c,v 1.3 2001/08/23 21:49:51 tsi Exp $ */
 
 #include <X11/IntrinsicP.h>
 #include <X11/Xmu/WidgetNode.h>
@@ -67,6 +67,7 @@ extern WidgetClass treeWidgetClass;
 extern WidgetClass vendorShellWidgetClass;
 extern WidgetClass viewportWidgetClass;
 extern WidgetClass wmShellWidgetClass;
+extern WidgetClass xawPrintShellWidgetClass;
 
 XmuWidgetNode XawWidgetArray[] = {
 { "applicationShell", &applicationShellWidgetClass },
@@ -111,6 +112,7 @@ XmuWidgetNode XawWidgetArray[] = {
 { "vendorShell", &vendorShellWidgetClass },
 { "viewport", &viewportWidgetClass },
 { "wmShell", &wmShellWidgetClass },
+{ "printShell", &xawPrintShellWidgetClass },
 };
 
 int XawWidgetCount = XtNumber(XawWidgetArray);

@@ -24,9 +24,9 @@
 .\" dealings in this Software without prior written authorization from the
 .\" XFree86 Project.
 .\"
-.\" Author: Paulo César Pereira de Andrade
+.\" Author: Paulo CÃ©sar Pereira de Andrade
 .\"
-.\" $XFree86: xc/lib/Xaw/Xaw.man,v 1.8 2003/05/29 21:48:05 herrb Exp $
+.\" $XFree86: xc/lib/Xaw/Xaw.man,v 1.7 2001/11/04 21:16:39 paulo Exp $
 .\"
 .de TQ
 .br
@@ -39,9 +39,10 @@
 .SH DESCRIPTION
 .B Xaw
 is a widget set based on the X Toolkit Intrinsics (Xt) Library.  This
-manual page describes the additions and modifications to the Xaw library
-made by XFree86 (Xaw7), as well as some of the common interfaces between
-its version and the previous X Consortium release (Xaw6).
+release by the X.org Foundation includes additions and modifications
+originally made for The XFree86 Project, Inc.  This manual page describes
+these changes as well as some of the common interfaces between its version
+and the previous X Consortium release (Xaw6).
 .SH ACTIONS
 All of the \fIXaw\fR widgets now have the additional translations
 .B call-proc, declare, get-values
@@ -580,7 +581,8 @@ Guarino-Reid, Charles Haynes, Rich Hyde, Mary Larson, Joel McCormack, Ron
 Newman, Jeanne Rich, Terry Weissman, Mike Gancarz, Phil Karlton, Kathleen
 Langone, Ram Rao, Smokey Wallace, Al Mento, and Jean Diaz.
 .PP
-XFree86's additions and modifications to \fIXaw\fR were written by Paulo
+The additions and modifications to \fIXaw\fR which were
+originally made for XFree86 were written by Paulo
 C\('esar Pereira de Andrade.
 .SH SEE ALSO
 .I Athena Widget Set - C Language Interface

@@ -2,6 +2,7 @@
  * $Xorg: XawInit.c,v 1.4 2001/02/09 02:03:47 xorgcvs Exp $
  *
 Copyright 1989, 1998  The Open Group
+Copyright 2003-2004 Roland Mainz <roland.mainz@nrubsig.org>
 
 Permission to use, copy, modify, distribute, and sell this software and its
 documentation for any purpose is hereby granted without fee, provided that
@@ -32,11 +33,13 @@ in this Software without prior written authorization from The Open Group.
  * call this routine from their ClassInitialize procs (this routine may be
  * used as the class init proc).
  */
-/* $XFree86: xc/lib/Xaw/XawInit.c,v 1.10 2001/12/14 19:54:46 dawes Exp $ */
+/* $XFree86: xc/lib/Xaw/XawInit.c,v 1.9 2001/01/17 19:42:36 dawes Exp $ */
 
 #include <X11/Intrinsic.h>
 #include <X11/Vendor.h>
 #include <X11/Xaw/XawInit.h>
+#include <X11/IntrinsicP.h>
+#include <X11/StringDefs.h>
 #include "Private.h"
 
 void
@@ -53,3 +56,42 @@ XawInitializeWidgetSet(void)
 	XtInitializeWidgetClass(vendorShellWidgetClass);
     }
 }
+
+/* XawOpenApplication() - mainly identical to XtOpenApplication() but
+ * takes a |Display *| and |Screen *| as arguments, too... */
+Widget XawOpenApplication(XtAppContext *app_context_return,
+                          Display      *dpy,
+                          Screen       *screen,
+                          String        application_name,
+                          String        application_class,
+                          WidgetClass   widget_class,
+                          int          *argc,
+                          String       *argv)
+{
+    Widget   toplevel;
+    Cardinal n;
+    Arg      args[2];
+
+    XtToolkitInitialize();
+    *app_context_return = XtCreateApplicationContext();
+    if( *app_context_return == NULL )
+        return NULL;
+      
+    XtDisplayInitialize(*app_context_return, dpy,
+                        application_name, application_class,
+                        NULL, 0,
+                        argc, argv);
+
+    n = 0;
+    if (screen) {
+        XtSetArg(args[n], XtNscreen, screen); n++;
+    }
+    toplevel = XtAppCreateShell(application_name, 
+                                application_class,
+                                widget_class,
+                                dpy,
+                                args, n);
+
+    return toplevel;
+}
+

@@ -1,3 +1,4 @@
+/* $XdotOrg: xc/lib/Xaw/XawI18n.h,v 1.1.4.2.4.1 2004/03/04 17:46:50 eich Exp $ */
 /* $Xorg: XawI18n.h,v 1.4 2001/02/09 02:03:47 xorgcvs Exp $ */
 
 /************************************************************
@@ -25,7 +26,7 @@ used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
 
 ********************************************************/
-/* $XFree86: xc/lib/Xaw/XawI18n.h,v 3.15 2003/12/19 02:05:38 dawes Exp $ */
+/* $XFree86: xc/lib/Xaw/XawI18n.h,v 3.14 2001/12/14 19:54:46 dawes Exp $ */
 
 #ifdef HAS_WCTYPE_H
 #include <wctype.h>

@@ -27,7 +27,7 @@
  *
  * Much code taken from X11R3 String and Disk Sources.
  */
-/* $XFree86: xc/lib/Xaw/MultiSrc.c,v 1.29 2002/12/06 16:19:57 paulo Exp $ */
+/* $XFree86: xc/lib/Xaw/MultiSrc.c,v 1.28 2002/11/21 16:22:52 paulo Exp $ */
 
 /*
 

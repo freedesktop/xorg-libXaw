@@ -59,6 +59,7 @@ in this Software without prior written authorization from The Open Group.
 #include <X11/Xaw/TreeP.h>
 #include <X11/VendorP.h>
 #include <X11/Xaw/ViewportP.h>
+#include <X11/Xaw/PrintSP.h>
 
 extern AsciiSinkClassRec asciiSinkClassRec;
 WidgetClass asciiSinkObjectClass = (WidgetClass)&asciiSinkClassRec;
@@ -168,4 +169,7 @@ WidgetClass vendorShellWidgetClass = (WidgetClass) &vendorShellClassRec;
 extern ViewportClassRec viewportClassRec;
 WidgetClass viewportWidgetClass = (WidgetClass)&viewportClassRec;
 
+extern XawPrintShellClassRec xawPrintShellClassRec;
+WidgetClass xawPrintShellWidgetClass = (WidgetClass) &xawPrintShellClassRec;
+ 
 #endif /* SUNSHLIB */

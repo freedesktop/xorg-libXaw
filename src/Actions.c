@@ -25,7 +25,7 @@
  * XFree86 Project.
  */
 
-/* $XFree86: xc/lib/Xaw/Actions.c,v 3.18 2004/01/23 03:57:58 dawes Exp $ */
+/* $XFree86: xc/lib/Xaw/Actions.c,v 3.17 2003/03/25 04:18:10 dawes Exp $ */
 
 #include <ctype.h>
 #include <stdio.h>

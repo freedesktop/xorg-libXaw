@@ -46,7 +46,7 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
-/* $XFree86: xc/lib/Xaw/AsciiSink.c,v 1.28 2002/09/08 02:29:47 paulo Exp $ */
+/* $XFree86: xc/lib/Xaw/AsciiSink.c,v 1.26 2001/12/14 19:54:38 dawes Exp $ */
 
 #include <stdio.h>
 #include <stdlib.h>

@@ -25,7 +25,7 @@ used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
 
 */
-/* $XFree86: xc/lib/Xaw/Template.h,v 1.6 2001/12/14 19:54:44 dawes Exp $ */
+/* $XFree86: xc/lib/Xaw/Template.h,v 1.5 2001/01/17 19:42:32 dawes Exp $ */
 
 #ifndef _Template_h
 #define _Template_h
