@@ -25,6 +25,7 @@ used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
 
 */
+/* $XFree86: xc/lib/Xaw/AllWidgets.c,v 1.4 2001/12/14 19:54:38 dawes Exp $ */
 
 #include <X11/IntrinsicP.h>
 #include <X11/Xmu/WidgetNode.h>
@@ -35,9 +36,6 @@ extern WidgetClass asciiSrcObjectClass;
 extern WidgetClass asciiTextWidgetClass;
 extern WidgetClass boxWidgetClass;
 extern WidgetClass commandWidgetClass;
-extern WidgetClass compositeWidgetClass;
-extern WidgetClass constraintWidgetClass;
-extern WidgetClass coreWidgetClass;
 extern WidgetClass dialogWidgetClass;
 extern WidgetClass formWidgetClass;
 extern WidgetClass gripWidgetClass;
@@ -46,12 +44,10 @@ extern WidgetClass listWidgetClass;
 extern WidgetClass menuButtonWidgetClass;
 extern WidgetClass multiSinkObjectClass;
 extern WidgetClass multiSrcObjectClass;
-extern WidgetClass objectClass;
 extern WidgetClass overrideShellWidgetClass;
 extern WidgetClass panedWidgetClass;
 extern WidgetClass pannerWidgetClass;
 extern WidgetClass portholeWidgetClass;
-extern WidgetClass rectObjClass;
 extern WidgetClass repeaterWidgetClass;
 extern WidgetClass scrollbarWidgetClass;
 extern WidgetClass shellWidgetClass;

@@ -25,6 +25,7 @@ used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
 
 */
+/* $XFree86: xc/lib/Xaw/Template.h,v 1.6 2001/12/14 19:54:44 dawes Exp $ */
 
 #ifndef _Template_h
 #define _Template_h
@@ -55,18 +56,15 @@ in this Software without prior written authorization from The Open Group.
 */
 
 /* define any special resource names here that are not in <X11/StringDefs.h> */
-
 #define XtNtemplateResource "templateResource"
 
 #define XtCTemplateResource "TemplateResource"
 
 /* declare specific TemplateWidget class and instance datatypes */
-
-typedef struct _TemplateClassRec*	TemplateWidgetClass;
-typedef struct _TemplateRec*		TemplateWidget;
+typedef struct _TemplateClassRec *TemplateWidgetClass;
+typedef struct _TemplateRec *TemplateWidget;
 
 /* declare the class constant */
-
 extern WidgetClass templateWidgetClass;
 
 #endif /* _Template_h */

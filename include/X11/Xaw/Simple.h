@@ -46,17 +46,12 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
+/* $XFree86: xc/lib/Xaw/Simple.h,v 1.9 2001/12/14 19:54:42 dawes Exp $ */
 
 #ifndef _Simple_h
 #define _Simple_h
 
 #include <X11/Xmu/Converters.h>
-
-/****************************************************************
- *
- * Simple widgets
- *
- ****************************************************************/
 
 /* Resources:
 
@@ -68,12 +63,14 @@ SOFTWARE.
  cursor		     Cursor		Cursor		None
  cursorName	     Cursor		String		NULL
  destroyCallback     Callback		Pointer		NULL
+ displayList	     DisplayList	XawDisplayList*	NULL
  height		     Height		Dimension	0
  insensitiveBorder   Insensitive	Pixmap		Gray
  mappedWhenManaged   MappedWhenManaged	Boolean		True
  pointerColor        Foreground         Pixel           XtDefaultForeground
  pointerColorBackground Background      Pixel           XtDefaultBackground
  sensitive	     Sensitive		Boolean		True
+ tip		     Tip		String		NULL
  width		     Width		Dimension	0
  x		     Position		Position	0
  y		     Position		Position	0
@@ -93,6 +90,23 @@ SOFTWARE.
 #ifndef XtNinternational
 #define XtNinternational "international"
 #endif
+
+#ifndef OLDXAW
+#ifndef XawNdisplayList
+#define XawNdisplayList "displayList"
+#endif
+
+#ifndef XawCDisplayList
+#define XawCDisplayList "DisplayList"
+#endif
+
+#ifndef XawRDisplayList
+#define XawRDisplayList "XawDisplayList"
+#endif
+
+#define XtNtip		"tip"
+#define XtCTip		"Tip"
+#endif	/* OLDXAW */
 
 typedef struct _SimpleClassRec	*SimpleWidgetClass;
 typedef struct _SimpleRec	*SimpleWidget;

@@ -49,19 +49,18 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
+/* $XFree86: xc/lib/Xaw/Box.h,v 1.8 2001/12/14 19:54:39 dawes Exp $ */
 
 #ifndef _XawBox_h
 #define _XawBox_h
 
 #include <X11/Xmu/Converters.h>
 
-/***********************************************************************
- *
+/*
  * Box Widget (subclass of CompositeClass)
- *
- ***********************************************************************/
+ */
 
-/* Parameters:
+/* Resources:
 
  Name		     Class		RepType		Default Value
  ----		     -----		-------		-------------
@@ -69,6 +68,7 @@ SOFTWARE.
  border		     BorderColor	Pixel		XtDefaultForeground
  borderWidth	     BorderWidth	Dimension	1
  destroyCallback     Callback		Pointer		NULL
+ displayList	     DisplayList	XawDisplayList*	NULL
  hSpace 	     HSpace		Dimension	4
  height		     Height		Dimension	0
  mappedWhenManaged   MappedWhenManaged	Boolean		True
@@ -80,15 +80,26 @@ SOFTWARE.
 
 */
 
-
-/* New fields */
 #ifndef _XtStringDefs_h_
 #define XtNhSpace "hSpace"
 #define XtNvSpace "vSpace"
 #endif
 
-/* Class record constants */
+#ifndef OLDXAW
+#ifndef XawNdisplayList
+#define XawNdisplayList "displayList"
+#endif
+ 
+#ifndef XawCDisplayList
+#define XawCDisplayList "DisplayList"
+#endif
 
+#ifndef XawRDisplayList
+#define XawRDisplayList "XawDisplayList"
+#endif
+#endif /* OLDXAW */
+
+/* Class record constants */
 extern WidgetClass boxWidgetClass;
 
 typedef struct _BoxClassRec *BoxWidgetClass;

@@ -23,10 +23,9 @@ Except as contained in this notice, the name of The Open Group shall not be
 used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
  */
+/* $XFree86: xc/lib/Xaw/Sme.h,v 1.6 2001/12/14 19:54:43 dawes Exp $ */
 
 /*
- * Sme.h - Public Header file for Sme object.
- *
  * This is the public header file for the Athena Sme object.
  * It is intended to be used with the simple menu widget.  
  *
@@ -43,13 +42,7 @@ in this Software without prior written authorization from The Open Group.
 #include <X11/Intrinsic.h>
 #include <X11/RectObj.h>
 
-/****************************************************************
- *
- * Sme Object
- *
- ****************************************************************/
-
-/* Simple Menu Entry Resources:
+/* Resources:
 
  Name		     Class		RepType		Default Value
  ----		     -----		-------		-------------
@@ -58,7 +51,7 @@ in this Software without prior written authorization from The Open Group.
  height		     Height		Dimension	0
  sensitive	     Sensitive		Boolean		True
  width		     Width		Dimension	0
- x		     Position		Position	0n
+ x		     Position		Position	0
  y		     Position		Position	0
 
 */
@@ -72,8 +65,8 @@ in this Software without prior written authorization from The Open Group.
 #endif
 
 
-typedef struct _SmeClassRec*	SmeObjectClass;
-typedef struct _SmeRec*	        SmeObject;
+typedef struct _SmeClassRec *SmeObjectClass;
+typedef struct _SmeRec *SmeObject;
 
 extern WidgetClass smeObjectClass;
 

@@ -46,6 +46,7 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
+/* $XFree86: xc/lib/Xaw/Text.h,v 1.15 2001/12/14 19:54:44 dawes Exp $ */
 
 #ifndef _XawText_h
 #define _XawText_h
@@ -53,7 +54,6 @@ SOFTWARE.
 #include <X11/Xaw/Simple.h>
 
 /*
- Text widget
 
  Class: 	textWidgetClass
  Class Name:	Text
@@ -67,11 +67,14 @@ SOFTWARE.
  bottomMargin	    Margin	     Position		2
  displayPosition    TextPosition     XawTextPosition	0
  insertPosition	    TextPosition     XawTextPosition	0
+ justify	    JustifyMode	     JustifyMode	left
+ leftColumn	    Column	     Column		0
+ rightColumn	    Column	     Column		0
  leftMargin	    Margin	     Position		2
- resize		    Resize	     XawTextResizeMode	XawTextResizeNever
  rightMargin	    Margin	     Position		4
- scrollHorizontal   Scroll	     XawTextScrollMode	XawtextScrollNever
- scrollVertical     Scroll	     XawTextScrollMode  XawtextScrollNever
+ positionCallback   Callback	     Callback		NULL
+ scrollHorizontal   Scroll	     Boolean		False
+ scrollVertical     Scroll	     Boolean		False
  selectTypes        SelectTypes      Pointer            see documentation
  textSink	    TextSink	     Widget		NULL
  textSource	    TextSource	     Widget		NULL
@@ -83,26 +86,82 @@ SOFTWARE.
 
 typedef long XawTextPosition;
 
-typedef enum { XawtextScrollNever,
-	       XawtextScrollWhenNeeded, XawtextScrollAlways} XawTextScrollMode;
+#ifndef notdef
+typedef enum {
+  XawtextScrollNever,
+  XawtextScrollWhenNeeded,
+  XawtextScrollAlways
+} XawTextScrollMode;
 
-typedef enum { XawtextWrapNever, 
-	       XawtextWrapLine, XawtextWrapWord} XawTextWrapMode;
+typedef enum {
+  XawtextResizeNever,
+  XawtextResizeWidth,
+  XawtextResizeHeight,
+  XawtextResizeBoth
+} XawTextResizeMode;
+#endif
 
-typedef enum { XawtextResizeNever, XawtextResizeWidth,
-	       XawtextResizeHeight, XawtextResizeBoth} XawTextResizeMode;
+typedef enum {
+  XawtextWrapNever,
+  XawtextWrapLine,
+  XawtextWrapWord
+} XawTextWrapMode;
 
-typedef enum {XawsdLeft, XawsdRight} XawTextScanDirection;
-typedef enum {XawtextRead, XawtextAppend, XawtextEdit} XawTextEditType;
-typedef enum {XawselectNull, XawselectPosition, XawselectChar, XawselectWord,
-    XawselectLine, XawselectParagraph, XawselectAll} XawTextSelectType;
+typedef enum {
+  XawsdLeft,
+  XawsdRight
+} XawTextScanDirection;
+
+typedef enum {
+  XawtextRead,
+  XawtextAppend,
+  XawtextEdit
+} XawTextEditType;
+
+typedef enum {
+  XawselectNull,
+  XawselectPosition,
+  XawselectChar,
+  XawselectWord,
+  XawselectLine,
+  XawselectParagraph,
+  XawselectAll,
+  XawselectAlphaNumeric
+} XawTextSelectType;
+
+typedef enum {
+    XawjustifyLeft,
+    XawjustifyRight,
+    XawjustifyCenter,
+    XawjustifyFull
+} XawTextJustifyMode;
 
 typedef struct {
     int  firstPos;
     int  length;
     char *ptr;
     unsigned long format;
-    } XawTextBlock, *XawTextBlockPtr; 
+} XawTextBlock, *XawTextBlockPtr;
+
+#ifndef OLDXAW
+typedef struct {
+    int line_number;
+    int column_number;
+    XawTextPosition insert_position;
+    XawTextPosition last_position;
+    Boolean overwrite_mode;
+} XawTextPositionInfo;
+
+typedef struct {
+    XawTextPosition left, right;
+    XawTextBlock *block;
+} XawTextPropertyInfo;
+
+typedef struct _XawTextAnchor XawTextAnchor;
+typedef struct _XawTextEntity XawTextEntity;
+typedef struct _XawTextProperty XawTextProperty;
+typedef struct _XawTextPropertyList XawTextPropertyList;
+#endif
 
 #include <X11/Xaw/TextSink.h>
 #include <X11/Xaw/TextSrc.h>
@@ -110,15 +169,14 @@ typedef struct {
 #define XtEtextScrollNever "never"
 #define XtEtextScrollWhenNeeded "whenneeded"
 #define XtEtextScrollAlways "always"
-
-#define XtEtextWrapNever "never"
-#define XtEtextWrapLine "line"
-#define XtEtextWrapWord "word"
-
 #define XtEtextResizeNever "never"
 #define XtEtextResizeWidth "width"
 #define XtEtextResizeHeight "height"
 #define XtEtextResizeBoth "both"
+
+#define XtEtextWrapNever	"never"
+#define XtEtextWrapLine		"line"
+#define XtEtextWrapWord		"word"
 
 #define XtNautoFill "autoFill"
 #define XtNbottomMargin "bottomMargin"
@@ -128,40 +186,55 @@ typedef struct {
 #define XtNdisplayPosition "displayPosition"
 #define XtNleftMargin "leftMargin"
 #define XtNrightMargin "rightMargin"
+#define XtNpositionCallback "positionCallback"
 #define XtNscrollVertical "scrollVertical"
 #define XtNscrollHorizontal "scrollHorizontal"
 #define XtNselectTypes "selectTypes"
 #define XtNtopMargin "topMargin"
 #define XtNwrap "wrap"
 
+#define XtCColumn		"Column"
+#define XtNleftColumn		"leftColumn"
+#define XtNrightColumn		"rightColumn"
+
+#define XtCJustifyMode		XtCJustify
+#define XtNjustifyMode		XtNjustify
+#define XtEtextJustifyLeft	"left"
+#define XtEtextJustifyRight	"right"
+#define XtEtextJustifyCenter	"center"
+#define XtEtextJustifyFull	"full"
+
 #define XtCAutoFill "AutoFill"
-#define XtCScroll "Scroll"
 #define XtCSelectTypes "SelectTypes"
 #define XtCWrap "Wrap"
+#ifndef notdef
+#define XtCScroll		"Scroll"
+#endif
 
 #ifndef _XtStringDefs_h_
 #define XtNinsertPosition "insertPosition"
+#ifndef notdef
 #define XtNresize "resize"
-#define XtNselection "selection"
 #define XtCResize "Resize"
 #endif
+#define XtNselection		"selection"
+#endif
 
-/* Return Error code for XawTextSearch */
-
+/* return Error code for XawTextSearch */
 #define XawTextSearchError      (-12345L)
 
-/* Return codes from XawTextReplace */
-
+/* return codes from XawTextReplace */
 #define XawReplaceError	       -1
 #define XawEditDone		0
 #define XawEditError		1
 #define XawPositionError	2
 
+/* XrmQuark is not unsigned long */
+#define XawTextFormat(tw,fmt) ((unsigned long)_XawTextFormat(tw) == (fmt))
+
 extern unsigned long FMT8BIT;
 extern unsigned long XawFmt8Bit;
 extern unsigned long XawFmtWide;
-
-/* Class record constants */
 
 extern WidgetClass textWidgetClass;
 
@@ -170,140 +243,131 @@ typedef struct _TextRec      *TextWidget;
 
 _XFUNCPROTOBEGIN
 
-extern XrmQuark _XawTextFormat(
-#if NeedFunctionPrototypes
-    TextWidget		/* tw */
-#endif
+XrmQuark _XawTextFormat
+(
+ TextWidget		tw
+ );
+
+void XawTextDisplay
+(
+ Widget			w
+ );
+
+void XawTextEnableRedisplay
+(
+ Widget			w
+ );
+
+void XawTextDisableRedisplay
+(
+ Widget			w
+ );
+
+void XawTextSetSelectionArray
+(
+ Widget			w,
+ XawTextSelectType	*sarray
+ );
+
+void XawTextGetSelectionPos
+(
+ Widget			w,
+ XawTextPosition	*begin_return,
+ XawTextPosition	*end_return
+ );
+
+void XawTextSetSource
+(
+ Widget			w,
+ Widget			source,
+ XawTextPosition	top
+ );
+
+int XawTextReplace
+(
+ Widget			w,
+ XawTextPosition	start,
+ XawTextPosition	end,
+ XawTextBlock		*text
+ );
+
+XawTextPosition XawTextTopPosition
+(
+ Widget			w
+ );
+
+XawTextPosition XawTextLastPosition
+(
+ Widget			w
+ );
+
+void XawTextSetInsertionPoint
+(
+ Widget			w,
+ XawTextPosition	position
+ );
+
+XawTextPosition XawTextGetInsertionPoint
+(
+ Widget			w
+ );
+
+void XawTextUnsetSelection
+(
+ Widget			w
+ );
+
+void XawTextSetSelection
+(
+ Widget			w,
+ XawTextPosition	left,
+ XawTextPosition	right
+ );
+
+void XawTextInvalidate
+(
+ Widget			w,
+ XawTextPosition	from,
+ XawTextPosition	to
 );
 
-extern void XawTextDisplay(
-#if NeedFunctionPrototypes
-    Widget		/* w */
-#endif
-); 
+Widget XawTextGetSource
+(
+ Widget			w
+ );
 
-extern void XawTextEnableRedisplay(
-#if NeedFunctionPrototypes
-    Widget		/* w */
-#endif
-);
+Widget XawTextGetSink
+(
+ Widget			w
+ );
 
-extern void XawTextDisableRedisplay(
-#if NeedFunctionPrototypes
-    Widget		/* w */
-#endif
-);
-
-extern void XawTextSetSelectionArray(
-#if NeedFunctionPrototypes
-    Widget		/* w */,
-    XawTextSelectType*	/* sarray */
-#endif
-);
-
-extern void XawTextGetSelectionPos(
-#if NeedFunctionPrototypes
-    Widget		/* w */,
-    XawTextPosition*	/* begin_return */,
-    XawTextPosition*	/* end_return */
-#endif
-);
-
-extern void XawTextSetSource(
-#if NeedFunctionPrototypes
-    Widget		/* w */,
-    Widget		/* source */,
-    XawTextPosition	/* position */
-#endif
-);
-
-extern int XawTextReplace(
-#if NeedFunctionPrototypes
-    Widget		/* w */,
-    XawTextPosition	/* start */,
-    XawTextPosition	/* end */,
-    XawTextBlock*	/* text */
-#endif
-);
-
-extern XawTextPosition XawTextTopPosition(
-#if NeedFunctionPrototypes
-    Widget		/* w */
-#endif
-);
-
-extern void XawTextSetInsertionPoint(
-#if NeedFunctionPrototypes
-    Widget		/* w */,
-    XawTextPosition	/* position */
-#endif
-);
-
-extern XawTextPosition XawTextGetInsertionPoint(
-#if NeedFunctionPrototypes
-    Widget		/* w */
-#endif
-);
-
-extern void XawTextUnsetSelection(
-#if NeedFunctionPrototypes
-    Widget		/* w */
-#endif
-);
-
-extern void XawTextSetSelection(
-#if NeedFunctionPrototypes
-    Widget		/* w */,
-    XawTextPosition	/* left */,
-    XawTextPosition	/* right */
-#endif
-);
-
-extern void XawTextInvalidate(
-#if NeedFunctionPrototypes
-    Widget		/* w */,
-    XawTextPosition	/* from */,
-    XawTextPosition	/* to */
-#endif
-);
-
-extern Widget XawTextGetSource(
-#if NeedFunctionPrototypes
-    Widget		/* w */
-#endif
-);
-
-extern XawTextPosition XawTextSearch(
-#if NeedFunctionPrototypes
-    Widget			/* w */,
+XawTextPosition XawTextSearch
+(
+ Widget			w,
 #if NeedWidePrototypes
-    /* XawTextScanDirection */ int /* dir */,
+ int			dir,
 #else
-    XawTextScanDirection	/* dir */,
+ XawTextScanDirection	dir,
 #endif
-    XawTextBlock*		/* text */
-#endif
-);
+ XawTextBlock		*text
+ );
 
-extern void XawTextDisplayCaret(
-#if NeedFunctionPrototypes
-    Widget		/* w */,
+void XawTextDisplayCaret
+(
+ Widget			w,
 #if NeedWidePrototypes
-    /* Boolean */ int	/* visible */
+ int			visible
 #else
-    Boolean		/* visible */
+ Boolean		visible
 #endif
-#endif
-);
+ );
 
 _XFUNCPROTOEND
 
 /*
- * For R3 compatability only. 
+ * For R3 compatability only
  */
-
 #include <X11/Xaw/AsciiSrc.h>
 #include <X11/Xaw/AsciiSink.h>
 
 #endif /* _XawText_h */
-/* DON'T ADD STUFF AFTER THIS #endif */

@@ -23,6 +23,7 @@ Except as contained in this notice, the name of The Open Group shall not be
 used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
 */
+/* $XFree86: xc/lib/Xaw/List.h,v 1.8 2001/12/14 19:54:40 dawes Exp $ */
 
 /*  This is the List widget, it is useful to display a list, without the
  *  overhead of having a widget for each item in the list.  It allows 
@@ -37,12 +38,6 @@ in this Software without prior written authorization from The Open Group.
 #ifndef _XawList_h
 #define _XawList_h
 
-/***********************************************************************
- *
- * List Widget
- *
- ***********************************************************************/
-
 #include <X11/Xaw/Simple.h>
 
 /* Resources:
@@ -50,7 +45,7 @@ in this Software without prior written authorization from The Open Group.
  Name		     Class		RepType		Default Value
  ----		     -----		-------		-------------
  background	     Background		Pixel		XtDefaultBackground
- border		     BorderColor	Pixel		XtDefaultForeground
+ borderColor	     BorderColor	Pixel		XtDefaultForeground
  borderWidth	     BorderWidth	Dimension	1
  callback            Callback           XtCallbackList  NULL       **6
  columnSpacing       Spacing            Dimension       6
@@ -65,7 +60,7 @@ in this Software without prior written authorization from The Open Group.
  insensitiveBorder   Insensitive	Pixmap		Gray
  internalHeight	     Height		Dimension	2
  internalWidth	     Width		Dimension	4
- list                List               String *        NULL       **2
+ list		     List		String*		NULL	   **2
  longest             Longest            int             0          **3  **4
  mappedWhenManaged   MappedWhenManaged	Boolean		True
  numberStrings       NumberStrings      int             0          **4
@@ -110,11 +105,9 @@ in this Software without prior written authorization from The Open Group.
 
 */
 
-
 /*
- * Value returned when there are no highlighted objects. 
+ * Value returned when there are no highlighted objects
  */
-
 #define XAW_LIST_NONE -1	
 
 #define XtCList "List"
@@ -133,6 +126,7 @@ in this Software without prior written authorization from The Open Group.
 #define XtNpasteBuffer "pasteBuffer"
 #define XtNrowSpacing "rowSpacing"
 #define XtNverticalList "verticalList"
+#define XtNshowCurrent "showCurrent"
  
 #ifndef XtNfontSet
 #define XtNfontSet "fontSet"
@@ -142,94 +136,101 @@ in this Software without prior written authorization from The Open Group.
 #define XtCFontSet "FontSet"
 #endif
 
-/* Class record constants */
-
 extern WidgetClass listWidgetClass;
 
 typedef struct _ListClassRec *ListWidgetClass;
 typedef struct _ListRec      *ListWidget;
 
-/* The list return structure. */
-
+/* list return structure */
 typedef struct _XawListReturnStruct {
   String string;
   int list_index;
 } XawListReturnStruct;
 
-/******************************************************************
- *
- * Exported Functions
- *
- *****************************************************************/
-
 _XFUNCPROTOBEGIN
 
-/*	Function Name: XawListChange.
- *	Description: Changes the list being used and shown.
- *	Arguments: w - the list widget.
- *                 list - the new list.
- *                 nitems - the number of items in the list.
- *                 longest - the length (in Pixels) of the longest element
- *                           in the list.
- *                 resize - if TRUE the the list widget will
- *                          try to resize itself.
- *	Returns: none.
- *      NOTE:      If nitems of longest are <= 0 then they will be caluculated.
- *                 If nitems is <= 0 then the list needs to be NULL terminated.
+/*
+ * Function:
+ *	XawListChange
+ *
+ * Parameters:
+ *	w	- list widget
+ *	list	- new list
+ *	nitems	- number of items in the list
+ *	longest - length (in Pixels) of the longest element in the list
+ *	resize	- if True the the list widget will try to resize itself
+ *
+ * Description:
+ *	Changes the list being used and shown.
+ *
+ * Note:
+ *	If nitems of longest are <= 0 then they will be caluculated
+ *	If nitems is <= 0 then the list needs to be NULL terminated
  */
-
-extern void XawListChange(
-#if NeedFunctionPrototypes
-    Widget		/* w */,
-    String*		/* list */,
-    int			/* nitems */,
-    int			/* longest */,
+void XawListChange
+(
+ Widget			w,
+ String			*list,
+ int			nitems,
+ int			longest,
 #if NeedWidePrototypes
-    /* Boolean */ int	/* resize */
+ int			resize
 #else
-    Boolean		/* resize */
+ Boolean		resize
 #endif
-#endif
-);
+ );
 
-/*	Function Name: XawListUnhighlight
- *	Description: unlights the current highlighted element.
- *	Arguments: w - the widget.
- *	Returns: none.
+/*
+ * Function:
+ *	XawListUnhighlight
+ *
+ * Parameters:
+ *	w - list widget
+ *
+ * Description:
+ *	Unlights the current highlighted element.
+ */
+void XawListUnhighlight
+(
+ Widget			w
+ );
+
+/*
+ * Function:
+ *	XawListHighlight
+ *
+ * Parameters:
+ *	w    - list widget
+ *	item - item to highlight
+ *
+ * Description:
+ *	Highlights the given item.
+ */
+void XawListHighlight
+(
+ Widget			w,
+ int			item
+ );
+
+
+/*
+ * Function:
+ *	XawListShowCurrent
+ *
+ * Paraneters:
+ *	w - list widget
+ *
+ * Description:
+ *	Returns the currently highlighted object.
+ *
+ * Returns:
+ *	The info about the currently highlighted object
  */
 
-extern void XawListUnhighlight(
-#if NeedFunctionPrototypes
-    Widget		/* w */
-#endif
-);
-
-/*	Function Name: XawListHighlight
- *	Description: Highlights the given item.
- *	Arguments: w - the list widget.
- *                 item - the item to highlight.
- *	Returns: none.
- */
-
-extern void XawListHighlight(
-#if NeedFunctionPrototypes
-    Widget		/* w */,
-    int			/* item */
-#endif
-);
-
-
-/*	Function Name: XawListShowCurrent
- *	Description: returns the currently highlighted object.
- *	Arguments: w - the list widget.
- *	Returns: the info about the currently highlighted object.
- */
-
-extern XawListReturnStruct * XawListShowCurrent(
-#if NeedFunctionPrototypes
-    Widget		/* w */
-#endif
-);
+XawListReturnStruct *XawListShowCurrent
+(
+ Widget			w
+ );
 
 _XFUNCPROTOEND
 

@@ -49,26 +49,22 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
-
-/* 
- * BoxP.h - Private definitions for Box widget
- * 
- */
+/* $XFree86: xc/lib/Xaw/BoxP.h,v 1.11 2001/12/14 19:54:39 dawes Exp $ */
 
 #ifndef _XawBoxP_h
 #define _XawBoxP_h
 
-/***********************************************************************
- *
+/*
  * Box Widget Private Data
- *
- ***********************************************************************/
-
+ */
 #include <X11/Xaw/Box.h>
 #include <X11/Xmu/Converters.h>
+#include <X11/Xaw/XawInit.h>
 
 /* New fields for the Box widget class record */
-typedef struct {int empty;} BoxClassPart;
+typedef struct {
+    XtPointer extension;
+} BoxClassPart;
 
 /* Full class record declaration */
 typedef struct _BoxClassRec {
@@ -82,22 +78,22 @@ extern BoxClassRec boxClassRec;
 /* New fields for the Box widget record */
 typedef struct {
     /* resources */
-    Dimension   h_space, v_space;
+    Dimension h_space, v_space;
     XtOrientation orientation;
 
     /* private state */
-    Dimension	preferred_width, preferred_height;
-    Dimension	last_query_width, last_query_height;
+    Dimension preferred_width, preferred_height;
+    Dimension last_query_width, last_query_height;
     XtGeometryMask last_query_mode;
+#ifndef OLDXAW
+    XawDisplayList *display_list;
+    XtPointer pad[4];	/* for future use and keep binary compatability */
+#endif
 } BoxPart;
 
-
-/****************************************************************
- *
+/*
  * Full instance record declaration
- *
- ****************************************************************/
-
+ */
 typedef struct _BoxRec {
     CorePart	    core;
     CompositePart   composite;

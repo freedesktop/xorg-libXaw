@@ -49,6 +49,7 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
+/* $XFree86: xc/lib/Xaw/AsciiSrcP.h,v 1.9 2001/12/14 19:54:38 dawes Exp $ */
 
 /*
  * AsciiSrcP.h - Private Header for Ascii Text Source.
@@ -64,22 +65,11 @@ SOFTWARE.
  *          kit@expo.lcs.mit.edu
  */
 
-/* 
- * TextSrcP.h - Private definitions for AsciiSrc object
- * 
- */
-
 #ifndef _XawAsciiSrcP_h
 #define _XawAsciiSrcP_h
 
 #include <X11/Xaw/TextSrcP.h>
 #include <X11/Xaw/AsciiSrc.h>
-
-/************************************************************
- *
- * Private declarations.
- *
- ************************************************************/
 
 #ifdef L_tmpnam
 #define TMPSIZ L_tmpnam
@@ -91,27 +81,19 @@ SOFTWARE.
 #endif
 #endif
 
-#define MAGIC_VALUE ((XawTextPosition) -1) /* Magic value. */
-
-#define streq(a, b)        ( strcmp((a), (b)) == 0 )
-
 typedef struct _Piece {		/* Piece of the text file of BUFSIZ allocated 
-				   characters. */
-  char * text;			/* The text in this buffer. */
-  XawTextPosition used;		/* The number of characters of this buffer 
-				   that have been used. */
-  struct _Piece *prev, *next;	/* linked list pointers. */
+				   characters */
+    char *text;			/* The text in this buffer */
+    XawTextPosition used;	/* The number of characters of this buffer 
+				   that have been used */
+    struct _Piece *prev, *next;	/* linked list pointers */
 } Piece;
 
-/************************************************************
- *
- * New fields for the AsciiSrc object class record.
- *
- ************************************************************/
+typedef struct _AsciiSrcClassPart {
+    XtPointer extension;
+} AsciiSrcClassPart;
 
-typedef struct _AsciiSrcClassPart { char foo; } AsciiSrcClassPart;
-
-/* Full class record declaration */
+/* Full class record */
 typedef struct _AsciiSrcClassRec {
     ObjectClassPart     object_class;
     TextSrcClassPart	text_src_class;
@@ -120,47 +102,44 @@ typedef struct _AsciiSrcClassRec {
 
 extern AsciiSrcClassRec asciiSrcClassRec;
 
-/* New fields for the AsciiSrc object record */
-
+/* New fields for the AsciiSrc object */
 typedef struct _AsciiSrcPart {
-
-  /* Resources. */
-
-  char       *string;		/* either the string, or the
-				   file name, depending upon the type. */
-  XawAsciiType type;		/* either string or disk. */
-  XawTextPosition piece_size;	/* Size of text buffer for each piece. */
-  Boolean data_compression;	/* compress to minimum memory automatically
+    /* resources */
+    char *string;		/* either the string, or the
+				   file name, depending upon the type */
+    XawAsciiType type;		/* either string or disk */
+    XawTextPosition piece_size;	/* Size of text buffer for each piece */
+    Boolean data_compression;	/* compress to minimum memory automatically
 				   on save? */
-  XtCallbackList callback;	/* A callback list to call when the source is
-				   changed. */
-  Boolean use_string_in_place;	/* Use the string passed in place. */
-  int     ascii_length;		/* length field for ascii string emulation. */
+#ifdef OLDXAW
+    XtCallbackList callback;
+#endif
+    Boolean use_string_in_place;/* Use the string passed in place */
+    int ascii_length;		/* length field for ascii string emulation */
 
 #ifdef ASCII_DISK
-  String filename;		/* name of file for Compatability. */
+    String filename;		/* name of file for Compatability */
 #endif /* ASCII_DISK */
 
-/* Private data. */
-
-  Boolean	is_tempfile;	  /* Is this a temporary file? */
-  Boolean       changes;	  /* Has this file been edited? */
-  Boolean       allocated_string; /* Have I allocated the
-				     string in ascii_src->string? */
-  XawTextPosition length; 	/* length of file */
-  Piece * first_piece;		/* first piece of the text. */
+    /* private */
+    Boolean is_tempfile;	/* Is this a temporary file? */
+#ifdef OLDXAW
+    Boolean changes;
+#endif
+    Boolean allocated_string;	/* Have I allocated the
+				   string in ascii_src->string? */
+    XawTextPosition length; 	/* length of file */
+    Piece *first_piece;		/* first piece of the text */
+#ifndef OLDXAW
+    XtPointer pad[4];	/* for future use and keep binary compatability */
+#endif
 } AsciiSrcPart;
 
-/****************************************************************
- *
- * Full instance record declaration
- *
- ****************************************************************/
-
+/* instance record */
 typedef struct _AsciiSrcRec {
-  ObjectPart    object;
-  TextSrcPart	text_src;
-  AsciiSrcPart	ascii_src;
+    ObjectPart    object;
+    TextSrcPart   text_src;
+    AsciiSrcPart  ascii_src;
 } AsciiSrcRec;
 
 #endif /* _XawAsciiSrcP_h */ 

@@ -46,6 +46,7 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ********************************************************/
+/* $XFree86: xc/lib/Xaw/Viewport.h,v 1.7 2001/12/14 19:54:46 dawes Exp $ */
 
 #ifndef _XawViewport_h
 #define _XawViewport_h
@@ -63,7 +64,7 @@ SOFTWARE.
  border		     BorderColor	Pixel		XtDefaultForeground
  borderWidth	     BorderWidth	Dimension	1
  destroyCallback     Callback		Pointer		NULL
- foreceBars	     Boolean		Boolean		False
+ forceBars	     Boolean		Boolean		False
  height		     Height		Dimension	0
  mappedWhenManaged   MappedWhenManaged	Boolean		True
  reportCallback	     ReportCallback	Pointer		NULL
@@ -76,7 +77,6 @@ SOFTWARE.
 
 */
 
-/* fields added to Form */
 #ifndef _XtStringDefs_h_
 #define XtNforceBars "forceBars"
 #define XtNallowHoriz "allowHoriz"
@@ -92,31 +92,29 @@ typedef struct _ViewportRec  *ViewportWidget;
 
 _XFUNCPROTOBEGIN
 
-extern void XawViewportSetLocation (
-#if NeedFunctionPrototypes
-    Widget		/* gw */,
+void XawViewportSetLocation
+(
+ Widget			gw,
 #if NeedWidePrototypes
-    /* float */ double	/* xoff */,
-    /* float */ double	/* yoff */
+ double			xoff,
+ double			yoff
 #else
-    float		/* xoff */,
-    float		/* yoff */
+ float			xoff,
+ float			yoff
 #endif
-#endif
-);
+ );
 
-extern void XawViewportSetCoordinates (
-#if NeedFunctionPrototypes
-    Widget		/* gw */,
+void XawViewportSetCoordinates
+(
+ Widget			gw,
 #if NeedWidePrototypes
-    /* Position */ int	/* x */,
-    /* Position */ int	/* y */
+ int			x,
+ int			y
 #else
-    Position		/* x */,
-    Position		/* y */
+ Position		x,
+ Position		y
 #endif
-#endif
-);
+ );
 
 _XFUNCPROTOEND
 

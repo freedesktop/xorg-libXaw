@@ -48,6 +48,7 @@ in this Software without prior written authorization from The Open Group.
  * additional blank space to make the structure of the graph easier to see
  * as well as to support vertical trees.
  */
+/* $XFree86: xc/lib/Xaw/TreeP.h,v 1.7 2001/12/14 19:54:45 dawes Exp $ */
 
 
 #ifndef _XawTreeP_h
@@ -56,7 +57,7 @@ in this Software without prior written authorization from The Open Group.
 #include <X11/Xaw/Tree.h>
 
 typedef struct _TreeClassPart {
-    int ignore;
+    XtPointer extension;
 } TreeClassPart;
 
 typedef struct _TreeClassRec {
@@ -82,6 +83,10 @@ typedef struct {
     Dimension *largest;			/* list of largest per depth */
     int n_largest;			/* number of elements in largest */
     Dimension maxwidth, maxheight;	/* for shrink wrapping */
+#ifndef OLDXAW
+    XawDisplayList *display_list;
+    XtPointer pad[4];	/* for future use and keep binary compatability */
+#endif
 } TreePart;
 
 
@@ -107,6 +112,11 @@ typedef struct _TreeConstraintsPart {
     Dimension bbsubwidth, bbsubheight;	/* bounding box of sub tree */
     Dimension bbwidth, bbheight;	/* bounding box including node */
     Position x, y;
+#ifndef OLDXAW
+    XtPointer pad[2];	/* leave some space for future optimizations, and
+			 * keep binary compatability
+			 */
+#endif
 } TreeConstraintsPart;
 
 typedef struct _TreeConstraintsRec {

@@ -48,6 +48,7 @@ in this Software without prior written authorization from The Open Group.
  * additional blank space to make the structure of the graph easier to see
  * as well as to support vertical trees.
  */
+/* $XFree86: xc/lib/Xaw/Tree.h,v 1.7 2001/12/14 19:54:45 dawes Exp $ */
 
 
 #ifndef _XawTree_h
@@ -105,6 +106,20 @@ in this Software without prior written authorization from The Open Group.
 #define XtCGravity "Gravity"
 
 #define XtRGC "GC"
+
+#ifndef OLDXAW
+#ifndef XawNdisplayList
+#define XawNdisplayList "displayList"
+#endif
+ 
+#ifndef XawCDisplayList
+#define XawCDisplayList "DisplayList"
+#endif
+
+#ifndef XawRDisplayList
+#define XawRDisplayList "XawDisplayList"
+#endif
+#endif
                                         /* external declarations */
 extern WidgetClass treeWidgetClass;
 
@@ -113,11 +128,10 @@ typedef struct _TreeRec      *TreeWidget;
 
 _XFUNCPROTOBEGIN
 
-extern void XawTreeForceLayout (
-#if NeedFunctionPrototypes
-    Widget /* tree */
-#endif
-);
+void XawTreeForceLayout
+(
+ Widget		tree
+ );
 
 _XFUNCPROTOEND
 

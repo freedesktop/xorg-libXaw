@@ -46,6 +46,7 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
+/* $XFree86: xc/lib/Xaw/Grip.c,v 1.8 2001/12/14 19:54:40 dawes Exp $ */
 
 /*
  * Grip.c - Grip Widget (Used by Paned Widget)
@@ -53,87 +54,126 @@ SOFTWARE.
  */
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
-#include <X11/Xaw/XawInit.h>
 #include <X11/Xaw/GripP.h>
+#include <X11/Xaw/XawInit.h>
 
+/*
+ * Prototypes
+ */
+static void
+GripAction(Widget, XEvent*, String*, Cardinal*);
+
+/*
+ * Initialization
+ */
 static XtResource resources[] = {
-   {XtNwidth, XtCWidth, XtRDimension, sizeof(Dimension),
-      XtOffsetOf(GripRec, core.width), XtRImmediate,
-      (XtPointer) DEFAULT_GRIP_SIZE},
-   {XtNheight, XtCHeight, XtRDimension, sizeof(Dimension),
-      XtOffsetOf(GripRec, core.height), XtRImmediate,
-      (XtPointer) DEFAULT_GRIP_SIZE},
-   {XtNforeground, XtCForeground, XtRPixel, sizeof(Pixel),
-      XtOffsetOf(GripRec, core.background_pixel), XtRString,
-      XtDefaultForeground},
-   {XtNborderWidth, XtCBorderWidth, XtRDimension, sizeof(Dimension),
-      XtOffsetOf(GripRec, core.border_width), XtRImmediate, (XtPointer)0},
-   {XtNcallback, XtCCallback, XtRCallback, sizeof(XtPointer), 
-      XtOffsetOf(GripRec, grip.grip_action), XtRCallback, NULL},
+  {
+    XtNwidth,
+    XtCWidth,
+    XtRDimension,
+    sizeof(Dimension),
+    XtOffsetOf(GripRec, core.width),
+    XtRImmediate,
+    (XtPointer)DEFAULT_GRIP_SIZE
+  },
+  {
+    XtNheight,
+    XtCHeight,
+    XtRDimension,
+    sizeof(Dimension),
+    XtOffsetOf(GripRec, core.height),
+    XtRImmediate,
+    (XtPointer)DEFAULT_GRIP_SIZE
+  },
+  {
+    XtNforeground,
+    XtCForeground,
+    XtRPixel,
+    sizeof(Pixel),
+    XtOffsetOf(GripRec, core.background_pixel),
+    XtRString,
+    XtDefaultForeground
+  },
+  {
+    XtNborderWidth,
+    XtCBorderWidth,
+    XtRDimension,
+    sizeof(Dimension),
+    XtOffsetOf(GripRec, core.border_width),
+    XtRImmediate,
+    (XtPointer)0
+  },
+  {
+    XtNcallback,
+    XtCCallback,
+    XtRCallback,
+    sizeof(XtPointer),
+    XtOffsetOf(GripRec, grip.grip_action),
+    XtRCallback,
+    NULL
+  },
 };
-
-static void GripAction( /* Widget, XEvent*, String*, Cardinal */ );
 
 static XtActionsRec actionsList[] =
 {
   {"GripAction",      GripAction},
 };
 
-#define SuperClass (&simpleClassRec)
+#define Superclass	(&simpleClassRec)
 
 GripClassRec gripClassRec = {
+  /* core */
    {
-/* core class fields */
-    /* superclass         */   (WidgetClass) SuperClass,
-    /* class name         */   "Grip",
-    /* size               */   sizeof(GripRec),
-    /* class initialize   */   XawInitializeWidgetSet,
-    /* class_part_init    */   NULL,
-    /* class_inited       */   FALSE,
-    /* initialize         */   NULL,
-    /* initialize_hook    */   NULL,
-    /* realize            */   XtInheritRealize,
-    /* actions            */   actionsList,
-    /* num_actions        */   XtNumber(actionsList),
-    /* resources          */   resources,
-    /* resource_count     */   XtNumber(resources),
-    /* xrm_class          */   NULLQUARK,
-    /* compress_motion    */   TRUE,
-    /* compress_exposure  */   TRUE,
-    /* compress_enterleave*/   TRUE,
-    /* visible_interest   */   FALSE,
-    /* destroy            */   NULL,
-    /* resize             */   NULL,
-    /* expose             */   NULL,
-    /* set_values         */   NULL,
-    /* set_values_hook    */   NULL,
-    /* set_values_almost  */   XtInheritSetValuesAlmost,
-    /* get_values_hook    */   NULL,
-    /* accept_focus       */   NULL,
-    /* version            */   XtVersion,
-    /* callback_private   */   NULL,
-    /* tm_table           */   NULL,
-    /* query_geometry     */   XtInheritQueryGeometry,
-    /* display_accelerator*/   XtInheritDisplayAccelerator,
-    /* extension          */   NULL
+     (WidgetClass)Superclass,		/* superclass */
+     "Grip",				/* class name */
+     sizeof(GripRec),			/* size */
+     XawInitializeWidgetSet,		/* class initialize */
+     NULL,				/* class_part_init */
+     False,				/* class_inited */
+     NULL,				/* initialize */
+     NULL,				/* initialize_hook */
+     XtInheritRealize,			/* realize */
+     actionsList,			/* actions */
+     XtNumber(actionsList),		/* num_actions */
+     resources,				/* resources */
+     XtNumber(resources),		/* num_resources */
+     NULLQUARK,				/* xrm_class */
+     True,				/* compress_motion */
+     True,				/* compress_exposure */
+     True,				/* compress_enterleave */
+     False,				/* visible_interest */
+     NULL,				/* destroy */
+     NULL,				/* resize */
+     XtInheritExpose,			/* expose */
+     NULL,				/* set_values */
+     NULL,				/* set_values_hook */
+     XtInheritSetValuesAlmost,		/* set_values_almost */
+     NULL,				/* get_values_hook */
+     NULL,				/* accept_focus */
+     XtVersion,				/* version */
+     NULL,				/* callback_private */
+     NULL,				/* tm_table */
+     XtInheritQueryGeometry,		/* query_geometry */
+     XtInheritDisplayAccelerator,	/* display_accelerator */
+     NULL,				/* extension */
    },
-/* Simple class fields initialization */
+   /* simple */
    {
-    /* change_sensitive   */   XtInheritChangeSensitive
+     XtInheritChangeSensitive,		/* change_sensitive */
    },
-/* Grip class fields initialization */
+   /* grip */
    {
-    /* not used		  */   0
+     NULL,				/* extension */
    }
 };
 
-WidgetClass gripWidgetClass = (WidgetClass) &gripClassRec;
+WidgetClass gripWidgetClass = (WidgetClass)&gripClassRec;
 
-static void GripAction( widget, event, params, num_params )
-    Widget widget;
-    XEvent *event;
-    String *params;
-    Cardinal *num_params;
+/*
+ * Implementation
+ */
+static void
+GripAction(Widget widget, XEvent *event, String *params, Cardinal *num_params)
 {
     XawGripCallDataRec call_data;
 
@@ -141,5 +181,5 @@ static void GripAction( widget, event, params, num_params )
     call_data.params = params;
     call_data.num_params = *num_params;
 
-    XtCallCallbacks( widget, XtNcallback, (XtPointer)&call_data );
+    XtCallCallbacks(widget, XtNcallback, (XtPointer)&call_data);
 }

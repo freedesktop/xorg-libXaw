@@ -25,6 +25,7 @@ in this Software without prior written authorization from The Open Group.
  *
  * Author:  Jim Fulton, MIT X Consortium
  */
+/* $XFree86: xc/lib/Xaw/Panner.h,v 1.6 2001/12/14 19:54:41 dawes Exp $ */
 
 #ifndef _XawPanner_h
 #define _XawPanner_h
@@ -36,9 +37,9 @@ in this Software without prior written authorization from The Open Group.
  * 
  * Panner Widget (subclass of Simple)
  * 
- * This widget is used to represent navigation in a 2d coordinate system.
+ * This widget is used to represent navigation in a 2d coordinate system
  * 
- * Parameters:
+ * Resources:
  * 
  *  Name		Class		Type		Default
  *  ----		-----		----		-------
@@ -64,7 +65,6 @@ in this Software without prior written authorization from The Open Group.
  * 
  *****************************************************************************/
 
-					/* new instance and class names */
 #ifndef _XtStringDefs_h_
 #define XtNresize "resize"
 #define XtCResize "Resize"
@@ -99,7 +99,6 @@ in this Software without prior written authorization from The Open Group.
 #define XtNsliderHeight "sliderHeight"
 #define XtCSliderHeight "SliderHeight"
 
-					/* external declarations */
 extern WidgetClass pannerWidgetClass;
 
 typedef struct _PannerClassRec *PannerWidgetClass;

@@ -22,12 +22,7 @@ Except as contained in this notice, the name of The Open Group shall not be
 used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
  */
-
-/***********************************************************************
- *
- * MenuButton Widget
- *
- ***********************************************************************/
+/* $XFree86: xc/lib/Xaw/MenuButtoP.h,v 1.8 2001/12/14 19:54:41 dawes Exp $ */
 
 /*
  * MenuButtonP.h - Private Header file for MenuButton widget.
@@ -48,44 +43,32 @@ in this Software without prior written authorization from The Open Group.
 #include <X11/Xaw/MenuButton.h>
 #include <X11/Xaw/CommandP.h>
 
-/************************************
- *
- *  Class structure
- *
- ***********************************/
-
-
-   /* New fields for the MenuButton widget class record */
-typedef struct _MenuButtonClass 
-{
-  int makes_compiler_happy;  /* not used */
+/* New fields for the MenuButton widget class */
+typedef struct _MenuButtonClass {
+    XtPointer extension;
 } MenuButtonClassPart;
 
-   /* Full class record declaration */
+/* class record declaration */
 typedef struct _MenuButtonClassRec {
-  CoreClassPart	    core_class;
-  SimpleClassPart	    simple_class;
-  LabelClassPart	    label_class;
-  CommandClassPart	    command_class;
-  MenuButtonClassPart     menuButton_class;
+    CoreClassPart	    core_class;
+    SimpleClassPart	    simple_class;
+    LabelClassPart	    label_class;
+    CommandClassPart	    command_class;
+    MenuButtonClassPart	    menuButton_class;
 } MenuButtonClassRec;
 
 extern MenuButtonClassRec menuButtonClassRec;
 
-/***************************************
- *
- *  Instance (widget) structure 
- *
- **************************************/
-
-    /* New fields for the MenuButton widget record */
+/* New fields for the MenuButton widget */
 typedef struct {
-  /* resources */
-  String menu_name;
-
+    /* resources */
+    String menu_name;
+#ifndef OLDXAW
+    XtPointer pad[4];	/* for future use and keep binary compatability */
+#endif
 } MenuButtonPart;
 
-   /* Full widget declaration */
+/* widget declaration */
 typedef struct _MenuButtonRec {
     CorePart         core;
     SimplePart	     simple;
@@ -95,5 +78,3 @@ typedef struct _MenuButtonRec {
 } MenuButtonRec;
 
 #endif /* _XawMenuButtonP_h */
-
-

@@ -24,10 +24,9 @@ used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
  *
  */
+/* $XFree86: xc/lib/Xaw/SmeLine.h,v 1.6 2001/12/14 19:54:43 dawes Exp $ */
 
 /*
- * SmeLine.h - Public Header file for SmeLine object.
- *
  * This is the public header file for the Athena SmeLine object.
  * It is intended to be used with the simple menu widget.  
  *
@@ -44,13 +43,7 @@ in this Software without prior written authorization from The Open Group.
 #include <X11/Xaw/Sme.h>
 #include <X11/Xmu/Converters.h>
 
-/****************************************************************
- *
- * SmeLine Object
- *
- ****************************************************************/
-
-/* Menu Entry Resources:
+/* Resources:
 
  Name		     Class		RepType		Default Value
  ----		     -----		-------		-------------
@@ -59,7 +52,7 @@ in this Software without prior written authorization from The Open Group.
  height		     Height		Dimension	0
  sensitive	     Sensitive		Boolean		True
  width		     Width		Dimension	0
- x		     Position		Position	0n
+ x		     Position		Position	0
  y		     Position		Position	0
 
 */
@@ -70,8 +63,8 @@ in this Software without prior written authorization from The Open Group.
 #define XtNlineWidth "lineWidth"
 #define XtNstipple "stipple"
 
-typedef struct _SmeLineClassRec*	SmeLineObjectClass;
-typedef struct _SmeLineRec*	        SmeLineObject;
+typedef struct _SmeLineClassRec *SmeLineObjectClass;
+typedef struct _SmeLineRec *SmeLineObject;
 
 extern WidgetClass smeLineObjectClass;
 

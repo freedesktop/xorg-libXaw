@@ -47,19 +47,14 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
+/* $XFree86: xc/lib/Xaw/Form.h,v 1.9 2001/12/14 19:54:40 dawes Exp $ */
 
 #ifndef _XawForm_h
 #define _XawForm_h
 
 #include <X11/Intrinsic.h>
 
-/***********************************************************************
- *
- * Form Widget
- *
- ***********************************************************************/
-
-/* Parameters:
+/* Resources:
 
  Name		     Class		RepType		Default Value
  ----		     -----		-------		-------------
@@ -68,6 +63,7 @@ SOFTWARE.
  borderWidth	     BorderWidth	Dimension	1
  defaultDistance     Thickness		int		4
  destroyCallback     Callback		Pointer		NULL
+ displayList	     DisplayList	XawDisplayList*	NULL
  height		     Height		Dimension	computed at realize
  mappedWhenManaged   MappedWhenManaged	Boolean		True
  sensitive	     Sensitive		Boolean		True
@@ -112,8 +108,6 @@ SOFTWARE.
 #define XtCEdge "Edge"
 #define XtCWidget "Widget"
 
-#ifndef _XawEdgeType_e
-#define _XawEdgeType_e
 typedef enum {
     XawChainTop,		/* Keep this edge a constant distance from
 				   the top of the form */
@@ -124,17 +118,8 @@ typedef enum {
     XawChainRight,		/* Keep this edge a constant distance from
 				   the right of the form */
     XawRubber			/* Keep this edge a proportional distance
-				   from the edges of the form*/
+				   from the edges of the form */
 } XawEdgeType;
-#endif /* _XawEdgeType_e */
-
-/*
- * Unfortunatly I missed this definition for R4, so I cannot
- * protect it with XAW_BC, it looks like this particular problem is
- * one that we will have to live with for a while.
- *
- * Chris D. Peterson - 3/23/90.
- */
 
 #define XtEdgeType XawEdgeType
 
@@ -144,6 +129,26 @@ typedef enum {
 #define XtChainRight XawChainRight
 #define XtRubber XawRubber
 
+#define XtEchainLeft		"chainLeft"
+#define XtEchainRight		"chainRight"
+#define XtEchainTop		"chainTop"
+#define XtEchainBottom		"chainBottom"
+#define XtErubber		"rubber"
+
+#ifndef OLDXAW
+#ifndef XawNdisplayList
+#define XawNdisplayList "displayList"
+#endif
+ 
+#ifndef XawCDisplayList
+#define XawCDisplayList "DisplayList"
+#endif
+
+#ifndef XawRDisplayList
+#define XawRDisplayList "XawDisplayList"
+#endif
+#endif
+
 typedef struct _FormClassRec	*FormWidgetClass;
 typedef struct _FormRec		*FormWidget;
 
@@ -151,16 +156,15 @@ extern WidgetClass formWidgetClass;
 
 _XFUNCPROTOBEGIN
 
-extern void XawFormDoLayout(
-#if NeedFunctionPrototypes
-    Widget		/* w */,
+void XawFormDoLayout
+(
+ Widget		w,
 #if NeedWidePrototypes
-    /* Boolean */ int	/* do_layout */
+ Bool		do_layout
 #else
-    Boolean		/* do_layout */
+ Boolean	do_layout
 #endif
-#endif
-);
+ );
 
 _XFUNCPROTOEND
  

@@ -25,21 +25,21 @@ used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
 
 */
-
+/* $XFree86: xc/lib/Xaw/TemplateP.h,v 1.7 2001/12/14 19:54:44 dawes Exp $ */
 
 #ifndef _TemplateP_h
 #define _TemplateP_h
 
 #include <X11/Xaw/Template.h>
+
 /* include superclass private header file */
 #include <X11/CoreP.h>
 
 /* define unique representation types not found in <X11/StringDefs.h> */
-
 #define XtRTemplateResource "TemplateResource"
 
 typedef struct {
-    int empty;
+    XtPointer extension;
 } TemplateClassPart;
 
 typedef struct _TemplateClassRec {
@@ -52,7 +52,8 @@ extern TemplateClassRec templateClassRec;
 typedef struct {
     /* resources */
     char* resource;
-    /* private state */
+    /* private */
+    char *private;
 } TemplatePart;
 
 typedef struct _TemplateRec {

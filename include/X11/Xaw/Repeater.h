@@ -25,6 +25,7 @@ in this Software without prior written authorization from The Open Group.
  *
  * Author:  Jim Fulton, MIT X Consortium
  */
+/* $XFree86: xc/lib/Xaw/Repeater.h,v 1.6 2001/12/14 19:54:42 dawes Exp $ */
 
 #ifndef _XawRepeater_h
 #define _XawRepeater_h
@@ -35,7 +36,7 @@ in this Software without prior written authorization from The Open Group.
  * 
  * Repeater Widget (subclass of Command)
  * 
- * This widget is a push button that repeatedly fires when held down.
+ * This widget is a push button that repeatedly fires when held down
  * 
  * Parameters:
  * 
@@ -52,7 +53,6 @@ in this Software without prior written authorization from The Open Group.
  * 
  *****************************************************************************/
 
-					/* new instance and class names */
 #define XtNdecay "decay"
 #define XtCDecay "Decay"
 #define XtNinitialDelay "initialDelay"
@@ -67,7 +67,6 @@ in this Software without prior written authorization from The Open Group.
 #define XtCStopCallback "StopCallback"
 
 
-					/* external declarations */
 extern WidgetClass repeaterWidgetClass;
 
 typedef struct _RepeaterClassRec *RepeaterWidgetClass;

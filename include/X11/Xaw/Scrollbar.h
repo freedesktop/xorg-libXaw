@@ -47,15 +47,14 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
+/* $XFree86: xc/lib/Xaw/Scrollbar.h,v 1.7 2001/12/14 19:54:42 dawes Exp $ */
 
 #ifndef _Scrollbar_h
 #define _Scrollbar_h
 
-/****************************************************************
- *
+/*
  * Scrollbar Widget
- *
- ****************************************************************/
+ */
 
 #include <X11/Xmu/Converters.h>
 #include <X11/Xfuncproto.h>
@@ -107,10 +106,6 @@ SOFTWARE.
 
 */
 
-/* 
- * Most things we need are in StringDefs.h 
- */
-
 #define XtCMinimumThumb "MinimumThumb"
 #define XtCShown "Shown"
 #define XtCTopOfThumb "TopOfThumb"
@@ -125,18 +120,17 @@ extern WidgetClass scrollbarWidgetClass;
 
 _XFUNCPROTOBEGIN
 
-extern void XawScrollbarSetThumb(
-#if NeedFunctionPrototypes
-    Widget		/* scrollbar */,
+void XawScrollbarSetThumb
+(
+ Widget			scrollbar,
 #if NeedWidePrototypes
-    /* float */ double	/* top */,
-    /* float */	double	/* shown */
+ double			top,
+ double			shown
 #else
-    float		/* top */,
-    float		/* shown */
-#endif
+ float			top,
+ float			shown
 #endif		 
-);
+ );
 
 _XFUNCPROTOEND
 

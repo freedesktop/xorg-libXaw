@@ -46,6 +46,7 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
+/* $XFree86: xc/lib/Xaw/Vendor.c,v 1.9 2002/05/31 18:45:44 dawes Exp $ */
 
 /*
  * This is a copy of Xt/Vendor.c with an additional ClassInitialize
@@ -71,6 +72,32 @@ SOFTWARE.
 #include <X11/Xaw/VendorEP.h>
 #include <X11/Xaw/XawImP.h>
 
+/*
+ * Class Methods
+ */
+static void XawVendorShellChangeManaged(Widget);
+static Boolean XawCvtCompoundTextToString(Display*, XrmValuePtr, Cardinal*,
+					  XrmValue*, XrmValue*, XtPointer*);
+static void XawVendorShellClassInitialize(void);
+static XtGeometryResult XawVendorShellGeometryManager(Widget,
+						      XtWidgetGeometry*,
+						      XtWidgetGeometry*);
+static void XawVendorShellExtClassInitialize(void);
+static void XawVendorShellExtDestroy(Widget);
+static void XawVendorShellExtInitialize(Widget, Widget, ArgList, Cardinal*);
+void XawVendorShellExtResize(Widget);
+static Boolean XawVendorShellExtSetValues(Widget, Widget, Widget,
+					  ArgList, Cardinal*);
+static void XawVendorShellClassPartInit(WidgetClass);
+static void XawVendorShellInitialize(Widget, Widget, ArgList, Cardinal*);
+static void XawVendorShellRealize(Widget, Mask*, XSetWindowAttributes*);
+static Boolean XawVendorShellSetValues(Widget, Widget, Widget,
+				       ArgList, Cardinal*);
+
+/*
+ * External
+ */
+void XawVendorStructureNotifyHandler(Widget, XtPointer, XEvent*, Boolean*);
 
 static XtResource resources[] = {
   {XtNinput, XtCInput, XtRBool, sizeof(Bool),
@@ -84,13 +111,28 @@ static XtResource resources[] = {
  *
  ***************************************************************************/
 
-static void XawVendorShellClassInitialize();
-static void XawVendorShellClassPartInit();
-static void XawVendorShellInitialize();
-static Boolean XawVendorShellSetValues();
-static void Realize(), ChangeManaged();
-static XtGeometryResult GeometryManager();
-void XawVendorShellExtResize();
+#ifdef __UNIXOS2__
+/* to fix the EditRes problem because of wrong linker semantics */
+extern WidgetClass vendorShellWidgetClass; /* from Xt/Vendor.c */
+extern VendorShellClassRec _XawVendorShellClassRec;
+extern void _XawFixupVendorShell();
+unsigned long _DLL_InitTerm(unsigned long mod,unsigned long flag)
+{
+	switch (flag) {
+	case 0: /*called on init*/
+		_CRT_init();
+		vendorShellWidgetClass = (WidgetClass)(&_XawVendorShellClassRec);
+		_XawFixupVendorShell();
+		return 1;
+	case 1: /*called on exit*/
+		return 1;
+	default:
+		return 0;
+	}
+}
+#define vendorShellClassRec _XawVendorShellClassRec
+
+#endif
 
 static CompositeClassExtensionRec vendorCompositeExt = {
     /* next_extension     */	NULL,
@@ -112,7 +154,7 @@ externaldef(vendorshellclassrec) VendorShellClassRec vendorShellClassRec = {
     /* Class init'ed ?	  */	FALSE,
     /* initialize         */	XawVendorShellInitialize,
     /* initialize_hook	  */	NULL,		
-    /* realize		  */	Realize,
+    /* realize		  */	XawVendorShellRealize,
     /* actions		  */	NULL,
     /* num_actions	  */	0,
     /* resources	  */	resources,
@@ -137,8 +179,8 @@ externaldef(vendorshellclassrec) VendorShellClassRec vendorShellClassRec = {
     /* display_accelerator*/	NULL,
     /* extension	  */	NULL
   },{
-    /* geometry_manager	  */	GeometryManager,
-    /* change_managed	  */	ChangeManaged,
+    /* geometry_manager	  */	XawVendorShellGeometryManager,
+    /* change_managed	  */	XawVendorShellChangeManaged,
     /* insert_child	  */	XtInheritInsertChild,
     /* delete_child	  */	XtInheritDeleteChild,
     /* extension	  */	(XtPointer) &vendorCompositeExt
@@ -151,9 +193,10 @@ externaldef(vendorshellclassrec) VendorShellClassRec vendorShellClassRec = {
   }
 };
 
+#ifndef __UNIXOS2__
 externaldef(vendorshellwidgetclass) WidgetClass vendorShellWidgetClass =
 	(WidgetClass) (&vendorShellClassRec);
-
+#endif
 
 /***************************************************************************
  *
@@ -175,11 +218,6 @@ static XtResource ext_resources[] = {
 		XtOffsetOf(XawVendorShellExtRec, vendor_ext.ic.shared_ic),
 		XtRImmediate, (XtPointer)FALSE}
 };
-
-static void XawVendorShellExtClassInitialize();
-static void XawVendorShellExtInitialize();
-static void XawVendorShellExtDestroy();
-static Boolean XawVendorShellExtSetValues();
 
 externaldef(vendorshellextclassrec) XawVendorShellExtClassRec
        xawvendorShellExtClassRec = {
@@ -227,13 +265,9 @@ externaldef(xawvendorshellwidgetclass) WidgetClass
 
 /*ARGSUSED*/
 static Boolean
-XawCvtCompoundTextToString(dpy, args, num_args, fromVal, toVal, cvt_data)
-Display *dpy;
-XrmValuePtr args;
-Cardinal    *num_args;
-XrmValue *fromVal;
-XrmValue *toVal;
-XtPointer *cvt_data;
+XawCvtCompoundTextToString(Display *dpy, XrmValuePtr args, Cardinal *num_args,
+			   XrmValue *fromVal, XrmValue *toVal,
+			   XtPointer *cvt_data)
 {
     XTextProperty prop;
     char **list;
@@ -261,7 +295,8 @@ XtPointer *cvt_data;
     return True;
 }
 
-static void XawVendorShellClassInitialize()
+static void
+XawVendorShellClassInitialize(void)
 {
     static XtConvertArgRec screenConvertArg[] = {
         {XtWidgetBaseOffset, (XtPointer) XtOffsetOf(WidgetRec, core.screen),
@@ -278,14 +313,14 @@ static void XawVendorShellClassInitialize()
 			NULL, 0, XtCacheNone, NULL);
 }
 
-static void XawVendorShellClassPartInit(class)
-    WidgetClass class;
+static void
+XawVendorShellClassPartInit(WidgetClass cclass)
 {
     CompositeClassExtension ext;
-    VendorShellWidgetClass vsclass = (VendorShellWidgetClass) class;
+    VendorShellWidgetClass vsclass = (VendorShellWidgetClass)cclass;
 
     if ((ext = (CompositeClassExtension) 
-	    XtGetClassExtension (class,
+	    XtGetClassExtension (cclass,
 				 XtOffsetOf(CompositeClassRec, 
 					    composite_class.extension),
 				 NULLQUARK, 1L, (Cardinal) 0)) == NULL) {
@@ -302,7 +337,7 @@ static void XawVendorShellClassPartInit(class)
     }
 }
 
-#ifdef __osf__
+#if defined(__osf__) || defined(__UNIXOS2__)
 /* stupid OSF/1 shared libraries have the wrong semantics */
 /* symbols do not get resolved external to the shared library */
 void _XawFixupVendorShell()
@@ -315,28 +350,26 @@ void _XawFixupVendorShell()
 #endif
 
 /* ARGSUSED */
-static void XawVendorShellInitialize(req, new, args, num_args)
-	Widget req, new;
-	ArgList     args;
-	Cardinal    *num_args;
+static void
+XawVendorShellInitialize(Widget req, Widget cnew,
+			 ArgList args, Cardinal *num_args)
 {
-    XtAddEventHandler(new, (EventMask) 0, TRUE, _XEditResCheckMessages, NULL);
-    XtAddEventHandler(new, (EventMask) 0, TRUE, XmuRegisterExternalAgent, NULL);
+    XtAddEventHandler(cnew, (EventMask) 0, TRUE, _XEditResCheckMessages, NULL);
+    XtAddEventHandler(cnew, (EventMask) 0, TRUE, XmuRegisterExternalAgent, NULL);
     XtCreateWidget("shellext", xawvendorShellExtWidgetClass,
-		   new, args, *num_args);
+		   cnew, args, *num_args);
 }
 
 /* ARGSUSED */
-static Boolean XawVendorShellSetValues(old, ref, new)
-	Widget old, ref, new;
+static Boolean
+XawVendorShellSetValues(Widget old, Widget ref, Widget cnew,
+			ArgList args, Cardinal *num_args)
 {
 	return FALSE;
 }
 
-static void Realize(wid, vmask, attr)
-	Widget wid;
-	Mask *vmask;
-	XSetWindowAttributes *attr;
+static void
+XawVendorShellRealize(Widget wid, Mask *vmask, XSetWindowAttributes *attr)
 {
 	WidgetClass super = wmShellWidgetClass;
 
@@ -347,37 +380,40 @@ static void Realize(wid, vmask, attr)
 }
 
 
-static void XawVendorShellExtClassInitialize()
+static void
+XawVendorShellExtClassInitialize(void)
 {
 }
 
 /* ARGSUSED */
-static void XawVendorShellExtInitialize(req, new)
-        Widget req, new;
+static void
+XawVendorShellExtInitialize(Widget req, Widget cnew,
+			    ArgList args, Cardinal *num_args)
 {
-    _XawImInitialize(new->core.parent, new);
+    _XawImInitialize(cnew->core.parent, cnew);
 }
 
 /* ARGSUSED */
-static void XawVendorShellExtDestroy( w )
-        Widget w;
+static void
+XawVendorShellExtDestroy(Widget w)
 {
     _XawImDestroy( w->core.parent, w );
 }
 
 /* ARGSUSED */
-static Boolean XawVendorShellExtSetValues(old, ref, new)
-	Widget old, ref, new;
+static Boolean
+XawVendorShellExtSetValues(Widget old, Widget ref, Widget cnew,
+			   ArgList args, Cardinal *num_args)
 {
 	return FALSE;
 }
 
-void XawVendorShellExtResize( w )
-    Widget w;
+void
+XawVendorShellExtResize(Widget w)
 {
 	ShellWidget sw = (ShellWidget) w;
 	Widget childwid;
-	int i;
+	Cardinal i;
 	int core_height;
 
 	_XawImResizeVendorShell( w );
@@ -392,10 +428,17 @@ void XawVendorShellExtResize( w )
 }
 
 /*ARGSUSED*/
-static XtGeometryResult GeometryManager( wid, request, reply )
-	Widget wid;
-	XtWidgetGeometry *request;
-	XtWidgetGeometry *reply;
+void
+XawVendorStructureNotifyHandler(Widget w, XtPointer closure, XEvent *event,
+				Boolean *continue_to_dispatch)
+{
+  XawVendorShellExtResize(w);
+}
+
+/*ARGSUSED*/
+static XtGeometryResult
+XawVendorShellGeometryManager(Widget wid, XtWidgetGeometry *request,
+			      XtWidgetGeometry *reply)
 {
 	ShellWidget shell = (ShellWidget)(wid->core.parent);
 	XtWidgetGeometry my_request;
@@ -442,8 +485,8 @@ static XtGeometryResult GeometryManager( wid, request, reply )
 	} else return XtGeometryNo;
 }
 
-static void ChangeManaged(wid)
-	Widget wid;
+static void
+XawVendorShellChangeManaged(Widget wid)
 {
 	ShellWidget w = (ShellWidget) wid;
 	Widget* childP;

@@ -25,27 +25,32 @@ in this Software without prior written authorization from The Open Group.
  *
  * Author:  Jim Fulton, MIT X Consortium
  */
+/* $XFree86: xc/lib/Xaw/PortholeP.h,v 1.8 2001/12/14 19:54:41 dawes Exp $ */
 
 #ifndef _XawPortholeP_h
 #define _XawPortholeP_h
 
 #include <X11/Xaw/Porthole.h>
 
-typedef struct {			/* new fields in widget class */
-    int dummy;
+/* new fields in widget class */
+typedef struct {
+    XtPointer extension;
 } PortholeClassPart;
 
-typedef struct _PortholeClassRec {	/* Porthole widget class */
+/* widget class */
+typedef struct _PortholeClassRec {
     CoreClassPart core_class;
     CompositeClassPart composite_class;
     PortholeClassPart porthole_class;
 } PortholeClassRec;
 
-
-typedef struct {			/* new fields in widget */
-    /* resources... */
+/* new fields in widget */
+typedef struct {
+    /* resources */
     XtCallbackList report_callbacks;	/* callback/Callback */
-    /* private data... */
+#ifndef OLDXAW
+    XtPointer pad[4];	/* for future use and keep binary compatability */
+#endif
 } PortholePart;
 
 typedef struct _PortholeRec {
@@ -54,11 +59,6 @@ typedef struct _PortholeRec {
     PortholePart porthole;
 } PortholeRec;
 
-
-/*
- * external declarations
- */
 extern PortholeClassRec portholeClassRec;
-
 
 #endif /* _XawPortholeP_h */

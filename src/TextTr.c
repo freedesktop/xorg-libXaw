@@ -25,6 +25,7 @@ used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
 
 */
+/* $XFree86: xc/lib/Xaw/TextTr.c,v 3.16 2001/12/14 19:54:45 dawes Exp $ */
 
 /* INTERNATIONALIZATION:
 
@@ -42,88 +43,117 @@ The Japanese user typically hits their Kanji key when they want to do
 input.  This merely makes sure the input is connected.
 */
 
-char *_XawDefaultTextTranslations1 =
-"\
-Ctrl<Key>A:	beginning-of-line() \n\
-Ctrl<Key>B:	backward-character() \n\
-Ctrl<Key>C:	insert-selection(CUT_BUFFER0) \n\
-Ctrl<Key>D:	delete-next-character() \n\
-Ctrl<Key>E:	end-of-line() \n\
-Ctrl<Key>F:	forward-character() \n\
-Ctrl<Key>G:     multiply(Reset) \n\
-Ctrl<Key>H:	delete-previous-character() \n\
-Ctrl<Key>J:	newline-and-indent() \n\
-Ctrl<Key>K:	kill-to-end-of-line() \n\
-Ctrl<Key>L:	redraw-display() \n\
-Ctrl<Key>M:	newline() \n\
-Ctrl<Key>N:	next-line() \n\
-Ctrl<Key>O:	newline-and-backup() \n\
-Ctrl<Key>P:	previous-line() \n\
-Ctrl<Key>R:	search(backward) \n\
-Ctrl<Key>S:	search(forward) \n\
-Ctrl<Key>T:     transpose-characters() \n\
-Ctrl<Key>U:	multiply(4) \n\
-Ctrl<Key>V:	next-page() \n\
-Ctrl<Key>W:	kill-selection() \n\
-Ctrl<Key>Y:	insert-selection(SECONDARY) \n\
-Ctrl<Key>Z:	scroll-one-line-up() \n\
-", *_XawDefaultTextTranslations2 = "\
-Meta<Key>B:	backward-word() \n\
-Meta<Key>F:	forward-word() \n\
-Meta<Key>I:	insert-file() \n\
-Meta<Key>K:	kill-to-end-of-paragraph() \n\
-Meta<Key>Q:     form-paragraph() \n\
-Meta<Key>V:	previous-page() \n\
-Meta<Key>Y:	insert-selection(PRIMARY, CUT_BUFFER0) \n\
-Meta<Key>Z:	scroll-one-line-down() \n\
-:Meta<Key>d:	delete-next-word() \n\
-:Meta<Key>D:	kill-word() \n\
-:Meta<Key>h:	delete-previous-word() \n\
-:Meta<Key>H:	backward-kill-word() \n\
-:Meta<Key>\\<:	beginning-of-file() \n\
-:Meta<Key>\\>:	end-of-file() \n\
-:Meta<Key>]:	forward-paragraph() \n\
-:Meta<Key>[:	backward-paragraph() \n\
-~Shift Meta<Key>Delete:		delete-previous-word() \n\
- Shift Meta<Key>Delete:		backward-kill-word() \n\
-~Shift Meta<Key>BackSpace:	delete-previous-word() \n\
- Shift Meta<Key>BackSpace:	backward-kill-word() \n\
-", *_XawDefaultTextTranslations3 = "\
-<Key>Home:	beginning-of-file() \n\
-:<Key>KP_Home:	beginning-of-file() \n\
-<Key>End:	end-of-file() \n\
-:<Key>KP_End:	end-of-file() \n\
-<Key>Next:	next-page() \n\
-:<Key>KP_Next:	next-page() \n\
-<Key>Prior:	previous-page() \n\
-:<Key>KP_Prior: previous-page() \n\
-<Key>Right:	forward-character() \n\
-:<Key>KP_Right: forward-character() \n\
-<Key>Left:	backward-character() \n\
-:<Key>KP_Left:	backward-character() \n\
-<Key>Down:	next-line() \n\
-:<Key>KP_Down:	next-line() \n\
-<Key>Up:	previous-line() \n\
-:<Key>KP_Up:	previous-line() \n\
-<Key>Delete:	delete-previous-character() \n\
-:<Key>KP_Delete: delete-previous-character() \n\
-<Key>BackSpace:	delete-previous-character() \n\
-<Key>Linefeed:	newline-and-indent() \n\
-<Key>Return:	newline() \n\
-:<Key>KP_Enter:	newline() \n\
-Ctrl<Key>backslash:	reconnect-im() \n\
-<Key>Kanji:	reconnect-im()\n\
-<Key>:		insert-char() \n\
-", *_XawDefaultTextTranslations4 = "\
-<EnterWindow>:	enter-window() \n\
-<LeaveWindow>:	leave-window() \n\
-<FocusIn>:	focus-in() \n\
-<FocusOut>:	focus-out() \n\
-<Btn1Down>:	select-start() \n\
-<Btn1Motion>:	extend-adjust() \n\
-<Btn1Up>:	extend-end(PRIMARY, CUT_BUFFER0) \n\
-<Btn2Down>:	insert-selection(PRIMARY, CUT_BUFFER0) \n\
-<Btn3Down>:	extend-start() \n\
-<Btn3Motion>:	extend-adjust() \n\
-<Btn3Up>:	extend-end(PRIMARY, CUT_BUFFER0) \
-";
+char _XawDefaultTextTranslations[] =
+"c<Key>A:"		"beginning-of-line()\n"
+"c<Key>B:"		"backward-character()\n"
+"c<Key>C:"		"insert-selection(CUT_BUFFER0)\n"
+"c<Key>D:"		"delete-next-character()\n"
+"c<Key>E:"		"end-of-line()\n"
+"c<Key>F:"		"forward-character()\n"
+#ifndef OLDXAW
+"c<Key>G:"		"keyboard-reset()\n"
+#else
+"c<Key>G:"		"multiply(Reset)\n"
+#endif
+"c<Key>H:"		"delete-previous-character()\n"
+"c<Key>J:"		"newline-and-indent()\n"
+"c<Key>K:"		"kill-to-end-of-line()\n"
+"c<Key>L:"		"redraw-display()\n"
+"c<Key>M:"		"newline()\n"
+"c<Key>N:"		"next-line()\n"
+"c<Key>O:"		"newline-and-backup()\n"
+"c<Key>P:"		"previous-line()\n"
+"c<Key>R:"		"search(backward)\n"
+"c<Key>S:"		"search(forward)\n"
+"c<Key>T:"		"transpose-characters()\n"
+#ifndef OLDXAW
+"c<Key>U:"		"multiply(Start)\n"
+#else
+"c<Key>U:"		"multiply(4)\n"
+#endif
+"c<Key>V:"		"next-page()\n"
+"c<Key>W:"		"kill-selection()\n"
+"c<Key>Y:"		"insert-selection(SECONDARY)\n"
+"c<Key>Z:"		"scroll-one-line-up()\n"
+"m<Key>B:"		"backward-word()\n"
+"m<Key>C:"		"capitalize-word()\n"
+"m<Key>F:"		"forward-word()\n"
+"m<Key>I:"		"insert-file()\n"
+"m<Key>K:"		"kill-to-end-of-paragraph()\n"
+"m<Key>L:"		"downcase-word()\n"
+"m<Key>Q:"		"form-paragraph()\n"
+"m<Key>U:"		"upcase-word()\n"
+"m<Key>V:"		"previous-page()\n"
+#ifndef OLDXAW
+"m<Key>Y:"		"kill-ring-yank()\n"
+#endif
+"m<Key>Z:"		"scroll-one-line-down()\n"
+"~s m<Key>d:"		"kill-word(alnum)\n"
+"s m<Key>d:"		"delete-next-word(alnum)\n"
+"~s m<Key>h:"		"backward-kill-word(alnum)\n"
+"s m<Key>h:"		"delete-previous-word(alnum)\n"
+":m<Key>\\<:"		"beginning-of-file()\n"
+":m<Key>\\>:"		"end-of-file()\n"
+":m<Key>]:"		"forward-paragraph()\n"
+":m<Key>[:"		"backward-paragraph()\n"
+"~s m<Key>Delete:"	"backward-kill-word(alnum)\n"
+"s m<Key>Delete:"	"delete-previous-word(alnum)\n"
+"~s m<Key>BackSpace:"	"backward-kill-word(alnum)\n"
+"s m<Key>BackSpace:"	"delete-previous-word(alnum)\n"
+"c<Key>Left:"		"backward-word(alnum)\n"
+"c<Key>Right:"		"forward-word(alnum)\n"
+"c<Key>Up:"		"backward-paragraph()\n"
+"c<Key>Down:"		"forward-paragraph()\n"
+"<Key>Home:"		"beginning-of-file()\n"
+":<Key>KP_Home:"	"beginning-of-file()\n"
+"<Key>End:"		"end-of-file()\n"
+":<Key>KP_End:"		"end-of-file()\n"
+"<Key>Next:"		"next-page()\n"
+":<Key>KP_Next:"	"next-page()\n"
+"<Key>Prior:"		"previous-page()\n"
+":<Key>KP_Prior:"	"previous-page()\n"
+"<Key>Right:"		"forward-character()\n"
+":<Key>KP_Right:"	"forward-character()\n"
+"<Key>Left:"		"backward-character()\n"
+":<Key>KP_Left:"	"backward-character()\n"
+"<Key>Down:"		"next-line()\n"
+":<Key>KP_Down:"	"next-line()\n"
+"<Key>Up:"		"previous-line()\n"
+":<Key>KP_Up:"		"previous-line()\n"
+"<Key>Delete:"		"delete()\n"
+":<Key>KP_Delete:"	"delete()\n"
+"<Key>BackSpace:"	"delete-previous-character()\n"
+"<Key>Linefeed:"	"newline-and-indent()\n"
+"<Key>Return:"		"newline()\n"
+":<Key>KP_Enter:"	"newline()\n"
+"c<Key>backslash:"	"reconnect-im()\n"
+"<Key>Kanji:"		"reconnect-im()\n"
+#ifndef OLDXAW
+":<Key>0:"		"numeric(0)\n"
+":<Key>1:"		"numeric(1)\n"
+":<Key>2:"		"numeric(2)\n"
+":<Key>3:"		"numeric(3)\n"
+":<Key>4:"		"numeric(4)\n"
+":<Key>5:"		"numeric(5)\n"
+":<Key>6:"		"numeric(6)\n"
+":<Key>7:"		"numeric(7)\n"
+":<Key>8:"		"numeric(8)\n"
+":<Key>9:"		"numeric(9)\n"
+":<Key>-:"		"numeric(-)\n"
+":c<Key>_:"		"undo()\n"
+#endif
+"s <Key>Insert:"	"insert-selection(PRIMARY, CUT_BUFFER0)\n"
+"<Ctrl>Q,<Key>:"	"insert-char()\n"
+"<Key>:"		"insert-char()\n"
+"<Enter>:"		"enter-window()\n"
+"<Leave>:"		"leave-window()\n"
+"<FocusIn>:"		"focus-in()\n"
+"<FocusOut>:"		"focus-out()\n"
+"<Btn1Down>:"		"select-start()\n"
+"<Btn1Motion>:"		"extend-adjust()\n"
+"<Btn1Up>:"		"extend-end(PRIMARY, CUT_BUFFER0)\n"
+"<Btn2Down>:"		"insert-selection(PRIMARY, CUT_BUFFER0)\n"
+"<Btn3Down>:"		"extend-start()\n"
+"<Btn3Motion>:"		"extend-adjust()\n"
+"<Btn3Up>:"		"extend-end(PRIMARY, CUT_BUFFER0)\n"
+;

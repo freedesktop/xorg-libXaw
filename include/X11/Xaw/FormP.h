@@ -46,34 +46,37 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
+/* $XFree86: xc/lib/Xaw/FormP.h,v 1.14 2001/12/19 21:37:30 dawes Exp $ */
 
 /* Form widget private definitions */
 
 #ifndef _XawFormP_h
 #define _XawFormP_h
 
+#include <X11/Xfuncproto.h>
+
 #include <X11/Xaw/Form.h>
+#include <X11/Xaw/XawInit.h>
+
+_XFUNCPROTOBEGIN
 
 #define XtREdgeType "EdgeType"
 
-typedef enum {LayoutPending, LayoutInProgress, LayoutDone} LayoutState;
-#define XtInheritLayout ((Boolean (*)())_XtInherit)
+typedef enum {
+    LayoutPending,
+    LayoutInProgress,
+    LayoutDone
+} LayoutState;
+
+#define XtInheritLayout							\
+((Boolean (*)(FormWidget, unsigned int, unsigned int, Bool))_XtInherit)
 
 typedef struct {
-    Boolean	(*layout)(/* FormWidget, Dimension, Dimension */);
+    Boolean(*layout)(FormWidget, unsigned int, unsigned int, Bool);
+#ifndef OLDXAW
+    XtPointer extension;
+#endif
 } FormClassPart;
-
-/*
- * Layout(
- *	FormWidget w	- the widget whose children are to be configured
- *	Dimension w, h	- bounding box of layout to be calculated
- *
- *  Stores preferred geometry in w->form.preferred_{width,height}.
- *  If w->form.resize_in_layout is True, then a geometry request
- *  may be made for the preferred bounding box if necessary.
- *
- *  Returns True if a geometry request was granted, False otherwise.
- */
 
 typedef struct _FormClassRec {
     CoreClassPart	core_class;
@@ -87,13 +90,18 @@ extern FormClassRec formClassRec;
 typedef struct _FormPart {
     /* resources */
     int		default_spacing;    /* default distance between children */
-    /* private state */
-    Dimension	old_width, old_height; /* last known dimensions		 */
+
+    /* private */
+    Dimension	old_width, old_height; /* reference value for *_virtual  */
     int		no_refigure;	    /* no re-layout while > 0		 */
     Boolean	needs_relayout;	    /* next time no_refigure == 0	 */
     Boolean	resize_in_layout;   /* should layout() do geom request?  */
     Dimension	preferred_width, preferred_height; /* cached from layout */
-    Boolean     resize_is_no_op;    /* Causes resize to take not action. */
+    Boolean	resize_is_no_op;    /* Causes resize to take not action  */
+#ifndef OLDXAW
+    XawDisplayList *display_list;
+    XtPointer pad[4];	/* for future use and keep binary compatability */
+#endif
 } FormPart;
 
 typedef struct _FormRec {
@@ -104,39 +112,31 @@ typedef struct _FormRec {
 } FormRec;
 
 typedef struct _FormConstraintsPart {
-/*
- * Constraint Resources.
- */
-    XtEdgeType	top, bottom,	/* where to drag edge on resize		*/
-		left, right;
+    /* resources */
+    XtEdgeType top, bottom, left, right;/* where to drag edge on resize */
     int		dx;		/* desired horiz offset			*/
     int		dy;		/* desired vertical offset		*/
     Widget	horiz_base;	/* measure dx from here if non-null	*/
     Widget	vert_base;	/* measure dy from here if non-null	*/
-    Boolean	allow_resize;	/* TRUE if child may request resize	*/
+    Boolean	allow_resize;	/* True if child may request resize	*/
 
-/*
- * Private contstraint resources.
- */
-
-/*
- * What the size of this child would be if we did not impose the 
- * constraint the width and height must be greater than zero (0).
- */
+    /* private */
     short	virtual_width, virtual_height;
-
-/*
- * Temporary Storage for children's new possible possition.
- */
-
-    Position new_x, new_y;
-
+    Position	new_x, new_y;
     LayoutState	layout_state;	/* temporary layout state		*/
-    Boolean	deferred_resize; /* was resized while no_refigure is set */
+    Boolean	deferred_resize;/* was resized while no_refigure is set */
+#ifndef OLDXAW
+    short	virtual_x, virtual_y;
+    XtPointer	pad[2];		/* leave some space for further optimizations
+				 * in the form widget geometry
+				 */
+#endif
 } FormConstraintsPart;
 
 typedef struct _FormConstraintsRec {
     FormConstraintsPart	form;
 } FormConstraintsRec, *FormConstraints;
+
+_XFUNCPROTOEND
 
 #endif /* _XawFormP_h */

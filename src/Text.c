@@ -47,608 +47,980 @@ SOFTWARE.
 
 ******************************************************************/
 
+/*
+ * Copyright (c) 1998 by The XFree86 Project, Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+ * THE XFREE86 PROJECT BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF
+ * OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ * Except as contained in this notice, the name of the XFree86 Project shall
+ * not be used in advertising or otherwise to promote the sale, use or other
+ * dealings in this Software without prior written authorization from the
+ * XFree86 Project.
+ */
+
+/* $XFree86: xc/lib/Xaw/Text.c,v 3.52 2002/11/03 20:10:25 paulo Exp $ */
+
+#include <stdio.h>
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
 #include <X11/Shell.h>
 #include <X11/Xatom.h>
-#include <X11/Xutil.h>
-#include "XawI18n.h"
-#include <stdio.h>
-
-#include <X11/Xmu/Atoms.h>
-#include <X11/Xmu/CharSet.h>
-#include <X11/Xmu/Converters.h>
-#include <X11/Xmu/StdSel.h>
-#include <X11/Xmu/Misc.h>
-
-#include <X11/Xaw/XawInit.h>
-#include <X11/Xaw/Cardinals.h>
-#include <X11/Xaw/Scrollbar.h>
-#include <X11/Xaw/TextP.h>
-#include <X11/Xaw/MultiSinkP.h>
-#include <X11/Xaw/XawImP.h>
-
 #include <X11/Xfuncs.h>
-#include <ctype.h>		/* for isprint() */
+#include <X11/Xutil.h>
+#include <X11/Xmu/Misc.h>
+#include <X11/Xmu/SysUtil.h>
+#include <X11/Xmu/Xmu.h>
+#include <X11/Xaw/Cardinals.h>
+#include <X11/Xaw/MultiSinkP.h>
+#include <X11/Xaw/TextP.h>
+#include <X11/Xaw/TextSrcP.h>
+#include <X11/Xaw/TextSinkP.h>
+#include <X11/Xaw/Scrollbar.h>
+#include <X11/Xaw/XawImP.h>
+#include <X11/Xaw/XawInit.h>
+#include "Private.h"
+#include "XawI18n.h"
 
 #ifndef MAX_LEN_CT
-#define MAX_LEN_CT 6		/* for sequence: ESC $ ( A \xx \xx */
+#define MAX_LEN_CT	6	/* for sequence: ESC $ ( A \xx \xx */
 #endif
 
 unsigned long FMT8BIT = 0L;
 unsigned long XawFmt8Bit = 0L;
 unsigned long XawFmtWide = 0L;
 
-#define SinkClearToBG          XawTextSinkClearToBackground
+#define SinkClearToBG		_XawTextSinkClearToBackground
 
-#define SrcScan                XawTextSourceScan
-#define SrcRead                XawTextSourceRead
-#define SrcReplace             XawTextSourceReplace
-#define SrcSearch              XawTextSourceSearch
-#define SrcCvtSel              XawTextSourceConvertSelection
-#define SrcSetSelection        XawTextSourceSetSelection
+#define SrcScan			XawTextSourceScan
+#define SrcRead			XawTextSourceRead
+#define SrcReplace		XawTextSourceReplace
+#define SrcSearch		XawTextSourceSearch
+#define SrcCvtSel		XawTextSourceConvertSelection
+#define SrcSetSelection		XawTextSourceSetSelection
 
-#define BIGNUM ((Dimension)32023)
-#define MULTI_CLICK_TIME 500L
+#define MULTI_CLICK_TIME	500L
+
+#define SRC_CHANGE_NONE		0
+#define SRC_CHANGE_AFTER	1
+#define SRC_CHANGE_BEFORE	2
+#define SRC_CHANGE_OVERLAP	3
+
+#define Superclass (&simpleClassRec)
 
 /*
  * Compute a the maximum length of a cut buffer that we can pass at any
  * time.  The 64 allows for the overhead of the Change Property request.
  */
-
 #define MAX_CUT_LEN(dpy)  (XMaxRequestSize(dpy) - 64)
 
-#define IsValidLine(ctx, num) ( ((num) == 0) || \
-			        ((ctx)->text.lt.info[(num)].position != 0) )
+#define	ClearWindow(ctx)						     \
+     _XawTextNeedsUpdating((ctx),					     \
+			   (ctx)->text.lt.top,				     \
+			   (ctx)->text.lt.info[ctx->text.lt.lines].position)
 
 /*
- * Defined in Text.c
+ * Class Methods
  */
-static void UnrealizeScrollbars();
-static void VScroll(), VJump(), HScroll(), HJump(), ClearWindow(); 
-static void DisplayTextWindow(), ModifySelection(), PushCopyQueue();
-static void UpdateTextInLine(), UpdateTextInRectangle(), PopCopyQueue();
-static void FlushUpdate();
-static Boolean LineAndXYForPosition(), TranslateExposeRegion();
-static XawTextPosition FindGoodPosition(), _BuildLineTable();
+static void XawTextClassInitialize(void);
+static void XawTextInitialize(Widget, Widget, ArgList, Cardinal*);
+static void XawTextRealize(Widget, XtValueMask*, XSetWindowAttributes*);
+static void XawTextDestroy(Widget);
+static void XawTextResize(Widget);
+static void XawTextExpose(Widget, XEvent*, Region);
+static Boolean XawTextSetValues(Widget, Widget, Widget, ArgList, Cardinal*);
+static void XawTextGetValuesHook(Widget, ArgList, Cardinal*);
+static Bool XawTextChangeSensitive(Widget);
 
-void _XawTextAlterSelection(), _XawTextExecuteUpdate();
-void _XawTextSetScrollBars(), _XawTextPrepareToUpdate();
+/*
+ * Prototypes
+ */
+static XawTextPosition _BuildLineTable(TextWidget, XawTextPosition, int);
+static void _CreateCutBuffers(Display*);
+static Boolean TextConvertSelection(Widget, Atom*, Atom*, Atom*, XtPointer*,
+				unsigned long*, int*);
+static int CountLines(TextWidget, XawTextPosition, XawTextPosition);
+static void CreateHScrollBar(TextWidget);
+static void CreateVScrollBar(TextWidget);
+static void CvtStringToScrollMode(XrmValuePtr, Cardinal*,
+				  XrmValuePtr, XrmValuePtr);
+static Boolean CvtScrollModeToString(Display*, XrmValue*, Cardinal*,
+				     XrmValue*, XrmValue*, XtPointer*);
+static void CvtStringToWrapMode(XrmValuePtr, Cardinal*,
+				XrmValuePtr, XrmValuePtr);
+static Boolean CvtWrapModeToString(Display*, XrmValue*, Cardinal*,
+				   XrmValue*, XrmValue*, XtPointer*);
+static Boolean CvtStringToJustifyMode(Display*, XrmValue*, Cardinal*,
+				      XrmValue*, XrmValue*, XtPointer*);
+static Boolean CvtJustifyModeToString(Display*, XrmValue*, Cardinal*,
+				      XrmValue*, XrmValue*, XtPointer*);
+static void DestroyHScrollBar(TextWidget);
+static void DestroyVScrollBar(TextWidget);
+static void DisplayText(Widget, XawTextPosition, XawTextPosition);
+static void OldDisplayText(Widget, XawTextPosition, XawTextPosition);
+static void DisplayTextWindow(Widget);
+static void DoCopyArea(TextWidget, int, int, unsigned int, unsigned int,
+		       int, int);
+static void DoSelection(TextWidget, XawTextPosition, Time, Bool);
+static void ExtendSelection(TextWidget, XawTextPosition, Bool);
+static XawTextPosition FindGoodPosition(TextWidget, XawTextPosition);
+static void FlushUpdate(TextWidget);
+static int GetCutBufferNumber(Atom);
+static int GetMaxTextWidth(TextWidget);
+static unsigned int GetWidestLine(TextWidget);
+static void HScroll(Widget, XtPointer, XtPointer);
+static void HJump(Widget, XtPointer, XtPointer);
+static void InsertCursor(Widget, XawTextInsertState);
+static Bool LineAndXYForPosition(TextWidget, XawTextPosition, int*,
+				 int*, int*);
+static int LineForPosition(TextWidget, XawTextPosition);
+static void TextLoseSelection(Widget, Atom*);
+static Bool MatchSelection(Atom, XawTextSelection*);
+static void ModifySelection(TextWidget, XawTextPosition, XawTextPosition);
+static XawTextPosition PositionForXY(TextWidget, int, int);
+static void PositionHScrollBar(TextWidget);
+static void PositionVScrollBar(TextWidget);
+#ifndef OLDXAW
+static int ResolveColumnNumber(TextWidget);
+static int ResolveLineNumber(TextWidget);
+#endif
+static void _SetSelection(TextWidget, XawTextPosition, XawTextPosition,
+			  Atom*, Cardinal);
+static void TextSinkResize(Widget);
+static void UpdateTextInRectangle(TextWidget, XRectangle*);
+static void UpdateTextInLine(TextWidget, int, int, int);
+static void VScroll(Widget, XtPointer, XtPointer);
+static void VJump(Widget, XtPointer, XtPointer);
+
+/*
+ * External
+ */
+void _XawTextAlterSelection(TextWidget,
+			    XawTextSelectionMode, XawTextSelectionAction,
+			    String*, Cardinal*);
+void _XawTextCheckResize(TextWidget);
+void _XawTextClearAndCenterDisplay(TextWidget);
+void _XawTextExecuteUpdate(TextWidget);
+char *_XawTextGetText(TextWidget, XawTextPosition, XawTextPosition);
+void _XawTextPrepareToUpdate(TextWidget);
+int _XawTextReplace(TextWidget, XawTextPosition, XawTextPosition,
+		    XawTextBlock*);
+Atom *_XawTextSelectionList(TextWidget, String*, Cardinal);
+void _XawTextSetScrollBars(TextWidget);
+void _XawTextSetSelection(TextWidget, XawTextPosition, XawTextPosition,
+			  String*, Cardinal);
+void _XawTextVScroll(TextWidget, int);
+void XawTextScroll(TextWidget, int, int);
+void _XawTextSetSource(Widget, Widget, XawTextPosition, XawTextPosition);
+#ifndef OLDXAW
+void _XawTextSetLineAndColumnNumber(TextWidget, Bool);
+#endif
+void _XawTextSourceChanged(Widget, XawTextPosition, XawTextPosition,
+			   XawTextBlock*, int);
+
+/* Not used by other modules, but were extern on previous versions
+ * of the library
+ */
+void _XawTextShowPosition(TextWidget);
+
+/*
+ * From TextAction.c
+ */
+extern void _XawTextZapSelection(TextWidget, XEvent*, Bool);
+
+/*
+ * From TextSrc.c
+ */
+void _XawSourceAddText(Widget, Widget);
+void _XawSourceRemoveText(Widget, Widget, Bool);
+Bool _XawTextSourceNewLineAtEOF(Widget);
+
+/*
+ * From TextSink.c
+ */
+void _XawTextSinkClearToBackground(Widget, int, int, unsigned, unsigned);
+void _XawTextSinkDisplayText(Widget, int, int, XawTextPosition, XawTextPosition,
+			     Bool);
 
 /****************************************************************
  *
  * Full class record constant
  *
  ****************************************************************/
+/*
+ * From TextTr.c
+ */
+extern char _XawDefaultTextTranslations[];
 
 static XawTextSelectType defaultSelectTypes[] = {
-  XawselectPosition, XawselectWord, XawselectLine, XawselectParagraph,
-  XawselectAll,      XawselectNull,
+  XawselectPosition,  XawselectAlphaNumeric, XawselectWord, XawselectLine,
+  XawselectParagraph, XawselectAll,	     XawselectNull,
 };
 
 static XPointer defaultSelectTypesPtr = (XPointer)defaultSelectTypes;
-extern char *_XawDefaultTextTranslations1, *_XawDefaultTextTranslations2,
-  *_XawDefaultTextTranslations3, *_XawDefaultTextTranslations4;
 static Dimension defWidth = 100;
 static Dimension defHeight = DEFAULT_TEXT_HEIGHT;
 
 #define offset(field) XtOffsetOf(TextRec, field)
 static XtResource resources[] = {
-  {XtNwidth, XtCWidth, XtRDimension, sizeof(Dimension),
-     offset(core.width), XtRDimension, (XtPointer)&defWidth},
-  {XtNcursor, XtCCursor, XtRCursor, sizeof(Cursor),
-     offset(simple.cursor), XtRString, "xterm"},
-  {XtNheight, XtCHeight, XtRDimension, sizeof(Dimension),
-     offset(core.height), XtRDimension, (XtPointer)&defHeight},
-  {XtNdisplayPosition, XtCTextPosition, XtRInt, sizeof(XawTextPosition), 
-     offset(text.lt.top), XtRImmediate, (XtPointer)0},
-  {XtNinsertPosition, XtCTextPosition, XtRInt, sizeof(XawTextPosition),
-     offset(text.insertPos), XtRImmediate,(XtPointer)0},
-  {XtNleftMargin, XtCMargin, XtRPosition, sizeof (Position),
-     offset(text.r_margin.left), XtRImmediate, (XtPointer)2},
-  {XtNrightMargin, XtCMargin, XtRPosition, sizeof (Position),
-     offset(text.r_margin.right), XtRImmediate, (XtPointer)4},
-  {XtNtopMargin, XtCMargin, XtRPosition, sizeof (Position),
-     offset(text.r_margin.top), XtRImmediate, (XtPointer)2},
-  {XtNbottomMargin, XtCMargin, XtRPosition, sizeof (Position),
-     offset(text.r_margin.bottom), XtRImmediate, (XtPointer)2},
-  {XtNselectTypes, XtCSelectTypes, XtRPointer,
-     sizeof(XawTextSelectType*), offset(text.sarray),
-     XtRPointer, (XtPointer)&defaultSelectTypesPtr},
-  {XtNtextSource, XtCTextSource, XtRWidget, sizeof (Widget),
-     offset(text.source), XtRImmediate, NULL},
-  {XtNtextSink, XtCTextSink, XtRWidget, sizeof (Widget),
-     offset(text.sink), XtRImmediate, NULL},
-  {XtNdisplayCaret, XtCOutput, XtRBoolean, sizeof(Boolean),
-     offset(text.display_caret), XtRImmediate, (XtPointer)True},
-  {XtNscrollVertical, XtCScroll, XtRScrollMode, sizeof(XawTextScrollMode),
-     offset(text.scroll_vert), XtRImmediate, (XtPointer) XawtextScrollNever},
-  {XtNscrollHorizontal, XtCScroll, XtRScrollMode, sizeof(XawTextScrollMode),
-     offset(text.scroll_horiz), XtRImmediate, (XtPointer) XawtextScrollNever},
-  {XtNwrap, XtCWrap, XtRWrapMode, sizeof(XawTextWrapMode),
-     offset(text.wrap), XtRImmediate, (XtPointer) XawtextWrapNever},
-  {XtNresize, XtCResize, XtRResizeMode, sizeof(XawTextResizeMode),
-     offset(text.resize), XtRImmediate, (XtPointer) XawtextResizeNever},
-  {XtNautoFill, XtCAutoFill, XtRBoolean, sizeof(Boolean),
-     offset(text.auto_fill), XtRImmediate, (XtPointer) FALSE},
-  {XtNunrealizeCallback, XtCCallback, XtRCallback, sizeof(XtPointer),
-     offset(text.unrealize_callbacks), XtRCallback, (XtPointer) NULL}
+  {
+    XtNwidth,
+    XtCWidth,
+    XtRDimension,
+    sizeof(Dimension),
+    offset(core.width),
+    XtRDimension,
+    (XtPointer)&defWidth
+  },
+  {
+    XtNcursor,
+    XtCCursor,
+    XtRCursor,
+    sizeof(Cursor),
+    offset(simple.cursor),
+    XtRString,
+    "xterm"
+  },
+  {
+    XtNheight,
+    XtCHeight,
+    XtRDimension,
+    sizeof(Dimension),
+    offset(core.height),
+    XtRDimension,
+    (XtPointer)&defHeight
+  },
+  {
+    XtNdisplayPosition,
+    XtCTextPosition,
+    XtRInt,
+    sizeof(XawTextPosition), 
+    offset(text.lt.top),
+    XtRImmediate,
+    (XtPointer)0
+  },
+  {
+    XtNinsertPosition,
+    XtCTextPosition,
+    XtRInt,
+    sizeof(XawTextPosition),
+    offset(text.insertPos),
+    XtRImmediate,
+    (XtPointer)0
+  },
+  {
+    XtNleftMargin,
+    XtCMargin,
+    XtRPosition,
+    sizeof(Position),
+    offset(text.r_margin.left),
+    XtRImmediate,
+    (XtPointer)2
+  },
+  {
+    XtNrightMargin,
+    XtCMargin,
+    XtRPosition,
+    sizeof(Position),
+    offset(text.r_margin.right),
+    XtRImmediate,
+    (XtPointer)4
+  },
+  {
+    XtNtopMargin,
+    XtCMargin,
+    XtRPosition,
+    sizeof(Position),
+    offset(text.r_margin.top),
+    XtRImmediate,
+    (XtPointer)2
+  },
+  {
+    XtNbottomMargin,
+    XtCMargin,
+    XtRPosition,
+    sizeof(Position),
+    offset(text.r_margin.bottom),
+    XtRImmediate,
+    (XtPointer)2
+  },
+  {
+    XtNselectTypes,
+    XtCSelectTypes,
+    XtRPointer,
+    sizeof(XawTextSelectType*),
+    offset(text.sarray),
+    XtRPointer,
+    (XtPointer)&defaultSelectTypesPtr
+  },
+  {
+    XtNtextSource,
+    XtCTextSource,
+    XtRWidget,
+    sizeof(Widget),
+    offset(text.source),
+    XtRImmediate,
+    NULL
+  },
+  {
+    XtNtextSink,
+    XtCTextSink,
+    XtRWidget,
+    sizeof(Widget),
+    offset(text.sink),
+    XtRImmediate,
+    NULL
+  },
+  {
+    XtNdisplayCaret,
+    XtCOutput,
+    XtRBoolean,
+    sizeof(Boolean),
+    offset(text.display_caret),
+    XtRImmediate,
+    (XtPointer)True
+  },
+  {
+    XtNscrollVertical,
+    XtCScroll,
+    XtRScrollMode,
+    sizeof(XawTextScrollMode),
+    offset(text.scroll_vert),
+    XtRImmediate,
+    (XtPointer)False
+  },
+  {
+    XtNscrollHorizontal,
+    XtCScroll,
+    XtRScrollMode,
+    sizeof(XawTextScrollMode),
+    offset(text.scroll_horiz),
+    XtRImmediate,
+    (XtPointer)False
+  },
+  {
+    XtNwrap,
+    XtCWrap,
+    XtRWrapMode,
+    sizeof(XawTextWrapMode),
+    offset(text.wrap),
+    XtRImmediate,
+    (XtPointer)XawtextWrapNever
+  },
+  {
+    XtNautoFill,
+    XtCAutoFill,
+    XtRBoolean,
+    sizeof(Boolean),
+    offset(text.auto_fill),
+    XtRImmediate,
+    (XtPointer)False
+  },
+#ifndef OLDXAW
+  {
+    XtNpositionCallback,
+    XtCCallback,
+    XtRCallback,
+    sizeof(XtPointer),
+    offset(text.position_callbacks),
+    XtRCallback,
+    NULL
+  },
+  {
+    XtNleftColumn,
+    XtCColumn,
+    XtRShort,
+    sizeof(short),
+    offset(text.left_column),
+    XtRImmediate,
+    (XtPointer)0
+  },
+  {
+    XtNrightColumn,
+    XtCColumn,
+    XtRShort,
+    sizeof(short),
+    offset(text.right_column),
+    XtRImmediate,
+    (XtPointer)0
+  },
+  {
+    XtNjustifyMode,
+    XtCJustifyMode,
+    XtRJustifyMode,
+    sizeof(XawTextJustifyMode),
+    offset(text.justify),
+    XtRImmediate,
+    (XtPointer)XawjustifyLeft
+  },
+#endif /* OLDXAW */
 };
 #undef offset
 
-/* ARGSUSED */
-static void 
-CvtStringToScrollMode(args, num_args, fromVal, toVal)
-XrmValuePtr args;		/* unused */
-Cardinal	*num_args;	/* unused */
-XrmValuePtr	fromVal;
-XrmValuePtr	toVal;
-{
-  static XawTextScrollMode scrollMode;
-  static  XrmQuark  QScrollNever, QScrollAlways, QScrollWhenNeeded;
-  XrmQuark    q;
-  char        lowerName[40];
-  static Boolean inited = FALSE;
-    
-  if ( !inited ) {
-    QScrollNever      = XrmPermStringToQuark(XtEtextScrollNever);
-    QScrollWhenNeeded = XrmPermStringToQuark(XtEtextScrollWhenNeeded);
-    QScrollAlways     = XrmPermStringToQuark(XtEtextScrollAlways);
-    inited = TRUE;
-  }
+#define done(address, type) \
+	{ toVal->size = sizeof(type); toVal->addr = (XPointer)address; }
 
-  if (strlen ((char*) fromVal->addr) < sizeof lowerName) {
-    XmuCopyISOLatin1Lowered (lowerName, (char *)fromVal->addr);
-    q = XrmStringToQuark(lowerName);
+static XrmQuark QWrapNever, QWrapLine, QWrapWord;
+#ifndef notdef
+static XrmQuark QScrollNever, QScrollWhenNeeded, QScrollAlways;
+#endif
+static XrmQuark QJustifyLeft, QJustifyRight, QJustifyCenter, QJustifyFull;
 
-    if      (q == QScrollNever)          scrollMode = XawtextScrollNever;
-    else if (q == QScrollWhenNeeded)     scrollMode = XawtextScrollWhenNeeded;
-    else if (q == QScrollAlways)         scrollMode = XawtextScrollAlways;
-    else {
-      toVal->size = 0;
-      toVal->addr = NULL;
-      return;
-    }
-    toVal->size = sizeof scrollMode;
-    toVal->addr = (XPointer) &scrollMode;
-    return;
-  }
-  toVal->size = 0;
-  toVal->addr = NULL;
-}
-
-/* ARGSUSED */
-static void 
-CvtStringToWrapMode(args, num_args, fromVal, toVal)
-XrmValuePtr args;		/* unused */
-Cardinal	*num_args;	/* unused */
-XrmValuePtr	fromVal;
-XrmValuePtr	toVal;
-{
-  static XawTextWrapMode wrapMode;
-  static  XrmQuark QWrapNever, QWrapLine, QWrapWord;
-  XrmQuark    q;
-  char        lowerName[BUFSIZ];
-  static Boolean inited = FALSE;
-    
-  if ( !inited ) {
-    QWrapNever = XrmPermStringToQuark(XtEtextWrapNever);
-    QWrapLine  = XrmPermStringToQuark(XtEtextWrapLine);
-    QWrapWord  = XrmPermStringToQuark(XtEtextWrapWord);
-    inited = TRUE;
-  }
-
-  if (strlen ((char*) fromVal->addr) < sizeof lowerName) {
-    XmuCopyISOLatin1Lowered (lowerName, (char *)fromVal->addr);
-    q = XrmStringToQuark(lowerName);
-
-    if      (q == QWrapNever)     wrapMode = XawtextWrapNever;
-    else if (q == QWrapLine)      wrapMode = XawtextWrapLine;
-    else if (q == QWrapWord)      wrapMode = XawtextWrapWord;
-    else {
-      toVal->size = 0;
-      toVal->addr = NULL;
-      return;
-    }
-    toVal->size = sizeof wrapMode;
-    toVal->addr = (XPointer) &wrapMode;
-    return;
-  }
-  toVal->size = 0;
-  toVal->addr = NULL;
-}
-
-/* ARGSUSED */
-static void 
-CvtStringToResizeMode(args, num_args, fromVal, toVal)
-XrmValuePtr args;		/* unused */
-Cardinal	*num_args;	/* unused */
-XrmValuePtr	fromVal;
-XrmValuePtr	toVal;
-{
-  static XawTextResizeMode resizeMode;
-  static  XrmQuark  QResizeNever, QResizeWidth, QResizeHeight, QResizeBoth;
-  XrmQuark    q;
-  char        lowerName[40];
-  static Boolean inited = FALSE;
-    
-  if ( !inited ) {
-    QResizeNever      = XrmPermStringToQuark(XtEtextResizeNever);
-    QResizeWidth      = XrmPermStringToQuark(XtEtextResizeWidth);
-    QResizeHeight     = XrmPermStringToQuark(XtEtextResizeHeight);
-    QResizeBoth       = XrmPermStringToQuark(XtEtextResizeBoth);
-    inited = TRUE;
-  }
-
-  if (strlen ((char*) fromVal->addr) < sizeof lowerName) {
-    XmuCopyISOLatin1Lowered (lowerName, (char *)fromVal->addr);
-    q = XrmStringToQuark(lowerName);
-
-    if      (q == QResizeNever)          resizeMode = XawtextResizeNever;
-    else if (q == QResizeWidth)          resizeMode = XawtextResizeWidth;
-    else if (q == QResizeHeight)         resizeMode = XawtextResizeHeight;
-    else if (q == QResizeBoth)           resizeMode = XawtextResizeBoth;
-    else {
-      toVal->size = 0;
-      toVal->addr = NULL;
-      return;
-    }
-    toVal->size = sizeof resizeMode;
-    toVal->addr = (XPointer) &resizeMode;
-    return;
-  }
-  toVal->size = 0;
-  toVal->addr = NULL;
-}
-
-static void 
-ClassInitialize()
-{
-  int len1 = strlen (_XawDefaultTextTranslations1);
-  int len2 = strlen (_XawDefaultTextTranslations2);
-  int len3 = strlen (_XawDefaultTextTranslations3);
-  int len4 = strlen (_XawDefaultTextTranslations4);
-  char *buf = XtMalloc ((unsigned)(len1 + len2 + len3 + len4 + 1));
-  char *cp = buf;
-
-  if (!XawFmt8Bit)
-    FMT8BIT = XawFmt8Bit = XrmPermStringToQuark("FMT8BIT");
-  if (!XawFmtWide)
-    XawFmtWide = XrmPermStringToQuark("FMTWIDE");
-
-  XawInitializeWidgetSet();
-
-/* 
- * Set the number of actions.
- */
-
-  textClassRec.core_class.num_actions = _XawTextActionsTableCount;
-  
-  (void) strcpy( cp, _XawDefaultTextTranslations1); cp += len1;
-  (void) strcpy( cp, _XawDefaultTextTranslations2); cp += len2;
-  (void) strcpy( cp, _XawDefaultTextTranslations3); cp += len3;
-  (void) strcpy( cp, _XawDefaultTextTranslations4);
-  textWidgetClass->core_class.tm_table = buf;
-
-  XtAddConverter(XtRString, XtRScrollMode, CvtStringToScrollMode,
-			(XtConvertArgList)NULL, (Cardinal)0 );
-  XtAddConverter(XtRString, XtRWrapMode,   CvtStringToWrapMode,
-			(XtConvertArgList)NULL, (Cardinal)0 );
-  XtAddConverter(XtRString, XtRResizeMode, CvtStringToResizeMode,
-			(XtConvertArgList)NULL, (Cardinal)0 );
-}
-
-/*	Function Name: PositionHScrollBar.
- *	Description: Positions the Horizontal scrollbar.
- *	Arguments: ctx - the text widget.
- *	Returns: none
- */
-
+/*ARGSUSED*/
 static void
-PositionHScrollBar(ctx)
-TextWidget ctx;
+CvtStringToScrollMode(XrmValuePtr args, Cardinal *num_args,
+		      XrmValuePtr fromVal, XrmValuePtr toVal)
 {
-  Widget vbar = ctx->text.vbar, hbar = ctx->text.hbar;
-  Position top, left = 0;
+    static XawTextScrollMode scrollMode = XawtextScrollNever;
+    XrmQuark q;
+    char name[32];
 
-  if (ctx->text.hbar == NULL) return;
+    XmuNCopyISOLatin1Lowered(name, (char *)fromVal->addr, sizeof(name));
+    q = XrmStringToQuark(name);
 
-  if (vbar != NULL)
-    left += (Position) (vbar->core.width + vbar->core.border_width);
+    if (q == QScrollNever || q == QScrollWhenNeeded)
+	scrollMode = XawtextScrollNever;
+    else if (q == QScrollAlways)
+	scrollMode = XawtextScrollAlways;
+    else if (strcmp(name, "true") == 0 || strcmp(name, "1") == 0)
+	scrollMode = XawtextScrollAlways;
+    else if (strcmp(name, "false") == 0 || strcmp(name, "0") == 0)
+	scrollMode = XawtextScrollNever;
+    else
+	XtStringConversionWarning((char *)fromVal->addr, XtRScrollMode);
 
-  XtResizeWidget( hbar, ctx->core.width - left, hbar->core.height,
-		 hbar->core.border_width );
-
-  left -= (Position) hbar->core.border_width;
-  
-  top = ctx->core.height - ( hbar->core.height + hbar->core.border_width);
-  XtMoveWidget( hbar, left, top); 
-}
-
-/*	Function Name: PositionVScrollBar.
- *	Description: Positions the Vertical scrollbar.
- *	Arguments: ctx - the text widget.
- *	Returns: none.
- */
-
-static void
-PositionVScrollBar(ctx)
-TextWidget ctx;
-{
-  Widget vbar = ctx->text.vbar;
-  Dimension bw;
-
-  if (vbar == NULL) return;
-  bw = vbar->core.border_width;
-
-  XtResizeWidget( vbar, vbar->core.width, ctx->core.height, bw);
-  XtMoveWidget( vbar, -(Position)bw, -(Position)bw );
-}
-
-static void 
-CreateVScrollBar(ctx)
-TextWidget ctx;
-{
-  Widget vbar;
-
-  if (ctx->text.vbar != NULL) return;
-
-  ctx->text.vbar = vbar =
-    XtCreateWidget("vScrollbar", scrollbarWidgetClass, (Widget)ctx,
-		(ArgList) NULL, ZERO);
-  XtAddCallback( vbar, XtNscrollProc, VScroll, (XtPointer)ctx );
-  XtAddCallback( vbar, XtNjumpProc, VJump, (XtPointer)ctx );
-  if (ctx->text.hbar == NULL)
-      XtAddCallback((Widget) ctx, XtNunrealizeCallback, UnrealizeScrollbars,
-		    (XtPointer) NULL);
-
-  ctx->text.r_margin.left += vbar->core.width + vbar->core.border_width;
-  ctx->text.margin.left = ctx->text.r_margin.left;
-
-  PositionVScrollBar(ctx);
-  PositionHScrollBar(ctx);	/* May modify location of Horiz. Bar. */
-
-  if (XtIsRealized((Widget)ctx)) {
-    XtRealizeWidget(vbar);
-    XtMapWidget(vbar);
-  }
-}
-
-/*	Function Name: DestroyVScrollBar
- *	Description: Removes a vertical ScrollBar.
- *	Arguments: ctx - the parent text widget.
- *	Returns: none.
- */
-
-static void
-DestroyVScrollBar(ctx)
-TextWidget ctx;
-{
-  Widget vbar = ctx->text.vbar;
-
-  if (vbar == NULL) return;
-
-  ctx->text.r_margin.left -= vbar->core.width + vbar->core.border_width;
-  ctx->text.margin.left = ctx->text.r_margin.left;
-  if (ctx->text.hbar == NULL)
-      XtRemoveCallback((Widget) ctx, XtNunrealizeCallback, UnrealizeScrollbars,
-		       (XtPointer) NULL);
-  XtDestroyWidget(vbar);
-  ctx->text.vbar = NULL;
-  PositionHScrollBar(ctx);
-}
-  
-static void 
-CreateHScrollBar(ctx)
-TextWidget ctx;
-{
-  Arg args[1];
-  Widget hbar;
-
-  if (ctx->text.hbar != NULL) return;
-
-  XtSetArg(args[0], XtNorientation, XtorientHorizontal);
-  ctx->text.hbar = hbar =
-    XtCreateWidget("hScrollbar", scrollbarWidgetClass, (Widget)ctx, args, ONE);
-  XtAddCallback( hbar, XtNscrollProc, HScroll, (XtPointer)ctx );
-  XtAddCallback( hbar, XtNjumpProc, HJump, (XtPointer)ctx );
-  if (ctx->text.vbar == NULL)
-      XtAddCallback((Widget) ctx, XtNunrealizeCallback, UnrealizeScrollbars,
-		    (XtPointer) NULL);
-
-  PositionHScrollBar(ctx);
-  if (XtIsRealized((Widget)ctx)) {
-    XtRealizeWidget(hbar);
-    XtMapWidget(hbar);
-  }
-}
-
-/*	Function Name: DestroyHScrollBar
- *	Description: Removes a horizontal ScrollBar.
- *	Arguments: ctx - the parent text widget.
- *	Returns: none.
- */
-
-static void
-DestroyHScrollBar(ctx)
-TextWidget ctx;
-{
-  Widget hbar = ctx->text.hbar;
-
-  if (hbar == NULL) return;
-
-/*
-  ctx->text.r_margin.bottom -= hbar->core.height + hbar->core.border_width;
-  ctx->text.margin.bottom = ctx->text.r_margin.bottom;
-*/
-  if (ctx->text.vbar == NULL)
-      XtRemoveCallback((Widget) ctx, XtNunrealizeCallback, UnrealizeScrollbars,
-		       (XtPointer) NULL);
-  XtDestroyWidget(hbar);
-  ctx->text.hbar = NULL;
-}
-
-static void warn_msg (w, dir, desc)
-    Widget w;
-    char* dir;
-    char* desc;
-{
-  char* fmt = "Xaw Text Widget \"%s\": %s scrolling not allowed with %s.\n%s scrolling has been DEACTIVATED.";
-  char error_buf[BUFSIZ];
-  char* errorp;
-  int len;
-
-  if ((len = strlen (fmt) + strlen (w->core.name) + 2 * strlen (dir) + strlen (desc)) < sizeof error_buf)
-    errorp = error_buf;
-  else
-    errorp = XtMalloc (len + 1);
-
-  if (errorp == NULL) {
-    errorp = error_buf;
-    strcpy (errorp, "Scrolling has been DEACTIVATED");
-  } else
-    (void) sprintf (errorp, fmt, w->core.name, dir, desc, dir);
-  XtAppWarning (XtWidgetToApplicationContext (w), errorp);
-}
-
-/* ARGSUSED */
-static void 
-Initialize(request, new, args, num_args)
-Widget request, new;
-ArgList args;			/* unused */
-Cardinal *num_args;		/* unused */
-{
-  TextWidget ctx = (TextWidget) new;
-  char* Horizontal = "Horizontal";
-
-  ctx->text.lt.lines = 0;
-  ctx->text.lt.info = NULL;
-  (void) bzero((char *) &(ctx->text.origSel), sizeof(XawTextSelection));
-  (void) bzero((char *) &(ctx->text.s), sizeof(XawTextSelection)); 
-  ctx->text.s.type = XawselectPosition;
-  ctx->text.salt = NULL;
-  ctx->text.hbar = ctx->text.vbar = (Widget) NULL;
-  ctx->text.lasttime = 0; /* ||| correct? */
-  ctx->text.time = 0; /* ||| correct? */
-  ctx->text.showposition = TRUE;
-  ctx->text.lastPos = (ctx->text.source != NULL) ? GETLASTPOS : 0;
-  ctx->text.file_insert = NULL;
-  ctx->text.search = NULL;
-  ctx->text.updateFrom = (XawTextPosition *) XtMalloc((unsigned) ONE);
-  ctx->text.updateTo = (XawTextPosition *) XtMalloc((unsigned) ONE);
-  ctx->text.numranges = ctx->text.maxranges = 0;
-  ctx->text.gc = DefaultGCOfScreen(XtScreen(ctx)); 
-  ctx->text.hasfocus = FALSE;
-  ctx->text.margin = ctx->text.r_margin; /* Strucure copy. */
-  ctx->text.update_disabled = FALSE;
-  ctx->text.old_insert = -1;
-  ctx->text.mult = 1;
-  ctx->text.single_char = FALSE;
-  ctx->text.copy_area_offsets = NULL;
-  ctx->text.salt2 = NULL;
-
-  if (ctx->core.height == DEFAULT_TEXT_HEIGHT) {
-    ctx->core.height = VMargins(ctx);
-    if (ctx->text.sink != NULL)
-      ctx->core.height += XawTextSinkMaxHeight(ctx->text.sink, 1);
-  }
-
-  if (ctx->text.scroll_vert != XawtextScrollNever) 
-    if ( (ctx->text.resize == XawtextResizeHeight) ||
-     	 (ctx->text.resize == XawtextResizeBoth) ) {
-      warn_msg (ctx, "Vertical", "height resize");
-      ctx->text.scroll_vert = XawtextScrollNever;
-    }
-    else if (ctx->text.scroll_vert == XawtextScrollAlways)
-      CreateVScrollBar(ctx);
-
-  if (ctx->text.scroll_horiz != XawtextScrollNever) 
-    if (ctx->text.wrap != XawtextWrapNever) {
-      warn_msg (ctx, Horizontal, "wrapping active");
-      ctx->text.scroll_horiz = XawtextScrollNever;
-    }
-    else if ( (ctx->text.resize == XawtextResizeWidth) ||
-	      (ctx->text.resize == XawtextResizeBoth) ) {
-      warn_msg (ctx, Horizontal, "width resize");
-      ctx->text.scroll_horiz = XawtextScrollNever;
-    }
-    else if (ctx->text.scroll_horiz == XawtextScrollAlways)
-      CreateHScrollBar(ctx);
-}
-
-static void 
-Realize( w, valueMask, attributes )
-Widget w;
-Mask *valueMask;
-XSetWindowAttributes *attributes;
-{
-  TextWidget ctx = (TextWidget)w;
-  void _XawTextCheckResize();
-
-  (*textClassRec.core_class.superclass->core_class.realize)
-    (w, valueMask, attributes);
-  
-  if (ctx->text.hbar != NULL) {	        /* Put up Hbar -- Must be first. */
-    XtRealizeWidget(ctx->text.hbar);
-    XtMapWidget(ctx->text.hbar);
-  }
-
-  if (ctx->text.vbar != NULL) {	        /* Put up Vbar. */
-    XtRealizeWidget(ctx->text.vbar);
-    XtMapWidget(ctx->text.vbar);
-  }
-
-  _XawTextBuildLineTable(ctx, ctx->text.lt.top, TRUE);
-  _XawTextSetScrollBars(ctx);
-  _XawTextCheckResize(ctx);
+    done(&scrollMode, XawTextScrollMode);
 }
 
 /*ARGSUSED*/
-static void UnrealizeScrollbars(widget, client, call)
-Widget		widget;		/* Text widget */
-XtPointer	client;		/* unused */
-XtPointer	call; 		/* unused */
+static Boolean
+CvtScrollModeToString(Display *dpy, XrmValue *args, Cardinal *num_args,
+		      XrmValue *fromVal, XrmValue *toVal, XtPointer *data)
 {
-    TextWidget ctx = (TextWidget) widget;
-    
-    if (ctx->text.hbar)
-	XtUnrealizeWidget(ctx->text.hbar);
-    if (ctx->text.vbar)
-	XtUnrealizeWidget(ctx->text.vbar);
+    static char *buffer;
+    Cardinal size;
+
+    switch (*(XawTextScrollMode *)fromVal->addr) {
+	case XawtextScrollNever:
+	case XawtextScrollWhenNeeded:
+	    buffer = XtEtextScrollNever;
+	    break;
+	case XawtextScrollAlways:
+	    buffer = XtEtextScrollAlways;
+	    break;
+	default:
+	    XawTypeToStringWarning(dpy, XtRScrollMode);
+	    toVal->addr = NULL;
+	    toVal->size = 0;
+	    return (False);
+    }
+    size = strlen(buffer) + 1;
+    if (toVal->addr != NULL) {
+	if (toVal->size < size)	{
+	    toVal->size = size;
+	    return (False);
+	}
+	strcpy((char *)toVal->addr, buffer);
+    }
+    else
+	toVal->addr = (XPointer)buffer;
+    toVal->size = sizeof(String);
+
+    return (True);
+}
+
+/*ARGSUSED*/
+static void
+CvtStringToWrapMode(XrmValuePtr args, Cardinal *num_args,
+		    XrmValuePtr fromVal, XrmValuePtr toVal)
+{
+    static XawTextWrapMode wrapMode = XawtextWrapNever;
+    XrmQuark q;
+    char lowerName[6];
+
+    XmuNCopyISOLatin1Lowered(lowerName, (char *)fromVal->addr,
+			     sizeof(lowerName));
+    q = XrmStringToQuark(lowerName);
+
+    if (q == QWrapNever)
+	wrapMode = XawtextWrapNever;
+    else if (q == QWrapLine)
+	wrapMode = XawtextWrapLine;
+    else if (q == QWrapWord)
+	wrapMode = XawtextWrapWord;
+    else
+	XtStringConversionWarning((char *)fromVal->addr, XtRWrapMode);
+
+    done(&wrapMode, XawTextWrapMode);
+}
+
+/*ARGSUSED*/
+static Boolean
+CvtWrapModeToString(Display *dpy, XrmValue *args, Cardinal *num_args,
+		    XrmValue *fromVal, XrmValue *toVal, XtPointer *data)
+{
+    static char *buffer;
+    Cardinal size;
+
+    switch (*(XawTextWrapMode *)fromVal->addr) {
+	case XawtextWrapNever:
+	    buffer = XtEtextWrapNever;
+	    break;
+	case XawtextWrapLine:
+	    buffer = XtEtextWrapLine;
+	    break;
+	case XawtextWrapWord:
+	    buffer = XtEtextWrapWord;
+	    break;
+	default:
+	    XawTypeToStringWarning(dpy, XtRWrapMode);
+	    toVal->addr = NULL;
+	    toVal->size = 0;
+	    return (False);
+    }
+    size = strlen(buffer) + 1;
+    if (toVal->addr != NULL) {
+	if (toVal->size < size)	{
+	    toVal->size = size;
+	    return (False);
+	}
+	strcpy((char *)toVal->addr, buffer);
+    }
+    else
+	toVal->addr = (XPointer)buffer;
+    toVal->size = sizeof(String);
+
+    return (True);
+}
+
+/*ARGSUSED*/
+static Boolean
+CvtStringToJustifyMode(Display *dpy, XrmValue *args, Cardinal *num_args,
+		       XrmValue *fromVal, XrmValue *toVal, XtPointer *data)
+{
+    XawTextJustifyMode justify;
+    XrmQuark q;
+    char lowerName[8];
+
+    XmuNCopyISOLatin1Lowered(lowerName, (char *)fromVal->addr,
+			   sizeof(lowerName));
+    q = XrmStringToQuark(lowerName);
+
+    if (q == QJustifyLeft)
+	justify = XawjustifyLeft;
+    else if (q == QJustifyRight)
+	justify = XawjustifyRight;
+    else if (q == QJustifyCenter)
+	justify = XawjustifyCenter;
+    else if(q ==  QJustifyFull)
+	justify = XawjustifyFull;
+    else {
+	XtStringConversionWarning((char *)fromVal->addr, XtRJustifyMode);
+	return (False);
+    }
+
+    toVal->size = sizeof(XawTextJustifyMode);
+    *(XawTextJustifyMode *)(toVal->addr) = justify;
+
+    return (True);
+}
+
+
+/*ARGSUSED*/
+static Boolean
+CvtJustifyModeToString(Display *dpy, XrmValue *args, Cardinal *num_args,
+		       XrmValue *fromVal, XrmValue *toVal, XtPointer *data)
+{
+    static char *buffer;
+    Cardinal size;
+
+    switch (*(XawTextJustifyMode *)fromVal->addr) {
+	case XawjustifyLeft:
+	    buffer = XtEtextJustifyLeft;
+	    break;
+	case XawjustifyRight:
+	    buffer = XtEtextJustifyRight;
+	    break;
+	case XawjustifyCenter:
+	    buffer = XtEtextJustifyCenter;
+	    break;
+	case XawjustifyFull:
+	    buffer = XtEtextJustifyFull;
+	    break;
+	default:
+	    XawTypeToStringWarning(dpy, XtRJustifyMode);
+	    toVal->addr = NULL;
+	    toVal->size = 0;
+	    return (False);
+    }
+    size = strlen(buffer) + 1;
+    if (toVal->addr != NULL) {
+	if (toVal->size < size)	{
+	    toVal->size = size;
+	    return (False);
+	}
+	strcpy((char *)toVal->addr, buffer);
+    }
+    else
+	toVal->addr = (XPointer)buffer;
+    toVal->size = sizeof(String);
+
+    return (True);
+}
+
+#undef done
+
+static void
+XawTextClassInitialize(void)
+{
+    if (!XawFmt8Bit)
+	FMT8BIT = XawFmt8Bit = XrmPermStringToQuark("FMT8BIT");
+    if (!XawFmtWide)
+	XawFmtWide = XrmPermStringToQuark("FMTWIDE");
+
+    XawInitializeWidgetSet();
+
+    textClassRec.core_class.num_actions = _XawTextActionsTableCount;
+  
+    QWrapNever	= XrmPermStringToQuark(XtEtextWrapNever);
+    QWrapLine	= XrmPermStringToQuark(XtEtextWrapLine);
+    QWrapWord	= XrmPermStringToQuark(XtEtextWrapWord);
+    XtAddConverter(XtRString, XtRWrapMode, CvtStringToWrapMode, NULL, 0);
+    XtSetTypeConverter(XtRWrapMode, XtRString, CvtWrapModeToString,
+		       NULL, 0, XtCacheNone, NULL);
+    QScrollNever = XrmPermStringToQuark(XtEtextScrollNever);
+    QScrollWhenNeeded = XrmPermStringToQuark(XtEtextScrollWhenNeeded);
+    QScrollAlways = XrmPermStringToQuark(XtEtextScrollAlways);
+    XtAddConverter(XtRString, XtRScrollMode, CvtStringToScrollMode,
+		   NULL, 0);
+    XtSetTypeConverter(XtRScrollMode, XtRString, CvtScrollModeToString,
+		       NULL, 0, XtCacheNone, NULL);
+    QJustifyLeft   = XrmPermStringToQuark(XtEtextJustifyLeft);
+    QJustifyRight  = XrmPermStringToQuark(XtEtextJustifyRight);
+    QJustifyCenter = XrmPermStringToQuark(XtEtextJustifyCenter);
+    QJustifyFull   = XrmPermStringToQuark(XtEtextJustifyFull);
+    XtSetTypeConverter(XtRString, XtRJustifyMode, CvtStringToJustifyMode,
+		       NULL, 0, XtCacheNone, NULL);
+    XtSetTypeConverter(XtRJustifyMode, XtRString, CvtJustifyModeToString,
+		       NULL, 0, XtCacheNone, NULL);
+}
+
+/*
+ * Function:
+ *	PositionHScrollBar
+ *
+ * Parameters:
+ *	ctx - text widget
+ *
+ * Description:
+ *	Positions the Horizontal scrollbar.
+ */
+static void
+PositionHScrollBar(TextWidget ctx)
+{
+    Widget hbar = ctx->text.hbar, vbar = ctx->text.vbar;
+    Position x, y;
+    Dimension width, height;
+
+    if (ctx->text.hbar == NULL)
+	return;
+
+    if (vbar != NULL)
+	x = XtWidth(vbar);
+    else
+	x = -XtBorderWidth(hbar);
+    y = XtHeight(ctx) - XtHeight(hbar) - XtBorderWidth(hbar);
+    if (vbar != NULL) {
+	width = XtWidth(ctx) - XtWidth(vbar) - XtBorderWidth(vbar);
+	if (width > XtWidth(ctx))
+	    width = XtWidth(ctx);
+    }
+    else
+	width = XtWidth(ctx);
+    height = XtHeight(hbar);
+
+    XtConfigureWidget(hbar, x, y, width, height, XtBorderWidth(hbar));
+}
+
+/*
+ * Function:
+ *	PositionVScrollBar
+ *
+ * Parameters:
+ *	ctx - text widget
+ *
+ * Description:
+ *	Positions the Vertical scrollbar.
+ */
+static void
+PositionVScrollBar(TextWidget ctx)
+{
+    Widget vbar = ctx->text.vbar;
+    Position x, y;
+    Dimension width, height;
+
+    if (vbar == NULL)
+	return;
+
+    x = y = -XtBorderWidth(vbar);
+    height = XtHeight(ctx);
+    width = XtWidth(vbar);
+
+    XtConfigureWidget(vbar, x, y, width, height, XtBorderWidth(vbar));
+}
+
+static void
+CreateVScrollBar(TextWidget ctx)
+{
+    Widget vbar;
+
+    if (ctx->text.vbar != NULL)
+	return;
+
+    ctx->text.vbar = vbar =
+	XtCreateWidget("vScrollbar", scrollbarWidgetClass, (Widget)ctx, NULL, 0);
+    XtAddCallback(vbar, XtNscrollProc, VScroll, (XtPointer)ctx);
+    XtAddCallback(vbar, XtNjumpProc, VJump, (XtPointer)ctx);
+
+    ctx->text.r_margin.left += XtWidth(vbar) + XtBorderWidth(vbar);
+    ctx->text.left_margin = ctx->text.margin.left = ctx->text.r_margin.left;
+
+    PositionVScrollBar(ctx);
+    PositionHScrollBar(ctx);
+    TextSinkResize(ctx->text.sink);
+
+    if (XtIsRealized((Widget)ctx)) {
+	XtRealizeWidget(vbar);
+	XtMapWidget(vbar);
+    }
+    XtSetKeyboardFocus(vbar, (Widget)ctx);
+}
+
+/*
+ * Function:
+ *	DestroyVScrollBar
+ *
+ * Parameters:
+ *	ctx - parent text widget
+ *
+ * Description:
+ *	Removes vertical ScrollBar.
+ */
+static void
+DestroyVScrollBar(TextWidget ctx)
+{
+    Widget vbar = ctx->text.vbar;
+
+    if (vbar == NULL)
+	return;
+
+    ctx->text.r_margin.left -= XtWidth(vbar) + XtBorderWidth(vbar);
+    ctx->text.left_margin = ctx->text.margin.left = ctx->text.r_margin.left;
+
+    XtDestroyWidget(vbar);
+    ctx->text.vbar = NULL;
+    if (!ctx->core.being_destroyed) {
+	PositionHScrollBar(ctx);
+	TextSinkResize(ctx->text.sink);
+    }
+}
+
+static void
+CreateHScrollBar(TextWidget ctx)
+{
+    Arg args[1];
+    Widget hbar;
+    int bottom;
+
+    if (ctx->text.hbar != NULL)
+	return;
+
+    XtSetArg(args[0], XtNorientation, XtorientHorizontal);
+    ctx->text.hbar = hbar =
+	XtCreateWidget("hScrollbar", scrollbarWidgetClass, (Widget)ctx, args, 1);
+    XtAddCallback(hbar, XtNscrollProc, HScroll, (XtPointer)ctx);
+    XtAddCallback(hbar, XtNjumpProc, HJump, (XtPointer)ctx);
+
+    bottom = ctx->text.r_margin.bottom + XtHeight(hbar) + XtBorderWidth(hbar);
+
+    ctx->text.margin.bottom = ctx->text.r_margin.bottom = bottom;
+
+    PositionHScrollBar(ctx);
+    TextSinkResize(ctx->text.sink);
+
+    if (XtIsRealized((Widget)ctx)) {
+	XtRealizeWidget(hbar);
+	XtMapWidget(hbar);
+    }
+    XtSetKeyboardFocus(hbar, (Widget)ctx);
+}
+
+/*
+ * Function:
+ *	DestroyHScrollBar
+ *
+ * Parameters:
+ *	ctx - parent text widget
+ *
+ * Description:
+ *	Removes horizontal ScrollBar.
+ */
+static void
+DestroyHScrollBar(TextWidget ctx)
+{
+    Widget hbar = ctx->text.hbar;
+
+    if (hbar == NULL)
+	return;
+
+    ctx->text.r_margin.bottom -= XtHeight(hbar) + XtBorderWidth(hbar);
+    ctx->text.margin.bottom = ctx->text.r_margin.bottom;
+
+    XtDestroyWidget(hbar);
+    ctx->text.hbar = NULL;
+    if (!ctx->core.being_destroyed)
+	TextSinkResize(ctx->text.sink);
+}
+
+/*ARGSUSED*/
+static void
+XawTextInitialize(Widget request, Widget cnew,
+		  ArgList args, Cardinal *num_args)
+{
+    TextWidget ctx = (TextWidget)cnew;
+
+    ctx->text.lt.lines = 0;
+    ctx->text.lt.info = (XawTextLineTableEntry *)
+	XtCalloc(1, sizeof(XawTextLineTableEntry));
+#ifndef OLDXAW
+    ctx->text.lt.base_line = 1;
+#endif
+    (void)bzero(&ctx->text.origSel, sizeof(XawTextSelection));
+    (void)bzero(&ctx->text.s, sizeof(XawTextSelection));
+    ctx->text.s.type = XawselectPosition;
+    ctx->text.salt = NULL;
+    ctx->text.hbar = ctx->text.vbar = NULL;
+    ctx->text.lasttime = 0;
+    ctx->text.time = 0;
+    ctx->text.showposition = True;
+    ctx->text.lastPos = ctx->text.source != NULL ?
+			XawTextGetLastPosition(ctx) : 0;
+    ctx->text.file_insert = NULL;
+    ctx->text.search = NULL;
+    ctx->text.update = XmuNewScanline(0, 0, 0);
+    ctx->text.gc = DefaultGCOfScreen(XtScreen(ctx));
+    ctx->text.hasfocus = False;
+    ctx->text.margin = ctx->text.r_margin; /* Strucure copy */
+    ctx->text.left_margin = ctx->text.r_margin.left;
+    ctx->text.update_disabled = False;
+    ctx->text.clear_to_eol = True;
+    ctx->text.old_insert = -1;
+    ctx->text.mult = 1;
+    ctx->text.salt2 = NULL;
+    ctx->text.from_left = -1;
+
+#ifndef OLDXAW
+    ctx->text.numeric = False;
+    ctx->text.selection_state = False;
+    ctx->text.kill_ring = 0;
+
+    ctx->text.line_number = -1;
+    ctx->text.column_number = -1;
+    ctx->text.source_changed = SRC_CHANGE_NONE;
+
+    ctx->text.kill_ring_ptr = NULL;
+    ctx->text.overwrite = False;
+#endif
+
+    if (XtHeight(ctx) == DEFAULT_TEXT_HEIGHT) {
+	XtHeight(ctx) = VMargins(ctx);
+	if (ctx->text.sink != NULL)
+	    XtHeight(ctx) += XawTextSinkMaxHeight(ctx->text.sink, 1);
+    }
+
+    if (ctx->text.scroll_vert == XawtextScrollAlways)
+	CreateVScrollBar(ctx);
+    if (ctx->text.scroll_horiz == XawtextScrollAlways)
+	CreateHScrollBar(ctx);
+
+#ifndef OLDXAW
+    if (ctx->text.left_column < 0)
+	ctx->text.left_column = 0;
+    if (ctx->text.right_column < 0)
+	ctx->text.right_column = 0;
+#endif
+}
+
+static void
+XawTextRealize(Widget w, XtValueMask *mask, XSetWindowAttributes *attr)
+{
+    TextWidget ctx = (TextWidget)w;
+
+    (*textClassRec.core_class.superclass->core_class.realize)(w, mask, attr);
+  
+    if (ctx->text.hbar != NULL) {
+	XtRealizeWidget(ctx->text.hbar);
+	XtMapWidget(ctx->text.hbar);
+    }
+
+    if (ctx->text.vbar != NULL) {
+	XtRealizeWidget(ctx->text.vbar);
+	XtMapWidget(ctx->text.vbar);
+    }
+
+    _XawTextBuildLineTable(ctx, ctx->text.lt.top, True);
+
+#ifndef OLDXAW
+    _XawTextSetLineAndColumnNumber(ctx, True);
+#endif
 }
 
 /* Utility routines for support of Text */
-
 static void
-_CreateCutBuffers(d)
-Display *d;
+_CreateCutBuffers(Display *d)
 {
-  static struct _DisplayRec {
-    struct _DisplayRec *next;
-    Display *dpy;
-  } *dpy_list = NULL;
-  struct _DisplayRec *dpy_ptr;
+    static struct _DisplayRec {
+	struct _DisplayRec *next;
+	Display *dpy;
+    } *dpy_list = NULL;
+    struct _DisplayRec *dpy_ptr;
 
-  for (dpy_ptr = dpy_list; dpy_ptr != NULL; dpy_ptr = dpy_ptr->next)
-    if (dpy_ptr->dpy == d) return;
+    for (dpy_ptr = dpy_list; dpy_ptr != NULL; dpy_ptr = dpy_ptr->next)
+	if (dpy_ptr->dpy == d)
+	    return;
 
-  dpy_ptr = XtNew(struct _DisplayRec);
-  dpy_ptr->next = dpy_list;
-  dpy_ptr->dpy = d;
-  dpy_list = dpy_ptr;
+    dpy_ptr = XtNew(struct _DisplayRec);
+    dpy_ptr->next = dpy_list;
+    dpy_ptr->dpy = d;
+    dpy_list = dpy_ptr;
 
 #define Create(buffer) \
-    XChangeProperty(d, RootWindow(d, 0), buffer, XA_STRING, 8, \
-		    PropModeAppend, NULL, 0 );
+  XChangeProperty(d, RootWindow(d, 0), buffer, XA_STRING, 8, \
+		  PropModeAppend, NULL, 0);
 
-    Create( XA_CUT_BUFFER0 );
-    Create( XA_CUT_BUFFER1 );
-    Create( XA_CUT_BUFFER2 );
-    Create( XA_CUT_BUFFER3 );
-    Create( XA_CUT_BUFFER4 );
-    Create( XA_CUT_BUFFER5 );
-    Create( XA_CUT_BUFFER6 );
-    Create( XA_CUT_BUFFER7 );
+    Create(XA_CUT_BUFFER0);
+    Create(XA_CUT_BUFFER1);
+    Create(XA_CUT_BUFFER2);
+    Create(XA_CUT_BUFFER3);
+    Create(XA_CUT_BUFFER4);
+    Create(XA_CUT_BUFFER5);
+    Create(XA_CUT_BUFFER6);
+    Create(XA_CUT_BUFFER7);
 
 #undef Create
 }
@@ -658,72 +1030,53 @@ Display *d;
  * the value of ctx->insertPos and an implicit argument. In the event that
  * position is immediately preceded by an eol graphic, then the insert cursor
  * is displayed at the beginning of the next line.
-*/
-static void 
-InsertCursor (w, state)
-Widget w;
-XawTextInsertState state;
+ */
+static void
+InsertCursor(Widget w, XawTextInsertState state)
 {
-  TextWidget ctx = (TextWidget)w;
-  Position x, y;
-  int line;
-  
-  if (ctx->text.lt.lines < 1) return;
+    TextWidget ctx = (TextWidget)w;
+    int x, y;
+    int line;
 
-  if ( LineAndXYForPosition(ctx, ctx->text.insertPos, &line, &x, &y) ) {
-    if (line < ctx->text.lt.lines)
-      y += (ctx->text.lt.info[line + 1].y - ctx->text.lt.info[line].y) + 1;
-    else
-      y += (ctx->text.lt.info[line].y - ctx->text.lt.info[line - 1].y) + 1;
+    if (ctx->text.lt.lines < 1)
+	return;
 
-    if (ctx->text.display_caret)
-      XawTextSinkInsertCursor(ctx->text.sink, x, y, state);
-  }
-  ctx->text.ev_x = x;
-  ctx->text.ev_y = y;
+    if (ctx->text.display_caret &&
+	LineAndXYForPosition(ctx, ctx->text.insertPos, &line, &x, &y)) {
+	if (line < ctx->text.lt.lines)
+	    y += (ctx->text.lt.info[line + 1].y - ctx->text.lt.info[line].y) + 1;
+	else
+	    y += (ctx->text.lt.info[line].y - ctx->text.lt.info[line - 1].y) + 1;
 
-  /* Keep Input Method up to speed  */
+	XawTextSinkInsertCursor(ctx->text.sink, x, y, state);
+    }
 
-  if ( ctx->simple.international ) {
-    Arg list[1];
+    /* Keep Input Method up to speed  */
+    if (ctx->simple.international) {
+	Arg list[1];
 
-    XtSetArg (list[0], XtNinsertPosition, ctx->text.insertPos);
-    _XawImSetValues (w, list, 1);
-  }
+	XtSetArg(list[0], XtNinsertPosition, ctx->text.insertPos);
+	_XawImSetValues(w, list, 1);
+    }
 }
 
 /*
  * Procedure to register a span of text that is no longer valid on the display
  * It is used to avoid a number of small, and potentially overlapping, screen
- * updates. 
+ * updates.
 */
-
 void
-_XawTextNeedsUpdating(ctx, left, right)
-TextWidget ctx;
-XawTextPosition left, right;
+_XawTextNeedsUpdating(TextWidget ctx,
+		      XawTextPosition left, XawTextPosition right)
 {
-  int i;
-  if (left < right) {
-    for (i = 0; i < ctx->text.numranges; i++) {
-      if (left <= ctx->text.updateTo[i] && right >= ctx->text.updateFrom[i]) {
-	ctx->text.updateFrom[i] = Min(left, ctx->text.updateFrom[i]);
-	ctx->text.updateTo[i] = Max(right, ctx->text.updateTo[i]);
+    XmuSegment segment;
+
+    if (left >= right)
 	return;
-      }
-    }
-    ctx->text.numranges++;
-    if (ctx->text.numranges > ctx->text.maxranges) {
-      ctx->text.maxranges = ctx->text.numranges;
-      i = ctx->text.maxranges * sizeof(XawTextPosition);
-      ctx->text.updateFrom = (XawTextPosition *) 
-	XtRealloc((char *)ctx->text.updateFrom, (unsigned) i);
-      ctx->text.updateTo = (XawTextPosition *) 
-	XtRealloc((char *)ctx->text.updateTo, (unsigned) i);
-    }
-    ctx->text.updateFrom[ctx->text.numranges - 1] = left;
-    ctx->text.updateTo[ctx->text.numranges - 1] = right;
-  }
+
+    segment.x1 = (int)left;
+    segment.x2 = (int)right;
+    (void)XmuScanlineOrSegment(ctx->text.update, &segment);
 }
 
 /*
@@ -731,174 +1084,161 @@ XawTextPosition left, right;
  * we probably need to add a function to sources to provide this functionality.
  * [note: this is really a private procedure but is used in multiple modules].
  */
-
 char *
-_XawTextGetText(ctx, left, right)
-TextWidget ctx;
-XawTextPosition left, right;
+_XawTextGetText(TextWidget ctx, XawTextPosition left, XawTextPosition right)
 {
-  char *result, *tempResult;
-  XawTextBlock text;
-  int bytes;
+    char *result, *tempResult;
+    XawTextBlock text;
+    int bytes;
 
-  if (_XawTextFormat(ctx) == XawFmt8Bit)
-      bytes = sizeof(unsigned char);
-  else if (_XawTextFormat(ctx) == XawFmtWide) 
-      bytes = sizeof(wchar_t);
-  else /* if there is another fomat, add here */
-      bytes = 1;
+    if (XawTextFormat(ctx, XawFmt8Bit))
+	bytes = sizeof(unsigned char);
+    else if (XawTextFormat(ctx, XawFmtWide)) 
+	bytes = sizeof(wchar_t);
+    else /* if there is another fomat, add here */
+	bytes = 1;
 
-  /* leave space for ZERO */
-  tempResult=result=XtMalloc( (unsigned)(((Cardinal)(right-left))+ONE )* bytes);
-  while (left < right) {
-    left = SrcRead(ctx->text.source, left, &text, (int)(right - left));
-    if (!text.length)
-	break;
-    memmove(tempResult, text.ptr, text.length * bytes);
-    tempResult += text.length * bytes;
-  }
+    /* leave space for ZERO */
+    tempResult = result = XtMalloc((unsigned)(right - left + ONE) * bytes);
 
-  if (bytes == sizeof(wchar_t)) 
-      *((wchar_t*)tempResult) = (wchar_t)0;
-  else 
-      *tempResult = '\0';
-  return(result);
+    while (left < right) {
+	left = SrcRead(ctx->text.source, left, &text, (int)(right - left));
+	if (!text.length)
+	    break;
+	memmove(tempResult, text.ptr, (unsigned)(text.length * bytes));
+	tempResult += text.length * bytes;
+    }
+
+    if (bytes == sizeof(wchar_t))
+	*((wchar_t*)tempResult) = (wchar_t)0;
+    else
+	*tempResult = '\0';
+
+    return (result);
 }
 
 /* Like _XawTextGetText, but enforces ICCCM STRING type encoding.  This
-routine is currently used to put just the ASCII chars in the selection into a
-cut buffer. */
-
+ * routine is currently used to put just the ASCII chars in the selection
+ * into a cut buffer.
+ */
 char *
-_XawTextGetSTRING(ctx, left, right)
-TextWidget ctx;
-XawTextPosition left, right;
+_XawTextGetSTRING(TextWidget ctx, XawTextPosition left, XawTextPosition right)
 {
-  unsigned char *s;
-  unsigned char c;
-  long i, j, n;
-  wchar_t *ws, wc;
+    unsigned char *s;
+    unsigned char c;
+    long i, j, n;
+    wchar_t *ws, wc;
 
-  /* allow ESC in accordance with ICCCM */
-  if (_XawTextFormat(ctx) == XawFmtWide) {
-     MultiSinkObject sink = (MultiSinkObject) ctx->text.sink;
-     ws = (wchar_t *)_XawTextGetText(ctx, left, right);
-     n = wcslen(ws);
-     for (j = 0, i = 0; j < n; j++) {
-         wc = ws[j];
-         if (XwcTextEscapement (sink->multi_sink.fontset, &wc, 1) || 
-            (wc == _Xaw_atowc(XawTAB)) || (wc == _Xaw_atowc(XawLF)) || (wc == _Xaw_atowc(XawESC)))
-            ws[i++] = wc;
-     }
-     ws[i] = (wchar_t)0;
-     return (char *)ws;
-  } else {
-     s = (unsigned char *)_XawTextGetText(ctx, left, right);
-     /* only HT and NL control chars are allowed, strip out others */
-     n = strlen((char *)s);
-     i = 0;
-     for (j = 0; j < n; j++) {
-	c = s[j];
-	if (((c >= 0x20) && c <= 0x7f) ||
-	   (c >= 0xa0) || (c == XawTAB) || (c == XawLF) || (c == XawESC)) {
-	   s[i] = c;
-	   i++;
+    /* allow ESC in accordance with ICCCM */
+    if (XawTextFormat(ctx, XawFmtWide)) {
+	MultiSinkObject sink = (MultiSinkObject)ctx->text.sink;
+	ws = (wchar_t *)_XawTextGetText(ctx, left, right);
+	n = wcslen(ws);
+	for (j = 0, i = 0; j < n; j++) {
+	    wc = ws[j];
+	    if (XwcTextEscapement (sink->multi_sink.fontset, &wc, 1)
+		|| (wc == _Xaw_atowc(XawTAB)) || (wc == _Xaw_atowc(XawLF))
+		|| (wc == _Xaw_atowc(XawESC)))
+		ws[i++] = wc;
 	}
-     }
-     s[i] = 0;
-     return (char *)s;
-  }
-#undef ESC
+	ws[i] = (wchar_t)0;
+	return ((char *)ws);
+    }
+    else {
+	s = (unsigned char *)_XawTextGetText(ctx, left, right);
+	/* only HT and NL control chars are allowed, strip out others */
+	n = strlen((char *)s);
+	i = 0;
+	for (j = 0; j < n; j++)	{
+	    c = s[j];
+	    if (((c >= 0x20) && c <= 0x7f)
+		||(c >= 0xa0) || (c == XawTAB) || (c == XawLF)
+		|| (c == XawESC)) {
+		s[i] = c;
+		i++;
+	    }
+	}
+	s[i] = 0;
 
+	return ((char *)s);
+    }
 }
 
 /* 
  * This routine maps an x and y position in a window that is displaying text
  * into the corresponding position in the source.
- *
- * NOTE: it is illegal to call this routine unless there is a valid line table!
  */
-
-/*** figure out what line it is on ***/
-
 static XawTextPosition
-PositionForXY (ctx, x, y)
-TextWidget ctx;
-Position x,y;
+PositionForXY(TextWidget ctx, int x, int y)
 {
-  int fromx, line, width, height;
-  XawTextPosition position;
+    int fromx, line, width, height;
+    XawTextPosition position;
 
-  if (ctx->text.lt.lines == 0) return 0;
-  
-  for (line = 0; line < ctx->text.lt.lines - 1; line++) {
-    if (y <= ctx->text.lt.info[line + 1].y)
-      break;
-  }
-  position = ctx->text.lt.info[line].position;
-  if (position >= ctx->text.lastPos)
-    return(ctx->text.lastPos);
-  fromx = (int) ctx->text.margin.left; 
-  XawTextSinkFindPosition( ctx->text.sink, position, fromx, x - fromx,
-			  FALSE, &position, &width, &height);
-  if (position > ctx->text.lastPos) return(ctx->text.lastPos);
-  if (position >= ctx->text.lt.info[line + 1].position)
-    position = SrcScan(ctx->text.source, ctx->text.lt.info[line + 1].position,
-		       XawstPositions, XawsdLeft, 1, TRUE);
-  return(position);
+    if (ctx->text.lt.lines == 0)
+	return (0);
+
+    for (line = 0; line < ctx->text.lt.lines - 1; line++) {
+	if (y <= ctx->text.lt.info[line + 1].y)
+	    break;
+    }
+    position = ctx->text.lt.info[line].position;
+    if (position >= ctx->text.lastPos)
+	return (ctx->text.lastPos);
+    fromx = ctx->text.left_margin;
+    XawTextSinkFindPosition(ctx->text.sink, position, fromx, x - fromx,
+			    False, &position, &width, &height);
+
+    if (position > ctx->text.lastPos)
+	return (ctx->text.lastPos);
+
+    if (position >= ctx->text.lt.info[line + 1].position)
+	position = SrcScan(ctx->text.source, ctx->text.lt.info[line + 1].position,
+			   XawstPositions, XawsdLeft, 1, True);
+
+    return (position);
 }
 
 /*
  * This routine maps a source position in to the corresponding line number
  * of the text that is displayed in the window.
- *
- * NOTE: It is illegal to call this routine unless there is a valid line table!
  */
-
-static int 
-LineForPosition (ctx, position)
-TextWidget ctx;
-XawTextPosition position;
+static int
+LineForPosition(TextWidget ctx, XawTextPosition position)
 {
-  int line;
-  
-  for (line = 0; line < ctx->text.lt.lines; line++)
-    if (position < ctx->text.lt.info[line + 1].position)
-      break;
-  return(line);
+    int line;
+
+    for (line = 0; line < ctx->text.lt.lines; line++)
+	if (position < ctx->text.lt.info[line + 1].position)
+	    break;
+
+    return (line);
 }
 
 /*
  * This routine maps a source position into the corresponding line number
  * and the x, y coordinates of the text that is displayed in the window.
- *
- * NOTE: It is illegal to call this routine unless there is a valid line table!
  */
-
-static Boolean
-LineAndXYForPosition (ctx, pos, line, x, y)
-TextWidget ctx;
-XawTextPosition pos;
-int *line;
-Position *x, *y;
+static Bool
+LineAndXYForPosition(TextWidget ctx, XawTextPosition pos,
+		     int *line, int *x, int *y)
 {
-  XawTextPosition linePos, endPos;
-  Boolean visible;
-  int realW, realH;
+    XawTextPosition linePos, endPos;
+    Boolean visible;
+    int realW, realH;
 
-  *line = 0;
-  *x = ctx->text.margin.left;
-  *y = ctx->text.margin.top;
-  if (visible = IsPositionVisible(ctx, pos)) {
-    *line = LineForPosition(ctx, pos);
-    *y = ctx->text.lt.info[*line].y;
-    *x = ctx->text.margin.left;
-    linePos = ctx->text.lt.info[*line].position;
-    XawTextSinkFindDistance( ctx->text.sink, linePos,
-			    *x, pos, &realW, &endPos, &realH);
-    *x += realW;
-  }
-  return(visible);
+    *line = 0;
+    *x = ctx->text.left_margin;
+    *y = ctx->text.margin.top + 1;
+    if ((visible = IsPositionVisible(ctx, pos)) != False) {
+	*line = LineForPosition(ctx, pos);
+	*y = ctx->text.lt.info[*line].y;
+	linePos = ctx->text.lt.info[*line].position;
+	XawTextSinkFindDistance(ctx->text.sink, linePos,
+				*x, pos, &realW, &endPos, &realH);
+	*x += realW;
+    }
+
+    return (visible);
 }
 
 /*
@@ -908,199 +1248,234 @@ Position *x, *y;
  * linetable all the required metrics for displaying a given line (e.g.
  * x offset, y offset, line length, etc.).
  */
-
-void 
-#if NeedFunctionPrototypes
-_XawTextBuildLineTable (
-    TextWidget ctx,
-    XawTextPosition position,
-    _XtBoolean force_rebuild)
-#else
-_XawTextBuildLineTable (ctx, position, force_rebuild)
-    TextWidget ctx;
-    XawTextPosition position;
-    Boolean force_rebuild;
-#endif
+void
+_XawTextBuildLineTable(TextWidget ctx, XawTextPosition position,
+		       _XtBoolean force_rebuild)
 {
-  Dimension height = 0;
-  int lines = 0; 
-  Cardinal size;
+    Dimension height = 0;
+    int lines = 0;
+    Cardinal size;
 
-  if ((int)ctx->core.height > VMargins(ctx)) {
-    height = ctx->core.height - VMargins(ctx);
-    lines = XawTextSinkMaxLines(ctx->text.sink, height);
-  }
-  size = sizeof(XawTextLineTableEntry) * (lines + 1);
+    if ((int)XtHeight(ctx) > VMargins(ctx)) {
+	height = XtHeight(ctx) - VMargins(ctx);
+	lines = XawTextSinkMaxLines(ctx->text.sink, height);
+    }
+    size = sizeof(XawTextLineTableEntry) * (lines + 1);
 
-  if ( (lines != ctx->text.lt.lines) || (ctx->text.lt.info == NULL) ) {
-    ctx->text.lt.info = (XawTextLineTableEntry *) XtRealloc((char *) ctx->text.
-							    lt.info, size);
-    ctx->text.lt.lines = lines;
-    force_rebuild = TRUE;
-  }
+    if (lines != ctx->text.lt.lines || ctx->text.lt.info == NULL) {
+	ctx->text.lt.info = (XawTextLineTableEntry *)
+	    XtRealloc((char *)ctx->text.lt.info, size);
+	ctx->text.lt.lines = lines;
+	force_rebuild = True;
+    }
 
-  if ( force_rebuild || (position != ctx->text.lt.top) ) {
-    (void) bzero((char *) ctx->text.lt.info, size);
-    (void) _BuildLineTable(ctx, ctx->text.lt.top = position, zeroPosition, 0);
-  }
+    if (force_rebuild) {
+	(void)bzero((char *)ctx->text.lt.info, size);
+	/* force a text update in the first text line if it is visible */
+	ctx->text.lt.info[0].position = (XawTextPosition)-1;
+    }
+    if (position != ctx->text.lt.info[0].position) {
+	(void)_BuildLineTable(ctx, position, 0);
+	ctx->text.clear_to_eol = True;
+    }
 }
 
 /*
- * This assumes that the line table does not change size.
+ * We may need to resize the line table here, since there maybe lines with
+ * different fonts (that can be shorter or taller than the default one)
  */
-
 static XawTextPosition
-_BuildLineTable(ctx, position, min_pos, line)
-TextWidget ctx;
-XawTextPosition position, min_pos;	
-int line;
+_BuildLineTable(TextWidget ctx, XawTextPosition position, int line)
 {
-  XawTextLineTableEntry * lt = ctx->text.lt.info + line;
-  XawTextPosition endPos;
-  Position y;
-  int count, width, realW, realH;
-  Widget src = ctx->text.source;
+    XawTextLineTableEntry *lt = ctx->text.lt.info + line;
+    XawTextPosition end, update_from = -1;
+    Position y;
+    int wwidth, width, height;
+#ifndef OLDXAW
+    Widget src = ctx->text.source;
+#endif
+    int max_y = (int)XtHeight(ctx) - (int)ctx->text.margin.bottom;
 
-  if ( ((ctx->text.resize == XawtextResizeWidth) ||
-	(ctx->text.resize == XawtextResizeBoth)    ) ||
-       (ctx->text.wrap == XawtextWrapNever) )
-    width = BIGNUM;
-  else 
-    width = Max(0, ((int)ctx->core.width - (int)HMargins(ctx)));
+    if (ctx->text.wrap == XawtextWrapNever)
+	wwidth = 0x7fffffff;
+    else
+	wwidth = GetMaxTextWidth(ctx);
 
-  y = ( (line == 0) ? ctx->text.margin.top : lt->y );
+    /* XXX y may change, due to font size changes. See later */
+    y = line == 0 ? ctx->text.margin.top : lt->y;
 
-  /* CONSTCOND */
-  while ( TRUE ) {
-    lt->y = y;
-    lt->position = position;
-    
-    XawTextSinkFindPosition( ctx->text.sink, position, ctx->text.margin.left,
-			    width, ctx->text.wrap == XawtextWrapWord,
-			    &endPos, &realW, &realH);
-    lt->textWidth = realW;
-    y += realH;
-
-    if (ctx->text.wrap == XawtextWrapNever) 
-      endPos = SrcScan(src, position, XawstEOL, XawsdRight, 1, TRUE);
-
-    if ( endPos == ctx->text.lastPos) { /* We have reached the end. */
-      if(SrcScan(src, position, XawstEOL, XawsdRight, 1, FALSE) == endPos)
-	break;
+#ifndef OLDXAW
+    if (ctx->text.lt.base_line < 0) {
+	if (line == 0)
+	    ctx->text.lt.top = position;
     }
+    else if (line == 0) {
+	XawTextPosition pos = ctx->text.lt.top;
+	int base_line = ctx->text.lt.base_line;
 
-    ++lt;
-    ++line;
-    if ( (line > ctx->text.lt.lines) ||
-	 ((lt->position == (position = endPos)) && (position > min_pos)) )
-      return(position);
-  }
+	if (position == 0)
+	    base_line = 1;
+	else if (ctx->text.lt.base_line == 0 ||
+		 ctx->text.source_changed == SRC_CHANGE_OVERLAP) {
+	    pos = 0;
+	    base_line = 1;
+
+	    while (pos < position) {
+		pos = SrcScan(src, pos, XawstEOL, XawsdRight, 1, True);
+		if (pos <= position) {
+		    ++base_line;
+		    if (pos == ctx->text.lastPos) {
+			base_line -= !_XawTextSourceNewLineAtEOF(src);
+			break;
+		    }
+		}
+	    }
+	}
+	else if (ctx->text.wrap == XawtextWrapNever
+		 && IsPositionVisible(ctx, position))
+	    base_line += LineForPosition(ctx, position);
+	else if (pos < position) {
+	    while (pos < position) {
+		pos = SrcScan(src, pos, XawstEOL, XawsdRight, 1, True);
+		if (pos <= position) {
+		    ++base_line;
+		    if (pos == ctx->text.lastPos) {
+			base_line -= !_XawTextSourceNewLineAtEOF(src);
+			break;
+		    }
+		}
+	    }
+	}
+	else if (pos > position) {
+	    while (pos > position) {
+		pos = SrcScan(src, pos, XawstEOL, XawsdLeft, 1, False);
+		if (--pos >= position)
+		    --base_line;
+	    }
+	}
+
+	ctx->text.lt.top = position;
+	ctx->text.lt.base_line = base_line;
+    }
+#else
+    if (line == 0)
+	ctx->text.lt.top = position;
+#endif
+
+    /* CONSTCOND */
+    while (True) {
+	XawTextSinkFindPosition(ctx->text.sink, position, ctx->text.left_margin,
+				wwidth, ctx->text.wrap == XawtextWrapWord,
+				&end, &width, &height);
+
+	if (lt->position != position) {
+	    _XawTextNeedsUpdating(ctx, position,
+				  end <= position ? position + 1 : end);
+	    ctx->text.clear_to_eol = True;
+	    lt->position = position;
+	}
+	if (lt->y != y) {
+	    if (update_from < 0)
+		update_from = line == 0 ?
+		    ctx->text.lt.info[0].position :
+		    ctx->text.lt.info[line - 1].position;
+	    lt->y = y;
+	    ctx->text.clear_to_eol = True;
+	}
+	if (lt->textWidth != width) {
+	    if (lt->textWidth > width)
+		ctx->text.clear_to_eol = True;
+	    lt->textWidth = width;
+	}
+	y += height;
+
+	if (end > ctx->text.lastPos) {
+	    position = end;
+	    ctx->text.clear_to_eol = True;
+	    _XawTextNeedsUpdating(ctx, end, end + ctx->text.lt.lines - line);
+	    while (line++ < ctx->text.lt.lines) {
+		if (line > 1 && y > max_y) {
+		    ctx->text.lt.lines = line - 1;
+		    break;
+		}
+		++lt;
+		if (lt->y != y) {
+		    if (update_from < 0)
+			update_from = line < 2 ?
+			    ctx->text.lt.info[0].position :
+			    ctx->text.lt.info[line - 2].position;
+		    lt->y = y;
+		}
+		lt->position = ++position;
+		lt->textWidth = 0;
+		y += height;
+	    }
+	    if (update_from >= 0)
+		_XawTextNeedsUpdating(ctx, update_from,
+				      ctx->text.lt.info[ctx->text.lt.lines].position);
+	    _XawTextSetScrollBars(ctx);
+
+	    return (ctx->text.lastPos);
+	}
+
+	if (line && y > max_y)
+	    /* will return in the next loop */
+	    ctx->text.lt.lines = line;
+
+	if (++line > ctx->text.lt.lines && y < max_y) {
+	/* grow the line table */
+	    ctx->text.lt.info = (XawTextLineTableEntry *)
+		XtRealloc((char *)ctx->text.lt.info,
+			  sizeof(XawTextLineTableEntry) * (line + 1));
+	    lt = ctx->text.lt.info + line;
+	    bzero(lt, sizeof(XawTextLineTableEntry));
+	    ++ctx->text.lt.lines;
+	}
+	else
+	    ++lt;
+	if (position == end)
+	    ++position;
+	else
+	    position = end;
+
+	if (line > ctx->text.lt.lines) {
+	    if (update_from >= 0)
+		_XawTextNeedsUpdating(ctx, update_from,
+				      ctx->text.lt.info[ctx->text.lt.lines].position);
+	    _XawTextSetScrollBars(ctx);
+
+	    return (position);
+	}
+    }
+    /*NOTREACHED*/
+}
 
 /*
- * If we are at the end of the buffer put two special lines in the table.
+ * Function:
+ *	GetWidestLine
  *
- * a) Both have position > text.lastPos and lt->textWidth = 0.
- * b) The first has a real height, and the second has a height that
- *    is the rest of the screen.
+ * Parameters:
+ *	ctx - text widget
  *
- * I could fill in the rest of the table with valid heights and a large
- * lastPos, but this method keeps the number of fill regions down to a 
- * minimum.
+ * Description:
+ *	  Returns the width (in pixels) of the widest line that
+ *		     is currently visable.
  *
- * One valid entry is needed at the end of the table so that the cursor
- * does not jump off the bottom of the window.
+ * Returns:
+ *	The width of the widest line
  */
-
-  for ( count = 0; count < 2 ; count++) 
-    if (line++ < ctx->text.lt.lines) { /* make sure not to run of the end. */
-      (++lt)->y = (count == 0) ? y : ctx->core.height;
-      lt->textWidth = 0;
-      lt->position = ctx->text.lastPos + 100;
-    }
-
-  if (line < ctx->text.lt.lines) /* Clear out rest of table. */
-    (void) bzero( (char *) (lt + 1), 
-	  (ctx->text.lt.lines - line) * sizeof(XawTextLineTableEntry) );
-
-  ctx->text.lt.info[ctx->text.lt.lines].position = lt->position;
-
-  return(endPos);
-}
-
-/*	Function Name: GetWidestLine
- *	Description: Returns the width (in pixels) of the widest line that
- *                   is currently visable.
- *	Arguments: ctx - the text widget.
- *	Returns: the width of the widest line.
- *
- * NOTE: This function requires a valid line table.
- */
-
-static Dimension
-GetWidestLine(ctx)
-TextWidget ctx;
+static unsigned int
+GetWidestLine(TextWidget ctx)
 {
-  int i;
-  Dimension widest;
-  XawTextLineTablePtr lt = &(ctx->text.lt);
+    int i;
+    unsigned int widest;
+    XawTextLineTablePtr lt = &(ctx->text.lt);
 
-  for (i = 0, widest = 1 ; i < lt->lines ; i++)
-    if (widest < lt->info[i].textWidth)
-      widest = lt->info[i].textWidth;
-  
-  return(widest);
-}
+    for (i = 0, widest = 0; i < lt->lines; i++)
+	if (widest < lt->info[i].textWidth)
+	    widest = lt->info[i].textWidth;
 
-static void
-CheckVBarScrolling(ctx)
-TextWidget ctx;
-{
-  float first, last;
-  Boolean temp = (ctx->text.vbar == NULL);
-
-  if (ctx->text.scroll_vert == XawtextScrollNever) return;
-
-  if ( (ctx->text.lastPos > 0) && (ctx->text.lt.lines > 0)) {
-    first = ctx->text.lt.top;
-    first /= (float) ctx->text.lastPos;
-    last = ctx->text.lt.info[ctx->text.lt.lines].position;
-    if ( ctx->text.lt.info[ctx->text.lt.lines].position < ctx->text.lastPos )
-      last /= (float) ctx->text.lastPos;
-    else 
-      last = 1.0;
-
-    if (ctx->text.scroll_vert == XawtextScrollWhenNeeded) {
-      int line;
-      XawTextPosition last_pos;
-      Position y = ctx->core.height - ctx->text.margin.bottom;	
-
-      if (ctx->text.hbar != NULL)
-	y -= (ctx->text.hbar->core.height +
-	      2 * ctx->text.hbar->core.border_width);
-
-      last_pos = PositionForXY(ctx, (Position) ctx->core.width, y);
-      line = LineForPosition(ctx, last_pos);
-
-      if ( (y < ctx->text.lt.info[line + 1].y) || ((last - first) < 1.0) )
-	CreateVScrollBar(ctx);
-      else 
-	DestroyVScrollBar(ctx);
-    }
-  
-    if (ctx->text.vbar != NULL) 
-      XawScrollbarSetThumb(ctx->text.vbar, first, last - first);
-  
-    if ( (ctx->text.vbar == NULL) != temp) {
-      _XawTextNeedsUpdating(ctx, zeroPosition, ctx->text.lastPos);
-      if (ctx->text.vbar == NULL)
-	_XawTextBuildLineTable (ctx, zeroPosition, FALSE);
-    }
-  }
-  else if (ctx->text.vbar != NULL)
-    if (ctx->text.scroll_vert == XawtextScrollWhenNeeded)
-      DestroyVScrollBar(ctx);
-    else if (ctx->text.scroll_vert == XawtextScrollAlways)
-      XawScrollbarSetThumb(ctx->text.vbar, 0.0, 1.0);
+    return (widest);
 }
 
 /*
@@ -1108,51 +1483,243 @@ TextWidget ctx;
  * correct metrics (position and shown fraction) for the text being currently
  * displayed in the window.
  */
-
-void 
-_XawTextSetScrollBars(ctx)
-TextWidget ctx;
+void
+_XawTextSetScrollBars(TextWidget ctx)
 {
-  float first, last, widest;
-  Boolean temp = (ctx->text.hbar == NULL);
-  Boolean vtemp = (ctx->text.vbar == NULL);
-  
-  CheckVBarScrolling(ctx);
+    float first, last, denom, widest;
 
-  if (ctx->text.scroll_horiz == XawtextScrollNever) return;
+    if (ctx->text.scroll_vert == XawtextScrollAlways) {
+	if (ctx->text.lastPos == 0)
+	    first = 0.0;
+	else
+	    first = ctx->text.lt.top / (float)ctx->text.lastPos;
 
-  if (ctx->text.vbar != NULL) 
-    widest = (int)(ctx->core.width - ctx->text.vbar->core.width -
-		   ctx->text.vbar->core.border_width);
-  else
-    widest = ctx->core.width;
-  widest /= (last = GetWidestLine(ctx));
-  if (ctx->text.scroll_horiz == XawtextScrollWhenNeeded) 
-    if (widest < 1.0)
-      CreateHScrollBar(ctx);
-    else
-      DestroyHScrollBar(ctx);
+	if (ctx->text.lt.info[ctx->text.lt.lines].position < ctx->text.lastPos)
+	    last = ctx->text.lt.info[ctx->text.lt.lines].position /
+		   (float)ctx->text.lastPos;
+	else
+	    last = 1.0;
 
-  if ( (ctx->text.hbar == NULL) != temp ) {
-    _XawTextBuildLineTable (ctx, ctx->text.lt.top, TRUE);
-    CheckVBarScrolling(ctx);	/* Recheck need for vbar, now that we added
-				   or removed the hbar.*/
-  }
-  
-  if (ctx->text.hbar != NULL) {
-    first = ctx->text.r_margin.left - ctx->text.margin.left;
-    first /= last;
-    XawScrollbarSetThumb(ctx->text.hbar, first, widest); 
-  }
+	XawScrollbarSetThumb(ctx->text.vbar, first, last - first);
+    }
 
-  if (((ctx->text.hbar == NULL) && (ctx->text.margin.left !=
-				   ctx->text.r_margin.left)) ||
-      (ctx->text.vbar == NULL) != vtemp)
-  {
-    ctx->text.margin.left = ctx->text.r_margin.left;
-    _XawTextNeedsUpdating(ctx, zeroPosition, ctx->text.lastPos);      
-    FlushUpdate(ctx);
-  }
+    if (ctx->text.scroll_horiz == XawtextScrollAlways) {
+	denom = GetWidestLine(ctx);
+	if (denom <= 0)
+	    denom = (int)XtWidth(ctx) - RHMargins(ctx);
+	if (denom <= 0)
+	    denom = 1;
+	widest = ((int)XtWidth(ctx) - RHMargins(ctx)) / denom;
+	first = ctx->text.r_margin.left - ctx->text.left_margin;
+	first /= denom;
+
+	XawScrollbarSetThumb(ctx->text.hbar, first, widest);
+    }
+}
+
+static void
+DoCopyArea(TextWidget ctx, int src_x, int src_y,
+	   unsigned int width, unsigned int height, int dst_x, int dst_y)
+{
+    int x1, y1, x2, y2;
+
+    x1 = ctx->text.r_margin.left;
+    y1 = ctx->text.r_margin.top;
+    x2 = XtWidth(ctx) - ctx->text.r_margin.right;
+    y2 = XtHeight(ctx) - ctx->text.r_margin.bottom;
+
+    if (x1 >= x2 || y1 >= y2)
+	return;
+
+    src_x = XawMax(x1, XawMin(src_x, x2));
+    src_y = XawMax(y1, XawMin(src_y, y2));
+    dst_x = XawMax(x1, XawMin(dst_x, x2));
+    dst_y = XawMax(y1, XawMin(dst_y, y2));
+    width = XawMax(0, XawMin(x2 - dst_x, (int)width));
+    height = XawMax(0, XawMin(y2 - dst_y, (int)height));
+
+    XCopyArea(XtDisplay(ctx), XtWindow(ctx), XtWindow(ctx), ctx->text.gc,
+	      src_x, src_y, width, height, dst_x, dst_y);
+}
+
+/*
+ * Function:
+ *	XawTextScroll
+ *
+ * Parameters:
+ *	ctx	- text widget
+ *	vlines	- number of lines to scroll vertically
+ *	hpixels	- number of pixels to scroll horizontally
+ *
+ * Description:
+ *	Generic function for scrolling the text window.
+ *	Allows vertical and horizontal scroll at the same time.
+ */
+void
+XawTextScroll(TextWidget ctx, int vlines, int hpixels)
+{
+    XawTextPosition top, tmp, update_from, update_to;
+    XawTextLineTable *lt;
+    Arg arglist[1];
+    int y0, y1, y2, count, dim, wwidth, lines = ctx->text.lt.lines;
+    int vwidth, vheight;	/* visible width and height */
+    Bool scroll;
+
+    vwidth = (int)XtWidth(ctx) - RHMargins(ctx);
+    vheight = (int)XtHeight(ctx) - RVMargins(ctx);
+    lt = &ctx->text.lt;
+
+    if (!lt || vwidth <= 0 || vheight <= 0)
+	return;
+
+    if ((scroll = ctx->core.background_pixmap == XtUnspecifiedPixmap) == True) {
+	dim = lt->info[1].y - lt->info[0].y;
+	for (count = 1; count < lt->lines - 1; count++)
+	    if (lt->info[count + 1].y - lt->info[count].y != dim) {
+		scroll = False;
+		break;
+	    }
+    }
+
+    wwidth = GetMaxTextWidth(ctx);
+
+    /*
+     * Do the horizontall scrolling
+     */
+    if (hpixels < 0 && ctx->text.left_margin - hpixels > ctx->text.r_margin.left)
+	hpixels = ctx->text.left_margin - ctx->text.r_margin.left;
+    ctx->text.left_margin -= hpixels;
+
+    update_from = lt->top;	/* remember the old value */
+    /*
+     *	 Checks the requested number of lines and calculates the top
+     * of the line table
+     */
+    if (vlines < 0) {		  /* VScroll Up */
+	if (IsPositionVisible(ctx, 0))
+	    vlines = 0;
+	else if (ctx->text.wrap != XawtextWrapNever) {
+	    XawTextPosition end;
+	    int n_lines = 0;
+
+	    count = -vlines;
+	    end = lt->top;
+	    while (n_lines < count) {
+		top = SrcScan(ctx->text.source, end, XawstEOL,
+			      XawsdLeft, 2, False);
+		n_lines += CountLines(ctx, top, end);
+		end = top;
+	    }
+
+	    while (count++ < n_lines) {
+		tmp = top;
+		XawTextSinkFindPosition(ctx->text.sink, top,
+					ctx->text.left_margin,
+					wwidth,ctx->text.wrap == XawtextWrapWord,
+					&top, &dim, &dim);
+		if (tmp == top)
+		    ++top;
+	    }
+	}
+	else
+	    top = SrcScan(ctx->text.source, lt->top, XawstEOL,
+			  XawsdLeft, -vlines + 1, False);
+	if (-vlines >= ctx->text.lt.lines)
+	  scroll = False;
+     }
+    else if (vlines > 0) {	  /* VScroll Down */
+	if (LineForPosition(ctx, ctx->text.lastPos) == 0)
+	    vlines = 0;
+	if (vlines < lt->lines)
+	    top = XawMin(lt->info[vlines].position, ctx->text.lastPos);
+	else if (ctx->text.wrap == XawtextWrapNever)
+	    top = SrcScan(ctx->text.source,
+			  SrcScan(ctx->text.source, lt->top,
+				  XawstEOL, XawsdRight, vlines,
+				  True),
+			  XawstEOL, XawsdLeft, 1, False);
+	else {
+	    top = lt->top;
+	    count = 0;
+	    while (count++ < vlines) {
+		tmp = top;
+		XawTextSinkFindPosition(ctx->text.sink, top,
+					ctx->text.left_margin,
+					wwidth, ctx->text.wrap == XawtextWrapWord,
+					&top, &dim, &dim);
+		if (tmp == top)
+		    ++top;
+	    }
+	}
+	if (vlines >= ctx->text.lt.lines
+	    || lt->info[vlines].position >= ctx->text.lastPos)
+	    scroll = False;
+    }
+
+    if (!vlines) {
+	if (hpixels) {
+	    ClearWindow(ctx);
+	    ctx->text.clear_to_eol = True;
+	}
+	_XawTextSetScrollBars(ctx);
+	return;
+    }
+
+    /* Flushes any pending updates. Normally, there may be a call to
+     * XawTextUnsetSelection not yet updated.
+     */
+    if (!hpixels && scroll) {
+	ctx->text.clear_to_eol = True;
+	FlushUpdate(ctx);
+    }
+
+    /*
+     * Rebuild the line table, doing the vertical scroll
+     */
+    (void)_BuildLineTable(ctx, top, 0);
+    lt = &ctx->text.lt;
+    if (scroll) {
+	for (count = 0; count < lt->lines - 1; count++)
+	    if (lt->info[count + 1].y - lt->info[count].y != dim) {
+		scroll = False;
+		break;
+	    }
+    }
+
+    XtSetArg(arglist[0], XtNinsertPosition, lt->top + lt->lines);
+    _XawImSetValues((Widget)ctx, arglist, 1);
+
+    if (hpixels || !scroll || lines != lt->lines)
+	return;
+
+    /* _BuildLineTable updates everything if the top position changes.
+     * It is not required here.
+     */
+    (void)XmuScanlineXor(ctx->text.update, ctx->text.update);
+    if (vlines < 0 && IsPositionVisible(ctx, 0))
+	vlines = -LineForPosition(ctx, update_from);
+
+    y0 = ctx->text.r_margin.top;
+    if (vlines < 0) {
+	update_from = lt->top;
+	update_to = lt->info[-vlines + 1].position - 1;
+	y1 = lt->info[lt->lines + vlines].y;
+	y2 = lt->info[-vlines].y;
+	DoCopyArea(ctx, ctx->text.r_margin.left, y0, vwidth,
+		   y1 - y0,
+		   ctx->text.r_margin.left, y2);
+    }
+    else {
+	update_from = lt->info[lt->lines - vlines].position;
+	update_to = lt->info[lt->lines].position;
+	y1 = lt->info[lt->lines - vlines].y;
+	y2 = lt->info[vlines].y;
+	DoCopyArea(ctx, ctx->text.r_margin.left, y2,
+		   vwidth, lt->info[lt->lines].y - y2,
+		   ctx->text.r_margin.left, y0);
+    }
+    _XawTextNeedsUpdating(ctx, update_from, update_to);
+    ctx->text.clear_to_eol = True;
 }
 
 /*
@@ -1160,421 +1727,301 @@ TextWidget ctx;
  * positive, move up; otherwise, move down. [note: this is really a private
  * procedure but is used in multiple modules].
  */
-
 void
-_XawTextVScroll(ctx, n)
-TextWidget ctx;
-int n;			
+_XawTextVScroll(TextWidget ctx, int n)
 {
-  XawTextPosition top, target;
-  int y;
-  Arg list[1];
-  XawTextLineTable * lt = &(ctx->text.lt);
-
-  if (abs(n) > ctx->text.lt.lines) 
-    n = (n > 0) ? ctx->text.lt.lines : -ctx->text.lt.lines;
-
-  if (n == 0) return;
-
-  if (n > 0) {
-    if ( IsValidLine(ctx, n) )
-      top = Min(lt->info[n].position, ctx->text.lastPos);
-    else
-      top = ctx->text.lastPos;
-
-    y = IsValidLine(ctx, n) ? lt->info[n].y : ctx->core.height;
-    _XawTextBuildLineTable(ctx, top, FALSE);
-    if (top >= ctx->text.lastPos)
-      DisplayTextWindow( (Widget) ctx);
-    else {
-      XCopyArea(XtDisplay(ctx), XtWindow(ctx), XtWindow(ctx), ctx->text.gc,
-		0, y, (int)ctx->core.width, (int)ctx->core.height - y,
-		0, ctx->text.margin.top);
-
-      PushCopyQueue(ctx, 0, (int) -y);
-      SinkClearToBG(ctx->text.sink, 
-		    (Position) 0,
-		    (Position) (ctx->text.margin.top + ctx->core.height - y),
-		   (Dimension) ctx->core.width, (Dimension) ctx->core.height);
-
-      if (n < lt->lines) n++; /* update descenders at bottom */
-      _XawTextNeedsUpdating(ctx, lt->info[lt->lines - n].position, 
-			    ctx->text.lastPos);
-      _XawTextSetScrollBars(ctx);
-    }
-  } 
-  else {
-    XawTextPosition updateTo;
-    unsigned int height, clear_height;
-
-    n = -n;
-    target = lt->top;
-    top = SrcScan(ctx->text.source, target, XawstEOL,
-		  XawsdLeft, n+1, FALSE);
-
-    _XawTextBuildLineTable(ctx, top, FALSE);
-    y = IsValidLine(ctx, n) ? lt->info[n].y : ctx->core.height;
-    updateTo = IsValidLine(ctx, n) ? lt->info[n].position : ctx->text.lastPos;
-    if (IsValidLine(ctx, lt->lines - n))
-      height = lt->info[lt->lines-n].y - ctx->text.margin.top;
-    else if (ctx->core.height - HMargins(ctx))
-      height = ctx->core.height - HMargins(ctx);
-    else
-      height = 0;
-    if (y > (int) ctx->text.margin.top)
-      clear_height = y - ctx->text.margin.top;
-    else
-      clear_height = 0;
-
-    if ( updateTo == target ) {
-      XCopyArea(XtDisplay(ctx), XtWindow(ctx), XtWindow(ctx), ctx->text.gc, 
-		0, ctx->text.margin.top, (int) ctx->core.width, height, 0, y);
-      PushCopyQueue(ctx, 0, (int) y);
-      SinkClearToBG(ctx->text.sink, (Position) 0, ctx->text.margin.top,
-		   (Dimension) ctx->core.width, (Dimension) clear_height);
-      
-      _XawTextNeedsUpdating(ctx, lt->info[0].position, updateTo);
-      _XawTextSetScrollBars(ctx);
-    } 
-    else if (lt->top != target)
-      DisplayTextWindow((Widget)ctx);
-  }
-  XtSetArg (list[0], XtNinsertPosition, ctx->text.lt.top+ctx->text.lt.lines);
-  _XawImSetValues ((Widget) ctx, list, 1);
+  XawTextScroll(ctx, n, 0);
 }
 
 /*ARGSUSED*/
-static void 
-HScroll(w, closure, callData)
-Widget w;
-XtPointer closure;		/* TextWidget */
-XtPointer callData;		/* #pixels */
+static void
+HScroll(Widget w, XtPointer closure, XtPointer callData)
 {
-  TextWidget ctx = (TextWidget) closure;
-  Widget tw = (Widget) ctx;
-  Position old_left, pixels = (Position)(int) callData;
-  XRectangle rect, t_rect;
-  
-  _XawTextPrepareToUpdate(ctx);
+    TextWidget ctx = (TextWidget)closure;
+    long pixels = (long)callData;
 
-  old_left = ctx->text.margin.left;
-  ctx->text.margin.left -= pixels;
-  if (ctx->text.margin.left > ctx->text.r_margin.left) {
-    ctx->text.margin.left = ctx->text.r_margin.left;
-    pixels = old_left - ctx->text.margin.left;
-  }
-  
-  if (pixels > 0) {
-    rect.width = (unsigned short) pixels + ctx->text.margin.right;
-    rect.x = (short) ctx->core.width - (short) rect.width;
-    rect.y = (short) ctx->text.margin.top;
-    rect.height = (unsigned short) ctx->core.height - rect.y;
+    if (pixels > 0) {
+	long max;
 
-    XCopyArea(XtDisplay(tw), XtWindow(tw), XtWindow(tw), ctx->text.gc,
-	      pixels, (int) rect.y,
-	      (unsigned int) rect.x, (unsigned int) ctx->core.height,
-	      0, (int) rect.y);
+	max = (int)GetWidestLine(ctx) + ctx->text.left_margin -
+	      ctx->text.r_margin.left;
+	max = XawMax(0, max);
+	pixels = XawMin(pixels, max);
+    }
 
-    PushCopyQueue(ctx, (int) -pixels, 0);
-  }
-  else if (pixels < 0) {
-    rect.x = 0;
+    if (pixels) {
+	_XawTextPrepareToUpdate(ctx);
+	XawTextScroll(ctx, 0, pixels);
+	_XawTextExecuteUpdate(ctx);
+    }
+}
 
-    if (ctx->text.vbar != NULL)
-      rect.x += (short) (ctx->text.vbar->core.width +
-			 ctx->text.vbar->core.border_width);
+/*ARGSUSED*/
+static void
+HJump(Widget w, XtPointer closure, XtPointer callData)
+{
+    TextWidget ctx = (TextWidget)closure;
+    float percent = *(float *)callData;
+    long pixels;
 
-    rect.width = (Position) - pixels;
-    rect.y = ctx->text.margin.top;
-    rect.height = ctx->core.height - rect.y;
+    pixels = ctx->text.left_margin -
+	     (ctx->text.r_margin.left - (int)(percent * GetWidestLine(ctx)));
 
-    XCopyArea(XtDisplay(tw), XtWindow(tw), XtWindow(tw), ctx->text.gc,
-	      (int) rect.x, (int) rect.y,
-	      (unsigned int) ctx->core.width - rect.width,
-	      (unsigned int) rect.height,
-	      (int) rect.x + rect.width, (int) rect.y);
-
-    PushCopyQueue(ctx, (int) rect.width, 0);
+    HScroll(w, (XtPointer)ctx, (XtPointer)pixels);
+}
 
 /*
- * Redraw the line overflow marks.
+ * Function:
+ *	UpdateTextInLine
+ *
+ * Parameters:
+ *	ctx  - text widget
+ *	line - line to update
+ *	x1   - left pixel
+ *	x2   - right pixel
+ *
+ * Description:
+ *	Updates the text in the given line and pixel interval
  */
-
-    t_rect.x = ctx->core.width - ctx->text.margin.right;
-    t_rect.width = ctx->text.margin.right;
-    t_rect.y = rect.y;
-    t_rect.height = rect.height;
-      
-    SinkClearToBG(ctx->text.sink, (Position) t_rect.x, (Position) t_rect.y,
-		  (Dimension) t_rect.width, (Dimension) t_rect.height);
-    
-    UpdateTextInRectangle(ctx, &t_rect);
-  }
-
-/*  
- * Put in the text that just became visible.
- */
-
-  if ( pixels != 0 ) {
-    SinkClearToBG(ctx->text.sink, (Position) rect.x, (Position) rect.y,
-		  (Dimension) rect.width, (Dimension) rect.height);
-    
-    UpdateTextInRectangle(ctx, &rect);
-  }
-  _XawTextExecuteUpdate(ctx);
-  _XawTextSetScrollBars(ctx);
-}
-
-/*ARGSUSED*/
-static void 
-HJump(w, closure, callData)
-Widget w;
-XtPointer closure, callData; /* closure = TextWidget, callData = percent. */
-{
-  TextWidget ctx = (TextWidget) closure;
-  float * percent = (float *) callData;
-  Position new_left, old_left = ctx->text.margin.left;
-
-  long move; /*difference of Positions can be bigger than Position; lint err */
-
-  new_left = ctx->text.r_margin.left;
-  new_left -= (Position) (*percent * GetWidestLine(ctx));
-  move = old_left - new_left;
-
-  if (abs(move) < (int)ctx->core.width) {
-    HScroll(w, (XtPointer) ctx, (XtPointer) move);
-    return;
-  }
-  _XawTextPrepareToUpdate(ctx);
-  ctx->text.margin.left = new_left;
-  if (XtIsRealized((Widget) ctx)) DisplayTextWindow((Widget) ctx); 
-  _XawTextExecuteUpdate(ctx);
-}
-
-/*	Function Name: UpdateTextInLine
- *	Description: Updates some text in a given line.
- *	Arguments: ctx - the text widget.
- *                 line - the line number (in the line table) of this line.
- *                 left, right - left and right pixel offsets of the
- *                               area to update.
- *	Returns: none.
- */
-
 static void
-UpdateTextInLine(ctx, line, left, right)
-TextWidget ctx;
-int line;
-Position left, right;
+UpdateTextInLine(TextWidget ctx, int line, int x1, int x2)
 {
-  XawTextPosition pos1, pos2; 
-  int width, height, local_left, local_width;
-  XawTextLineTableEntry * lt = ctx->text.lt.info + line;
+    XawTextLineTableEntry *lt = ctx->text.lt.info + line;
+    XawTextPosition left, right;
+    int from_x, width, height;
 
-  if ( ((int)(lt->textWidth + ctx->text.margin.left) < left) ||
-       ( ctx->text.margin.left > right ) )
-    return;			/* no need to update. */
+    if (lt->position >= ctx->text.lastPos
+	|| ctx->text.left_margin > x2
+	|| (int)lt->textWidth + ctx->text.left_margin < x1) {
+	/* Mark line to be cleared */
+	if (ctx->text.clear_to_eol)
+	    _XawTextNeedsUpdating(ctx, lt->position, lt->position + 1);
+	return;
+    }
 
-  local_width = left - ctx->text.margin.left;
-  XawTextSinkFindPosition(ctx->text.sink, lt->position,
-			  (int) ctx->text.margin.left, 
-			  local_width, FALSE, &pos1, &width, &height);
+    from_x = ctx->text.left_margin;
+    XawTextSinkFindPosition(ctx->text.sink, lt->position,
+			    from_x, x1 - from_x,
+			    False, &left, &width, &height);
+    if (line == ctx->text.lt.lines)
+	right = -1;
+    else if (x2 >= lt->textWidth - from_x)
+	right = lt[1].position - 1;
+    else {
+	from_x += width;
+	XawTextSinkFindPosition(ctx->text.sink, left,
+				from_x, x2 - from_x,
+				False, &right, &width, &height);
+    }
 
-  if (right >= (Position) lt->textWidth - ctx->text.margin.left) 
-    if ( (IsValidLine(ctx, line + 1)) &&
-	 (ctx->text.lt.info[line + 1].position <= ctx->text.lastPos) )
-      pos2 = SrcScan( ctx->text.source, (lt + 1)->position, XawstPositions, 
-			   XawsdLeft, 1, TRUE);
-    else 
-      pos2 = GETLASTPOS;
-  else {
-    XawTextPosition t_pos;
+    if ((right < 0) || (right + 1 <= lt[1].position))
+	++right;
 
-    local_left = ctx->text.margin.left + width;
-    local_width = right  - local_left;
-    XawTextSinkFindPosition(ctx->text.sink, pos1, local_left,
-			    local_width, FALSE, &pos2, &width, &height);
-    
-    t_pos = SrcScan( ctx->text.source, pos2,
-		     XawstPositions, XawsdRight, 1, TRUE);
-    if (t_pos < (lt + 1)->position)
-      pos2 = t_pos;
-  }
-
-  _XawTextNeedsUpdating(ctx, pos1, pos2);
+    /* Mark text interval to be repainted */
+    _XawTextNeedsUpdating(ctx, left, right);
 }
 
 /*
  * The routine will scroll the displayed text by pixels.  If the calldata is
  * positive, move up; otherwise, move down.
  */
-
 /*ARGSUSED*/
-static void 
-VScroll(w, closure, callData)
-Widget w;
-XtPointer closure;		/* TextWidget */
-XtPointer callData;		/* #pixels */
+static void
+VScroll(Widget w, XtPointer closure, XtPointer callData)
 {
-  TextWidget ctx = (TextWidget)closure;
-  int height, lines = (int) callData;
+    TextWidget ctx = (TextWidget)closure;
+    long height, lines = (long)callData;
 
-  height = ctx->core.height - VMargins(ctx);
-  if (height < 1)
-    height = 1;
-  lines = (int) (lines * (int) ctx->text.lt.lines) / height;
-  _XawTextPrepareToUpdate(ctx);
-  _XawTextVScroll(ctx, lines);
-  _XawTextExecuteUpdate(ctx);
+    height = XtHeight(ctx) - VMargins(ctx);
+    if (height < 1)
+	height = 1;
+    lines = (lines * ctx->text.lt.lines) / height;
+    _XawTextPrepareToUpdate(ctx);
+    XawTextScroll(ctx, lines, 0);
+    _XawTextExecuteUpdate(ctx);
 }
 
-/*
- * The routine "thumbs" the displayed text. Thumbing means reposition the
- * displayed view of the source to a new position determined by a fraction
- * of the way from beginning to end. Ideally, this should be determined by
- * the number of displayable lines in the source. This routine does it as a
- * fraction of the first position and last position and then normalizes to
- * the start of the line containing the position.
- *
- * BUG/deficiency: The normalize to line portion of this routine will
- * cause thumbing to always position to the start of the source.
- */
-
 /*ARGSUSED*/
-static void 
-VJump(w, closure, callData)
-Widget w;
-XtPointer closure, callData; /* closuer = TextWidget, callData = percent. */
+static void
+VJump(Widget w, XtPointer closure, XtPointer callData)
 {
-  float * percent = (float *) callData;
-  TextWidget ctx = (TextWidget)closure;
-  XawTextPosition position, old_top, old_bot;
-  XawTextLineTable * lt = &(ctx->text.lt);
+    float percent = *(float *)callData;
+    TextWidget ctx = (TextWidget)closure;
+    XawTextPosition top, last, position, tmp;
+    XawTextLineTable *lt = &(ctx->text.lt);
+    int dim, vlines = 0, wwidth = GetMaxTextWidth(ctx);
+    Bool scroll = True;
 
-  _XawTextPrepareToUpdate(ctx);
-  old_top = lt->top;
-  if ( (lt->lines > 0) && (IsValidLine(ctx, lt->lines - 1)) )
-    old_bot = lt->info[lt->lines - 1].position;
-  else
-    old_bot = ctx->text.lastPos;
+    position = percent * ctx->text.lastPos;
+    top = lt->top;
 
-  position = (long) (*percent * (float) ctx->text.lastPos);
-  position= SrcScan(ctx->text.source, position, XawstEOL, XawsdLeft, 1, FALSE);
-  if ( (position >= old_top) && (position <= old_bot) ) {
-    int line = 0;
-    for (;(line < lt->lines) && (position > lt->info[line].position) ; line++);
-    _XawTextVScroll(ctx, line);
-  }
-  else {
-    XawTextPosition new_bot;
-    _XawTextBuildLineTable(ctx, position, FALSE);
-    new_bot = IsValidLine(ctx, lt->lines-1) ? lt->info[lt->lines-1].position 
-                                            : ctx->text.lastPos;
-
-    if ((old_top >= lt->top) && (old_top <= new_bot)) {
-      int line = 0;
-      for (;(line < lt->lines) && (old_top > lt->info[line].position); line++);
-      _XawTextBuildLineTable(ctx, old_top, FALSE);
-      _XawTextVScroll(ctx, -line);
+    if (!lt->lines || (position >= lt->top && position < lt->info[1].position)) {
+	_XawTextSetScrollBars(ctx);
+	return;
     }
-    else 
-      DisplayTextWindow( (Widget) ctx);
-  }
-  _XawTextExecuteUpdate(ctx);
+
+#ifndef OLDXAW
+    ctx->text.lt.base_line = -1;
+#endif
+
+    if (position > lt->top) {	  /* VScroll Up */
+	if (position > lt->top && position < lt->info[lt->lines].position)
+	    vlines = LineForPosition(ctx, position);
+	else {
+	    scroll = False;
+	    top = SrcScan(ctx->text.source, position, XawstEOL,
+			  XawsdLeft, 1, False);
+	    if (ctx->text.wrap != XawtextWrapNever) {
+		last = top;
+		while (last < position) {
+		    tmp = last;
+		    XawTextSinkFindPosition(ctx->text.sink, last,
+					    ctx->text.left_margin, wwidth,
+					    ctx->text.wrap == XawtextWrapWord,
+					    &last, &dim, &dim);
+		    if (last == tmp)
+			++last;
+		    if (last < position)
+			top = last;
+		}
+	    }
+	}
+    }
+    else {		  /* VScroll Down */
+	/*
+	 * Calculates the number of lines
+	 */
+	while (top > position) {
+	    last = top;
+	    top = SrcScan(ctx->text.source, top, XawstEOL,
+			  XawsdLeft, 2, False);
+	    vlines -= CountLines(ctx, top, last);
+	    if (-vlines >= ctx->text.lt.lines) {
+		scroll = False;
+		top = SrcScan(ctx->text.source, position, XawstEOL,
+			      XawsdLeft, 1, False);
+		break;
+	      }
+	  }
+	/*
+	 * Normalize
+	 */
+	if (ctx->text.wrap != XawtextWrapNever) {
+	    last = top;
+	    while (last < position) {
+		tmp = last;
+		XawTextSinkFindPosition(ctx->text.sink, last,
+					ctx->text.left_margin,
+					wwidth,
+					ctx->text.wrap == XawtextWrapWord,
+					&last, &dim, &dim);
+		if (last == tmp)
+		    ++last;
+		if (last < position)
+		    top = last;
+		++vlines;
+	    }
+	}
+    }
+
+    if (vlines || !scroll) {
+	_XawTextPrepareToUpdate(ctx);
+	if (scroll)
+	    XawTextScroll(ctx, vlines, 0);
+	else
+	    _BuildLineTable(ctx, top, 0);
+	_XawTextExecuteUpdate(ctx);
+    }
+}
+
+static Bool
+MatchSelection(Atom selection, XawTextSelection *s)
+{
+    Atom *match;
+    int count;
+
+    for (count = 0, match = s->selections; count < s->atom_count;
+       match++, count++)
+    if (*match == selection)
+	return (True);
+
+  return (False);
 }
 
 static Boolean
-MatchSelection(selection, s)
-Atom		    selection;
-XawTextSelection    *s;
+TextConvertSelection(Widget w, Atom *selection, Atom *target, Atom *type,
+		 XtPointer *value, unsigned long *length, int *format)
 {
-    Atom    *match;
-    int	    count;
+    Display *d = XtDisplay(w);
+    TextWidget ctx = (TextWidget)w;
+    Widget src = ctx->text.source;
+    XawTextEditType edit_mode;
+    Arg args[1];
+    XawTextSelectionSalt *salt = NULL;
+    XawTextSelection *s;
 
-    for (count = 0, match = s->selections; count < s->atom_count; match++, count++)
-	if (*match == selection)
-	    return True;
-    return False;
-}
+    if (*target == XA_TARGETS(d)) {
+	Atom *targetP, *std_targets;
+	unsigned long std_length;
 
-static Boolean 
-ConvertSelection(w, selection, target, type, value, length, format)
-Widget w;
-Atom *selection, *target, *type;
-XtPointer *value;
-unsigned long *length;
-int *format;
-{
-  Display* d = XtDisplay(w);
-  TextWidget ctx = (TextWidget)w;
-  Widget src = ctx->text.source;
-  XawTextEditType edit_mode;
-  Arg args[1];
+	if (SrcCvtSel(src, selection, target, type, value, length, format))
+	    return (True);
 
-  XawTextSelectionSalt	*salt = NULL;
-  XawTextSelection	*s;
+	XtSetArg(args[0], XtNeditType, &edit_mode);
+	XtGetValues(src, args, ONE);
 
-  if (*target == XA_TARGETS(d)) {
-    Atom* targetP, * std_targets;
-    unsigned long std_length;
+	XmuConvertStandardSelection(w, ctx->text.time, selection,
+				    target, type, (XPointer*)&std_targets,
+				    &std_length, format);
 
-    if ( SrcCvtSel(src, selection, target, type, value, length, format) ) 
-	return True;
-
-    XmuConvertStandardSelection(w, ctx->text.time, selection, 
-				target, type, (XPointer*)&std_targets,
-				&std_length, format);
-    
-    *value = XtMalloc((unsigned) sizeof(Atom)*(std_length + 7));
-    targetP = *(Atom**)value;
-    *length = std_length + 6;
-    *targetP++ = XA_STRING;
-    *targetP++ = XA_TEXT(d);
-    *targetP++ = XA_COMPOUND_TEXT(d);
-    *targetP++ = XA_LENGTH(d);
-    *targetP++ = XA_LIST_LENGTH(d);
-    *targetP++ = XA_CHARACTER_POSITION(d);
-
-    XtSetArg(args[0], XtNeditType,&edit_mode);
-    XtGetValues(src, args, ONE);
-
-    if (edit_mode == XawtextEdit) {
-      *targetP++ = XA_DELETE(d);
-      (*length)++;
+	*length = 7 + (edit_mode == XawtextEdit) + std_length;
+	*value = XtMalloc((unsigned)sizeof(Atom)*(*length));
+	targetP = *(Atom**)value;
+	*targetP++ = XA_STRING;
+	*targetP++ = XA_TEXT(d);
+	*targetP++ = XA_UTF8_STRING(d);
+	*targetP++ = XA_COMPOUND_TEXT(d);
+	*targetP++ = XA_LENGTH(d);
+	*targetP++ = XA_LIST_LENGTH(d);
+	*targetP++ = XA_CHARACTER_POSITION(d);
+	if (edit_mode == XawtextEdit) {
+	    *targetP++ = XA_DELETE(d);
+	}
+	(void)memmove((char*)targetP, (char*)std_targets,
+		      sizeof(Atom) * std_length);
+	XtFree((char*)std_targets);
+	*type = XA_ATOM;
+	*format = 32;
+	return (True);
     }
-    (void) memmove((char*)targetP, (char*)std_targets, sizeof(Atom)*std_length);
-    XtFree((char*)std_targets);
-    *type = XA_ATOM;
-    *format = 32;
-    return True;
-  }
-  
-  if ( SrcCvtSel(src, selection, target, type, value, length, format) )
-    return True;
 
-  if (MatchSelection (*selection, &ctx->text.s))
-    s = &ctx->text.s;
-  else
-  {
-    for (salt = ctx->text.salt; salt; salt = salt->next)
-	if (MatchSelection (*selection, &salt->s))
-	    break;
-    if (!salt)
-	return False;
-    s = &salt->s;
-  }
-  if (*target == XA_STRING ||
-      *target == XA_TEXT(d) ||
-      *target == XA_COMPOUND_TEXT(d)) {
+    if (SrcCvtSel(src, selection, target, type, value, length, format))
+	return (True);
+
+    if (MatchSelection(*selection, &ctx->text.s))
+	s = &ctx->text.s;
+    else {
+	for (salt = ctx->text.salt; salt; salt = salt->next)
+	    if (MatchSelection(*selection, &salt->s))
+		break;
+	if (!salt)
+	    return (False);
+	s = &salt->s;
+    }
+    if (*target == XA_STRING
+	|| *target == XA_TEXT(d)
+	|| *target == XA_UTF8_STRING(d)
+	|| *target == XA_COMPOUND_TEXT(d)) {
 	if (*target == XA_TEXT(d)) {
-	    if (_XawTextFormat(ctx) == XawFmtWide)
+	    if (XawTextFormat(ctx, XawFmtWide))
 		*type = XA_COMPOUND_TEXT(d);
 	    else
 		*type = XA_STRING;
-	} else {
-	    *type = *target;
 	}
+	else
+	    *type = *target;
 	/* 
-	 * If salt is True, the salt->contents stores CT string, 
+	 * If salt is True, the salt->contents stores CT string,
 	 * its length is measured in bytes.
 	 * Refer to _XawTextSaltAwaySelection().
 	 *
@@ -1582,203 +2029,215 @@ int *format;
 	 */
 	if (!salt) {
 	    *value = _XawTextGetSTRING(ctx, s->left, s->right);
-	    if (_XawTextFormat(ctx) == XawFmtWide) {
+	    if (XawTextFormat(ctx, XawFmtWide)) {
 		XTextProperty textprop;
 		if (XwcTextListToTextProperty(d, (wchar_t **)value, 1,
 					      XCompoundTextStyle, &textprop)
-			<  Success) {
-		    XtFree(*value);
-		    return False;
+		    <  Success) {
+		    XtFree((char *)*value);
+		    return (False);
 		}
-		XtFree(*value);
+	 	XtFree((char *)*value);
 		*value = (XtPointer)textprop.value;
 		*length = textprop.nitems;
-	    } else {
-		*length = strlen(*value);
 	    }
-	} else {
+	    else
+	        *length = strlen((char *)*value);
+	}
+	else {
 	    *value = XtMalloc((salt->length + 1) * sizeof(unsigned char));
-	    strcpy (*value, salt->contents);
+	    strcpy ((char *)*value, salt->contents);
 	    *length = salt->length;
 	}
-	if (_XawTextFormat(ctx) == XawFmtWide && *type == XA_STRING) {
+	/* Got *value,*length, now in COMPOUND_TEXT format. */
+	if (XawTextFormat(ctx, XawFmtWide) && *type == XA_STRING) {
 	    XTextProperty textprop;
 	    wchar_t **wlist;
 	    int count;
+
 	    textprop.encoding = XA_COMPOUND_TEXT(d);
 	    textprop.value = (unsigned char *)*value;
 	    textprop.nitems = strlen(*value);
 	    textprop.format = 8;
-	    if (XwcTextPropertyToTextList(d, &textprop, (wchar_t ***)&wlist, &count)
-			< Success) {
-		XtFree(*value);
-		return False;
+	    if (XwcTextPropertyToTextList(d, &textprop, &wlist, &count)
+		 < Success
+		|| count < 1) {
+		XtFree((char *)*value);
+		return (False);
 	    }
-	    XtFree(*value);
-	    if (XwcTextListToTextProperty( d, (wchar_t **)wlist, 1,
-					  XStringStyle, &textprop) < Success) {
-		XwcFreeStringList( (wchar_t**) wlist );
-		return False;
+	    XtFree((char *)*value);
+	    if (XwcTextListToTextProperty(d, wlist, 1, XStringStyle, &textprop)
+		 < Success) {
+		XwcFreeStringList((wchar_t**) wlist);
+		return (False);
 	    }
-	    *value = (XtPointer) textprop.value;
+	    *value = (XtPointer)textprop.value;
 	    *length = textprop.nitems;
-	    XwcFreeStringList( (wchar_t**) wlist );
+	    XwcFreeStringList(wlist);
+	} else if (*type == XA_UTF8_STRING(d)) {
+	    XTextProperty textprop;
+	    char **list;
+	    int count;
+
+	    textprop.encoding = XA_COMPOUND_TEXT(d);
+	    textprop.value = (unsigned char *)*value;
+	    textprop.nitems = strlen(*value);
+	    textprop.format = 8;
+	    if (Xutf8TextPropertyToTextList(d, &textprop, &list, &count)
+		 < Success
+		|| count < 1) {
+		XtFree((char *)*value);
+		return (False);
+	    }
+	    XtFree((char *)*value);
+	    *value = *list;
+	    *length = strlen(*list);
+	    XFree(list);
 	}
 	*format = 8;
-	return True;
-  }
+	return (True);
+    }
 
-  if ( (*target == XA_LIST_LENGTH(d)) || (*target == XA_LENGTH(d)) ) {
-    long * temp;
-    
-    temp = (long *) XtMalloc( (unsigned) sizeof(long) );
-    if (*target == XA_LIST_LENGTH(d))
-      *temp = 1L;
-    else			/* *target == XA_LENGTH(d) */
-      *temp = (long) (s->right - s->left);
-    
-    *value = (XPointer) temp;
-    *type = XA_INTEGER;
-    *length = 1L;
-    *format = 32;
-    return True;
-  }
+    if ((*target == XA_LIST_LENGTH(d)) || (*target == XA_LENGTH(d))) {
+	long * temp;
 
-  if (*target == XA_CHARACTER_POSITION(d)) {
-    long * temp;
-    
-    temp = (long *) XtMalloc( (unsigned)( 2 * sizeof(long) ) );
-    temp[0] = (long) (s->left + 1);
-    temp[1] = s->right;
-    *value = (XPointer) temp;
-    *type = XA_SPAN(d);
-    *length = 2L;
-    *format = 32;
-    return True;
-  }
+	temp = (long *)XtMalloc((unsigned)sizeof(long));
+	if (*target == XA_LIST_LENGTH(d))
+	    *temp = 1L;
+	else			/* *target == XA_LENGTH(d) */
+	    *temp = (long) (s->right - s->left);
 
-  if (*target == XA_DELETE(d)) {
-    void _XawTextZapSelection(); /* From TextAction.c */
-    
-    if (!salt)
-	_XawTextZapSelection( ctx, (XEvent *) NULL, TRUE);
-    *value = NULL;
-    *type = XA_NULL(d);
-    *length = 0;
-    *format = 32;
-    return True;
-  }
+	*value = (XPointer)temp;
+	*type = XA_INTEGER;
+	*length = 1L;
+	*format = 32;
+	return (True);
+    }
 
-  if (XmuConvertStandardSelection(w, ctx->text.time, selection, target, type,
-				  (XPointer *)value, length, format))
-    return True;
-  
-  /* else */
-  return False;
+    if (*target == XA_CHARACTER_POSITION(d)) {
+	long * temp;
+
+	temp = (long *)XtMalloc((unsigned)(2 * sizeof(long)));
+	temp[0] = (long)(s->left + 1);
+	temp[1] = s->right;
+	*value = (XPointer)temp;
+	*type = XA_SPAN(d);
+	*length = 2L;
+	*format = 32;
+	return (True);
+    }
+
+    if (*target == XA_DELETE(d)) {
+	if (!salt)
+	    _XawTextZapSelection(ctx, NULL, True);
+	*value = NULL;
+	*type = XA_NULL(d);
+	*length = 0;
+	*format = 32;
+	return (True);
+    }
+
+    if (XmuConvertStandardSelection(w, ctx->text.time, selection, target, type,
+				    (XPointer *)value, length, format))
+	return (True);
+
+    /* else */
+    return (False);
 }
-
-/*	Function Name: GetCutBuffferNumber
- *	Description: Returns the number of the cut buffer.
- *	Arguments: atom - the atom to check.
- *	Returns: the number of the cut buffer representing this atom or
- *               NOT_A_CUT_BUFFER.
- */
-
-#define NOT_A_CUT_BUFFER -1
-
-static int
-GetCutBufferNumber(atom)
-Atom atom;
-{
-  if (atom == XA_CUT_BUFFER0) return(0);
-  if (atom == XA_CUT_BUFFER1) return(1);
-  if (atom == XA_CUT_BUFFER2) return(2);
-  if (atom == XA_CUT_BUFFER3) return(3);
-  if (atom == XA_CUT_BUFFER4) return(4);
-  if (atom == XA_CUT_BUFFER5) return(5);
-  if (atom == XA_CUT_BUFFER6) return(6);
-  if (atom == XA_CUT_BUFFER7) return(7);
-  return(NOT_A_CUT_BUFFER);
-}
-
-static void 
-LoseSelection(w, selection)
-Widget w;
-Atom *selection;
-{
-  TextWidget ctx = (TextWidget) w;
-  Atom* atomP;
-  int i;
-  XawTextSelectionSalt	*salt, *prevSalt, *nextSalt;
-
-  _XawTextPrepareToUpdate(ctx);
-
-  atomP = ctx->text.s.selections;
-  for (i = 0 ; i < ctx->text.s.atom_count; i++, atomP++)
-    if ( (*selection == *atomP) || 
-	(GetCutBufferNumber(*atomP) != NOT_A_CUT_BUFFER) )/* is a cut buffer */
-      *atomP = (Atom)0;
-
-  while (ctx->text.s.atom_count &&
-	 ctx->text.s.selections[ctx->text.s.atom_count-1] == 0)
-    ctx->text.s.atom_count--;
 
 /*
- * Must walk the selection list in opposite order from UnsetSelection.
+ * Function:
+ *	GetCutBuffferNumber
+ *
+ * Parameters:
+ *	atom - atom to check
+ *
+ * Description:
+ *	Returns the number of the cut buffer.
+ *
+ * Returns:
+ *	The number of the cut buffer representing this atom or NOT_A_CUT_BUFFER
  */
+#define NOT_A_CUT_BUFFER -1
+static int
+GetCutBufferNumber(Atom atom)
+{
+    if (atom == XA_CUT_BUFFER0) return (0);
+    if (atom == XA_CUT_BUFFER1) return (1);
+    if (atom == XA_CUT_BUFFER2) return (2);
+    if (atom == XA_CUT_BUFFER3) return (3);
+    if (atom == XA_CUT_BUFFER4) return (4);
+    if (atom == XA_CUT_BUFFER5) return (5);
+    if (atom == XA_CUT_BUFFER6) return (6);
+    if (atom == XA_CUT_BUFFER7) return (7);
+    return (NOT_A_CUT_BUFFER);
+}
 
-  atomP = ctx->text.s.selections;
-  for (i = 0 ; i < ctx->text.s.atom_count; i++, atomP++)
-    if (*atomP == (Atom)0) {
-      *atomP = ctx->text.s.selections[--ctx->text.s.atom_count];
-      while (ctx->text.s.atom_count &&
-	     ctx->text.s.selections[ctx->text.s.atom_count-1] == 0)
+static void
+TextLoseSelection(Widget w, Atom *selection)
+{
+    TextWidget ctx = (TextWidget)w;
+    Atom *atomP;
+    int i;
+    XawTextSelectionSalt*salt, *prevSalt, *nextSalt;
+
+    atomP = ctx->text.s.selections;
+    for (i = 0 ; i < ctx->text.s.atom_count; i++, atomP++)
+	if ((*selection == *atomP)
+	    || (GetCutBufferNumber(*atomP) != NOT_A_CUT_BUFFER))
+	    *atomP = (Atom)0;
+
+    while (ctx->text.s.atom_count
+	   && ctx->text.s.selections[ctx->text.s.atom_count - 1] == 0)
 	ctx->text.s.atom_count--;
-    }
-  
-  if (ctx->text.s.atom_count == 0)
-    ModifySelection(ctx, ctx->text.insertPos, ctx->text.insertPos);
-      
-  if (ctx->text.old_insert >= 0) /* Update in progress. */
-    _XawTextExecuteUpdate(ctx);
+
+    /*
+     * Must walk the selection list in opposite order from UnsetSelection
+     */
+    atomP = ctx->text.s.selections;
+    for (i = 0 ; i < ctx->text.s.atom_count; i++, atomP++)
+	if (*atomP == (Atom)0) {
+	    *atomP = ctx->text.s.selections[--ctx->text.s.atom_count];
+	    while (ctx->text.s.atom_count
+		   && ctx->text.s.selections[ctx->text.s.atom_count-1] == 0)
+		ctx->text.s.atom_count--;
+	}
+
+    if (ctx->text.s.atom_count == 0)
+	ModifySelection(ctx, ctx->text.insertPos, ctx->text.insertPos);
 
     prevSalt = 0;
-    for (salt = ctx->text.salt; salt; salt = nextSalt)
-    {
-    	atomP = salt->s.selections;
+    for (salt = ctx->text.salt; salt; salt = nextSalt) {
+	atomP = salt->s.selections;
 	nextSalt = salt->next;
-    	for (i = 0 ; i < salt->s.atom_count; i++, atomP++)
+	for (i = 0 ; i < salt->s.atom_count; i++, atomP++)
 	    if (*selection == *atomP)
 		*atomP = (Atom)0;
-    	
-    	while (salt->s.atom_count &&
-	       salt->s.selections[salt->s.atom_count-1] == 0)
-	{
+
+	while (salt->s.atom_count
+	       && salt->s.selections[salt->s.atom_count-1] == 0)
 	    salt->s.atom_count--;
-	}
     	
-    	/*
-    	 * Must walk the selection list in opposite order from UnsetSelection.
-    	 */
-    	
-    	atomP = salt->s.selections;
-    	for (i = 0 ; i < salt->s.atom_count; i++, atomP++)
-    	    if (*atomP == (Atom)0)
- 	    {
-      	      *atomP = salt->s.selections[--salt->s.atom_count];
-      	      while (salt->s.atom_count &&
-	     	     salt->s.selections[salt->s.atom_count-1] == 0)
-    	    	salt->s.atom_count--;
-    	    }
-	if (salt->s.atom_count == 0)
-	{
+	/*
+	 * Must walk the selection list in opposite order from UnsetSelection
+	 */
+	atomP = salt->s.selections;
+	for (i = 0 ; i < salt->s.atom_count; i++, atomP++)
+	    if (*atomP == (Atom)0) {
+		*atomP = salt->s.selections[--salt->s.atom_count];
+		while (salt->s.atom_count
+		       && salt->s.selections[salt->s.atom_count-1] == 0)
+		    salt->s.atom_count--;
+	    }
+
+	if (salt->s.atom_count == 0) {
 	    XtFree ((char *) salt->s.selections);
 	    XtFree (salt->contents);
 	    if (prevSalt)
 		prevSalt->next = nextSalt;
 	    else
 		ctx->text.salt = nextSalt;
-	    XtFree ((char *) salt);
+	    XtFree((char *)salt);
 	}
 	else
 	    prevSalt = salt;
@@ -1786,38 +2245,34 @@ Atom *selection;
 }
 
 void
-_XawTextSaltAwaySelection (ctx, selections, num_atoms)
-TextWidget ctx;
-Atom* selections;
-int	num_atoms;
+_XawTextSaltAwaySelection(TextWidget ctx, Atom *selections, int num_atoms)
 {
-    XawTextSelectionSalt    *salt;
-    int			    i, j;
+    XawTextSelectionSalt *salt;
+    int i, j;
 
     for (i = 0; i < num_atoms; i++)
-	LoseSelection ((Widget) ctx, selections + i);
+	TextLoseSelection((Widget)ctx, selections + i);
     if (num_atoms == 0)
 	return;
     salt = (XawTextSelectionSalt *)
-		XtMalloc( (unsigned) sizeof(XawTextSelectionSalt) );
+	XtMalloc((unsigned)sizeof(XawTextSelectionSalt));
     if (!salt)
 	return;
-    salt->s.selections = (Atom *)
-	 XtMalloc( (unsigned) ( num_atoms * sizeof (Atom) ) );
-    if (!salt->s.selections)
-    {
-	XtFree ((char *) salt);
+    salt->s.selections = (Atom *)XtMalloc((unsigned)(num_atoms * sizeof(Atom)));
+    if (!salt->s.selections) {
+	XtFree((char *)salt);
 	return;
     }
     salt->s.left = ctx->text.s.left;
     salt->s.right = ctx->text.s.right;
     salt->s.type = ctx->text.s.type;
     salt->contents = _XawTextGetSTRING(ctx, ctx->text.s.left, ctx->text.s.right);
-    if (_XawTextFormat(ctx) == XawFmtWide) {
+    if (XawTextFormat(ctx, XawFmtWide)) {
 	XTextProperty textprop;
 	if (XwcTextListToTextProperty(XtDisplay((Widget)ctx),
-			(wchar_t**)(&(salt->contents)), 1, XCompoundTextStyle,
-			&textprop) < Success) {
+				      (wchar_t**)(&(salt->contents)), 1,
+				      XCompoundTextStyle,
+				      &textprop) < Success) {
 	    XtFree(salt->contents);
 	    salt->length = 0;
 	    return;
@@ -1825,307 +2280,544 @@ int	num_atoms;
 	XtFree(salt->contents);
 	salt->contents = (char *)textprop.value;
 	salt->length = textprop.nitems;
-    } else
-       salt->length = strlen (salt->contents);
+    }
+    else
+	salt->length = strlen (salt->contents);
     salt->next = ctx->text.salt;
     ctx->text.salt = salt;
     j = 0;
-    for (i = 0; i < num_atoms; i++)
-    {
-	if (GetCutBufferNumber (selections[i]) == NOT_A_CUT_BUFFER)
-	{
+    for (i = 0; i < num_atoms; i++) {
+	if (GetCutBufferNumber (selections[i]) == NOT_A_CUT_BUFFER) {
 	    salt->s.selections[j++] = selections[i];
-	    XtOwnSelection ((Widget) ctx, selections[i], ctx->text.time,
-		    ConvertSelection, LoseSelection, (XtSelectionDoneProc)NULL);
+	    XtOwnSelection((Widget)ctx, selections[i], ctx->text.time,
+			   TextConvertSelection, TextLoseSelection, NULL);
 	}
     }
     salt->s.atom_count = j;
 }
 
-static void 
-_SetSelection(ctx, left, right, selections, count)
-TextWidget ctx;
-XawTextPosition left, right;
-Atom *selections;
-Cardinal count;
+static void
+_SetSelection(TextWidget ctx, XawTextPosition left, XawTextPosition right,
+	      Atom *selections, Cardinal count)
 {
-  XawTextPosition pos;
-  
-  if (left < ctx->text.s.left) {
-    pos = Min(right, ctx->text.s.left);
-    _XawTextNeedsUpdating(ctx, left, pos);
-  }
-  if (left > ctx->text.s.left) {
-    pos = Min(left, ctx->text.s.right);
-    _XawTextNeedsUpdating(ctx, ctx->text.s.left, pos);
-  }
-  if (right < ctx->text.s.right) {
-    pos = Max(right, ctx->text.s.left);
-    _XawTextNeedsUpdating(ctx, pos, ctx->text.s.right);
-  }
-  if (right > ctx->text.s.right) {
-    pos = Max(left, ctx->text.s.right);
-    _XawTextNeedsUpdating(ctx, pos, right);
-  }
-  
-  ctx->text.s.left = left;
-  ctx->text.s.right = right;
+#ifndef OLDXAW
+    Cardinal i;
+    XawTextPosition pos;
+    TextSrcObject src = (TextSrcObject)ctx->text.source;
 
-  SrcSetSelection(ctx->text.source, left, right,
-		  (count == 0) ? None : selections[0]);
+    for (i = 0; i < src->textSrc.num_text; i++) {
+	TextWidget tw = (TextWidget)src->textSrc.text[i];
+	Bool needs_updating = tw->text.old_insert < 0;
+	Bool showposition = tw->text.showposition;
 
-  if (left < right) {
-    Widget w = (Widget) ctx;
-    int buffer;
-    
-    while (count) {
-      Atom selection = selections[--count];
-
-/*
- * If this is a cut buffer.
- */
-
-      if ((buffer = GetCutBufferNumber(selection)) != NOT_A_CUT_BUFFER) {
-	unsigned char *ptr, *tptr;
-	unsigned int amount, max_len = MAX_CUT_LEN(XtDisplay(w));
-	unsigned long len;
-
-	tptr= ptr= (unsigned char *) _XawTextGetSTRING(ctx, ctx->text.s.left, 
-						       ctx->text.s.right);
-	if (_XawTextFormat(ctx) == XawFmtWide) {
-	   /*
-	    * Only XA_STRING(Latin 1) is allowed in CUT_BUFFER,
-	    * so we get it from wchar string, then free the wchar string.
-	    */
-	    XTextProperty textprop;
-	    if (XwcTextListToTextProperty(XtDisplay(w), (wchar_t**)&ptr, 1,
-		    XStringStyle, &textprop) <  Success) {
-		XtFree((char *)ptr);
-		return;
-	    }
-	    XtFree((char *)ptr);
-	    tptr = ptr = textprop.value;
-        } 
-	if (buffer == 0) {
-	  _CreateCutBuffers(XtDisplay(w));
-	  XRotateBuffers(XtDisplay(w), 1);
+	if (needs_updating) {
+	    tw->text.showposition = False;
+	    _XawTextPrepareToUpdate(tw);
 	}
-	amount = Min ( (len = strlen((char *)ptr)), max_len);
-	XChangeProperty(XtDisplay(w), RootWindow(XtDisplay(w), 0), selection, 
-			XA_STRING, 8, PropModeReplace, ptr, amount);
+#else
+	TextWidget tw = ctx;
+	XawTextPosition pos;
+#endif /* OLDXAW */
 
-	while (len > max_len) {
-	    len -= max_len;
-	    tptr += max_len;
-	    amount = Min (len, max_len);
-	    XChangeProperty(XtDisplay(w), RootWindow(XtDisplay(w), 0), 
-			    selection, XA_STRING, 8, PropModeAppend, 
-			    tptr, amount);
+	if (left < tw->text.s.left) {
+	    pos = Min(right, tw->text.s.left);
+	    _XawTextNeedsUpdating(tw, left, pos);
 	}
-	XtFree ((char *)ptr);
-      }
-      else			/* This is a real selection */
-      XtOwnSelection(w, selection, ctx->text.time, ConvertSelection, 
-		     LoseSelection, (XtSelectionDoneProc)NULL);
+	if (left > tw->text.s.left) {
+	    pos = Min(left, tw->text.s.right);
+	    _XawTextNeedsUpdating(tw, tw->text.s.left, pos);
+	}
+	if (right < tw->text.s.right) {
+	    pos = Max(right, tw->text.s.left);
+	    _XawTextNeedsUpdating(tw, pos, tw->text.s.right);
+	}
+	if (right > tw->text.s.right) {
+	    pos = Max(left, tw->text.s.right);
+	    _XawTextNeedsUpdating(tw, pos, right);
+	}
+
+	tw->text.s.left = left;
+	tw->text.s.right = right;
+
+#ifndef OLDXAW
+	if (needs_updating) {
+	    _XawTextExecuteUpdate(tw);
+	    tw->text.showposition = showposition;
+	}
     }
-  }
-  else
+#endif /* OLDXAW */
+
+    SrcSetSelection(ctx->text.source, left, right,
+		    (count == 0) ? None : selections[0]);
+
+    if (left < right) {
+	Widget w = (Widget)ctx;
+	int buffer;
+
+	while (count) {
+	    Atom selection = selections[--count];
+
+	    /*
+	     * If this is a cut buffer
+	     */
+	    if ((buffer = GetCutBufferNumber(selection)) != NOT_A_CUT_BUFFER) {
+		unsigned char *ptr, *tptr;
+		unsigned int amount, max_len = MAX_CUT_LEN(XtDisplay(w));
+		unsigned long len;
+
+		tptr= ptr= (unsigned char *)_XawTextGetSTRING(ctx,
+							      ctx->text.s.left,
+							      ctx->text.s.right);
+		if (XawTextFormat(ctx, XawFmtWide)) {
+		    /*
+		     * Only XA_STRING(Latin 1) is allowed in CUT_BUFFER,
+		     * so we get it from wchar string, then free the wchar string
+		     */
+		    XTextProperty textprop;
+
+		    if (XwcTextListToTextProperty(XtDisplay(w), (wchar_t**)&ptr,
+						  1, XStringStyle, &textprop)
+			<  Success){
+			XtFree((char *)ptr);
+			return;
+		    }
+		    XtFree((char *)ptr);
+		    tptr = ptr = textprop.value;
+		}
+		if (buffer == 0) {
+		    _CreateCutBuffers(XtDisplay(w));
+		    XRotateBuffers(XtDisplay(w), 1);
+		}
+		amount = Min ((len = strlen((char *)ptr)), max_len);
+		XChangeProperty(XtDisplay(w), RootWindow(XtDisplay(w), 0),
+				selection, XA_STRING, 8, PropModeReplace,
+				ptr, amount);
+
+		while (len > max_len) {
+		    len -= max_len;
+		    tptr += max_len;
+		    amount = Min (len, max_len);
+		    XChangeProperty(XtDisplay(w), RootWindow(XtDisplay(w), 0),
+				    selection, XA_STRING, 8, PropModeAppend,
+				    tptr, amount);
+		}
+		XtFree ((char *)ptr);
+	    }
+	    else		/* This is a real selection */
+		XtOwnSelection(w, selection, ctx->text.time, TextConvertSelection,
+			       TextLoseSelection, NULL);
+	}
+    }
+    else
+	XawTextUnsetSelection((Widget)ctx);
+}
+
+#ifndef OLDXAW
+void
+_XawTextSetLineAndColumnNumber(TextWidget ctx, Bool force)
+{
+    int line_number, column_number;
+
+    if (ctx->text.old_insert != ctx->text.insertPos &&
+	ctx->text.lt.base_line < 0) {
+	ctx->text.lt.base_line = 0;
+	(void)_BuildLineTable(ctx, ctx->text.lt.top, 0);
+    }
+
+    line_number = ResolveLineNumber(ctx);
+    column_number = ResolveColumnNumber(ctx);
+
+    if (force || (ctx->text.column_number != column_number
+		  || ctx->text.line_number != line_number)) {
+	XawTextPositionInfo info;
+
+	ctx->text.line_number = info.line_number = line_number;
+	ctx->text.column_number = info.column_number = column_number;
+	info.insert_position = ctx->text.insertPos;
+	info.last_position = ctx->text.lastPos;
+	info.overwrite_mode = ctx->text.overwrite;
+
+	XtCallCallbacks((Widget)ctx, XtNpositionCallback, (XtPointer)&info);
+    }
+}
+
+static int
+ResolveColumnNumber(TextWidget ctx)
+{
+    Widget src = ctx->text.source;
+    short column_number = 0;
+    XawTextPosition position;
+    XawTextBlock block;
+    unsigned long format = _XawTextFormat(ctx);
+    TextSinkObject sink = (TextSinkObject)ctx->text.sink;
+    short *char_tabs = sink->text_sink.char_tabs;
+    int tab_count = sink->text_sink.tab_count;
+    int tab_index = 0, tab_column = 0, tab_base = 0;
+
+    if (ctx->text.lt.base_line < 1)
+	return (ctx->text.column_number);
+
+    position = SrcScan(src, ctx->text.insertPos, XawstEOL, XawsdLeft, 1, False);
+    XawTextSourceRead(src, position, &block, ctx->text.insertPos - position);
+
+    for (; position < ctx->text.insertPos; position++) {
+	if (position - block.firstPos >= block.length)
+	    XawTextSourceRead(src, position, &block, ctx->text.insertPos - position);
+	if ((format == XawFmt8Bit && block.ptr[position - block.firstPos] == '\t') ||
+	    (format == XawFmtWide && ((wchar_t*)block.ptr)[position - block.firstPos] == _Xaw_atowc(XawTAB))) {
+	    while (tab_base + tab_column <= column_number) {
+		if (tab_count) {
+		    for (; tab_index < tab_count; ++tab_index)
+			if (tab_base + char_tabs[tab_index] > column_number) {
+			    tab_column = char_tabs[tab_index];
+			    break;
+			}
+		    if (tab_index >= tab_count) {
+			tab_base += char_tabs[tab_count - 1];
+			tab_column = tab_index = 0;
+		    }
+		}
+		else
+		    tab_column += DEFAULT_TAB_SIZE;
+	    }
+	    column_number = tab_base + tab_column;
+	}
+	else
+	    ++column_number;
+	if (column_number >= 16384) {
+	    column_number = 16383;
+	    break;
+	}
+    }
+
+    return (column_number);
+}
+#endif /* OLDXAW */
+
+void
+_XawTextSourceChanged(Widget w, XawTextPosition left, XawTextPosition right,
+		      XawTextBlock *block, int lines)
+{
+    TextWidget ctx = (TextWidget)w;
+    Widget src = ctx->text.source;
+    XawTextPosition update_from, update_to, top;
+    Boolean update_disabled;
+    int delta, line, line_from;
+
+    if (left < ctx->text.old_insert) {
+	XawTextPosition old_insert = ctx->text.old_insert;
+
+	if (right < ctx->text.old_insert)
+	    old_insert -= right - left;
+	else
+	    old_insert = left;
+
+	ctx->text.insertPos = old_insert + block->length;
+    }
+#ifndef OLDXAW
+    if (left <= ctx->text.lt.top) {
+	if (left + block->length - (right - left) < ctx->text.lt.top) {
+	    ctx->text.source_changed = SRC_CHANGE_BEFORE;
+	    ctx->text.lt.base_line += lines;
+	}
+	else
+	    ctx->text.source_changed = SRC_CHANGE_OVERLAP;
+    }
+    else
+	ctx->text.source_changed = SRC_CHANGE_AFTER;
+#endif
+
+    update_from = left;
+    update_to = left + block->length;
+    update_to = SrcScan(src, update_to, XawstEOL, XawsdRight, 1, False);
+    delta = block->length - (right - left);
+    if (delta < 0)
+	ctx->text.clear_to_eol = True;
+    if (update_to == update_from)
+	++update_to;
+    update_disabled = ctx->text.update_disabled;
+    ctx->text.update_disabled = True;
+    ctx->text.lastPos = XawTextGetLastPosition(ctx);
+    top = ctx->text.lt.info[0].position;
+
     XawTextUnsetSelection((Widget)ctx);
+
+    if (delta) {
+	int i;
+	XmuSegment *seg;
+
+	for (seg = ctx->text.update->segment; seg; seg = seg->next) {
+	    if (seg->x1 > (int)left)
+		break;
+	    else if (seg->x2 > (int)left) {
+		seg->x2 += delta;
+		seg = seg->next;
+		break;
+	    }
+	}
+	for (; seg; seg = seg->next) {
+	    seg->x1 += delta;
+	    seg->x2 += delta;
+	}
+	XmuOptimizeScanline(ctx->text.update);
+
+	for (i = 0; i <= ctx->text.lt.lines; i++)
+	    if (ctx->text.lt.info[i].position > left)
+		break;
+	for (; i <= ctx->text.lt.lines; i++)
+	    ctx->text.lt.info[i].position += delta;
+    }
+
+    if (top != ctx->text.lt.info[0].position) {
+	line_from = line = 0;
+	ctx->text.lt.top = top = SrcScan(src, ctx->text.lt.info[0].position,
+					 XawstEOL, XawsdLeft, 1, False);
+	update_from = top;
+    }
+    else {
+	line_from = line = LineForPosition(ctx, update_from + delta);
+	top = ctx->text.lt.info[line].position;
+    }
+
+    if (line > 0 && ctx->text.wrap == XawtextWrapWord) {
+	--line;
+	top = ctx->text.lt.info[line].position;
+    }
+
+    (void)_BuildLineTable(ctx, top, line);
+
+    if (ctx->text.wrap == XawtextWrapWord) {
+	if (line_from != LineForPosition(ctx, update_from)
+	    || line_from != LineForPosition(ctx, update_to)) {
+	    ctx->text.clear_to_eol = True;
+	    update_from = SrcScan(src, update_from,
+				  XawstWhiteSpace, XawsdLeft, 1, True);
+	    if (update_to >= ctx->text.lastPos)
+	    /* this is not an error, it just tells _BuildLineTable to
+	     * clear to the bottom of the window. The value of update_to
+	     * should not be > ctx->text.lastPos.
+	     */
+		++update_to;
+	}
+    }
+    else if (!ctx->text.clear_to_eol) {
+	if (LineForPosition(ctx, update_from)
+	    != LineForPosition(ctx, update_to))
+	    ctx->text.clear_to_eol = True;
+    }
+
+    _XawTextNeedsUpdating(ctx, update_from, update_to);
+    ctx->text.update_disabled = update_disabled;
 }
 
 /*
- * This internal routine deletes the text from pos1 to pos2 in a source and
- * then inserts, at pos1, the text that was passed. As a side effect it
- * "invalidates" that portion of the displayed text (if any).
+ * Function:
+ *	_XawTextReplace
  *
- * NOTE: It is illegal to call this routine unless there is a valid line table!
+ * Parameters:
+ *	ctx   - text widget
+ *	left  - left offset
+ *	right - right offset
+ *	block - text block
+ *
+ * Description:
+ *	  Replaces the text between left and right by the text in block.
+ *	  Does all the required calculations of offsets, and rebuild the
+ *	the line table, from the insertion point (or previous line, if
+ *	wrap mode is 'word').
+ *
+ * Returns:
+ *	XawEditDone     - success
+ *	any other value - error code
  */
-
-int 
-_XawTextReplace (ctx, pos1, pos2, text)
-TextWidget ctx;
-XawTextPosition pos1, pos2;
-XawTextBlock *text;
+int
+_XawTextReplace(TextWidget ctx, XawTextPosition left, XawTextPosition right,
+		XawTextBlock *block)
 {
-  int i, line1, delta, error;
-  XawTextPosition updateFrom, updateTo;
-  Widget src = ctx->text.source;
-  XawTextEditType edit_mode;
-  Arg args[1];
-  Boolean tmp = ctx->text.update_disabled;
+    Arg args[1];
+    Widget src;
+    XawTextEditType edit_mode;
 
-  ctx->text.update_disabled = True; /* No redisplay during replacement. */
+    if (left == right && block->length == 0)
+	return (XawEditDone);
 
-/*
- * The insertPos may not always be set to the right spot in XawtextAppend 
- */
+    src = ctx->text.source;
+    XtSetArg(args[0], XtNeditType, &edit_mode);
+    XtGetValues(src, args, 1);
 
-  XtSetArg(args[0], XtNeditType, &edit_mode);
-  XtGetValues(src, args, ONE);
-
-  if ((pos1 == ctx->text.insertPos) && (edit_mode == XawtextAppend)) {
-    ctx->text.insertPos = ctx->text.lastPos;
-    pos2 = SrcScan(src, ctx->text.insertPos, XawstPositions, XawsdRight,
-		   (int)(ctx->text.insertPos - pos1), (Boolean)TRUE);
-    pos1 = ctx->text.insertPos;
-    if ( (pos1 == pos2) && (text->length == 0) ) {
-      ctx->text.update_disabled = FALSE; /* rearm redisplay. */
-      return( XawEditError );
+    if (edit_mode == XawtextAppend) {
+	if (block->length == 0)
+	    return (XawEditError);
+	ctx->text.insertPos = ctx->text.lastPos;
     }
-  }
 
-  updateFrom = SrcScan(src, pos1, XawstWhiteSpace, XawsdLeft, 1, FALSE);
-  updateFrom = Max(updateFrom, ctx->text.lt.top);
+#ifndef OLDXAW
+    return (SrcReplace(src, left, right, block));
+#else
+    if (SrcReplace(src, left, right, block) == XawEditDone) {
+	_XawTextSourceChanged((Widget)ctx, left, right, block, 0);
 
-  line1 = LineForPosition(ctx, updateFrom);
-  if ( (error = SrcReplace(src, pos1, pos2, text)) != 0) {
-    ctx->text.update_disabled = tmp; /* restore redisplay */
-    return(error);
-  }
-
-  XawTextUnsetSelection((Widget)ctx);
-
-  ctx->text.lastPos = GETLASTPOS;
-  if (ctx->text.lt.top >= ctx->text.lastPos) {
-    _XawTextBuildLineTable(ctx, ctx->text.lastPos, FALSE);
-    ClearWindow( (Widget) ctx);
-    ctx->text.update_disabled = tmp; /* restore redisplay */
-    return(0);			/* Things are fine. */
-  }
-
-  ctx->text.single_char = (text->length <= 1 && pos2 - pos1 <= 1);
-
-  delta = text->length - (pos2 - pos1);
-
-  if (delta < ctx->text.lastPos) {
-    for (pos2 += delta, i = 0; i < ctx->text.numranges; i++) {
-      if (ctx->text.updateFrom[i] > pos1)
-	ctx->text.updateFrom[i] += delta;
-      if (ctx->text.updateTo[i] >= pos1)
-	ctx->text.updateTo[i] += delta;
+	return (XawEditDone);
     }
-  }
-  
-  /* 
-   * fixup all current line table entries to reflect edit.
-   * %%% it is not legal to do arithmetic on positions.
-   * using Scan would be more proper.
-   */ 
-  if (delta != 0) {
-    XawTextLineTableEntry *lineP;
-    i = LineForPosition(ctx, pos1) + 1;
-    for (lineP = ctx->text.lt.info + i; i <= ctx->text.lt.lines; i++, lineP++)
-      lineP->position += delta;
-  }
-  
-  /*
-   * Now process the line table and fixup in case edits caused
-   * changes in line breaks. If we are breaking on word boundaries,
-   * this code checks for moving words to and from lines.
-   */
-  
-  if (IsPositionVisible(ctx, updateFrom)) {
-    updateTo = _BuildLineTable(ctx, 
-			       ctx->text.lt.info[line1].position, pos1, line1);
-    _XawTextNeedsUpdating(ctx, updateFrom, updateTo);
-  }
 
-  ctx->text.update_disabled = tmp; /* restore redisplay */
-  return(0);			/* Things are fine. */
+    return (XawEditError);
+#endif
 }
 
 /*
  * This routine will display text between two arbitrary source positions.
- * In the event that this span contains highlighted text for the selection, 
+ * In the event that this span contains highlighted text for the selection,
  * only that portion will be displayed highlighted.
- *
- * NOTE: it is illegal to call this routine unless there
- *       is a valid line table! 
  */
-
-static void 
-DisplayText(w, pos1, pos2)
-Widget w;
-XawTextPosition pos1, pos2;
+static void
+OldDisplayText(Widget w, XawTextPosition left, XawTextPosition right)
 {
-  TextWidget ctx = (TextWidget)w;
-  Position x, y;
-  int height, line, i, lastPos = ctx->text.lastPos;
-  XawTextPosition startPos, endPos;
-  Boolean clear_eol, done_painting;
+    static XmuSegment segment;
+    static XmuScanline next;
+    static XmuScanline scanline = {0, &segment, &next};
+    static XmuArea area = {&scanline};
 
-  pos1 = (pos1 < ctx->text.lt.top) ? ctx->text.lt.top : pos1;
-  pos2 = FindGoodPosition(ctx, pos2);
-  if ( (pos1 >= pos2) || !LineAndXYForPosition(ctx, pos1, &line, &x, &y) )
-    return;			/* line not visible, or pos1 >= pos2. */
+    TextWidget ctx = (TextWidget)w;
+    int x, y, line;
+    XawTextPosition start, end, last, final;
+    XmuScanline *scan;
+    XmuSegment *seg;
+    XmuArea *clip = NULL;
+    Bool cleol = ctx->text.clear_to_eol;
+    Bool has_selection = ctx->text.s.right > ctx->text.s.left;
 
-  for ( startPos = pos1, i = line; IsValidLine(ctx, i) && 
-                                   (i < ctx->text.lt.lines) ; i++) {
+    left = left < ctx->text.lt.top ? ctx->text.lt.top : left;
 
-    
-    if ( (endPos = ctx->text.lt.info[i + 1].position) > pos2 ) {
-      clear_eol = ((endPos = pos2) >= lastPos);
-      done_painting = (!clear_eol || ctx->text.single_char);
+    if (left > right || !LineAndXYForPosition(ctx, left, &line, &x, &y))
+	return;
+
+    last = XawTextGetLastPosition(ctx);
+    segment.x2 = (int)XtWidth(ctx) - ctx->text.r_margin.right;
+
+    if (cleol)
+	clip = XmuCreateArea();
+
+    for (start = left; start < right && line < ctx->text.lt.lines; line++) {
+	if ((end = ctx->text.lt.info[line + 1].position) > right)
+	    end = right;
+
+	final = end;
+	if (end > last)
+	    end = last;
+
+	if (end > start) {
+	    if (!has_selection
+		|| (start >= ctx->text.s.right || end <= ctx->text.s.left))
+		_XawTextSinkDisplayText(ctx->text.sink, x, y, start, end, False);
+	    else if (start >= ctx->text.s.left && end <= ctx->text.s.right)
+		_XawTextSinkDisplayText(ctx->text.sink, x, y, start, end, True);
+	    else {
+		OldDisplayText(w, start, ctx->text.s.left);
+		OldDisplayText(w, Max(start, ctx->text.s.left),
+			       Min(end, ctx->text.s.right));
+		OldDisplayText(w, ctx->text.s.right, end);
+	    }
+	}
+
+	x = ctx->text.left_margin;
+	if (cleol) {
+	    segment.x1 = ctx->text.lt.info[line].textWidth + x;
+	    if (XmuValidSegment(&segment)) {
+		scanline.y = y;
+		next.y = ctx->text.lt.info[line + 1].y;
+		XmuAreaOr(clip, &area);
+	    }
+	}
+
+	start = final;
+	y = ctx->text.lt.info[line + 1].y;
     }
-    else {
-      clear_eol = TRUE;
-      done_painting = FALSE;
+
+    if (cleol)  {
+	for (scan = clip->scanline; scan && scan->next; scan = scan->next)
+	    for (seg = scan->segment; seg; seg = seg->next)
+		SinkClearToBG(ctx->text.sink,
+			      seg->x1, scan->y,
+			      seg->x2 - seg->x1, scan->next->y - scan->y);
+	XmuDestroyArea(clip);
+    }
+}
+
+/*ARGSUSED*/
+static void
+DisplayText(Widget w, XawTextPosition left, XawTextPosition right)
+{
+#ifndef OLDXAW
+    static XmuSegment segment;
+    static XmuScanline next;
+    static XmuScanline scanline = {0, &segment, &next};
+    static XmuArea area = {&scanline};
+
+    TextWidget ctx = (TextWidget)w;
+    int y, line;
+    XawTextPosition from, to, lastPos;
+    Bool cleol = ctx->text.clear_to_eol;
+    Bool has_selection = ctx->text.s.right > ctx->text.s.left;
+    XawTextPaintList *paint_list;
+
+    left = left < ctx->text.lt.top ? ctx->text.lt.top : left;
+
+    if (left > right || !IsPositionVisible(ctx, left))
+	return;
+
+    line = LineForPosition(ctx, left);
+    y = ctx->text.lt.info[line].y;
+    segment.x2 = (int)XtWidth(ctx) - ctx->text.r_margin.right;
+    lastPos = XawTextGetLastPosition(ctx);
+
+    paint_list = ((TextSinkObject)ctx->text.sink)->text_sink.paint;
+
+    for (from = left; from < right && line < ctx->text.lt.lines; line++) {
+	if ((to = ctx->text.lt.info[line + 1].position) > right)
+	    to = right;
+
+	if (to > lastPos)
+	    to = lastPos;
+
+	if (from < to) {
+	    if (!has_selection
+		|| (from >= ctx->text.s.right || to <= ctx->text.s.left))
+		XawTextSinkPreparePaint(ctx->text.sink, y, line, from, to, False);
+	    else if (from >= ctx->text.s.left && to <= ctx->text.s.right)
+		XawTextSinkPreparePaint(ctx->text.sink, y, line, from, to, True);
+	    else {
+		XawTextSinkPreparePaint(ctx->text.sink, y, line, from,
+					ctx->text.s.left, False);
+		XawTextSinkPreparePaint(ctx->text.sink, y, line,
+					XawMax(from, ctx->text.s.left),
+					XawMin(to, ctx->text.s.right), True);
+		XawTextSinkPreparePaint(ctx->text.sink, y, line,
+					ctx->text.s.right, to, False);
+	    }
+	}
+
+	if (cleol) {
+	    segment.x1 = ctx->text.lt.info[line].textWidth + ctx->text.left_margin;
+	    if (XmuValidSegment(&segment)) {
+		scanline.y = y;
+		next.y = ctx->text.lt.info[line + 1].y;
+		XmuAreaOr(paint_list->clip, &area);
+	    }
+	}
+	y = ctx->text.lt.info[line + 1].y;
+	from = to;
     }
 
-    height = ctx->text.lt.info[i + 1].y - ctx->text.lt.info[i].y;
-
-    if ( (endPos > startPos) ) {
-      if ( (x == (Position) ctx->text.margin.left) && (x > 0) )
-	 SinkClearToBG (ctx->text.sink,
-			(Position) 0, y, 
-			(Dimension) ctx->text.margin.left, (Dimension)height); 
-
-      if ( (startPos >= ctx->text.s.right) || (endPos <= ctx->text.s.left) ) 
-	XawTextSinkDisplayText(ctx->text.sink, x, y, startPos, endPos, FALSE);
-      else if ((startPos >= ctx->text.s.left) && (endPos <= ctx->text.s.right))
-	XawTextSinkDisplayText(ctx->text.sink, x, y, startPos, endPos, TRUE);
-      else {
-	DisplayText(w, startPos, ctx->text.s.left);
-	DisplayText(w, Max(startPos, ctx->text.s.left),
-		    Min(endPos, ctx->text.s.right));
-	DisplayText(w, ctx->text.s.right, endPos);
-      }
-    }
-    startPos = endPos;
-    if (clear_eol) {
-	SinkClearToBG(ctx->text.sink, 
-		      (Position) (ctx->text.lt.info[i].textWidth +
-				  ctx->text.margin.left),
-		      (Position) y, w->core.width, (Dimension) height);
-
-	/*
-	 * We only get here if single character is true, and we need
-	 * to clear to the end of the screen.  We know that since there
-	 * was only one character deleted that this is the same
-	 * as clearing an extra line, so we do this, and are done.
-	 * 
-	 * This a performance hack, and a pretty gross one, but it works.
-	 *
-	 * Chris Peterson 11/13/89.
-	 */
-
-	if (done_painting) {
-	    y += height;
-	    SinkClearToBG(ctx->text.sink, 
-			  (Position) ctx->text.margin.left, (Position) y, 
-			  w->core.width, (Dimension) height);
-
-	    break;		/* set single_char to FALSE and return. */
+    /* clear to the bottom of the window */
+    if (cleol && line >= ctx->text.lt.lines) {
+	segment.x1 = ctx->text.left_margin;
+	if (XmuValidSegment(&segment)) {
+	    scanline.y = y;
+	    next.y = (int)XtHeight(ctx) - (int)ctx->text.margin.bottom;
+	    XmuAreaOr(paint_list->clip, &area);
 	}
     }
-
-    x = (Position) ctx->text.margin.left;
-    y = ctx->text.lt.info[i + 1].y;
-    if ( done_painting
-	 || (y >= (int)(ctx->core.height - ctx->text.margin.bottom)) )
-      break;
-  }
-  ctx->text.single_char = FALSE;
+#endif
 }
 
 /*
@@ -2137,115 +2829,115 @@ XawTextPosition pos1, pos2;
  * will allows clients to implements a wide class of draw through and
  * multi-click selection user interfaces.]
  */
-
-static void 
-DoSelection (ctx, pos, time, motion)
-TextWidget ctx;
-XawTextPosition pos;
-Time time;
-Boolean motion;
+static void
+DoSelection(TextWidget ctx, XawTextPosition pos, Time time, Bool motion)
 {
-  XawTextPosition newLeft, newRight;
-  XawTextSelectType newType, *sarray;
-  Widget src = ctx->text.source;
+    XawTextPosition newLeft, newRight;
+    XawTextSelectType newType, *sarray;
+    Widget src = ctx->text.source;
 
-  if (motion)
-    newType = ctx->text.s.type;
-  else {
-    if ( (abs((long) time - (long) ctx->text.lasttime) < MULTI_CLICK_TIME) &&
-	 ((pos >= ctx->text.s.left) && (pos <= ctx->text.s.right))) {
-      sarray = ctx->text.sarray;
-      for (;*sarray != XawselectNull && *sarray != ctx->text.s.type; sarray++);
+    if (motion)
+	newType = ctx->text.s.type;
+    else {
+	if ((abs((long) time - (long) ctx->text.lasttime) < MULTI_CLICK_TIME)
+	    && (pos >= ctx->text.s.left && pos <= ctx->text.s.right)) {
+	    sarray = ctx->text.sarray;
+	    for (; *sarray != XawselectNull && *sarray != ctx->text.s.type;
+		 sarray++)
+		;
+	    if (*sarray == XawselectNull)
+		newType = *(ctx->text.sarray);
+	    else {
+		newType = *(sarray + 1);
+		if (newType == XawselectNull)
+		    newType = *(ctx->text.sarray);
+	    }
+	}
+	else		/* single-click event */
+	    newType = *(ctx->text.sarray);
 
-      if (*sarray == XawselectNull)
-	newType = *(ctx->text.sarray);
-      else {
-	newType = *(sarray + 1);
-	if (newType == XawselectNull) 
-	  newType = *(ctx->text.sarray);
-      }
-    } 
-    else 			                      /* single-click event */
-      newType = *(ctx->text.sarray);
-
-    ctx->text.lasttime = time;
-  }
-  switch (newType) {
-  case XawselectPosition: 
-    newLeft = newRight = pos;
-    break;
-  case XawselectChar: 
-    newLeft = pos;
-    newRight = SrcScan(src, pos, XawstPositions, XawsdRight, 1, FALSE);
-    break;
-  case XawselectWord: 
-  case XawselectParagraph: 
-    {
-      XawTextScanType stype;
-
-      if (newType == XawselectWord)
-        stype = XawstWhiteSpace;
-      else
-	stype = XawstParagraph;
-
-      /*
-       * Somewhat complicated, but basically I treat the space between
-       * two objects as another object.  The object that I am currently
-       * in then becomes the end of the selection.
-       * 
-       * Chris Peterson - 4/19/90.
-       */
-
-      newRight = SrcScan(ctx->text.source, pos, stype, XawsdRight, 1, FALSE);
-      newRight =SrcScan(ctx->text.source, newRight,stype,XawsdLeft,1, FALSE);
-
-      if (pos != newRight) 
-	newLeft = SrcScan(ctx->text.source, pos, stype, XawsdLeft, 1, FALSE);
-      else
-	newLeft = pos;
-
-      newLeft =SrcScan(ctx->text.source, newLeft, stype, XawsdRight,1,FALSE);
-
-      if (newLeft > newRight) {
-	  XawTextPosition temp = newLeft;
-	  newLeft = newRight;
-	  newRight = temp;
-      }
+	ctx->text.lasttime = time;
     }
-    break;
-  case XawselectLine: 
-    newLeft = SrcScan(src, pos, XawstEOL, XawsdLeft, 1, FALSE);
-    newRight = SrcScan(src, pos, XawstEOL, XawsdRight, 1, FALSE);
-    break;
-  case XawselectAll: 
-    newLeft = SrcScan(src, pos, XawstAll, XawsdLeft, 1, FALSE);
-    newRight = SrcScan(src, pos, XawstAll, XawsdRight, 1, FALSE);
-    break;
-  default:
-    XtAppWarning(XtWidgetToApplicationContext((Widget) ctx),
-	       "Text Widget: empty selection array.");
-    return;
-  }
+    switch (newType) {
+	case XawselectPosition:
+	    newLeft = newRight = pos;
+	    break;
+	case XawselectChar:
+	    newLeft = pos;
+	    newRight = SrcScan(src, pos, XawstPositions, XawsdRight, 1, False);
+	    break;
+	case XawselectWord:
+	case XawselectParagraph:
+	case XawselectAlphaNumeric: {
+	    XawTextScanType stype;
 
-  if ( (newLeft != ctx->text.s.left) || (newRight != ctx->text.s.right)
-      || (newType != ctx->text.s.type)) {
-    ModifySelection(ctx, newLeft, newRight);
-    if (pos - ctx->text.s.left < ctx->text.s.right - pos)
-      ctx->text.insertPos = newLeft;
-    else 
-      ctx->text.insertPos = newRight;
-    ctx->text.s.type = newType;
-  }
-  if (!motion) { /* setup so we can freely mix select extend calls*/
-    ctx->text.origSel.type = ctx->text.s.type;
-    ctx->text.origSel.left = ctx->text.s.left;
-    ctx->text.origSel.right = ctx->text.s.right;
+	    if (newType == XawselectWord)
+		stype = XawstWhiteSpace;
+	    else if (newType == XawselectParagraph)
+		stype = XawstParagraph;
+	    else
+		stype = XawstAlphaNumeric;
 
-    if (pos >= ctx->text.s.left + ((ctx->text.s.right - ctx->text.s.left) / 2))
-      ctx->text.extendDir = XawsdRight;
-    else
-      ctx->text.extendDir = XawsdLeft;
-  }
+	    /*
+	     * Somewhat complicated, but basically I treat the space between
+	     * two objects as another object.  The object that I am currently
+	     * in then becomes the end of the selection.
+	     *
+	     * Chris Peterson - 4/19/90.
+	     */
+	    newRight = SrcScan(ctx->text.source, pos, stype,
+			       XawsdRight, 1, False);
+	    newRight = SrcScan(ctx->text.source, newRight, stype,
+			       XawsdLeft, 1, False);
+
+	    if (pos != newRight)
+		newLeft = SrcScan(ctx->text.source, pos, stype,
+				  XawsdLeft, 1, False);
+	    else
+		newLeft = pos;
+
+	    newLeft =SrcScan(ctx->text.source, newLeft, stype,
+			     XawsdRight, 1, False);
+
+	    if (newLeft > newRight) {
+		XawTextPosition temp = newLeft;
+		newLeft = newRight;
+		newRight = temp;
+	    }
+	}   break;
+	case XawselectLine:
+	    newLeft = SrcScan(src, pos, XawstEOL, XawsdLeft, 1, False);
+	    newRight = SrcScan(src, pos, XawstEOL, XawsdRight, 1, False);
+	    break;
+	case XawselectAll:
+	    newLeft = SrcScan(src, pos, XawstAll, XawsdLeft, 1, False);
+	    newRight = SrcScan(src, pos, XawstAll, XawsdRight, 1, False);
+	    break;
+	default:
+	    XtAppWarning(XtWidgetToApplicationContext((Widget) ctx),
+			 "Text Widget: empty selection array.");
+	    return;
+    }
+
+    if (newLeft != ctx->text.s.left || newRight != ctx->text.s.right
+	|| newType != ctx->text.s.type) {
+	ModifySelection(ctx, newLeft, newRight);
+	if (pos - ctx->text.s.left < ctx->text.s.right - pos)
+	    ctx->text.insertPos = newLeft;
+	else
+	    ctx->text.insertPos = newRight;
+	ctx->text.s.type = newType;
+    }
+    if (!motion) {	/* setup so we can freely mix select extend calls*/
+	ctx->text.origSel.type = ctx->text.s.type;
+	ctx->text.origSel.left = ctx->text.s.left;
+	ctx->text.origSel.right = ctx->text.s.right;
+
+	if (pos >= ctx->text.s.left + (ctx->text.s.right - ctx->text.s.left) / 2)
+	    ctx->text.extendDir = XawsdRight;
+	else
+	    ctx->text.extendDir = XawsdLeft;
+    }
 }
 
 /*
@@ -2255,274 +2947,235 @@ Boolean motion;
  * cross through the "center" of the current selection (e.g. switch which
  * end you are extending!).
  */
-
-static void 
-ExtendSelection (ctx, pos, motion)
-TextWidget ctx;
-XawTextPosition pos;
-Boolean motion;
+static void
+ExtendSelection(TextWidget ctx, XawTextPosition pos, Bool motion)
 {
-  XawTextScanDirection dir;
+    XawTextScanDirection dir;
 
-  if (!motion) {		/* setup for extending selection */
-    if (ctx->text.s.left == ctx->text.s.right) /* no current selection. */
-      ctx->text.s.left = ctx->text.s.right = ctx->text.insertPos;   
-    else {
-      ctx->text.origSel.left = ctx->text.s.left;
-      ctx->text.origSel.right = ctx->text.s.right;
+    if (!motion) {	/* setup for extending selection */
+	if (ctx->text.s.left == ctx->text.s.right) /* no current selection. */
+	    ctx->text.s.left = ctx->text.s.right = ctx->text.insertPos;
+	else {
+	    ctx->text.origSel.left = ctx->text.s.left;
+	    ctx->text.origSel.right = ctx->text.s.right;
+	}
+
+	ctx->text.origSel.type = ctx->text.s.type;
+
+	if (pos >= ctx->text.s.left + (ctx->text.s.right - ctx->text.s.left) / 2)
+	    ctx->text.extendDir = XawsdRight;
+	else
+	    ctx->text.extendDir = XawsdLeft;
     }
-      
-    ctx->text.origSel.type = ctx->text.s.type;
+    else	/* check for change in extend direction */
+	if ((ctx->text.extendDir == XawsdRight &&
+	     pos <= ctx->text.origSel.left) ||
+	    (ctx->text.extendDir == XawsdLeft &&
+	     pos >= ctx->text.origSel.right)) {
+	    ctx->text.extendDir = (ctx->text.extendDir == XawsdRight) ?
+		XawsdLeft : XawsdRight;
+	    ModifySelection(ctx, ctx->text.origSel.left, ctx->text.origSel.right);
+	}
 
-    if (pos >= ctx->text.s.left + ((ctx->text.s.right - ctx->text.s.left) / 2))
-	ctx->text.extendDir = XawsdRight;
+    dir = ctx->text.extendDir;
+    switch (ctx->text.s.type) {
+	case XawselectWord:
+	case XawselectParagraph:
+	case XawselectAlphaNumeric: {
+	    XawTextPosition left_pos, right_pos;
+	    XawTextScanType stype;
+
+	    if (ctx->text.s.type == XawselectWord)
+	        stype = XawstWhiteSpace;
+	    else if (ctx->text.s.type == XawselectParagraph)
+	        stype = XawstParagraph;
+	    else
+	        stype = XawstAlphaNumeric;
+
+	    /*
+	     * Somewhat complicated, but basically I treat the space between
+	     * two objects as another object.  The object that I am currently
+	     * in then becomes the end of the selection.
+	     *
+	     * Chris Peterson - 4/19/90.
+	     */
+	    right_pos = SrcScan(ctx->text.source, pos, stype,
+				XawsdRight, 1, False);
+	    right_pos =SrcScan(ctx->text.source, right_pos, stype,
+			       XawsdLeft, 1, False);
+
+	    if (pos != right_pos)
+		left_pos = SrcScan(ctx->text.source, pos, stype,
+				   XawsdLeft, 1, False);
+	    else
+		left_pos = pos;
+
+	    left_pos =SrcScan(ctx->text.source, left_pos, stype,
+			      XawsdRight, 1, False);
+
+	    if (dir == XawsdLeft)
+		pos = Min(left_pos, right_pos);
+	    else	/* dir == XawsdRight */
+		pos = Max(left_pos, right_pos);
+	}   break;
+	case XawselectLine:
+	    pos = SrcScan(ctx->text.source, pos, XawstEOL,
+			  dir, 1, dir == XawsdRight);
+	    break;
+	case XawselectAll:
+	    pos = ctx->text.insertPos;
+	    /*FALLTHROUGH*/
+	case XawselectPosition:
+	default:
+	    break;
+    }
+
+    if (dir == XawsdRight)
+	ModifySelection(ctx, ctx->text.s.left, pos);
     else
-	ctx->text.extendDir = XawsdLeft;
-  }
-  else /* check for change in extend direction */
-    if ((ctx->text.extendDir == XawsdRight && pos <= ctx->text.origSel.left) ||
-	(ctx->text.extendDir == XawsdLeft && pos >= ctx->text.origSel.right)) {
-      ctx->text.extendDir = (ctx->text.extendDir == XawsdRight) ?
-	                                            XawsdLeft : XawsdRight;
-      ModifySelection(ctx, ctx->text.origSel.left, ctx->text.origSel.right);
-    }
+	ModifySelection(ctx, pos, ctx->text.s.right);
 
-  dir = ctx->text.extendDir;
-  switch (ctx->text.s.type) {
-  case XawselectWord: 
-  case XawselectParagraph:
-    {
-      XawTextPosition left_pos, right_pos;
-      XawTextScanType stype;
-
-      if (ctx->text.s.type == XawselectWord)
-        stype = XawstWhiteSpace;
-      else
-	stype = XawstParagraph;
-
-      /*
-       * Somewhat complicated, but basically I treat the space between
-       * two objects as another object.  The object that I am currently
-       * in then becomes the end of the selection.
-       * 
-       * Chris Peterson - 4/19/90.
-       */
-
-      right_pos = SrcScan(ctx->text.source, pos, stype, XawsdRight, 1, FALSE);
-      right_pos =SrcScan(ctx->text.source, right_pos,stype,XawsdLeft,1, FALSE);
-
-      if (pos != right_pos) 
-	left_pos = SrcScan(ctx->text.source, pos, stype, XawsdLeft, 1, FALSE);
-      else
-	left_pos = pos;
-
-      left_pos =SrcScan(ctx->text.source, left_pos, stype, XawsdRight,1,FALSE);
-
-      if (dir == XawsdLeft)
-	pos = Min(left_pos, right_pos);
-      else /* dir == XawsdRight */
-	pos = Max(left_pos, right_pos);
-    }
-    break;
-  case XawselectLine:
-    pos = SrcScan(ctx->text.source, pos, XawstEOL, dir, 1, dir == XawsdRight);
-    break;
-  case XawselectAll: 
-    pos = ctx->text.insertPos;
-  case XawselectPosition:	/* fall through. */
-  default:
-    break;
-  }
-  
-  if (dir == XawsdRight)
-    ModifySelection(ctx, ctx->text.s.left, pos);
-  else
-    ModifySelection(ctx, pos, ctx->text.s.right);
-
-  ctx->text.insertPos = pos;
+    ctx->text.insertPos = pos;
 }
 
 /*
- * Clear the window to background color.
+ * Function:
+ *	_XawTextClearAndCenterDisplay
+ *
+ * Parameters:
+ *	ctx - text widget
+ *
+ * Description:
+ *	  Redraws the display with the cursor in insert point
+ *		     centered vertically.
  */
+void
+_XawTextClearAndCenterDisplay(TextWidget ctx)
+{
+    int left_margin = ctx->text.left_margin;
+    Bool visible = IsPositionVisible(ctx, ctx->text.insertPos);
+
+    _XawTextShowPosition(ctx);
+
+    if (XtIsRealized((Widget)ctx) && visible &&
+	left_margin == ctx->text.left_margin) {
+	int insert_line = LineForPosition(ctx, ctx->text.insertPos);
+	int scroll_by = insert_line - (ctx->text.lt.lines >> 1);
+	Boolean clear_to_eol = ctx->text.clear_to_eol;
+
+	XawTextScroll(ctx, scroll_by, 0);
+	SinkClearToBG(ctx->text.sink, 0, 0, XtWidth(ctx), XtHeight(ctx));
+	ClearWindow(ctx);
+	clear_to_eol = ctx->text.clear_to_eol;
+	ctx->text.clear_to_eol = False;
+	FlushUpdate(ctx);
+	ctx->text.clear_to_eol = clear_to_eol;
+    }
+}
+
+/*
+ * Internal redisplay entire window
+ * Legal to call only if widget is realized
+ */
+static void
+DisplayTextWindow(Widget w)
+{
+    TextWidget ctx = (TextWidget)w;
+
+    _XawTextBuildLineTable(ctx, ctx->text.lt.top, False);
+    ClearWindow(ctx);
+}
 
 static void
-ClearWindow (w)
-Widget w;
+TextSinkResize(Widget w)
 {
-  TextWidget ctx = (TextWidget) w;
-
-  if (XtIsRealized(w))
-    SinkClearToBG(ctx->text.sink, 
-		  (Position) 0, (Position) 0, 
-		  w->core.width, w->core.height);
+    if (w && XtClass(w)->core_class.resize)
+	XtClass(w)->core_class.resize(w);
 }
 
-/*	Function Name: _XawTextClearAndCenterDisplay
- *	Description: Redraws the display with the cursor in insert point
- *                   centered vertically.
- *	Arguments: ctx - the text widget.
- *	Returns: none.
- */
-
+/* ARGSUSED */
 void
-_XawTextClearAndCenterDisplay(ctx)
-TextWidget ctx;
+_XawTextCheckResize(TextWidget ctx)
 {
-  int insert_line = LineForPosition(ctx, ctx->text.insertPos);
-  int scroll_by = insert_line - ctx->text.lt.lines/2;
-
-  _XawTextVScroll(ctx, scroll_by);
-  DisplayTextWindow( (Widget) ctx);
-}
-  
-/*
- * Internal redisplay entire window.
- * Legal to call only if widget is realized.
- */
-
-static void
-DisplayTextWindow (w)
-Widget w;
-{
-  TextWidget ctx = (TextWidget) w;
-  ClearWindow(w);
-  _XawTextBuildLineTable(ctx, ctx->text.lt.top, FALSE);
-  _XawTextNeedsUpdating(ctx, zeroPosition, ctx->text.lastPos);
-  _XawTextSetScrollBars(ctx);
-}
-
-/*
- * This routine checks to see if the window should be resized (grown or
- * shrunk) when text to be painted overflows to the right or
- * the bottom of the window. It is used by the keyboard input routine.
- */
-
-void
-_XawTextCheckResize(ctx)
-TextWidget ctx;
-{
-  Widget w = (Widget) ctx;
-  int line = 0, old_height;
-  XtWidgetGeometry rbox, return_geom;
-
-  if ( (ctx->text.resize == XawtextResizeWidth) ||
-       (ctx->text.resize == XawtextResizeBoth) ) {
-    XawTextLineTableEntry *lt;
-    rbox.width = 0;
-    for (lt = ctx->text.lt.info; 
-	 IsValidLine(ctx, line) && (line < ctx->text.lt.lines);
-	 line++, lt++) {
-      if ((int)(lt->textWidth + ctx->text.margin.left) > (int)rbox.width)
-	  rbox.width = lt->textWidth + ctx->text.margin.left;
-    }
-    
-    rbox.width += ctx->text.margin.right;
-    if (rbox.width > ctx->core.width) { /* Only get wider. */
-      rbox.request_mode = CWWidth;
-      if (XtMakeGeometryRequest(w, &rbox, &return_geom) == XtGeometryAlmost)
-	(void) XtMakeGeometryRequest(w, &return_geom, (XtWidgetGeometry*) NULL);
-    }
-  }
-
-  if ( !((ctx->text.resize == XawtextResizeHeight) ||
-	 (ctx->text.resize == XawtextResizeBoth)) )
-      return;
-
-  if (IsPositionVisible(ctx, ctx->text.lastPos))
-    line = LineForPosition(ctx, ctx->text.lastPos);
-  else
-    line = ctx->text.lt.lines;
-  
-  if ( (line + 1) == ctx->text.lt.lines ) return;
-  
-  old_height = ctx->core.height;
-  rbox.request_mode = CWHeight;
-  rbox.height = XawTextSinkMaxHeight(ctx->text.sink, line + 1) + VMargins(ctx);
-  
-  if ((int)rbox.height < old_height) return; /* It will only get taller. */
-
-  if (XtMakeGeometryRequest(w, &rbox, &return_geom) == XtGeometryAlmost)
-    if (XtMakeGeometryRequest(w, &return_geom, (XtWidgetGeometry*)NULL) != XtGeometryYes)
-      return;
-  
-  _XawTextBuildLineTable(ctx, ctx->text.lt.top, TRUE);
+    return;
 }
 
 /*
  * Converts (params, num_params) to a list of atoms & caches the
  * list in the TextWidget instance.
  */
-
-Atom*
-_XawTextSelectionList(ctx, list, nelems)
-TextWidget ctx;
-String *list;
-Cardinal nelems;
+Atom *
+_XawTextSelectionList(TextWidget ctx, String *list, Cardinal nelems)
 {
-  Atom * sel = ctx->text.s.selections;
-  Display *dpy = XtDisplay((Widget) ctx);
-  int n;
+    Atom *sel = ctx->text.s.selections;
+    Display *dpy = XtDisplay((Widget)ctx);
+    int n;
 
-  if (nelems > ctx->text.s.array_size) {
-    sel = (Atom *) XtRealloc((char *) sel, sizeof(Atom) * nelems);
-    ctx->text.s.array_size = nelems;
-    ctx->text.s.selections = sel;
-  }
-  for (n=nelems; --n >= 0; sel++, list++)
-    *sel = XInternAtom(dpy, *list, False);
-  ctx->text.s.atom_count = nelems;
-  return ctx->text.s.selections;
+    if (nelems > (Cardinal)ctx->text.s.array_size) {
+	sel = (Atom *)XtRealloc((char *)sel, sizeof(Atom) * nelems);
+	ctx->text.s.array_size = nelems;
+	ctx->text.s.selections = sel;
+    }
+    for (n = nelems; --n >= 0; sel++, list++)
+	*sel = XInternAtom(dpy, *list, False);
+    ctx->text.s.atom_count = nelems;
+
+    return (ctx->text.s.selections);
 }
 
-/*	Function Name: SetSelection
- *	Description: Sets the current selection.
- *	Arguments: ctx - the text widget.
- *                 defaultSel - the default selection.
- *                 l, r - the left and right ends of the selection.
- *                 list, nelems - the selection list (as strings).
- *	Returns: none.
+/*
+ * Function:
+ *	SetSelection
  *
- *  NOTE: if (ctx->text.s.left >= ctx->text.s.right) then the selection
- *        is unset.
+ * Parameters:
+ *	ctx	   - text widget
+ *	defaultSel - default selection
+ *	l	   - left and right ends of the selection
+ *	r	   - ""
+ *	list	   - the selection list (as strings).
+ *	nelems	   - ""
+ *
+ * Description:
+ *	Sets the current selection.
+ *
+ * Note:
+ *	if (ctx->text.s.left >= ctx->text.s.right) then the selection is unset
  */
-
 void
-_XawTextSetSelection(ctx, l, r, list, nelems)
-TextWidget ctx;
-XawTextPosition l, r;
-String *list;
-Cardinal nelems;
+_XawTextSetSelection(TextWidget ctx, XawTextPosition l, XawTextPosition r,
+		     String *list, Cardinal nelems)
 {
-  if (nelems == 1 && !strcmp (list[0], "none"))
-    return;
-  if (nelems == 0) {
-    String defaultSel = "PRIMARY";
-    list = &defaultSel;
-    nelems = 1;
-  }
-  _SetSelection(ctx, l, r, _XawTextSelectionList(ctx, list, nelems), nelems);
+    if (nelems == 1 && !strcmp (list[0], "none"))
+	return;
+    if (nelems == 0) {
+	String defaultSel = "PRIMARY";
+	list = &defaultSel;
+	nelems = 1;
+    }
+    _SetSelection(ctx, l, r, _XawTextSelectionList(ctx, list, nelems), nelems);
 }
 
-
-/*	Function Name: ModifySelection
- *	Description: Modifies the current selection.
- *	Arguments: ctx - the text widget.
- *                 left, right - the left and right ends of the selection.
- *	Returns: none.
+/*
+ * Function:
+ *	ModifySelection
  *
- *  NOTE: if (ctx->text.s.left >= ctx->text.s.right) then the selection
- *        is unset.
+ * Parameters:
+ *	ctx   - text widget
+ *	left  - left and right ends of the selection
+ *	right - ""
+ *
+ * Description:
+ *	Modifies the current selection.
+ *
+ * Note:
+ *	if (ctx->text.s.left >= ctx->text.s.right) then the selection is unset
  */
-
 static void
-ModifySelection(ctx, left, right)
-TextWidget ctx;
-XawTextPosition left, right;
+ModifySelection(TextWidget ctx, XawTextPosition left, XawTextPosition right)
 {
-  if (left == right) 
-    ctx->text.insertPos = left;
-  _SetSelection( ctx, left, right, (Atom*) NULL, ZERO );
+    if (left == right)
+	ctx->text.insertPos = left;
+    _SetSelection(ctx, left, right, NULL, 0);
 }
 
 /*
@@ -2530,76 +3183,63 @@ XawTextPosition left, right;
  * to be able to specify all the more popular forms of draw-through and
  * multi-click selection user interfaces from the outside.
  */
-
-void 
-_XawTextAlterSelection (ctx, mode, action, params, num_params)
-TextWidget ctx;
-XawTextSelectionMode mode;   /* {XawsmTextSelect, XawsmTextExtend} */
-XawTextSelectionAction action; /* {XawactionStart, 
-				  XawactionAdjust, XawactionEnd} */
-String	*params;
-Cardinal	*num_params;
+void
+_XawTextAlterSelection(TextWidget ctx, XawTextSelectionMode mode,
+		       XawTextSelectionAction action, String *params,
+		       Cardinal *num_params)
 {
-  XawTextPosition position;
-  Boolean flag;
+    XawTextPosition position;
+    Boolean flag;
+
+    /*
+     * This flag is used by TextPop.c:DoReplace() to determine if the selection
+     * is okay to use, or if it has been modified.
+     */
+    if (ctx->text.search != NULL)
+	ctx->text.search->selection_changed = True;
+
+    position = PositionForXY(ctx, (int) ctx->text.ev_x, (int) ctx->text.ev_y);
+
+    flag = (action != XawactionStart);
+    if (mode == XawsmTextSelect)
+	DoSelection(ctx, position, ctx->text.time, flag);
+    else		/* mode == XawsmTextExtend */
+	ExtendSelection (ctx, position, flag);
+
+    if (action == XawactionEnd)
+	_XawTextSetSelection(ctx, ctx->text.s.left, ctx->text.s.right,
+			     params, *num_params);
+}
 
 /*
- * This flag is used by TextPop.c:DoReplace() to determine if the selection
- * is okay to use, or if it has been modified.
+ * Function:
+ *	UpdateTextInRectangle
+ *
+ * Parameters:
+ *	ctx  - the text widget
+ *	rect - rectangle
+ *
+ * Description:
+ *	Updates the text in the given rectangle
  */
-    
-  if (ctx->text.search != NULL)
-    ctx->text.search->selection_changed = TRUE;
-
-  position = PositionForXY (ctx, (int) ctx->text.ev_x, (int) ctx->text.ev_y);
-
-  flag = (action != XawactionStart);
-  if (mode == XawsmTextSelect)
-    DoSelection (ctx, position, ctx->text.time, flag);
-  else			/* mode == XawsmTextExtend */
-   ExtendSelection (ctx, position, flag);
-
-  if (action == XawactionEnd) 
-    _XawTextSetSelection(ctx, ctx->text.s.left, ctx->text.s.right,
-			 params, *num_params);
-}
-
-/*	Function Name: RectanglesOverlap
- *	Description: Returns TRUE if two rectangles overlap.
- *	Arguments: rect1, rect2 - the two rectangles to check.
- *	Returns: TRUE iff these rectangles overlap.
- */
-
-static Boolean
-RectanglesOverlap(rect1, rect2)
-XRectangle *rect1, *rect2;
-{
-  return ( (rect1->x < rect2->x + (short) rect2->width) &&
-	   (rect2->x < rect1->x + (short) rect1->width) &&
-	   (rect1->y < rect2->y + (short) rect2->height) &&
-	   (rect2->y < rect1->y + (short) rect1->height) );
-}
-
-/*	Function Name: UpdateTextInRectangle.
- *	Description: Updates the text in a rectangle.
- *	Arguments: ctx - the text widget.
- *                 rect - the rectangle to update.
- *	Returns: none.
- */
-
 static void
-UpdateTextInRectangle(ctx, rect)
-TextWidget ctx;
-XRectangle * rect;
+UpdateTextInRectangle(TextWidget ctx, XRectangle *rect)
 {
-  XawTextLineTableEntry *info = ctx->text.lt.info;
-  int line, x = rect->x, y = rect->y;
-  int right = rect->width + x, bottom = rect->height + y;
+    XawTextLineTable *lt;
+    int line, y1, y2, x2;
 
-  for (line = 0;( (line < ctx->text.lt.lines) &&
-		 IsValidLine(ctx, line) && (info->y < bottom)); line++, info++)
-    if ( (info + 1)->y >= y ) 
-      UpdateTextInLine(ctx, line, x, right);
+    y1 = rect->y;
+    y2 = y1 + rect->height;
+    x2 = rect->x + rect->width;
+
+    for (line = 0, lt = &ctx->text.lt; line < lt->lines; line++)
+	if (lt->info[line + 1].y > y1)
+	    break;
+    for (; line <= lt->lines; line++) {
+	if (lt->info[line].y > y2)
+	    break;
+	UpdateTextInLine(ctx, line, rect->x, x2);
+    }
 }
 
 /*
@@ -2607,18 +3247,14 @@ XRectangle * rect;
  * is to the best job at minimal re-paint of the text, displayed in the
  * window, that it can.
  */
-
 /* ARGSUSED */
 static void
-ProcessExposeRegion(w, event, region)
-Widget w;
-XEvent *event;
-Region region;			/* Unused. */
+XawTextExpose(Widget w, XEvent *event, Region region)
 {
-    TextWidget ctx = (TextWidget) w;
-    XRectangle expose, cursor;
-    Boolean need_to_draw;
-    
+    TextWidget ctx = (TextWidget)w;
+    Boolean clear_to_eol;
+    XRectangle expose;
+
     if (event->type == Expose) {
 	expose.x = event->xexpose.x;
 	expose.y = event->xexpose.y;
@@ -2630,44 +3266,42 @@ Region region;			/* Unused. */
 	expose.y = event->xgraphicsexpose.y;
 	expose.width = event->xgraphicsexpose.width;
 	expose.height = event->xgraphicsexpose.height;
-    }      
-    else { /* No Expose */
-	PopCopyQueue(ctx);		
-	return;			/* no more processing necessary. */
     }
-
-    need_to_draw = TranslateExposeRegion(ctx, &expose);
-    if ((event->type == GraphicsExpose) && (event->xgraphicsexpose.count == 0))
-	PopCopyQueue(ctx);	
-
-    if (!need_to_draw) 
-	return;			/* don't draw if we don't need to. */
+    else
+	return;
 
     _XawTextPrepareToUpdate(ctx);
+
+    if (Superclass->core_class.expose)
+	(*Superclass->core_class.expose)(w, event, region);
+
+    clear_to_eol = ctx->text.clear_to_eol;
+    ctx->text.clear_to_eol = False;
+
     UpdateTextInRectangle(ctx, &expose);
-    XawTextSinkGetCursorBounds(ctx->text.sink, &cursor);
-    if (RectanglesOverlap(&cursor, &expose)) {
-	SinkClearToBG(ctx->text.sink, (Position) cursor.x, (Position) cursor.y,
-		      (Dimension) cursor.width, (Dimension) cursor.height);
-	UpdateTextInRectangle(ctx, &cursor);
-    }
+    XawTextSinkGetCursorBounds(ctx->text.sink, &expose);
+    UpdateTextInRectangle(ctx, &expose);
+    SinkClearToBG(ctx->text.sink, expose.x, expose.y,
+		  expose.width, expose.height);
     _XawTextExecuteUpdate(ctx);
+    ctx->text.clear_to_eol = clear_to_eol;
 }
 
 /*
  * This routine does all setup required to syncronize batched screen updates
  */
-
 void
-_XawTextPrepareToUpdate(ctx)
-TextWidget ctx;
+_XawTextPrepareToUpdate(TextWidget ctx)
 {
-  if (ctx->text.old_insert < 0) {
-    InsertCursor((Widget)ctx, XawisOff);
-    ctx->text.numranges = 0;
-    ctx->text.showposition = FALSE;
-    ctx->text.old_insert = ctx->text.insertPos;
-  }
+    if (ctx->text.old_insert < 0) {
+	InsertCursor((Widget)ctx, XawisOff);
+	ctx->text.showposition = False;
+	ctx->text.old_insert = ctx->text.insertPos;
+	ctx->text.clear_to_eol = False;
+#ifndef OLDXAW
+	ctx->text.source_changed = SRC_CHANGE_NONE;
+#endif
+    }
 }
 
 /*
@@ -2675,476 +3309,518 @@ TextWidget ctx;
  * processes all the outstanding update requests and merges update
  * ranges where possible.
  */
-
-static 
-void FlushUpdate(ctx)
-TextWidget ctx;
+static void
+FlushUpdate(TextWidget ctx)
 {
-  int i, w;
-  XawTextPosition updateFrom, updateTo;
-  if (!XtIsRealized((Widget)ctx)) {
-    ctx->text.numranges = 0;
-    return;
-  }
-  while (ctx->text.numranges > 0) {
-    updateFrom = ctx->text.updateFrom[0];
-    w = 0;
-    for (i = 1 ; i < ctx->text.numranges ; i++) {
-      if (ctx->text.updateFrom[i] < updateFrom) {
-	updateFrom = ctx->text.updateFrom[i];
-	w = i;
-      }
+    XmuSegment *seg;
+    void (*display_text)(Widget, XawTextPosition, XawTextPosition);
+
+    if (XtIsRealized((Widget)ctx)) {
+	ctx->text.s.right = XawMin(ctx->text.s.right, ctx->text.lastPos);
+	ctx->text.s.left = XawMin(ctx->text.s.left, ctx->text.s.right);
+
+#ifndef OLDXAW
+	if (XawTextSinkBeginPaint(ctx->text.sink) == False)
+#endif
+	    display_text = OldDisplayText;
+#ifndef OLDXAW
+	else
+	    display_text = DisplayText;
+#endif
+	for (seg = ctx->text.update->segment; seg; seg = seg->next)
+	    (*display_text)((Widget)ctx,
+			    (XawTextPosition)seg->x1,
+			    (XawTextPosition)seg->x2);
+#ifndef OLDXAW
+	if (display_text != OldDisplayText) {
+	    XawTextSinkDoPaint(ctx->text.sink);
+	    XawTextSinkEndPaint(ctx->text.sink);
+	}
+#endif
     }
-    updateTo = ctx->text.updateTo[w];
-    ctx->text.numranges--;
-    ctx->text.updateFrom[w] = ctx->text.updateFrom[ctx->text.numranges];
-    ctx->text.updateTo[w] = ctx->text.updateTo[ctx->text.numranges];
-    for (i = ctx->text.numranges - 1 ; i >= 0 ; i--) {
-      while (ctx->text.updateFrom[i] <= updateTo && i < ctx->text.numranges) {
-	updateTo = ctx->text.updateTo[i];
-	ctx->text.numranges--;
-	ctx->text.updateFrom[i] = ctx->text.updateFrom[ctx->text.numranges];
-	ctx->text.updateTo[i] = ctx->text.updateTo[ctx->text.numranges];
-      }
+    (void)XmuScanlineXor(ctx->text.update, ctx->text.update);
+}
+
+static int
+CountLines(TextWidget ctx, XawTextPosition left, XawTextPosition right)
+{
+    if (ctx->text.wrap == XawtextWrapNever || left >= right)
+	return (1);
+    else {
+	XawTextPosition tmp;
+	int dim, lines = 0, wwidth = GetMaxTextWidth(ctx);
+
+	while (left < right) {
+	    tmp = left;
+	    XawTextSinkFindPosition(ctx->text.sink, left,
+				    ctx->text.left_margin,
+				    wwidth, ctx->text.wrap == XawtextWrapWord,
+				    &left, &dim, &dim);
+	    ++lines;
+	    if (tmp == left)
+	      ++left;
+	}
+
+	return (lines);
     }
-    DisplayText((Widget)ctx, updateFrom, updateTo);
-  }
+    /*NOTREACHED*/
+}
+
+static int
+GetMaxTextWidth(TextWidget ctx)
+{
+    XRectangle cursor;
+    int width;
+
+    XawTextSinkGetCursorBounds(ctx->text.sink, &cursor);
+    width = (int)XtWidth(ctx) - RHMargins(ctx) - cursor.width;
+
+    return (XawMax(0, width));
 }
 
 /*
- * This is a private utility routine used by _XawTextExecuteUpdate. This
- * routine worries about edits causing new data or the insertion point becoming
- * invisible (off the screen, or under the horiz. scrollbar). Currently 
- * it always makes it visible by scrolling. It probably needs 
- * generalization to allow more options.
- */
-
-void
-_XawTextShowPosition(ctx)
-TextWidget ctx;
-{
-  int x, y, lines, number;
-  Boolean no_scroll;
-  XawTextPosition max_pos, top, first;
-
-  if ( (!XtIsRealized((Widget)ctx)) || (ctx->text.lt.lines <= 0) )
-    return;
-
-/*
- * Find out the bottom the visable window, and make sure that the
- * cursor does not go past the end of this space.  
+ * Function:
+ *	_XawTextShowPosition
  *
- * This makes sure that the cursor does not go past the end of the 
- * visable window. 
+ * Parameters:
+ *	ctx - the text widget to show the position
+ *
+ * Description:
+ *	  Makes sure the text cursor visible, scrolling the text window
+ *	if required.
  */
+void
+_XawTextShowPosition(TextWidget ctx)
+{
+    /*
+     * Variable scroll is used to avoid scanning large files to calculate
+     * line offsets
+     */
+    int hpixels, vlines;
+    XawTextPosition first, last, top, tmp;
+    Bool visible, scroll;
 
-  x = ctx->core.width;
-  y = ctx->core.height - ctx->text.margin.bottom;
-  if (ctx->text.hbar != NULL)
-    y -= ctx->text.hbar->core.height + 2 * ctx->text.hbar->core.border_width;
-  
-  max_pos = PositionForXY (ctx, x, y);
-  lines = LineForPosition(ctx, max_pos) + 1; /* number of visable lines. */
-  
-  if ( (ctx->text.insertPos >= ctx->text.lt.top) &&
-       (ctx->text.insertPos < max_pos))
-    return;
+    if (!XtIsRealized((Widget)ctx))
+	return;
 
-  first = ctx->text.lt.top;
-  no_scroll = FALSE;
+    /*
+     * Checks if a horizontal scroll is required
+     */
+    if (ctx->text.wrap == XawtextWrapNever) {
+	int x, vwidth, distance, dim;
+	XRectangle rect;
 
-  if (ctx->text.insertPos < first) { /* We need to scroll down. */
-      top = SrcScan(ctx->text.source, ctx->text.insertPos,
-		    XawstEOL, XawsdLeft, 1, FALSE);
+	vwidth = (int)XtWidth(ctx) - RHMargins(ctx);
+	last = SrcScan(ctx->text.source, ctx->text.insertPos,
+		       XawstEOL, XawsdLeft, 1, False);
+	XawTextSinkFindDistance(ctx->text.sink, last,
+				ctx->text.left_margin,
+				ctx->text.insertPos,
+				&distance, &first, &dim);
+	XawTextSinkGetCursorBounds(ctx->text.sink, &rect);
+	x = ctx->text.left_margin - ctx->text.r_margin.left;
 
-      /* count the number of lines we have to scroll */
+	if (x + distance + rect.width > vwidth)
+	    hpixels = x + distance + rect.width - vwidth + (vwidth >> 2);
+	else if (x + distance < 0)
+	    hpixels = x + distance - (vwidth >> 2);
+	else
+	    hpixels = 0;
+    }
+    else
+	hpixels = 0;
 
-      number = 0;
-      while (first > top) {
-	  first = SrcScan(ctx->text.source, first,
-			  XawstEOL, XawsdLeft, 1, TRUE);
+    visible = IsPositionVisible(ctx, ctx->text.insertPos);
 
-	  if ( - number > lines ) 
-	      break;
+    /*
+     * If the cursor is already visible
+     */
+    if (!hpixels && visible)
+	return;
 
-	  number--;
-      }
+    scroll = ctx->core.background_pixmap == XtUnspecifiedPixmap && !hpixels;
+    vlines = 0;
+    first = ctx->text.lt.top;
 
-      if (first <= top) {	/* If we found the proper number
-				   of lines. */
-     
-	  /* Back up to just before the last CR. */
-      
-	  first = SrcScan(ctx->text.source, first,
-			  XawstPositions, XawsdRight, 1, TRUE);
-	  
-	  /* Check to make sure the cursor is visable. */
-	  
-	  if (first <= top)
-	      number++;
-	  
-	  lines = number;
-      }
-      else
-	  no_scroll = TRUE;
-  }
-  else {			/* We need to Scroll up */
-      top = SrcScan(ctx->text.source, ctx->text.insertPos,
-		    XawstEOL, XawsdLeft, lines, FALSE);
+    /*
+     * Needs to scroll the text window
+     */
+    if (visible)
+      top = ctx->text.lt.top;
+    else {
+        top = SrcScan(ctx->text.source, ctx->text.insertPos,
+		      XawstEOL, XawsdLeft, 1, False);
 
-      if (top < max_pos) 
-	  lines = LineForPosition(ctx, top);
-      else 
-	  no_scroll = TRUE;
-  }
+	/*
+	 * Finds the nearest left position from ctx->text.insertPos
+	 */
+	if (ctx->text.wrap != XawtextWrapNever) {
+	    int dim, vwidth = GetMaxTextWidth(ctx);
 
-  if (no_scroll) {
-      _XawTextBuildLineTable(ctx, top, FALSE);      
-      DisplayTextWindow((Widget)ctx);
-  }
-  else 
-      _XawTextVScroll(ctx, lines);
+	    last = top;
+	    /*CONSTCOND*/
+	    while (1) {
+		tmp = last;
+		XawTextSinkFindPosition(ctx->text.sink, last,
+					ctx->text.left_margin, vwidth,
+					ctx->text.wrap == XawtextWrapWord,
+					&last, &dim, &dim);
+		if (last == tmp)
+		    ++last;
+		if (last <= ctx->text.insertPos)
+		    top = last;
+		else
+		    break;
+	    }
+	}
+    }
 
-  _XawTextSetScrollBars(ctx);
+    if (scroll) {
+	if (ctx->text.insertPos < first) {	/* Scroll Down */
+	    while (first > top) {
+		last = first;
+		first = SrcScan(ctx->text.source, first,
+				XawstEOL, XawsdLeft, 2, False);
+		vlines -= CountLines(ctx, first, last);
+		if (-vlines >= ctx->text.lt.lines) {
+		    scroll = False;
+		    break;
+		}
+	    }
+	}
+	else if (!visible) {			/* Scroll Up */
+	    while (first < top) {
+		last = first;
+		first = SrcScan(ctx->text.source, first,
+				XawstEOL, XawsdRight, 1, True);
+		vlines += CountLines(ctx, last, first);
+		if (vlines > ctx->text.lt.lines) {
+		    scroll = False;
+		    break;
+		}
+	    }
+	}
+	else
+	    scroll = False;
+    }
+
+    /*
+     * If a portion of the text that will be scrolled is visible
+     */
+    if (scroll)
+	XawTextScroll(ctx, vlines ? vlines - (ctx->text.lt.lines >> 1) : 0, 0);
+    /*
+     * Else redraw the entire text window
+     */
+    else {
+	ctx->text.left_margin -= hpixels;
+	if (ctx->text.left_margin > ctx->text.r_margin.left)
+	    ctx->text.left_margin = ctx->text.margin.left =
+		ctx->text.r_margin.left;
+
+	if (!visible) {
+	    vlines = ctx->text.lt.lines >> 1;
+	    if (vlines)
+		top = SrcScan(ctx->text.source, ctx->text.insertPos,
+			      XawstEOL, XawsdLeft, vlines + 1, False);
+
+	    if (ctx->text.wrap != XawtextWrapNever) {
+		int dim;
+		int n_lines = CountLines(ctx, top, ctx->text.insertPos);
+		int vwidth = GetMaxTextWidth(ctx);
+
+		while (n_lines-- > vlines) {
+		    tmp = top;
+		    XawTextSinkFindPosition(ctx->text.sink, top,
+					    ctx->text.left_margin,
+					    vwidth,
+					    ctx->text.wrap == XawtextWrapWord,
+					    &top, &dim, &dim);
+		    if (tmp == top)
+			++top;
+		}
+	    }
+	    _XawTextBuildLineTable(ctx, top, True);
+	}
+	else
+	    ClearWindow(ctx);
+    }
+    ctx->text.clear_to_eol = True;
 }
+
+#ifndef OLDXAW
+static int
+ResolveLineNumber(TextWidget ctx)
+{
+    int line_number = ctx->text.lt.base_line;
+    XawTextPosition position = ctx->text.lt.top;
+
+    if (ctx->text.lt.base_line < 1)
+	return (ctx->text.line_number);
+
+    if (ctx->text.wrap == XawtextWrapNever
+	&& IsPositionVisible(ctx, ctx->text.insertPos))
+	line_number += LineForPosition(ctx, ctx->text.insertPos);
+    else if (position < ctx->text.insertPos) {
+	while (position < ctx->text.insertPos) {
+	    position = SrcScan(ctx->text.source, position,
+			       XawstEOL, XawsdRight, 1, True);
+	    if (position <= ctx->text.insertPos) {
+		++line_number;
+		if (position == ctx->text.lastPos) {
+		    line_number -= !_XawTextSourceNewLineAtEOF(ctx->text.source);
+		    break;
+		}
+	    }
+	}
+    }
+    else if (position > ctx->text.insertPos) {
+	while (position > ctx->text.insertPos) {
+	    position = SrcScan(ctx->text.source, position,
+			       XawstEOL, XawsdLeft, 1, False);
+	    if (--position >= ctx->text.insertPos)
+		--line_number;
+	}
+    }
+
+    return (line_number);
+}
+#endif
 
 /*
  * This routine causes all batched screen updates to be performed
  */
-
 void
-_XawTextExecuteUpdate(ctx)
-TextWidget ctx;
+_XawTextExecuteUpdate(TextWidget ctx)
 {
-  if ( ctx->text.update_disabled || (ctx->text.old_insert < 0) ) 
-    return;
+    if (ctx->text.update_disabled || ctx->text.old_insert < 0)
+	return;
 
-  if((ctx->text.old_insert != ctx->text.insertPos) || (ctx->text.showposition))
-    _XawTextShowPosition(ctx);
-  FlushUpdate(ctx);
-  InsertCursor((Widget)ctx, XawisOn);
-  ctx->text.old_insert = -1;
+    if(ctx->text.old_insert != ctx->text.insertPos || ctx->text.showposition)
+	_XawTextShowPosition(ctx);
+
+    FlushUpdate(ctx);
+    InsertCursor((Widget)ctx, XawisOn);
+    ctx->text.old_insert = -1;
+#ifndef OLDXAW
+    _XawTextSetLineAndColumnNumber(ctx, False);
+#endif
 }
 
-
-static void 
-TextDestroy(w)
-Widget w;
+static void
+XawTextDestroy(Widget w)
 {
-  TextWidget ctx = (TextWidget)w;
+    TextWidget ctx = (TextWidget)w;
 
-  DestroyHScrollBar(ctx);
-  DestroyVScrollBar(ctx);
+    DestroyHScrollBar(ctx);
+    DestroyVScrollBar(ctx);
 
-  XtFree((char *)ctx->text.s.selections);
-  XtFree((char *)ctx->text.lt.info);
-  XtFree((char *)ctx->text.search);
-  XtFree((char *)ctx->text.updateFrom);
-  XtFree((char *)ctx->text.updateTo);
+    XtFree((char *)ctx->text.s.selections);
+    XtFree((char *)ctx->text.lt.info);
+    XtFree((char *)ctx->text.search);
+    XmuDestroyScanline(ctx->text.update);
 }
 
 /*
  * by the time we are managed (and get this far) we had better
  * have both a source and a sink 
  */
-
 static void
-Resize(w)
-Widget w;
+XawTextResize(Widget w)
 {
-  TextWidget ctx = (TextWidget) w;
+    TextWidget ctx = (TextWidget)w;
 
-  PositionVScrollBar(ctx);
-  PositionHScrollBar(ctx);
+    PositionVScrollBar(ctx);
+    PositionHScrollBar(ctx);
+    TextSinkResize(ctx->text.sink);
 
-  _XawTextBuildLineTable(ctx, ctx->text.lt.top, TRUE);
-  _XawTextSetScrollBars(ctx);
+    ctx->text.showposition = True;
+    _XawTextBuildLineTable(ctx, ctx->text.lt.top, True);
 }
 
 /*
  * This routine allow the application program to Set attributes.
  */
-
 /*ARGSUSED*/
-static Boolean 
-SetValues(current, request, new, args, num_args)
-Widget current, request, new;
-ArgList args;
-Cardinal *num_args;
+static Boolean
+XawTextSetValues(Widget current, Widget request, Widget cnew,
+		 ArgList args, Cardinal *num_args)
 {
-  TextWidget oldtw = (TextWidget) current;
-  TextWidget newtw = (TextWidget) new;
-  Boolean    redisplay = FALSE;
-  Boolean    display_caret = newtw->text.display_caret;
+    TextWidget oldtw = (TextWidget)current;
+    TextWidget newtw = (TextWidget)cnew;
+    Boolean redisplay = False;
+    Boolean display_caret = newtw->text.display_caret;
+#ifndef OLDXAW
+    Boolean show_lc = False;
+#endif
 
+    newtw->text.display_caret = oldtw->text.display_caret;
+    _XawTextPrepareToUpdate(newtw);
+    newtw->text.display_caret = display_caret;
 
-  newtw->text.display_caret = oldtw->text.display_caret;
-  _XawTextPrepareToUpdate(newtw);
-  newtw->text.display_caret = display_caret;
+    if (oldtw->text.r_margin.left != newtw->text.r_margin.left) {
+	newtw->text.left_margin = newtw->text.margin.left =
+	    newtw->text.r_margin.left;
+	if (newtw->text.vbar != NULL) {
+	    newtw->text.left_margin += XtWidth(newtw->text.vbar) +
+		XtBorderWidth(newtw->text.vbar);
+	}
+	redisplay = True;
+    }
 
-  if (oldtw->text.r_margin.left != newtw->text.r_margin.left) {
-    newtw->text.margin.left = newtw->text.r_margin.left;
-    if (newtw->text.vbar != NULL)
-      newtw->text.margin.left += newtw->text.vbar->core.width +
-	                         newtw->text.vbar->core.border_width;
-    redisplay = TRUE;
-  }
-  
-  if (oldtw->text.scroll_vert != newtw->text.scroll_vert) {
-    if (newtw->text.scroll_vert == XawtextScrollNever) 
-      DestroyVScrollBar(newtw);
-    else if (newtw->text.scroll_vert == XawtextScrollAlways)
-      CreateVScrollBar(newtw);
-    redisplay = TRUE;
-  }
+    if (oldtw->text.scroll_vert != newtw->text.scroll_vert) {
+	if (newtw->text.scroll_vert == XawtextScrollAlways)
+	    CreateVScrollBar(newtw);
+	else
+	    DestroyVScrollBar(newtw);
 
-  if (oldtw->text.r_margin.bottom != newtw->text.r_margin.bottom) {
-    newtw->text.margin.bottom = newtw->text.r_margin.bottom;
-    if (newtw->text.hbar != NULL)
-      newtw->text.margin.bottom += newtw->text.hbar->core.height +
-	                           newtw->text.hbar->core.border_width;
-    redisplay = TRUE;
-  }
-  
-  if (oldtw->text.scroll_horiz != newtw->text.scroll_horiz) {
-    if (newtw->text.scroll_horiz == XawtextScrollNever) 
-      DestroyHScrollBar(newtw);
-    else if (newtw->text.scroll_horiz == XawtextScrollAlways)
-      CreateHScrollBar(newtw);
-    redisplay = TRUE;
-  }
+	redisplay = True;
+    }
 
-  if ( oldtw->text.source != newtw->text.source )
-    XawTextSetSource( (Widget) newtw, newtw->text.source, newtw->text.lt.top);
+    if (oldtw->text.r_margin.bottom != newtw->text.r_margin.bottom) {
+	newtw->text.margin.bottom = newtw->text.r_margin.bottom;
+	if (newtw->text.hbar != NULL)
+	    newtw->text.margin.bottom += newtw->text.hbar->core.height +
+		newtw->text.hbar->core.border_width;
+	redisplay = True;
+    }
 
-  newtw->text.redisplay_needed = False;
-  XtSetValues( (Widget)newtw->text.source, args, *num_args );
-  XtSetValues( (Widget)newtw->text.sink, args, *num_args );
+    if (oldtw->text.scroll_horiz != newtw->text.scroll_horiz) {
+	if (newtw->text.scroll_horiz == XawtextScrollAlways)
+	    CreateHScrollBar(newtw);
+	else
+	    DestroyHScrollBar(newtw);
 
-  if ( oldtw->text.wrap != newtw->text.wrap ||
-       oldtw->text.lt.top != newtw->text.lt.top ||
-       oldtw->text.r_margin.right != newtw->text.r_margin.right ||
-       oldtw->text.r_margin.top != newtw->text.r_margin.top ||
-       oldtw->text.sink != newtw->text.sink ||
-       newtw->text.redisplay_needed )
-  {
-    _XawTextBuildLineTable(newtw, newtw->text.lt.top, TRUE);
-    redisplay = TRUE;
-  }
+	redisplay = True;
+    }
 
-  if (oldtw->text.insertPos != newtw->text.insertPos) {
-    newtw->text.showposition = TRUE;
-    redisplay = TRUE;
-  }
+    if (oldtw->text.source != newtw->text.source) {
+#ifndef OLDXAW
+	show_lc = True;
+	_XawSourceRemoveText(oldtw->text.source, cnew,
+			     oldtw->text.source &&
+			     XtParent(oldtw->text.source) == cnew);
+	_XawSourceAddText(newtw->text.source, cnew);
+#endif
+	_XawTextSetSource((Widget)newtw, newtw->text.source, newtw->text.lt.top,
+			  newtw->text.insertPos);
+    }
 
-  _XawTextExecuteUpdate(newtw);
-  if (redisplay)
-    _XawTextSetScrollBars(newtw);
+    newtw->text.redisplay_needed = False;
+    XtSetValues((Widget)newtw->text.source, args, *num_args);
+    XtSetValues((Widget)newtw->text.sink, args, *num_args);
 
-  return redisplay;
+    if (oldtw->text.wrap != newtw->text.wrap
+	|| oldtw->text.lt.top != newtw->text.lt.top
+	|| oldtw->text.insertPos != newtw->text.insertPos
+	|| oldtw->text.r_margin.right != newtw->text.r_margin.right
+	|| oldtw->text.r_margin.top != newtw->text.r_margin.top
+	|| oldtw->text.sink != newtw->text.sink
+	|| newtw->text.redisplay_needed) {
+	if (oldtw->text.wrap != newtw->text.wrap) {
+	    newtw->text.left_margin = newtw->text.margin.left =
+		newtw->text.r_margin.left;
+	    if (oldtw->text.lt.top == newtw->text.lt.top)
+		newtw->text.lt.top = SrcScan(newtw->text.source, 0, XawstEOL,
+					     XawsdLeft, 1, False);
+	}
+	newtw->text.showposition = True;
+#ifndef OLDXAW
+	show_lc = True;
+	newtw->text.source_changed = SRC_CHANGE_OVERLAP;
+#endif
+	_XawTextBuildLineTable(newtw, newtw->text.lt.top, True);
+	redisplay = True;
+    }
+
+#ifndef OLDXAW
+    if (newtw->text.left_column < 0)
+	newtw->text.left_column = 0;
+    if (newtw->text.right_column < 0)
+	newtw->text.right_column = 0;
+#endif
+
+    _XawTextExecuteUpdate(newtw);
+
+#ifndef OLDXAW
+    if (show_lc)
+	_XawTextSetLineAndColumnNumber(newtw, True);
+#endif
+
+    if (redisplay)
+	_XawTextSetScrollBars(newtw);
+
+    return (redisplay);
 }
 
 /* invoked by the Simple widget's SetValues */
-static Boolean ChangeSensitive(w)
-    Widget w;	/* the new widget */
+static Bool
+XawTextChangeSensitive(Widget w)
 {
     Arg args[1];
-    TextWidget tw = (TextWidget) w;
+    TextWidget tw = (TextWidget)w;
 
     (*(&simpleClassRec)->simple_class.change_sensitive)(w);
 
-    XtSetArg(args[0], XtNancestorSensitive, 
-	       (tw->core.ancestor_sensitive && tw->core.sensitive));
+    XtSetArg(args[0], XtNancestorSensitive,
+	     (tw->core.ancestor_sensitive && tw->core.sensitive));
     if (tw->text.vbar)
 	XtSetValues(tw->text.vbar, args, ONE);
     if (tw->text.hbar)
 	XtSetValues(tw->text.hbar, args, ONE);
-    return False;
+    return (False);
 }
 
-/*	Function Name: GetValuesHook
- *	Description: This is a get values hook routine that gets the
- *                   values in the text source and sink.
- *	Arguments: w - the Text Widget.
- *                 args - the argument list.
- *                 num_args - the number of args.
- *	Returns: none.
- */
-
-static void
-GetValuesHook(w, args, num_args)
-Widget w;
-ArgList args;
-Cardinal * num_args;
-{
-  XtGetValues( ((TextWidget) w)->text.source, args, *num_args );
-  XtGetValues( ((TextWidget) w)->text.sink, args, *num_args );
-}
-
-/*	Function Name: FindGoodPosition
- *	Description: Returns a valid position given any postition
- *	Arguments: pos - any position.
- *	Returns: a position between (0 and lastPos);
- */
-
-static XawTextPosition
-FindGoodPosition(ctx, pos)
-TextWidget ctx;
-XawTextPosition pos;
-{
-  if (pos < 0) return(0);
-  return ( ((pos > ctx->text.lastPos) ? ctx->text.lastPos : pos) );
-}
-
-/************************************************************
- * 
- * Routines for handling the copy area expose queue.
+/*
+ * Function:
+ *	XawTextGetValuesHook
  *
- ************************************************************/
-
-/*	Function Name: PushCopyQueue
- *	Description: Pushes a value onto the copy queue.
- *	Arguments: ctx - the text widget.
- *                 h, v - amount of offset in the horiz and vert directions.
- *	Returns: none
+ * Parameters:
+ *	w	 - Text Widget
+ *	args	 - argument list
+ *	num_args - number of args
+ *
+ * Description:
+ *	  This is a get values hook routine that gets the
+ *		     values in the text source and sink.
  */
-
 static void
-PushCopyQueue(ctx, h, v)
-TextWidget ctx;
-int h, v;
+XawTextGetValuesHook(Widget w, ArgList args, Cardinal *num_args)
 {
-    struct text_move * offsets = XtNew(struct text_move);
-
-    offsets->h = h;
-    offsets->v = v;
-    offsets->next = NULL;
-
-    if (ctx->text.copy_area_offsets == NULL)
-	ctx->text.copy_area_offsets = offsets;
-    else {
-	struct text_move * end = ctx->text.copy_area_offsets;
-	for ( ; end->next != NULL; end = end->next) {}
-	end->next = offsets;
-    }
+    XtGetValues(((TextWidget)w)->text.source, args, *num_args);
+    XtGetValues(((TextWidget)w)->text.sink, args, *num_args);
 }
 
-/*	Function Name: PopCopyQueue
- *	Description: Pops the top value off of the copy queue.
- *	Arguments: ctx - the text widget.
- *	Returns: none.
+/*
+ * Function:
+ *	FindGoodPosition
+ *
+ * Parameters:
+ *	pos - any position
+ *
+ * Description:
+ *	Returns a valid position given any postition.
+ *
+ * Returns:
+ *	A position between (0 and lastPos)
  */
-
-static void
-PopCopyQueue(ctx)
-TextWidget ctx;
+static XawTextPosition
+FindGoodPosition(TextWidget ctx, XawTextPosition pos)
 {
-    struct text_move * offsets = ctx->text.copy_area_offsets;
-
-    if (offsets == NULL)
-	(void) printf( "Xaw Text widget %s: empty copy queue\n",
-		       XtName( (Widget) ctx ) );
-    else {
-	ctx->text.copy_area_offsets = offsets->next;
-	XtFree((char *) offsets);	/* free what you allocate. */
-    }
+    if (pos < 0)
+	return (0);
+    return (((pos > ctx->text.lastPos) ? ctx->text.lastPos : pos));
 }
 
-/*	Function Name:  TranslateExposeRegion
- *	Description: Translates the expose that came into
- *                   the cordinates that now exist in the Text widget.
- *	Arguments: ctx - the text widget.
- *                 expose - a Rectangle, who's region currently
- *                          contains the expose event location.
- *                          this region will be returned containing
- *                          the new rectangle.
- *	Returns: True if there is drawing that needs to be done.
- */
-
-static Boolean
-TranslateExposeRegion(ctx, expose)
-TextWidget ctx;
-XRectangle * expose;
-{
-    struct text_move * offsets = ctx->text.copy_area_offsets;
-    int value;
-    int x, y, width, height;
-
-    /*
-     * Skip over the first one, this has already been taken into account.
-     */
-
-    if (!offsets || !(offsets = offsets->next))
-	return(TRUE);
-
-    x = expose->x;
-    y = expose->y;
-    width = expose->width;
-    height = expose->height;
-
-    while (offsets) {
-	x += offsets->h;
-	y += offsets->v;
-	offsets = offsets->next;
-    }
-
-    /*
-     * remove that area of the region that is now outside the window.
-     */
-
-    if (y < 0) {
-	height += y;
-	y = 0;
-    }
-
-    value = y + height - ctx->core.height;
-    if (value > 0)
-	height -= value;
-
-    if (height <= 0)
-	return(FALSE);		/* no need to draw outside the window. */
-
-    /*
-     * and now in the horiz direction...
-     */
-
-    if (x < 0) {
-	width += x;
-	x = 0;
-    }
-
-    value = x + width - ctx->core.width;
-    if (value > 0)
-	width -= value;
-
-    if (width <= 0)
-	return(FALSE);		/* no need to draw outside the window. */
-    
-    expose->x = x;
-    expose->y = y;
-    expose->width = width;
-    expose->height = height;
-    return(TRUE);
-}
-
-/* Li wrote this so the IM can find a given text position's screen position. */
-
+/* Li wrote this so the IM can find a given text position's screen position */
 void
-#if NeedFunctionPrototypes
-_XawTextPosToXY( 
-    Widget w, 
-    XawTextPosition pos, 
-    Position* x, 
-    Position* y )
-#else
-_XawTextPosToXY( w, pos, x, y )
-    Widget w;
-    XawTextPosition pos;
-    Position *x, *y;
-#endif
+_XawTextPosToXY(Widget w, XawTextPosition pos, Position *x, Position *y)
 {
-    int line;
-    LineAndXYForPosition( (TextWidget)w, pos, &line, x, y );
+    int line, ix, iy;
+
+    LineAndXYForPosition((TextWidget)w, pos, &line, &ix, &iy);
+    *x = ix;
+    *y = iy;
 }
 
 /*******************************************************************
@@ -3156,67 +3832,74 @@ internal one. The major value of this set is that they have actual application
 clients and therefore the functionality provided is required for any future
 version of Text.
 ********************************************************************/
-
 void
-#if NeedFunctionPrototypes
-XawTextDisplay (Widget w)
-#else
-XawTextDisplay (w)
-Widget w;
-#endif
+XawTextDisplay(Widget w)
 {
-  if (!XtIsRealized(w)) return;
-  
-  _XawTextPrepareToUpdate( (TextWidget) w);
-  DisplayTextWindow(w);
-  _XawTextExecuteUpdate( (TextWidget) w);
+    TextWidget ctx = (TextWidget)w;
+
+    if (!XtIsRealized(w))
+	return;
+
+    _XawTextPrepareToUpdate(ctx);
+    ctx->text.clear_to_eol = True;
+    DisplayTextWindow(w);
+    _XawTextExecuteUpdate(ctx);
 }
 
 void
-#if NeedFunctionPrototypes
 XawTextSetSelectionArray(Widget w, XawTextSelectType *sarray)
-#else
-XawTextSetSelectionArray(w, sarray)
-Widget w;
-XawTextSelectType *sarray;
-#endif
 {
-  ((TextWidget)w)->text.sarray = sarray;
+    ((TextWidget)w)->text.sarray = sarray;
 }
 
 void
-#if NeedFunctionPrototypes
 XawTextGetSelectionPos(Widget w, XawTextPosition *left, XawTextPosition *right)
-#else
-XawTextGetSelectionPos(w, left, right)
-Widget w;
-XawTextPosition* left,* right;
-#endif
 {
-  *left = ((TextWidget) w)->text.s.left;
-  *right = ((TextWidget) w)->text.s.right;
+    *left = ((TextWidget)w)->text.s.left;
+    *right = ((TextWidget)w)->text.s.right;
 }
 
-
-void 
-#if NeedFunctionPrototypes
-XawTextSetSource(Widget w, Widget source, XawTextPosition startPos)
-#else
-XawTextSetSource(w, source, startPos)
-Widget w, source;
-XawTextPosition startPos;
-#endif
+void
+_XawTextSetSource(Widget w, Widget source,
+		  XawTextPosition top, XawTextPosition startPos)
 {
-  TextWidget ctx = (TextWidget) w;
+    TextWidget ctx = (TextWidget)w;
+#ifndef OLDXAW
+    Bool resolve = False;
+#endif
 
-  ctx->text.source = source;
-  ctx->text.lt.top = startPos;
-  ctx->text.s.left = ctx->text.s.right = 0;
-  ctx->text.insertPos = startPos;
-  ctx->text.lastPos = GETLASTPOS;
-  
-  _XawTextBuildLineTable(ctx, ctx->text.lt.top, TRUE);
-  XawTextDisplay(w);
+#ifndef OLDXAW
+    if (source != ctx->text.source)
+	_XawSourceRemoveText(ctx->text.source, w, ctx->text.source &&
+			     XtParent(ctx->text.source) == w);
+    _XawSourceAddText(source, w);
+
+    if (source != ctx->text.source || ctx->text.insertPos != startPos)
+	resolve = True;
+
+    ctx->text.source_changed = SRC_CHANGE_OVERLAP;
+#endif
+    ctx->text.source = source;
+    ctx->text.s.left = ctx->text.s.right = 0;
+    ctx->text.lastPos = GETLASTPOS;
+    top = FindGoodPosition(ctx, top);
+    startPos = FindGoodPosition(ctx, startPos);
+    ctx->text.insertPos = ctx->text.old_insert = startPos;
+    _XawTextPrepareToUpdate(ctx);
+
+    _XawTextBuildLineTable(ctx, top, True);
+
+    _XawTextExecuteUpdate(ctx);
+#ifndef OLDXAW
+    if (resolve)
+	_XawTextSetLineAndColumnNumber(ctx, True);
+#endif
+}
+
+void
+XawTextSetSource(Widget w, Widget source, XawTextPosition top)
+{
+    _XawTextSetSource(w, source, top, top);
 }
 
 /*
@@ -3225,293 +3908,250 @@ XawTextPosition startPos;
  * "invalidates" that portion of the displayed text (if any), so that things
  * will be repainted properly.
  */
-
-int 
-#if NeedFunctionPrototypes
+int
 XawTextReplace(Widget w, XawTextPosition startPos, XawTextPosition endPos,
-               XawTextBlock *text)
-#else
-XawTextReplace(w, startPos, endPos, text)
-Widget w;
-XawTextPosition  startPos, endPos;
-XawTextBlock *text;
-#endif
+	       XawTextBlock *text)
 {
-  TextWidget ctx = (TextWidget) w;
-  int result;
+    TextWidget ctx = (TextWidget)w;
+    int result;
+#ifndef OLDXAW
+    Cardinal i;
+    TextSrcObject src = (TextSrcObject)ctx->text.source;
 
-  _XawTextPrepareToUpdate(ctx);
-  endPos = FindGoodPosition(ctx, endPos);
-  startPos = FindGoodPosition(ctx, startPos);
-  if ((result = _XawTextReplace(ctx, startPos, endPos, text)) == XawEditDone) {
-    int delta = text->length - (endPos - startPos);
-    if (ctx->text.insertPos >= (endPos + delta)) {
-      XawTextScanDirection sd = (delta < 0) ? XawsdLeft : XawsdRight;
-      ctx->text.insertPos = SrcScan(ctx->text.source, ctx->text.insertPos,
-				    XawstPositions, sd, abs(delta), TRUE);
-    }
-  }
+    for (i = 0; i < src->textSrc.num_text; i++)
+	_XawTextPrepareToUpdate((TextWidget)src->textSrc.text[i]);
+#else
+    _XawTextPrepareToUpdate(ctx);
+#endif
 
-  _XawTextCheckResize(ctx);
-  _XawTextExecuteUpdate(ctx);
-  _XawTextSetScrollBars(ctx);
-  
-  return result;
+    endPos = FindGoodPosition(ctx, endPos);
+    startPos = FindGoodPosition(ctx, startPos);
+    result = _XawTextReplace(ctx, startPos, endPos, text);
+
+#ifndef OLDXAW
+    for (i = 0; i < src->textSrc.num_text; i++)
+	_XawTextExecuteUpdate((TextWidget)src->textSrc.text[i]);
+#else
+    _XawTextExecuteUpdate(ctx);
+#endif
+
+    return (result);
 }
 
 XawTextPosition 
-#if NeedFunctionPrototypes
 XawTextTopPosition(Widget w)
-#else
-XawTextTopPosition(w)
-Widget w;
-#endif
 {
-  return( ((TextWidget) w)->text.lt.top );
+    return (((TextWidget)w)->text.lt.top);
 }
 
-void 
-#if NeedFunctionPrototypes
-XawTextSetInsertionPoint(Widget w, XawTextPosition position)
-#else
-XawTextSetInsertionPoint(w, position)
-Widget w;
-XawTextPosition position;
-#endif
+XawTextPosition 
+XawTextLastPosition(Widget w)
 {
-  TextWidget ctx = (TextWidget) w;
-
-  _XawTextPrepareToUpdate(ctx);
-  ctx->text.insertPos = FindGoodPosition(ctx, position);
-  ctx->text.showposition = TRUE;
-
-  _XawTextExecuteUpdate(ctx);
-}
-
-XawTextPosition
-#if NeedFunctionPrototypes
-XawTextGetInsertionPoint(Widget w)
-#else
-XawTextGetInsertionPoint(w)
-Widget w;
-#endif
-{
-  return( ((TextWidget) w)->text.insertPos);
-}
-
-/*
- * NOTE: Must walk the selection list in opposite order from LoseSelection.
- */
-
-void 
-#if NeedFunctionPrototypes
-XawTextUnsetSelection(Widget w)
-#else
-XawTextUnsetSelection(w)
-Widget w;
-#endif
-{
-  TextWidget ctx = (TextWidget)w;
-
-  while (ctx->text.s.atom_count != 0) {
-    Atom sel = ctx->text.s.selections[ctx->text.s.atom_count - 1];
-    if ( sel != (Atom) 0 ) {
-/*
- * As selections are lost the atom_count will decrement.
- */
-      if (GetCutBufferNumber(sel) == NOT_A_CUT_BUFFER)
-	XtDisownSelection(w, sel, ctx->text.time);
-      LoseSelection(w, &sel); /* In case this is a cut buffer, or 
-				 XtDisownSelection failed to call us. */
-    }
-  }
+    return (((TextWidget)w)->text.lastPos);
 }
 
 void
-#if NeedFunctionPrototypes
-XawTextSetSelection (Widget w, XawTextPosition left, XawTextPosition right)
-#else
-XawTextSetSelection (w, left, right)
-Widget w;
-XawTextPosition left, right;
-#endif
+XawTextSetInsertionPoint(Widget w, XawTextPosition position)
 {
-  TextWidget ctx = (TextWidget) w;
-  
-  _XawTextPrepareToUpdate(ctx);
-  _XawTextSetSelection(ctx, FindGoodPosition(ctx, left),
-		       FindGoodPosition(ctx, right), (String*)NULL, ZERO);
-  _XawTextExecuteUpdate(ctx);
+    TextWidget ctx = (TextWidget)w;
+
+    _XawTextPrepareToUpdate(ctx);
+    ctx->text.insertPos = FindGoodPosition(ctx, position);
+    ctx->text.showposition = True;
+    ctx->text.from_left = -1;
+
+    _XawTextExecuteUpdate(ctx);
+#ifndef OLDXAW
+    _XawTextSetLineAndColumnNumber(ctx, False);
+#endif
 }
 
-void 
-#if NeedFunctionPrototypes
-XawTextInvalidate(Widget w, XawTextPosition from, XawTextPosition to)
-#else
-XawTextInvalidate(w, from, to)
-Widget w;
-XawTextPosition from,to;
-#endif
+XawTextPosition
+XawTextGetInsertionPoint(Widget w)
 {
-  TextWidget ctx = (TextWidget) w;
+    return (((TextWidget)w)->text.insertPos);
+}
 
-  from = FindGoodPosition(ctx, from);
-  to = FindGoodPosition(ctx, to);
-  ctx->text.lastPos = GETLASTPOS;
-  _XawTextPrepareToUpdate(ctx);
-  _XawTextNeedsUpdating(ctx, from, to);
-  _XawTextBuildLineTable(ctx, ctx->text.lt.top, TRUE);
-  _XawTextExecuteUpdate(ctx);
+/*
+ * Note: Must walk the selection list in opposite order from TextLoseSelection
+ */
+void
+XawTextUnsetSelection(Widget w)
+{
+    TextWidget ctx = (TextWidget)w;
+
+    while (ctx->text.s.atom_count != 0) {
+	Atom sel = ctx->text.s.selections[ctx->text.s.atom_count - 1];
+
+	if (sel != (Atom) 0) {
+	    /*
+	     * As selections are lost the atom_count will decrement
+	     */
+	    if (GetCutBufferNumber(sel) == NOT_A_CUT_BUFFER)
+		XtDisownSelection(w, sel, ctx->text.time);
+	    TextLoseSelection(w, &sel); /* In case this is a cut buffer, or
+					   XtDisownSelection failed to call us */
+	}
+    }
+}
+
+void
+XawTextSetSelection(Widget w, XawTextPosition left, XawTextPosition right)
+{
+    TextWidget ctx = (TextWidget)w;
+
+    _XawTextPrepareToUpdate(ctx);
+    _XawTextSetSelection(ctx, FindGoodPosition(ctx, left),
+			 FindGoodPosition(ctx, right), NULL, 0);
+    _XawTextExecuteUpdate(ctx);
+}
+
+void
+XawTextInvalidate(Widget w, XawTextPosition from, XawTextPosition to)
+{
+    TextWidget ctx = (TextWidget)w;
+
+    from = FindGoodPosition(ctx, from);
+    to = FindGoodPosition(ctx, to);
+    ctx->text.lastPos = GETLASTPOS;
+    _XawTextPrepareToUpdate(ctx);
+    _XawTextNeedsUpdating(ctx, from, to);
+    _XawTextExecuteUpdate(ctx);
 }
 
 /*ARGSUSED*/
 void
-#if NeedFunctionPrototypes
 XawTextDisableRedisplay(Widget w)
-#else
-XawTextDisableRedisplay(w)
-Widget w;
-#endif
 {
-  ((TextWidget) w)->text.update_disabled = True;
-  _XawTextPrepareToUpdate( (TextWidget) w);
+    ((TextWidget)w)->text.update_disabled = True;
+    _XawTextPrepareToUpdate((TextWidget)w);
 }
 
 void 
-#if NeedFunctionPrototypes
 XawTextEnableRedisplay(Widget w)
-#else
-XawTextEnableRedisplay(w)
-Widget w;
-#endif
 {
-  TextWidget ctx = (TextWidget)w;
-  XawTextPosition lastPos;
+    TextWidget ctx = (TextWidget)w;
+    XawTextPosition lastPos;
 
-  if (!ctx->text.update_disabled) return;
+    if (!ctx->text.update_disabled)
+	return;
 
-  ctx->text.update_disabled = False;
-  lastPos = ctx->text.lastPos = GETLASTPOS;
-  ctx->text.lt.top = FindGoodPosition(ctx, ctx->text.lt.top);
-  ctx->text.insertPos = FindGoodPosition(ctx, ctx->text.insertPos);
-  if ( (ctx->text.s.left > lastPos) || (ctx->text.s.right > lastPos) ) 
-    ctx->text.s.left = ctx->text.s.right = 0;
-  
-  _XawTextBuildLineTable(ctx, ctx->text.lt.top, TRUE);
-  if (XtIsRealized(w))
-    DisplayTextWindow(w);
-  _XawTextExecuteUpdate(ctx);
+    ctx->text.update_disabled = False;
+    lastPos = ctx->text.lastPos = GETLASTPOS;
+    ctx->text.lt.top = FindGoodPosition(ctx, ctx->text.lt.top);
+    ctx->text.insertPos = FindGoodPosition(ctx, ctx->text.insertPos);
+
+    if (ctx->text.s.left > lastPos || ctx->text.s.right > lastPos)
+	ctx->text.s.left = ctx->text.s.right = 0;
+
+    _XawTextExecuteUpdate(ctx);
 }
 
 Widget
-#if NeedFunctionPrototypes
 XawTextGetSource(Widget w)
-#else
-XawTextGetSource(w)
-Widget w;
-#endif
 {
-  return ((TextWidget)w)->text.source;
+    return (((TextWidget)w)->text.source);
+}
+
+Widget
+XawTextGetSink(Widget w)
+{
+    return (((TextWidget)w)->text.sink);
 }
 
 void
-#if NeedFunctionPrototypes
-XawTextDisplayCaret (Widget w,
+XawTextDisplayCaret(Widget w,
 #if NeedWidePrototypes
-		    /* Boolean */ int display_caret)
+	int display_caret
 #else
-		    Boolean display_caret)
+	Boolean display_caret
 #endif
-#else
-XawTextDisplayCaret (w, display_caret)
-Widget w;
-Boolean display_caret;
-#endif
+)
 {
-  TextWidget ctx = (TextWidget) w;
+    TextWidget ctx = (TextWidget)w;
 
-  if (ctx->text.display_caret == display_caret) return;
-
-  if (XtIsRealized(w)) {
-    _XawTextPrepareToUpdate(ctx);
-    ctx->text.display_caret = display_caret;
-    _XawTextExecuteUpdate(ctx);
-  }
-  else
-    ctx->text.display_caret = display_caret;
+    if (XtIsRealized(w)) {
+	_XawTextPrepareToUpdate(ctx);
+	ctx->text.display_caret = display_caret;
+	_XawTextExecuteUpdate(ctx);
+    }
+    else
+	ctx->text.display_caret = display_caret;
 }
 
-/*	Function Name: XawTextSearch(w, dir, text).
- *	Description: searches for the given text block.
- *	Arguments: w - The text widget.
- *                 dir - The direction to search. 
- *                 text - The text block containing info about the string
- *                        to search for.
- *	Returns: The position of the text found, or XawTextSearchError on 
- *               an error.
+/*
+ * Function:
+ *	XawTextSearch
+ *
+ * Parameters:
+ *	w    - text widget
+ *	dir  - direction to search
+ *	text - text block containing info about the string to search for
+ *
+ * Description:
+ *	Searches for the given text block.
+ *
+ * Returns:
+ *	The position of the text found, or XawTextSearchError on an error
  */
-
 XawTextPosition
-#if NeedFunctionPrototypes
 XawTextSearch(Widget w,
 #if NeedWidePrototypes
-	    /* XawTextScanDirection */ int dir,
+	int dir,
 #else
-	    XawTextScanDirection dir,
+	XawTextScanDirection dir,
 #endif
-	    XawTextBlock *text)
-#else
-XawTextSearch(w, dir, text) 
-Widget w;
-XawTextScanDirection dir;
-XawTextBlock * text;
-#endif
+	XawTextBlock *text)
 {
-  TextWidget ctx = (TextWidget) w;
+    TextWidget ctx = (TextWidget)w;
 
-  return(SrcSearch(ctx->text.source, ctx->text.insertPos, dir, text));
+    return (SrcSearch(ctx->text.source, ctx->text.insertPos, dir, text));
 }
-  
+
 TextClassRec textClassRec = {
-  { /* core fields */
-    /* superclass       */      (WidgetClass) &simpleClassRec,
-    /* class_name       */      "Text",
-    /* widget_size      */      sizeof(TextRec),
-    /* class_initialize */      ClassInitialize,
-    /* class_part_init  */	NULL,
-    /* class_inited     */      FALSE,
-    /* initialize       */      Initialize,
-    /* initialize_hook  */	NULL,
-    /* realize          */      Realize,
-    /* actions          */      _XawTextActionsTable,
-    /* num_actions      */      0,                /* Set in ClassInitialize. */
-    /* resources        */      resources,
-    /* num_ resource    */      XtNumber(resources),
-    /* xrm_class        */      NULLQUARK,
-    /* compress_motion  */      TRUE,
-    /* compress_exposure*/      XtExposeGraphicsExpose | XtExposeNoExpose,
-    /* compress_enterleave*/	TRUE,
-    /* visible_interest */      FALSE,
-    /* destroy          */      TextDestroy,
-    /* resize           */      Resize,
-    /* expose           */      ProcessExposeRegion,
-    /* set_values       */      SetValues,
-    /* set_values_hook  */	NULL,
-    /* set_values_almost*/	XtInheritSetValuesAlmost,
-    /* get_values_hook  */	GetValuesHook,
-    /* accept_focus     */      NULL,
-    /* version          */	XtVersion,
-    /* callback_private */      NULL,
-    /* tm_table         */      NULL,    /* set in ClassInitialize */
-    /* query_geometry   */	XtInheritQueryGeometry,
-    /* display_accelerator*/	XtInheritDisplayAccelerator,
-    /* extension	*/	NULL
+  /* core */
+  {
+    (WidgetClass)&simpleClassRec,	/* superclass */ 
+    "Text",				/* class_name */
+    sizeof(TextRec),			/* widget_size */
+    XawTextClassInitialize,		/* class_initialize */
+    NULL,				/* class_part_init */
+    False,				/* class_inited */
+    XawTextInitialize,			/* initialize */
+    NULL,				/* initialize_hook */
+    XawTextRealize,			/* realize */
+    _XawTextActionsTable,		/* actions */
+    0,					/* num_actions */
+    resources,				/* resources */
+    XtNumber(resources),		/* num_resource */
+    NULLQUARK,				/* xrm_class */
+    True,				/* compress_motion */
+    XtExposeGraphicsExpose |		/* compress_exposure */
+	XtExposeNoExpose,
+    True,				/* compress_enterleave */
+    False,				/* visible_interest */
+    XawTextDestroy,			/* destroy */
+    XawTextResize,			/* resize */
+    XawTextExpose,			/* expose */
+    XawTextSetValues,			/* set_values */
+    NULL,				/* set_values_hook */
+    XtInheritSetValuesAlmost,		/* set_values_almost */
+    XawTextGetValuesHook,		/* get_values_hook */
+    NULL,				/* accept_focus */
+    XtVersion,				/* version */
+    NULL,				/* callback_private */
+    _XawDefaultTextTranslations,	/* tm_table */
+    XtInheritQueryGeometry,		/* query_geometry */
+    XtInheritDisplayAccelerator,	/* display_accelerator */
+    NULL,				/* extension */
   },
-  { /* Simple fields */
-    /* change_sensitive	*/	ChangeSensitive
+  /* simple */
+  {
+    XawTextChangeSensitive,		/* change_sensitive */
   },
-  { /* text fields */
-    /* empty            */	0
+  /* text */
+  {
+    NULL,				/* extension */
   }
 };
 

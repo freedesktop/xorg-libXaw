@@ -23,6 +23,7 @@ Except as contained in this notice, the name of The Open Group shall not be
 used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
  */
+/* $XFree86: xc/lib/Xaw/SmeBSB.h,v 1.7 2001/12/14 19:54:43 dawes Exp $ */
 
 /*
  * SmeBSB.h - Public Header file for SmeBSB object.
@@ -42,14 +43,7 @@ in this Software without prior written authorization from The Open Group.
 #define _SmeBSB_h
 
 #include <X11/Xmu/Converters.h>
-
 #include <X11/Xaw/Sme.h>
-
-/****************************************************************
- *
- * SmeBSB object
- *
- ****************************************************************/
 
 /* BSB Menu Entry Resources:
 
@@ -63,12 +57,13 @@ in this Software without prior written authorization from The Open Group.
  label               Label              String          Name of entry
  leftBitmap          LeftBitmap         Pixmap          None
  leftMargin          HorizontalMargins  Dimension       4
+ menuName	     MenuName		String		NULL
  rightBitmap         RightBitmap        Pixmap          None
  rightMargin         HorizontalMargins  Dimension       4
  sensitive	     Sensitive		Boolean		True
  vertSpace           VertSpace          int             25
  width		     Width		Dimension	0
- x		     Position		Position	0n
+ x		     Position		Position	0
  y		     Position		Position	0
 
 */
@@ -83,6 +78,9 @@ extern WidgetClass smeBSBObjectClass;
 #define XtNrightBitmap "rightBitmap"
 #define XtNrightMargin "rightMargin"
 #define XtNvertSpace   "vertSpace"
+
+#define XtNmenuName "menuName"
+#define XtCMenuName "MenuName"
 
 #ifndef XtNfontSet
 #define XtNfontSet		"fontSet"

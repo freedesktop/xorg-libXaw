@@ -49,6 +49,7 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
+/* $XFree86: xc/lib/Xaw/StripCharP.h,v 1.8 2001/12/14 19:54:43 dawes Exp $ */
 
 #ifndef _XawStripChartP_h
 #define _XawStripChartP_h
@@ -57,50 +58,53 @@ SOFTWARE.
 #include <X11/Xaw/SimpleP.h>
 
 #define NO_GCS 0
-#define FOREGROUND 1 << 0
-#define HIGHLIGHT  1 << 1
+#define FOREGROUND	(1 << 0)
+#define HIGHLIGHT	(1 << 1)
 #define ALL_GCS (FOREGROUND | HIGHLIGHT)
 
-/* New fields for the stripChart widget instance record */
-
+/* new fields for the stripChart widget */
 typedef struct {
-    Pixel	fgpixel;	/* color index for graph */
-    Pixel	hipixel;	/* color index for lines */
-    GC	fgGC;		/* graphics context for fgpixel */
-    GC	hiGC;		/* graphics context for hipixel */
+    /* resources */
+    Pixel fgpixel;		/* color index for graph */
+    Pixel hipixel;		/* color index for lines */
+    GC fgGC;			/* graphics context for fgpixel */
+    GC hiGC;			/* graphics context for hipixel */
     
-    /* start of graph stuff */
-    
-    int	update;		/* update frequence */
-    int	scale;		/* scale factor */
-    int	min_scale;	/* smallest scale factor */
-    int	interval;	/* data point interval */
-    XPoint * points ;	/* Poly point for repairing graph lines. */
-    double max_value;	/* Max Value in window */
-    double valuedata[2048];/* record of data points */
+    /* private */
+    int update;			/* update frequence */
+    int scale;			/* scale factor */
+    int min_scale;		/* smallest scale factor */
+    int interval;		/* data point interval */
+    XPoint *points;		/* Poly point for repairing graph lines */
+    double max_value;		/* Max Value in window */
+    double valuedata[2048];	/* record of data points */
     XtIntervalId interval_id;
-    XtCallbackList get_value; /* proc to call to fetch load pt */
-    int jump_val;		/* Amount to jump on each scroll. */
+    XtCallbackList get_value;	/* proc to call to fetch load pt */
+    int jump_val;		/* Amount to jump on each scroll */
+#ifndef OLDXAW
+    XtPointer pad[4];	/* for future use and keep binary compatability */
+#endif
 } StripChartPart;
 
-/* Full instance record declaration */
+/* instance record declaration */
 typedef struct _StripChartRec {
-   CorePart core;
-   SimplePart simple;
-   StripChartPart strip_chart;
+    CorePart core;
+    SimplePart simple;
+    StripChartPart strip_chart;
 } StripChartRec;
 
-/* New fields for the StripChart widget class record */
-typedef struct {int dummy;} StripChartClassPart;
+/* new fields for the StripChart widget class record */
+typedef struct {
+    XtPointer extension;
+} StripChartClassPart;
 
-/* Full class record declaration. */
+/* class record declaration */
 typedef struct _StripChartClassRec {
-   CoreClassPart core_class;
-   SimpleClassPart simple_class;
-   StripChartClassPart strip_chart_class;
+    CoreClassPart core_class;
+    SimpleClassPart simple_class;
+    StripChartClassPart strip_chart_class;
 } StripChartClassRec;
 
-/* Class pointer. */
 extern StripChartClassRec stripChartClassRec;
 
 #endif /* _XawStripChartP_h */

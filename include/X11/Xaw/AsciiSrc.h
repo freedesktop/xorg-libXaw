@@ -25,6 +25,7 @@ used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
 
 */
+/* $XFree86: xc/lib/Xaw/AsciiSrc.h,v 1.8 2001/12/14 19:54:38 dawes Exp $ */
 
 
 /*
@@ -51,7 +52,6 @@ in this Software without prior written authorization from The Open Group.
 
  Name		     Class		RepType		Default Value
  ----		     -----		-------		-------------
- callback	     Callback		Callback	(none)
  dataCompression     DataCompression	Boolean		True
  length		     Length		int		(internal)
  pieceSize	     PieceSize		int		BUFSIZ
@@ -61,24 +61,17 @@ in this Software without prior written authorization from The Open Group.
 
 */
  
-/* Class record constants */
-
 extern WidgetClass asciiSrcObjectClass;
 
 typedef struct _AsciiSrcClassRec *AsciiSrcObjectClass;
 typedef struct _AsciiSrcRec      *AsciiSrcObject;
 
-/*
- * Just to make people's lives a bit easier.
- */
-
 #define AsciiSourceObjectClass AsciiSrcObjectClass
 #define AsciiSourceObject      AsciiSrcObject
 
 /*
- * Resource Definitions.
+ * Resource Definitions
  */
-
 #define XtCDataCompression "DataCompression"
 #define XtCPieceSize "PieceSize"
 #define XtCType "Type"
@@ -94,68 +87,89 @@ typedef struct _AsciiSrcRec      *AsciiSrcObject;
 #define XtEstring "string"
 #define XtEfile "file"
 
-typedef enum {XawAsciiFile, XawAsciiString} XawAsciiType;
+typedef enum {
+  XawAsciiFile,
+  XawAsciiString
+} XawAsciiType;
 
-/************************************************************
- *
- * Public routines 
- *
- ************************************************************/
+/*
+ * Public routines
+ */
 
 _XFUNCPROTOBEGIN
 
-/*	Function Name: XawAsciiSourceFreeString
- *	Description: Frees the string returned by a get values call
- *                   on the string when the source is of type string.
- *	Arguments: w - the AsciiSrc object.
- *	Returns: none.
+/*
+ * Function:
+ *	XawAsciiSourceFreeString
+ *
+ * Parameters:
+ *	w - AsciiSrc object
+ *
+ * Description:
+ *	  Frees the string returned by a get values call
+ *		     on the string when the source is of type string.
  */
+void XawAsciiSourceFreeString
+(
+ Widget		w
+ );
 
-extern void XawAsciiSourceFreeString(
-#if NeedFunctionPrototypes
-    Widget		/* w */
-#endif
-);
-
-/*	Function Name: XawAsciiSave
- *	Description: Saves all the pieces into a file or string as required.
- *	Arguments: w - the asciiSrc Object.
- *	Returns: TRUE if the save was successful.
+/*
+ * Function:
+ *	XawAsciiSave
+ *
+ * Arguments:
+ *	w - asciiSrc Object.
+ *
+ * Description:
+ *	Saves all the pieces into a file or string as required.
+ *
+ * Returns:
+ *	True if the save was successful
  */
+Bool XawAsciiSave
+(
+ Widget		w
+ );
 
-extern Boolean XawAsciiSave(
-#if NeedFunctionPrototypes
-    Widget		/* w */
-#endif
-);
-
-/*	Function Name: XawAsciiSaveAsFile
- *	Description: Save the current buffer as a file.
- *	Arguments: w - the asciiSrc object.
- *                 name - name of the file to save this file into.
- *	Returns: True if the save was successful.
+/*
+ * Function:
+ *	XawAsciiSaveAsFile
+ *
+ * Parameters:
+ *	w    - asciiSrc object
+ *	name - name of the file to save this file into
+ *
+ * Description:
+ *	Save the current buffer as a file.
+ *
+ * Returns:
+ *	True if the save was successful
  */
+Bool XawAsciiSaveAsFile
+(
+ Widget		w,
+ _Xconst char	*name
+ );
 
-extern Boolean XawAsciiSaveAsFile(
-#if NeedFunctionPrototypes
-    Widget		/* w */,
-    _Xconst char*	/* name */
-#endif 
-);
-
-/*	Function Name: XawAsciiSourceChanged
- *	Description: Returns true if the source has changed since last saved.
- *	Arguments: w - the asciiSource object.
- *	Returns: a Boolean (see description).
+/*
+ * Function:
+ *	XawAsciiSourceChanged
+ *
+ * Parameters:
+ *	w - asciiSource object
+ *
+ * Description:
+ *	Returns true if the source has changed since last saved.
+ *
+ * Returns:
+ *	a Boolean (see description)
  */
-
-extern Boolean XawAsciiSourceChanged(
-#if NeedFunctionPrototypes
-    Widget		/* w */
-#endif
-);
+Bool XawAsciiSourceChanged
+(
+ Widget		w
+ );
 
 _XFUNCPROTOEND
 
 #endif /* _XawAsciiSrc_h */
-
