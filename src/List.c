@@ -471,6 +471,10 @@ XawListInitialize(Widget temp1, Widget cnew, ArgList args, Cardinal *num_args)
 {
     ListWidget lw = (ListWidget)cnew;
 
+    if (!lw->list.font) XtError("Aborting: no font found\n");
+    if (lw->simple.international && !lw->list.fontset) 
+	XtError("Aborting: no fontset found\n");
+    
     /*
      * Initialize all private resources
      */

@@ -266,6 +266,8 @@ XawSmeBSBInitialize(Widget request, Widget cnew,
 {
     SmeBSBObject entry = (SmeBSBObject)cnew;
 
+    if (!entry->sme_bsb.font) XtError("Aborting: no font found\n");
+
     if (entry->sme_bsb.label == NULL) 
 	entry->sme_bsb.label = XtName(cnew);
     else
