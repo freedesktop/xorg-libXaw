@@ -111,11 +111,13 @@ static XtResource resources[] = {
  *
  ***************************************************************************/
 
-#ifdef __UNIXOS2__
+#if defined(__UNIXOS2__) || defined(__CYGWIN__) 
 /* to fix the EditRes problem because of wrong linker semantics */
 extern WidgetClass vendorShellWidgetClass; /* from Xt/Vendor.c */
 extern VendorShellClassRec _XawVendorShellClassRec;
 extern void _XawFixupVendorShell();
+
+#if defined(__UNIXOS2__)
 unsigned long _DLL_InitTerm(unsigned long mod,unsigned long flag)
 {
 	switch (flag) {
@@ -130,6 +132,25 @@ unsigned long _DLL_InitTerm(unsigned long mod,unsigned long flag)
 		return 0;
 	}
 }
+#endif
+
+#if defined(__CYGWIN__)
+int __stdcall
+DllMain(unsigned long mod_handle, unsigned long flag, void *routine)
+{
+  switch (flag)
+    {
+    case 1: /* DLL_PROCESS_ATTACH - process attach */
+      vendorShellWidgetClass = (WidgetClass)(&_XawVendorShellClassRec);
+      _XawFixupVendorShell();
+      break;
+    case 0: /* DLL_PROCESS_DETACH - process detach */
+      break;
+    }
+  return 1;
+}
+#endif
+
 #define vendorShellClassRec _XawVendorShellClassRec
 
 #endif
@@ -337,7 +358,7 @@ XawVendorShellClassPartInit(WidgetClass cclass)
     }
 }
 
-#if defined(__osf__) || defined(__UNIXOS2__)
+#if defined(__osf__) || defined(__UNIXOS2__) || defined(__CYGWIN__)
 /* stupid OSF/1 shared libraries have the wrong semantics */
 /* symbols do not get resolved external to the shared library */
 void _XawFixupVendorShell()
