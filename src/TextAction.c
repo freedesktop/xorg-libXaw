@@ -25,7 +25,7 @@ used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
 
 */
-/* $XFree86: xc/lib/Xaw/TextAction.c,v 3.47 2003/05/27 22:26:36 tsi Exp $ */
+/* $XFree86: xc/lib/Xaw/TextAction.c,v 3.46tsi Exp $ */
 
 #include <stdio.h>
 #include <stdlib.h>

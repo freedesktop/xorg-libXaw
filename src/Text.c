@@ -74,7 +74,7 @@ SOFTWARE.
  * XFree86 Project.
  */
 
-/* $XFree86: xc/lib/Xaw/Text.c,v 3.54 2003/12/22 17:48:04 tsi Exp $ */
+/* $XFree86: xc/lib/Xaw/Text.c,v 3.53tsi Exp $ */
 
 #include <stdio.h>
 #include <X11/IntrinsicP.h>

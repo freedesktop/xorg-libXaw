@@ -49,7 +49,7 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
-/* $XFree86: xc/lib/Xaw/TextP.h,v 3.22 2001/12/19 21:37:31 dawes Exp $ */
+/* $XFree86: xc/lib/Xaw/TextP.h,v 3.21 2001/12/14 19:54:44 dawes Exp $ */
 
 #ifndef _XawTextP_h
 #define _XawTextP_h

@@ -49,7 +49,7 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ********************************************************/
-/* $XFree86: xc/lib/Xaw/ViewportP.h,v 1.8 2001/12/14 19:54:46 dawes Exp $ */
+/* $XFree86: xc/lib/Xaw/ViewportP.h,v 1.7 2001/01/17 19:42:36 dawes Exp $ */
 
 #ifndef _ViewportP_h
 #define _ViewportP_h

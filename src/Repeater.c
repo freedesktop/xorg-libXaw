@@ -27,7 +27,7 @@ in this Software without prior written authorization from The Open Group.
  * 
  * This widget is used for press-and-hold style buttons.
  */
-/* $XFree86: xc/lib/Xaw/Repeater.c,v 1.7 2001/12/14 19:54:41 dawes Exp $ */
+/* $XFree86: xc/lib/Xaw/Repeater.c,v 1.6 2001/01/17 19:42:29 dawes Exp $ */
 
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>

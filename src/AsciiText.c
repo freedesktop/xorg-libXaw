@@ -46,7 +46,7 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 */
-/* $XFree86: xc/lib/Xaw/AsciiText.c,v 3.10 2001/12/14 19:54:39 dawes Exp $ */
+/* $XFree86: xc/lib/Xaw/AsciiText.c,v 3.9 2001/01/17 19:42:25 dawes Exp $ */
 
 /*
  * AsciiText.c - Source code for AsciiText Widget

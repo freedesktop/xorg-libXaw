@@ -26,7 +26,7 @@ in this Software without prior written authorization from The Open Group.
 
 */
 
-/* $XFree86: xc/lib/Xaw/AsciiSrc.c,v 1.34 2002/11/21 16:22:52 paulo Exp $ */
+/* $XFree86: xc/lib/Xaw/AsciiSrc.c,v 1.33 2002/07/04 17:04:20 paulo Exp $ */
 
 /*
  * AsciiSrc.c - AsciiSrc object. (For use with the text widget).

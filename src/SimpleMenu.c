@@ -24,7 +24,7 @@ used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
  */
 
-/* $XFree86: xc/lib/Xaw/SimpleMenu.c,v 3.22 2001/12/14 19:54:42 dawes Exp $ */
+/* $XFree86: xc/lib/Xaw/SimpleMenu.c,v 3.21 2001/03/23 23:59:15 paulo Exp $ */
 
 /*
  * SimpleMenu.c - Source code file for SimpleMenu widget.
