@@ -23,7 +23,7 @@ Except as contained in this notice, the name of The Open Group shall not be
 used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
  */
-/* $XFree86$ */
+/* $XFree86: xc/lib/Xaw/SmeBSB.h,v 1.7 2001/12/14 19:54:43 dawes Exp $ */
 
 /*
  * SmeBSB.h - Public Header file for SmeBSB object.

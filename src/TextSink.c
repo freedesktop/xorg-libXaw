@@ -24,7 +24,7 @@ used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
 
 */
-/* $XFree86$ */
+/* $XFree86: xc/lib/Xaw/TextSink.c,v 1.22 2004/01/23 03:57:58 dawes Exp $ */
 
 /*
  * Author:  Chris Peterson, MIT X Consortium.

@@ -49,7 +49,7 @@ used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
 
 */
-/* $XFree86$ */
+/* $XFree86: xc/lib/Xaw/MultiSrc.h,v 1.7 2001/12/14 19:54:41 dawes Exp $ */
 
 /*
  * This file was modified from AsciiSrc.h.

@@ -27,7 +27,7 @@
  * Author: Paulo César Pereira de Andrade
  */
 
-/* $XFree86$ */
+/* $XFree86: xc/lib/Xaw/Tip.c,v 1.5 2000/05/18 16:29:53 dawes Exp $ */
 
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>

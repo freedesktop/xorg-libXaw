@@ -49,7 +49,7 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
-/* $XFree86$ */
+/* $XFree86: xc/lib/Xaw/StripCharP.h,v 1.8 2001/12/14 19:54:43 dawes Exp $ */
 
 #ifndef _XawStripChartP_h
 #define _XawStripChartP_h

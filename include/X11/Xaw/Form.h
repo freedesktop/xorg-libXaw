@@ -47,7 +47,7 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
-/* $XFree86$ */
+/* $XFree86: xc/lib/Xaw/Form.h,v 1.9 2001/12/14 19:54:40 dawes Exp $ */
 
 #ifndef _XawForm_h
 #define _XawForm_h

@@ -46,7 +46,7 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
-/* $XFree86$ */
+/* $XFree86: xc/lib/Xaw/FormP.h,v 1.14 2001/12/19 21:37:30 dawes Exp $ */
 
 /* Form widget private definitions */
 

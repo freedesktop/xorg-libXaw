@@ -47,7 +47,7 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
-/* $XFree86$ */
+/* $XFree86: xc/lib/Xaw/DialogP.h,v 1.9 2001/12/14 19:54:39 dawes Exp $ */
 
 #ifndef _DialogP_h
 #define _DialogP_h
