@@ -243,6 +243,10 @@ XawTipInitialize(Widget req, Widget w, ArgList args, Cardinal *num_args)
     TipWidget tip = (TipWidget)w;
     XGCValues values;
 
+    if (!tip->tip.font) XtError("Aborting: no font found\n");
+    if (tip->tip.international && !tip->tip.fontset)
+	XtError("Aborting: no fontset found\n");
+    
     tip->tip.timer = 0;
 
     values.foreground = tip->tip.foreground;
