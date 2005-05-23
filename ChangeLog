@@ -1,0 +1,139 @@
+2005-01-22  Daniel Stone  <daniel@freedesktop.org>
+
+	* configure.ac:
+	Remove AC_CONFIG_AUX_DIR.
+
+2004-05-10  Eric Anholt  <anholt@FreeBSD.org>
+
+	* Makefile.am:
+	* configure.ac:
+	Link to libXpm as well.
+	Bump to version 7.0.2.
+	Properly include LIBS/CFLAGS in .pc and linking.
+
+2004-04-13  Daniel Stone  <daniel@freedesktop.org>
+
+	* TextSink.c:
+	* Vendor.c:
+	* Actions.c:
+	* Text.c:
+	* XawI18n.h:
+	* Xaw.man:
+	* include/X11/Xaw/XawInit.h:
+	Sync with X11R6.7, including fixing a wrong number of arguments to
+	XmuSnprintf, adding better Cygwin support, and cleaning up OLDXAW
+	semantics.
+
+	* Bump version to 7.0.1 for xlibs 1.0.1.
+
+2004-01-25  Eric Anholt  <anholt@FreeBSD.org>
+
+	* Makefile.am:
+	Fix Xaw manpage section.
+
+2004-01-25  Eric Anholt  <anholt@FreeBSD.org>
+
+	* Makefile.am:
+	Change an XT_CFLAGS to XAW_CFLAGS, which should fix the FreeBSD
+	build.
+
+2004-01-25  Eric Anholt  <anholt@FreeBSD.org>
+
+	* CHANGES:
+	* Changelog:
+	Remove some very dated changelogs.
+
+2004-01-25  Eric Anholt  <anholt@FreeBSD.org>
+
+	* CHANGES:
+	* Changelog:
+	* Makefile.am:
+
+2004-01-24  Eric Anholt  <anholt@FreeBSD.org>
+
+	reviewed by: daniel
+
+	* CHANGES:
+	* Changelog:
+	Remove old changelogs, which are a bit dated.
+
+2004-01-24  Eric Anholt  <anholt@FreeBSD.org>
+
+	* Makefile.am:
+	Fix distcheck (missing header files).
+
+2003-12-23 Jeremy C. Reed <reed@reedmedia.net>
+
+	* ChangeLog
+	Catch up on all my changes for Dec. 23, 2003 UTC. (Also
+	notice that older CHANGES and Changelog also exist.)
+
+2003-12-23 Jeremy C. Reed <reed@reedmedia.net>
+
+	* .cvsignore
+	Add ltcf-c.sh and ltconfig to list of files for CVS to ignore.
+
+2003-12-23 Jeremy C. Reed <reed@reedmedia.net>
+
+	* COPYING
+	* INSTALL
+	Add INSTALL and COPYING documents.  (COPYING is empty and
+	needs licenses added to it.)
+
+2003-12-23 Jeremy C. Reed <reed@reedmedia.net>
+
+	* README
+	Start README.
+
+2003-12-23 Jeremy C. Reed <reed@reedmedia.net>
+
+	* Makefile.am
+	Install Xaw man page.
+
+2003-12-23 Jeremy C. Reed <reed@reedmedia.net>
+
+	* configure.ac
+	* xaw.pc.in
+	Make sure CFLAGS and LIBS are right for pkgconfig file.
+
+2003-12-23 Jeremy C. Reed <reed@reedmedia.net>
+
+	* Makefile.am
+	* configure.ac
+	Use 7.0.0 for version for libtool version-info and for
+	autoconf AC_INIT.
+
+2003-12-23 Jeremy C. Reed <reed@reedmedia.net>
+
+	* Makefile.am
+	* configure.ac
+	* include/Makefile.am
+	Added Makefile.am for include headers.  Added support for
+	include headers.  (I moved header files to include/X11/Xaw/
+	on CVS server itself.)  Add more pkg-config files to use.
+
+2003-12-23 Jeremy C. Reed <reed@reedmedia.net>
+
+	* include/.cvsignore
+	Add list of files for CVS to ignore.
+
+2003-12-23 Jeremy C. Reed <reed@reedmedia.net>
+	* AUTHORS
+	* ChangeLog
+	* Makefile.am
+	* NEWS
+	* README
+	* autogen.sh
+	* configure.ac
+	* xaw.pc.in
+	Add initial files for automake/autoconf support.
+
+2003-12-23 Jeremy C. Reed <reed@reedmedia.net>
+
+	* .cvsignore
+	Fix .pc (pkg-config) files to ignore.
+
+2003-12-23 Jeremy C. Reed <reed@reedmedia.net>
+
+	* .cvsignore
+	Add list of files for CVS to ignore.

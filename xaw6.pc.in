@@ -1,0 +1,10 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: Xaw
+Description: X Athena Widgets Library, version 6
+Version: @PACKAGE_VERSION@
+Libs: -L${libdir} -lXaw @XAW6_LIBS@
+Cflags: -I${includedir} @XAW6_CFLAGS@
