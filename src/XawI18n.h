@@ -42,7 +42,7 @@ in this Software without prior written authorization from The Open Group.
 #include <wchar.h>
 #endif
 
-#if defined(AIXV3) || defined(SCO325)
+#if defined(AIXV3) || defined(__SCO__)
 #include <ctype.h>
 #endif
 
