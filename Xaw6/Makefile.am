@@ -1,13 +1,13 @@
 if BUILD_XAW6
 
-lib_LTLIBRARIES = libXaw.la
+lib_LTLIBRARIES = libXaw6.la
 
 AM_CFLAGS =				\
         -I${top_srcdir}/include		\
         -I${top_srcdir}/include/X11/Xaw \
 	$(XAW6_CFLAGS)
 
-libXaw_la_SOURCES = \
+libXaw6_la_SOURCES = \
 	$(top_srcdir)/src/Actions.c \
 	$(top_srcdir)/src/AllWidgets.c \
 	$(top_srcdir)/src/AsciiSink.c \
@@ -57,7 +57,7 @@ libXaw_la_SOURCES = \
 	$(top_srcdir)/src/XawI18n.h \
 	$(top_srcdir)/src/sharedlib.c
 
-libXaw_la_LDFLAGS = -version-info 6:1:0
-libXaw_la_LIBADD = $(XAW6_LIBS)
+libXaw6_la_LDFLAGS = -version-info 6:1:0
+libXaw6_la_LIBADD = $(XAW6_LIBS)
 
 endif

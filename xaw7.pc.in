@@ -6,5 +6,5 @@ includedir=@includedir@
 Name: Xaw
 Description: X Athena Widgets Library, version 7
 Version: @PACKAGE_VERSION@
-Libs: -L${libdir} -lXaw @XAW7_LIBS@
+Libs: -L${libdir} -lXaw7 @XAW7_LIBS@
 Cflags: -I${includedir} @XAW7_CFLAGS@

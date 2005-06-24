@@ -1,13 +1,13 @@
 if BUILD_XAW8
 
-lib_LTLIBRARIES = libXaw.la
+lib_LTLIBRARIES = libXaw8.la
 
 AM_CFLAGS =				\
         -I${top_srcdir}/include		\
         -I${top_srcdir}/include/X11/Xaw \
-	$(XAW_CFLAGS)
+	$(XAW8_CFLAGS)
 
-libXaw_la_SOURCES = \
+libXaw8_la_SOURCES = \
 	$(top_srcdir)/src/Actions.c \
 	$(top_srcdir)/src/AllWidgets.c \
 	$(top_srcdir)/src/AsciiSink.c \
@@ -57,7 +57,7 @@ libXaw_la_SOURCES = \
 	$(top_srcdir)/src/XawI18n.h \
 	$(top_srcdir)/src/sharedlib.c
 
-libXaw_la_LDFLAGS = -version-info 8:0:0
-libXaw_la_LIBADD = $(XAW8_LIBS)
+libXaw8_la_LDFLAGS = -version-info 8:0:0
+libXaw8_la_LIBADD = $(XAW8_LIBS)
 
 endif

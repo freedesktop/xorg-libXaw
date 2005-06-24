@@ -1,13 +1,13 @@
 if BUILD_XAW7
 
-lib_LTLIBRARIES = libXaw.la
+lib_LTLIBRARIES = libXaw7.la
 
 AM_CFLAGS =				\
         -I${top_srcdir}/include		\
         -I${top_srcdir}/include/X11/Xaw \
 	$(XAW7_CFLAGS)
 
-libXaw_la_SOURCES = \
+libXaw7_la_SOURCES = \
 	$(top_srcdir)/src/Actions.c \
 	$(top_srcdir)/src/AllWidgets.c \
 	$(top_srcdir)/src/AsciiSink.c \
@@ -56,7 +56,7 @@ libXaw_la_SOURCES = \
 	$(top_srcdir)/src/XawI18n.h \
 	$(top_srcdir)/src/sharedlib.c
 
-libXaw_la_LDFLAGS = -version-info 7:0:0
-libXaw_la_LIBADD = $(XAW7_LIBS)
+libXaw7_la_LDFLAGS = -version-info 7:0:0
+libXaw7_la_LIBADD = $(XAW7_LIBS)
 
 endif
