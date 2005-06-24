@@ -1,5 +1,8 @@
 SUBDIRS = include Xaw6 Xaw7 Xaw8 man
 
+aclocaldir = $(datadir)/aclocal
+aclocal_DATA = xaw.m4
+
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = 
 
@@ -24,7 +27,7 @@ DEFAULT_LIB = libXaw8.so
 
 endif
 
-EXTRA_DIST = xaw6.pc.in xaw7.pc.in xaw8.pc.in autogen.sh
+EXTRA_DIST = xaw6.pc.in xaw7.pc.in xaw8.pc.in autogen.sh xaw.m4
 
 install-exec-hook:
 	cd $(libdir) && rm -f libXaw.so && ln -s $(DEFAULT_LIB) libXaw.so
