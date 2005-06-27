@@ -46,7 +46,7 @@ AC_DEFUN([XAW_CHECK_XPRINT_SUPPORT],[
 
 	PKG_CHECK_MODULES(TMP_XAW, $TMP_CHECK1, success=yes, success=no)
 	if [[ ! -z $TMP_CHECK2 ]] ; then
-		if [[ $success=no ]] ; then
+		if test $success = no ; then
 			PKG_CHECK_MODULES(TMP_XAW, $TMP_CHECK2, success=yes, success=no)
 		fi
 	fi

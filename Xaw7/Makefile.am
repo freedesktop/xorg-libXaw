@@ -5,6 +5,7 @@ lib_LTLIBRARIES = libXaw7.la
 AM_CFLAGS =				\
         -I${top_srcdir}/include		\
         -I${top_srcdir}/include/X11/Xaw \
+	-DXAW7				\
 	$(XAW7_CFLAGS)
 
 libXaw7_la_SOURCES = \
