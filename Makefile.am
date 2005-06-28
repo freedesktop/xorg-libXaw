@@ -30,4 +30,4 @@ endif
 EXTRA_DIST = xaw6.pc.in xaw7.pc.in xaw8.pc.in autogen.sh xaw.m4
 
 install-exec-hook:
-	cd $(libdir) && rm -f libXaw.so && ln -s $(DEFAULT_LIB) libXaw.so
+	cd $(DESTDIR)$(libdir) && rm -f libXaw.so && ln -s $(DEFAULT_LIB) libXaw.so
