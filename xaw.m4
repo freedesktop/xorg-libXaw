@@ -33,24 +33,33 @@ AC_DEFUN([XAW_CHECK_XPRINT_SUPPORT],[
 	AC_ARG_ENABLE(xprint, AC_HELP_STRING([--disable-xprint], [Disable XPrint support]),
 			[use_xprint=$enableval],[use_xprint=auto])
 	if test "x$use_xprint" = "xyes"; then
-		# definitely use xprint
 		TMP_CHECK1=xaw8
 		TMP_CHECK2=
+		xaw_use_xprint=yes
 	elif test "x$use_xprint" = "xno"; then
 		TMP_CHECK1=xaw7
 		TMP_CHECK2=
+		xaw_use_xprint=no
 	else
 		TMP_CHECK1=xaw8
 		TMP_CHECK2=xaw7
+		xaw_use_xprint=yes
 	fi
 
 	PKG_CHECK_MODULES(TMP_XAW, $TMP_CHECK1, success=yes, success=no)
 	if [[ ! -z $TMP_CHECK2 ]] ; then
 		if test $success = no ; then
 			PKG_CHECK_MODULES(TMP_XAW, $TMP_CHECK2, success=yes, success=no)
+			xaw_use_xprint=no
 		fi
 	fi
 
-	$1_CFLAGS=$TMP_XAW_CFLAGS
-	$1_LIBS=$TMP_XAW_LIBS
+	if test "x$success" = "xyes"; then
+		$1_CFLAGS=$TMP_XAW_CFLAGS
+		$1_LIBS=$TMP_XAW_LIBS
+
+		AM_CONDITIONAL([XAW_USE_XPRINT], [test "x$xaw_use_xprint" = "xyes"])
+	else
+		AC_MSG_ERROR([No suitable version of Xaw found])
+	fi
 ])
