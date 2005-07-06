@@ -30,7 +30,7 @@ dnl
 # the presence of an Xaw with Xprint support will be auto detected
 
 AC_DEFUN([XAW_CHECK_XPRINT_SUPPORT],[
-	AC_ARG_ENABLE(xprint, AC_HELP_STRING([--disable-xprint], [Disable XPrint support]),
+	AC_ARG_ENABLE(xprint, AC_HELP_STRING([--enable-xprint], [Enable XPrint support]),
 			[use_xprint=$enableval],[use_xprint=auto])
 	if test "x$use_xprint" = "xyes"; then
 		TMP_CHECK1=xaw8
