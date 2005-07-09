@@ -15,6 +15,23 @@ AM_CONFIG_HEADER(config.h)
 AC_PROG_CC
 AC_PROG_LIBTOOL
 
+#
+# fix libtool to set SONAME to libXaw.so.$major
+#
+AC_MSG_CHECKING([hacks in libtool for libXaw SONAME])
+if grep -q "soname_spec='libXaw" libtool; then
+	AC_MSG_RESULT([already done])
+else
+	ed libtool << \EOF
+/^soname_spec/a
+# x.org hack to match monolithic Xaw SONAME
+soname_spec='libXaw\${shared_ext}\$major'
+.
+w
+q
+EOF
+	AC_MSG_RESULT([fixed])
+fi
 
 # Whether to build Xaw6
 
@@ -76,9 +93,7 @@ AC_HEADER_STDC
 AC_OUTPUT([Makefile
 	  include/Makefile
 	  man/Makefile
-	  Xaw6/Makefile
-	  Xaw7/Makefile
-	  Xaw8/Makefile])
+	  src/Makefile])
 
 if test "x$build_v6" = xyes; then
    AC_OUTPUT(xaw6.pc)

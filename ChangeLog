@@ -1,3 +1,19 @@
+2005-07-08  Keith Packard  <keithp@keithp.com>
+
+	* .cvsignore:
+	* include/.cvsignore:
+	* man/.cvsignore:
+	* src/.cvsignore:
+	Add .cvsignore files
+	
+	* Makefile.am:
+	* configure.ac:
+	* src/Makefile.am:
+	Build all three versions in src. Hack libtool to set SONAME in the
+	libtool output to match old libXaw file names. Still missing is the
+	creation of appropriate symlinks from libXaw.so.6 -> libXaw6.so.6 et
+	al so that libraries not yet installed will work properly.
+
 2005-01-22  Daniel Stone  <daniel@freedesktop.org>
 
 	* configure.ac:

@@ -1,4 +1,4 @@
-SUBDIRS = include Xaw6 Xaw7 Xaw8 man
+SUBDIRS = include src man
 
 aclocaldir = $(datadir)/aclocal
 aclocal_DATA = xaw.m4
