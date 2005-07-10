@@ -19,7 +19,7 @@ AC_PROG_LIBTOOL
 # fix libtool to set SONAME to libXaw.so.$major
 #
 AC_MSG_CHECKING([hacks in libtool for libXaw SONAME])
-if grep -q "soname_spec='libXaw" libtool; then
+if grep "soname_spec='libXaw" libtool > /dev/null ; then
 	AC_MSG_RESULT([already done])
 else
 	ed libtool << \EOF
