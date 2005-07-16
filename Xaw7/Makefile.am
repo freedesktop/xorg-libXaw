@@ -57,7 +57,7 @@ libXaw7_la_SOURCES = \
 	$(top_srcdir)/src/XawI18n.h \
 	$(top_srcdir)/src/sharedlib.c
 
-libXaw7_la_LDFLAGS = -version-info 7:0:0
+libXaw7_la_LDFLAGS = -version-number 7:0:0
 libXaw7_la_LIBADD = $(XAW7_LIBS)
 
 endif

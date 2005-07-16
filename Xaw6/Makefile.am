@@ -57,7 +57,7 @@ libXaw6_la_SOURCES = \
 	$(top_srcdir)/src/XawI18n.h \
 	$(top_srcdir)/src/sharedlib.c
 
-libXaw6_la_LDFLAGS = -version-info 6:1:0
+libXaw6_la_LDFLAGS = -version-number 6:1:0
 libXaw6_la_LIBADD = $(XAW6_LIBS)
 
 endif

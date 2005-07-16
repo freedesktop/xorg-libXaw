@@ -57,7 +57,7 @@ libXaw8_la_SOURCES = \
 	$(top_srcdir)/src/XawI18n.h \
 	$(top_srcdir)/src/sharedlib.c
 
-libXaw8_la_LDFLAGS = -version-info 8:0:0
+libXaw8_la_LDFLAGS = -version-number 8:0:0
 libXaw8_la_LIBADD = $(XAW8_LIBS)
 
 endif
