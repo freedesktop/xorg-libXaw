@@ -82,6 +82,7 @@ if test "x$build_v8" = xyes || test "x$build_v8" = xauto; then
        PKG_CHECK_MODULES(XAW8, xproto x11 xt xmu xpm xp)
        AC_SUBST(XAW8_CFLAGS)
        AC_SUBST(XAW8_LIBS)
+       build_v8=yes
    fi
 fi
 
