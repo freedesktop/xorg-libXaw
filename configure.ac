@@ -3,8 +3,8 @@ dnl Process this file with autoconf to create configure.
 AC_PREREQ([2.57])
 
 AC_INIT([libXaw],
-	7.0.2,
-	[reed@reedmedia.net],
+	0.99.0,
+	[https://bugs.freedesktop.org/enter_bug.cgi?product=xorg],
 	libXaw)
 
 AM_INIT_AUTOMAKE([dist-bzip2])
@@ -92,6 +92,8 @@ AM_CONDITIONAL(BUILD_XAW8, [test x$build_v8 = xyes])
 
 # Checks for header files.
 AC_HEADER_STDC
+
+XORG_RELEASE_VERSION
 
 AC_OUTPUT([Makefile
 	  include/Makefile
