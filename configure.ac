@@ -92,6 +92,15 @@ AM_CONDITIONAL(BUILD_XAW8, [test x$build_v8 = xyes])
 
 # Checks for header files.
 AC_HEADER_STDC
+AC_CHECK_HEADER(wctype.h,
+       	AC_DEFINE([HAS_WCTYPE_H],1,
+			[Define to 1 if you have the <wctype.h> header file.]))
+AC_CHECK_HEADER(wchar.h,
+       	AC_DEFINE([HAS_WCHAR_H],1,
+			[Define to 1 if you have the <wchar.h> header file.]))
+AC_CHECK_HEADER(widec.h, [],
+       	AC_DEFINE([NO_WIDEC_H],1,
+			[Define to 1 if you DO NOT have the <widec.h> header file.]))
 
 XORG_RELEASE_VERSION
 
