@@ -27,7 +27,13 @@ DEFAULT_LIB = libXaw8.so
 
 endif
 
-EXTRA_DIST = xaw6.pc.in xaw7.pc.in xaw8.pc.in autogen.sh xaw.m4
+EXTRA_DIST = xaw6.pc.in \
+	xaw7.pc.in \
+	xaw8.pc.in \
+	autogen.sh \
+	xaw.m4 \
+	old-doc/Changelog \
+	old-doc/CHANGES
 
 install-exec-hook:
 	cd $(DESTDIR)$(libdir) && rm -f libXaw.so && ln -s $(DEFAULT_LIB) libXaw.so

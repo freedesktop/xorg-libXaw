@@ -109,3 +109,5 @@ libXaw8_la_LDFLAGS = -version-info 8:0:0
 libXaw8_la_LIBADD = $(XAW8_LIBS)
 
 endif
+
+EXTRA_DIST = sharedlib.c

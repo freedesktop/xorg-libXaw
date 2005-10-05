@@ -56,6 +56,7 @@ xawinclude_HEADERS = \
 	X11/Xaw/SmeLineP.h \
 	X11/Xaw/StripChart.h \
 	X11/Xaw/StripCharP.h \
+	X11/Xaw/Template.c \
 	X11/Xaw/Template.h \
 	X11/Xaw/TemplateP.h \
 	X11/Xaw/Text.h \
