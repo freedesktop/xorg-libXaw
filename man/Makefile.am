@@ -29,7 +29,7 @@ libmandir = $(mandir)/man$(LIB_MAN_SUFFIX)
 
 libman_SOURCES = Xaw.man
 
-libman_DATA = $(libman_SOURCES:man=$(LIB_MAN_SUFFIX))
+libman_DATA = $(libman_SOURCES:man=@LIB_MAN_SUFFIX@)
 
 EXTRA_DIST = $(libman_SOURCES)
 
