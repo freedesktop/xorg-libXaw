@@ -40,7 +40,7 @@ AC_ARG_ENABLE(xaw6, AC_HELP_STRING([--disable-xaw6],
 			[build_v6=$enableval], [build_v6=yes])
 
 if test "x$build_v6" = xyes; then
-   PKG_CHECK_MODULES(XAW6, xproto x11 xt xmu xpm)
+   PKG_CHECK_MODULES(XAW6, xproto x11 xext xt xmu xpm)
 
    AC_SUBST(XAW6_CFLAGS)
    AC_SUBST(XAW6_LIBS)
@@ -54,7 +54,7 @@ AC_ARG_ENABLE(xaw7, AC_HELP_STRING([--disable-xaw7],
 			[build_v7=$enableval], [build_v7=yes])
 
 if test "x$build_v7" = xyes; then
-   PKG_CHECK_MODULES(XAW7, xproto x11 xt xmu xpm)
+   PKG_CHECK_MODULES(XAW7, xproto x11 xext xt xmu xpm)
 
    AC_SUBST(XAW7_CFLAGS)
    AC_SUBST(XAW7_LIBS)
@@ -79,7 +79,7 @@ if test "x$build_v8" = xyes || test "x$build_v8" = xauto; then
       fi
       build_v8=no
    else
-       PKG_CHECK_MODULES(XAW8, xproto x11 xt xmu xpm xp)
+       PKG_CHECK_MODULES(XAW8, xproto x11 xext xt xmu xpm xp)
        AC_SUBST(XAW8_CFLAGS)
        AC_SUBST(XAW8_LIBS)
        build_v8=yes
