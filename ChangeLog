@@ -1,3 +1,9 @@
+2005-10-24  Alan Coopersmith  <alan.coopersmith@sun.com>
+
+	* src/Makefile.am: 
+	Add -DOLDXAW to flags for building libXaw6 to disable features
+	that are only supposed to be in the newer versions.
+
 2005-10-21  Adam Jackson  <ajax@freedesktop.org>
 
 	* configure.ac:

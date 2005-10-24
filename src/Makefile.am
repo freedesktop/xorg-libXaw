@@ -7,7 +7,7 @@ lib_LTLIBRARIES =
 # always defines SHAREDCODE. Go figure
 #
 # SHAREDLIB_SOURCES = sharedlib.c
-	
+
 COMMON_SOURCES = \
 	Actions.c \
 	AllWidgets.c \
@@ -62,6 +62,7 @@ lib_LTLIBRARIES += libXaw6.la
 libXaw6_la_CFLAGS =			\
         -I${top_srcdir}/include		\
         -I${top_srcdir}/include/X11/Xaw \
+	-DOLDXAW			\
 	$(XAW6_CFLAGS)
 
 libXaw6_la_SOURCES = \
