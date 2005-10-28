@@ -1,3 +1,9 @@
+2005-10-28  Alan Coopersmith  <alan.coopersmith@sun.com>
+
+	* src/Makefile.am:
+	Add libXaw.so.N -> libXawN.so.N links for platforms where
+	ldconfig doesn't add them automatically for you.
+
 2005-10-24  Alan Coopersmith  <alan.coopersmith@sun.com>
 
 	* src/Makefile.am: 

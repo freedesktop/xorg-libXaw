@@ -71,6 +71,10 @@ libXaw6_la_SOURCES = \
 libXaw6_la_LDFLAGS = -version-info 6:1:0
 libXaw6_la_LIBADD = $(XAW6_LIBS)
 
+install-exec-hook::
+	-rm -f $(DESTDIR)$(libdir)/libXaw.so.6
+	(cd $(DESTDIR)$(libdir) && ln -s libXaw6.so.6 libXaw.so.6)
+
 endif
 
 if BUILD_XAW7
@@ -90,6 +94,10 @@ libXaw7_la_SOURCES = \
 libXaw7_la_LDFLAGS = -version-info 7:0:0
 libXaw7_la_LIBADD = $(XAW7_LIBS)
 
+install-exec-hook::
+	-rm -f $(DESTDIR)$(libdir)/libXaw.so.7
+	(cd $(DESTDIR)$(libdir) && ln -s libXaw7.so.7 libXaw.so.7)
+
 endif
 
 if BUILD_XAW8
@@ -108,6 +116,10 @@ libXaw8_la_SOURCES = \
 
 libXaw8_la_LDFLAGS = -version-info 8:0:0
 libXaw8_la_LIBADD = $(XAW8_LIBS)
+
+install-exec-hook::
+	-rm -f $(DESTDIR)$(libdir)/libXaw.so.8
+	(cd $(DESTDIR)$(libdir) && ln -s libXaw8.so.8 libXaw.so.8)
 
 endif
 
