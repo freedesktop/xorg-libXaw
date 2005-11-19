@@ -1,3 +1,13 @@
+2005-11-19  Kevin E. Martin  <kem-at-freedesktop-dot-org>
+
+	* xaw6.pc.in:
+	* xaw7.pc.in:
+	* xaw8.pc.in:
+	Update pkgconfig files to separate library build-time dependencies
+	from application build-time dependencies.
+	* configure.ac:
+	Update dependencies to work with separate build roots.
+
 2005-11-09  Kevin E. Martin  <kem-at-freedesktop-dot-org>
 
 	* configure.ac:

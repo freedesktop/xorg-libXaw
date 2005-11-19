@@ -6,5 +6,7 @@ includedir=@includedir@
 Name: Xaw
 Description: X Athena Widgets Library, version 6
 Version: @PACKAGE_VERSION@
-Libs: -L${libdir} -lXaw6 @XAW6_LIBS@
-Cflags: -I${includedir} @XAW6_CFLAGS@
+Requires: xproto xt xmu
+Requires.private: x11 xext xt xmu xpm
+Cflags: -I${includedir}
+Libs: -L${libdir} -lXaw6
