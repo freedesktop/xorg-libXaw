@@ -1,3 +1,8 @@
+2005-11-20  Alan Coopersmith  <alan.coopersmith@sun.com>
+
+	* configure.ac: 
+	libXaw6 shouldn't depend on libXpm, only Xaw7 & Xaw8 should
+
 2005-11-19  Kevin E. Martin  <kem-at-freedesktop-dot-org>
 
 	* xaw6.pc.in:

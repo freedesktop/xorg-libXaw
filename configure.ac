@@ -40,7 +40,7 @@ AC_ARG_ENABLE(xaw6, AC_HELP_STRING([--disable-xaw6],
 			[build_v6=$enableval], [build_v6=yes])
 
 if test "x$build_v6" = xyes; then
-   PKG_CHECK_MODULES(XAW6, xproto x11 xext xextproto xt xmu xpm)
+   PKG_CHECK_MODULES(XAW6, xproto x11 xext xextproto xt xmu)
 
    AC_SUBST(XAW6_CFLAGS)
    AC_SUBST(XAW6_LIBS)
