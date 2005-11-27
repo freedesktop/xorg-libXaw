@@ -37,7 +37,9 @@
 #include <X11/Xmu/CharSet.h>
 #include <X11/Xfuncs.h>
 #include <X11/extensions/shape.h>
+#ifndef OLDXAW
 #include <X11/xpm.h>
+#endif
 #include "Private.h"
 
 #ifdef __UNIXOS2__
