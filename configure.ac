@@ -19,14 +19,15 @@ AC_PROG_LIBTOOL
 # fix libtool to set SONAME to libXaw.so.$major
 #
 AC_MSG_CHECKING([hacks in libtool for libXaw SONAME])
-if grep "soname_spec='libXaw" libtool > /dev/null ; then
+if grep "xorglibxawname" libtool > /dev/null ; then
 	AC_MSG_RESULT([already done])
 else
 	ed libtool << \EOF
-/^soname_spec/a
-# x.org hack to match monolithic Xaw SONAME
-soname_spec='libXaw\${shared_ext}\$major'
+/^soname_spec/i
+# X.Org hack to match monolithic Xaw SONAME
+xorglibxawname="libXaw"
 .
+/^soname_spec/s/libname/xorglibxawname/
 w
 q
 EOF
