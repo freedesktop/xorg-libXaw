@@ -27,11 +27,11 @@
 
 libmandir = $(LIB_MAN_DIR)
 
-libman_SOURCES = Xaw.man
+libman_PRE = Xaw.man
 
-libman_DATA = $(libman_SOURCES:man=@LIB_MAN_SUFFIX@)
+libman_DATA = $(libman_PRE:man=@LIB_MAN_SUFFIX@)
 
-EXTRA_DIST = $(libman_SOURCES)
+EXTRA_DIST = $(libman_PRE)
 
 CLEANFILES = $(libman_DATA)
 
