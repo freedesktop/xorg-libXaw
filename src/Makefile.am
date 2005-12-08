@@ -55,13 +55,17 @@ COMMON_SOURCES = \
 	XawI18n.c \
 	XawI18n.h
 
+COMMON_CFLAGS = \
+	-I${top_srcdir}/include \
+	-I${top_srcdir}/include/X11/Xaw \
+	-DPROJECT_ROOT=\"$(prefix)\"
+
 if BUILD_XAW6
 
 lib_LTLIBRARIES += libXaw6.la
 
 libXaw6_la_CFLAGS =			\
-        -I${top_srcdir}/include		\
-        -I${top_srcdir}/include/X11/Xaw \
+	$(COMMON_CFLAGS)		\
 	-DOLDXAW			\
 	$(XAW6_CFLAGS)
 
@@ -82,8 +86,7 @@ if BUILD_XAW7
 lib_LTLIBRARIES += libXaw7.la
 
 libXaw7_la_CFLAGS =			\
-        -I${top_srcdir}/include		\
-        -I${top_srcdir}/include/X11/Xaw \
+	$(COMMON_CFLAGS)		\
 	-DXAW7				\
 	$(XAW7_CFLAGS)
 
@@ -105,8 +108,7 @@ if BUILD_XAW8
 lib_LTLIBRARIES += libXaw8.la
 
 libXaw8_la_CFLAGS =			\
-        -I${top_srcdir}/include		\
-        -I${top_srcdir}/include/X11/Xaw \
+	$(COMMON_CFLAGS)		\
 	$(XAW8_CFLAGS)
 
 libXaw8_la_SOURCES = \
