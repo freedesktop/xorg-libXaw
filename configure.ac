@@ -34,6 +34,17 @@ EOF
 	AC_MSG_RESULT([fixed])
 fi
 
+# Win32 DLL rules are different.
+case $host_os in
+    cygwin*|mingw*)
+	platform_win32=yes
+	;;
+    *)
+	platform_win32=no
+	;;
+esac
+AM_CONDITIONAL(PLATFORM_WIN32, test "x$platform_win32" = "xyes")
+
 # Whether to build Xaw6
 
 AC_ARG_ENABLE(xaw6, AC_HELP_STRING([--disable-xaw6],
