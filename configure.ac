@@ -15,6 +15,10 @@ AM_CONFIG_HEADER(config.h)
 AC_PROG_CC
 AC_PROG_LIBTOOL
 
+# Need to call this explicitly since the first call to PKG_CHECK_MODULES
+# is in an if statement, and later calls would break if it's skipped.
+PKG_PROG_PKG_CONFIG
+
 #
 # fix libtool to set SONAME to libXaw.so.$major
 #
