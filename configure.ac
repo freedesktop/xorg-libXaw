@@ -118,6 +118,9 @@ AC_CHECK_HEADER(widec.h, [],
        	AC_DEFINE([NO_WIDEC_H],1,
 			[Define to 1 if you DO NOT have the <widec.h> header file.]))
 
+# Checks for functions
+AC_CHECK_FUNCS([iswalnum])
+
 XORG_MANPAGE_SECTIONS
 XORG_RELEASE_VERSION
 
