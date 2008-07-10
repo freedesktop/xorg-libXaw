@@ -27,18 +27,17 @@ if grep "xorglibxawname" libtool > /dev/null ; then
 	AC_MSG_RESULT([already done])
 else
 	AC_MSG_RESULT([no, fixing])
-	AC_CHECK_PROG([ED], [ed], [ed])
-	test "x$ED" = x && AC_MSG_ERROR([ed needed to hack libtool script])
-	$ED libtool << \EOF
-/^soname_spec/i
-# X.Org hack to match monolithic Xaw SONAME
+	AC_CHECK_PROG([SED], [sed], [sed])
+	test "x$SED" = x && AC_MSG_ERROR([sed needed to hack libtool script])
+	cp -f libtool libtool_
+	$SED '1,/^soname_spec/{
+/^soname_spec/i\
+# X.Org hack to match monolithic Xaw SONAME\
 xorglibxawname="libXaw"
-.
 /^soname_spec/s/libname/xorglibxawname/
-w
-q
-EOF
+}' libtool_ > libtool
 	test "$?" = 0 || AC_MSG_ERROR([failed to hack libtool script])
+	rm -f libtool_
 fi
 
 # Win32 DLL rules are different.
