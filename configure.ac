@@ -26,7 +26,10 @@ AC_MSG_CHECKING([hacks in libtool for libXaw SONAME])
 if grep "xorglibxawname" libtool > /dev/null ; then
 	AC_MSG_RESULT([already done])
 else
-	ed libtool << \EOF
+	AC_MSG_RESULT([no, fixing])
+	AC_CHECK_PROG([ED], [ed], [ed])
+	test "x$ED" = x && AC_MSG_ERROR([ed needed to hack libtool script])
+	$ED libtool << \EOF
 /^soname_spec/i
 # X.Org hack to match monolithic Xaw SONAME
 xorglibxawname="libXaw"
@@ -35,7 +38,7 @@ xorglibxawname="libXaw"
 w
 q
 EOF
-	AC_MSG_RESULT([fixed])
+	test "$?" = 0 || AC_MSG_ERROR([failed to hack libtool script])
 fi
 
 # Win32 DLL rules are different.
