@@ -739,7 +739,6 @@ XawAttributesNotify(Widget w,
                     XEvent *evp,
                     Boolean *cont)
 {
-    XawPrintShellWidget  print_shell = (XawPrintShellWidget)w;
     XPAttributeEvent    *xpevp       = (XPAttributeEvent *)evp;
 
     XawUpdateResources(w, xpevp->context);
