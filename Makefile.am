@@ -20,16 +20,8 @@ DEFAULT_LIB = libXaw7.so
 
 endif
 
-if BUILD_XAW8
-
-pkgconfig_DATA += xaw8.pc
-DEFAULT_LIB = libXaw8.so
-
-endif
-
 EXTRA_DIST = xaw6.pc.in \
 	xaw7.pc.in \
-	xaw8.pc.in \
 	autogen.sh \
 	xaw.m4 \
 	old-doc/Changelog \
