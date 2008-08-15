@@ -1,8 +1,5 @@
 SUBDIRS = include src man
 
-aclocaldir = $(datadir)/aclocal
-aclocal_DATA = xaw.m4
-
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = 
 
@@ -23,7 +20,6 @@ endif
 EXTRA_DIST = xaw6.pc.in \
 	xaw7.pc.in \
 	autogen.sh \
-	xaw.m4 \
 	old-doc/Changelog \
 	old-doc/CHANGES \
 	ChangeLog
