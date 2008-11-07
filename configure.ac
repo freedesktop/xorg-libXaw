@@ -22,13 +22,8 @@ PKG_PROG_PKG_CONFIG
 #
 # fix libtool to set SONAME to libXaw.so.$major
 #
-AC_MSG_CHECKING([hacks in libtool for libXaw SONAME])
-if grep "xorglibxawname" libtool > /dev/null ; then
-	AC_MSG_RESULT([already done])
-else
-	AC_MSG_RESULT([no, fixing])
-	AC_CHECK_PROG([SED], [sed], [sed])
-	test "x$SED" = x && AC_MSG_ERROR([sed needed to hack libtool script])
+AC_PROG_SED
+AC_CONFIG_COMMANDS([libtool_hack], [
 	cp -f libtool libtool_
 	$SED '1,/^soname_spec/{
 /^soname_spec/i\
@@ -36,9 +31,8 @@ else
 xorglibxawname="libXaw"
 /^soname_spec/s/libname/xorglibxawname/
 }' libtool_ > libtool
-	test "$?" = 0 || AC_MSG_ERROR([failed to hack libtool script])
 	rm -f libtool_
-fi
+])
 
 # Win32 DLL rules are different.
 case $host_os in
