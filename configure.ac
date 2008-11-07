@@ -25,6 +25,7 @@ PKG_PROG_PKG_CONFIG
 AC_PROG_SED
 AC_CONFIG_COMMANDS([libtool_hack], [
 	cp -f libtool libtool_
+	test -z "$SED" && SED=sed
 	$SED '1,/^soname_spec/{
 /^soname_spec/i\
 # X.Org hack to match monolithic Xaw SONAME\
