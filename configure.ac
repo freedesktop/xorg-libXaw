@@ -35,16 +35,22 @@ xorglibxawname="libXaw"
 	rm -f libtool_
 ])
 
-# Win32 DLL rules are different.
+# OSX/Win32 rules are different.
+platform_win32=no
+platform_darwin=no
+LIBEXT=so
 case $host_os in
     cygwin*|mingw*)
 	platform_win32=yes
 	;;
-    *)
-	platform_win32=no
+    darwin*)
+	LIBEXT=dylib
+	platform_darwin=yes
 	;;
 esac
+AC_SUBST(LIBEXT)
 AM_CONDITIONAL(PLATFORM_WIN32, test "x$platform_win32" = "xyes")
+AM_CONDITIONAL(PLATFORM_DARWIN, test "x$platform_darwin" = "xyes")
 
 # Whether to build Xaw6
 
