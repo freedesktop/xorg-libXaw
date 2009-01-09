@@ -19,5 +19,9 @@ mkinstalldirs
 stamp-h1
 xaw6.pc
 xaw7.pc
-xaw8.pc
 *~
+ChangeLog
+*.o
+libXaw-*.tar.*
+*.patch
+tags
