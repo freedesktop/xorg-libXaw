@@ -19,6 +19,29 @@ XORG_MACROS_VERSION(1.3)
 # Check for progs
 AC_PROG_CC
 AC_PROG_LIBTOOL
+AC_PROG_AWK
+AC_PROG_SED
+
+AC_PATH_PROGS([GROFF], [groff], [none], [$PATH:/usr/gnu/bin])
+
+AC_MSG_CHECKING([whether to build documentation])
+AC_ARG_ENABLE(docs, AC_HELP_STRING([--enable-docs],
+				   [Enable building of Xaw documentation]),
+	      [build_docs="${enableval}"], [build_docs="auto"])
+
+if test "x${build_docs}" = xauto; then
+    if test "x${GROFF}" = xnone ; then
+	build_docs=no
+    else
+	build_docs=yes
+    fi
+fi
+AC_MSG_RESULT([${build_docs}])
+if test "x${build_docs}" = xyes && test "x${GROFF}" = xnone ; then
+    AC_MSG_ERROR([can't build documentation without groff])
+fi
+
+AM_CONDITIONAL(BUILD_DOCS, [test x$build_docs = xyes])
 
 # Need to call this explicitly since the first call to PKG_CHECK_MODULES
 # is in an if statement, and later calls would break if it's skipped.
@@ -29,7 +52,6 @@ XORG_DEFAULT_OPTIONS
 #
 # fix libtool to set SONAME to libXaw.so.$major
 #
-AC_PROG_SED
 AC_CONFIG_COMMANDS([libtool_hack], [
 	cp -f libtool libtool_
 	test -z "$SED" && SED=sed
@@ -106,6 +128,7 @@ AC_CHECK_FUNCS([iswalnum])
 AC_OUTPUT([Makefile
 	  include/Makefile
 	  man/Makefile
+	  spec/Makefile
 	  src/Makefile])
 
 if test "x$build_v6" = xyes; then
