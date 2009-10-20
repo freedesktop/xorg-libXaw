@@ -1292,7 +1292,7 @@ WriteToFile(String string, String name, unsigned length)
 {
     int fd;
 
-    if (fd = creat(name, 0666) == -1)
+    if ((fd = creat(name, 0666)) == -1)
 	return (False);
 
     if (write(fd, string, length) == -1) {
