@@ -1292,9 +1292,13 @@ WriteToFile(String string, String name, unsigned length)
 {
     int fd;
 
-    if ((fd = creat(name, 0666)) == -1
-	|| write(fd, string, length) == -1)
+    if (fd = creat(name, 0666) == -1)
 	return (False);
+
+    if (write(fd, string, length) == -1) {
+	close(fd);
+	return (False);
+    }
 
     if (close(fd) == -1)
 	return (False);
@@ -1349,8 +1353,10 @@ WritePiecesToFile(AsciiSrcObject src, String name)
 	return (False);
 
     for (piece = src->ascii_src.first_piece; piece; piece = piece->next)
-	if (write(fd, piece->text, piece->used) == -1)
+	if (write(fd, piece->text, piece->used) == -1) {
+	    close(fd);
 	    return (False);
+	}
 
     if (close(fd) == -1)
 	return (False);
