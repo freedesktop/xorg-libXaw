@@ -7,7 +7,7 @@ AC_INIT([libXaw],
 	[https://bugs.freedesktop.org/enter_bug.cgi?product=xorg],
 	libXaw)
 
-AM_INIT_AUTOMAKE([dist-bzip2])
+AM_INIT_AUTOMAKE([foreign dist-bzip2])
 
 AM_CONFIG_HEADER(config.h)
 
