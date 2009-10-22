@@ -27,7 +27,6 @@ endif
 
 EXTRA_DIST = xaw6.pc.in \
 	xaw7.pc.in \
-	autogen.sh \
 	old-doc/Changelog \
 	old-doc/CHANGES \
 	ChangeLog
