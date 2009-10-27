@@ -36,7 +36,6 @@ install-exec-hook:
 	cd $(DESTDIR)$(libdir) && rm -f libXaw.@LIBEXT@ && ln -s $(DEFAULT_LIB) libXaw.@LIBEXT@
 endif
 
-MAINTAINERCLEANFILES=ChangeLog
 
 .PHONY: ChangeLog
 
