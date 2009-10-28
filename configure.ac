@@ -8,7 +8,7 @@ AC_INIT([libXaw],
 	libXaw)
 
 AM_INIT_AUTOMAKE([foreign dist-bzip2])
-
+AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
 
 # Require xorg-macros: XORG_WITH_LINT, XORG_DEFAULT_OPTIONS
