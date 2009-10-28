@@ -1,0 +1,11 @@
+#		Add & Override for this directory and it's subdirectories
+index.html.raw
+index.pageno
+index.raw
+index.troff
+index.txt.raw
+widgets.html
+widgets.index.ps
+widgets.ps
+widgets.txt
+
