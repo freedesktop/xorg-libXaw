@@ -25,11 +25,12 @@ endif
 
 endif
 
+MAINTAINERCLEANFILES = ChangeLog INSTALL
 EXTRA_DIST = xaw6.pc.in \
 	xaw7.pc.in \
+        autogen.sh \
 	old-doc/Changelog \
-	old-doc/CHANGES \
-	ChangeLog
+	old-doc/CHANGES
 
 if !PLATFORM_WIN32
 install-exec-hook:
