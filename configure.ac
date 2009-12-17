@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to create configure.
 
-AC_PREREQ([2.57])
+AC_PREREQ([2.60])
 
 AC_INIT([libXaw],
 	1.0.7,
