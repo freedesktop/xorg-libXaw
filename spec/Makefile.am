@@ -54,6 +54,9 @@ doc_DATA = widgets.ps widgets.index.ps widgets.txt widgets.html
 CLEANFILES = $(doc_DATA)
 MOSTLYCLEANFILES = index.*
 
+mostlyclean-local:
+	@rm -fr images
+
 GROFF_DEFS = -dxV="$(PACKAGE_STRING)"
 GROFF_FLAGS = -t -ms $(GROFF_DEFS)
 
@@ -68,7 +71,7 @@ widgets.txt: $(spec_input)
 	 2> index.txt.raw > $@
 
 widgets.html: $(spec_input)
-	$(AM_V_GEN) $(GROFF) -Thtml $(GROFF_FLAGS) $(spec_input) \
+	$(AM_V_GEN) $(GROFF) -Thtml -P-Dimages -P-Iwidgets-image $(GROFF_FLAGS) $(spec_input) \
 	 2> index.html.raw > $@
 
 index.raw: widgets.ps
