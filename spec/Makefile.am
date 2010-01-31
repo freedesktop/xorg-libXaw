@@ -48,8 +48,30 @@ spec_input = $(spec_sources:%=$(srcdir)/%)
 
 EXTRA_DIST = $(spec_sources) $(XIDXMACROS) block.awk fixindex.awk widg.idxmac.t
 
-if BUILD_DOCS
+if ENABLE_SPECS
+if HAVE_GROFF_MS
 doc_DATA = widgets.ps widgets.index.ps widgets.txt widgets.html
+imagesdir = $(docdir)/images
+
+install-data-local:
+	test -z "$(imagesdir)" || $(MKDIR_P) "$(DESTDIR)$(imagesdir)"
+	@d="$(srcdir)/images/"; \
+	list=`ls $$d`; \
+	for p in $$list; do \
+	  echo " $(docDATA_INSTALL) '$$d$$p' '$(DESTDIR)$(imagesdir)/$$p'"; \
+	  $(docDATA_INSTALL) "$$d$$p" "$(DESTDIR)$(imagesdir)/$$p"; \
+	done;
+
+uninstall-local:
+	@if test -n $(DESTDIR)$(imagesdir); then \
+	  if test -d $(DESTDIR)$(imagesdir); then \
+	    list=`ls $(DESTDIR)$(imagesdir)`; \
+	    for p in $$list; do \
+	      echo " rm -f '$(DESTDIR)$(imagesdir)/$$p'"; \
+	      rm -f "$(DESTDIR)$(imagesdir)/$$p"; \
+	    done \
+	  fi; \
+	fi;
 
 CLEANFILES = $(doc_DATA)
 MOSTLYCLEANFILES = index.*
@@ -96,4 +118,5 @@ widgets.index.ps: widg.idxmac.t index.troff index.pageno
 part: $(srcdir)/$(PART)
 	$(GROFF) -Tps $(GROFF_FLAGS) $(EVERYWHERE) $(srcdir)/$(PART) > $(PART).ps
 
-endif BUILD_DOCS
+endif HAVE_GROFF_MS
+endif ENABLE_SPECS
