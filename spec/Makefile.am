@@ -58,8 +58,8 @@ install-data-local:
 	@d="$(srcdir)/images/"; \
 	list=`ls $$d`; \
 	for p in $$list; do \
-	  echo " $(docDATA_INSTALL) '$$d$$p' '$(DESTDIR)$(imagesdir)/$$p'"; \
-	  $(docDATA_INSTALL) "$$d$$p" "$(DESTDIR)$(imagesdir)/$$p"; \
+	  echo " $(INSTALL_DATA) '$$d$$p' '$(DESTDIR)$(imagesdir)/$$p'"; \
+	  $(INSTALL_DATA) "$$d$$p" "$(DESTDIR)$(imagesdir)/$$p"; \
 	done;
 
 uninstall-local:
