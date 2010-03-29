@@ -26,10 +26,9 @@ endif
 endif
 
 MAINTAINERCLEANFILES = ChangeLog INSTALL
-EXTRA_DIST = xaw6.pc.in \
-	xaw7.pc.in \
-        autogen.sh \
-	old-doc/Changelog \
+EXTRA_DIST = 		   \
+        autogen.sh	   \
+	old-doc/Changelog  \
 	old-doc/CHANGES
 
 if !PLATFORM_WIN32
