@@ -40,7 +40,6 @@ dist_doc_DATA = $(doc_sources)				\
 	Form.xml					\
 	Grip.xml					\
 	Label.xml					\
-	libXaw.xml					\
 	List.xml					\
 	MenuButton.xml					\
 	Paned.xml					\
