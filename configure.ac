@@ -28,7 +28,9 @@ PKG_PROG_PKG_CONFIG
 
 XORG_DEFAULT_OPTIONS
 XORG_ENABLE_SPECS
-XORG_WITH_GROFF
+XORG_WITH_XMLTO(0.0.20)
+XORG_WITH_FOP
+XORG_CHECK_SGML_DOCTOOLS(1.5)
 
 #
 # fix libtool to set SONAME to libXaw.so.$major
@@ -109,7 +111,7 @@ AC_CHECK_FUNCS([iswalnum])
 AC_OUTPUT([Makefile
 	  include/Makefile
 	  man/Makefile
-	  spec/Makefile
+	  specs/Makefile
 	  src/Makefile])
 
 if test "x$build_v6" = xyes; then
