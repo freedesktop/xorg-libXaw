@@ -93,16 +93,16 @@ CLEANFILES = $(doc_DATA)
 
 SUFFIXES = .xml .ps .pdf .txt .html
 
-.xml.txt:
+%.txt: %.xml $(dist_doc_DATA)
 	$(AM_V_GEN)$(XMLTO) $(XMLTO_FLAGS) txt $<
 
-.xml.html:
+%.html: %.xml $(dist_doc_DATA)
 	$(AM_V_GEN)$(XMLTO) $(XMLTO_FLAGS) xhtml-nochunks $<
 
-.xml.pdf:
+%.pdf: %.xml $(dist_doc_DATA)
 	$(AM_V_GEN)$(XMLTO) $(XMLTO_FLAGS) --with-fop pdf $<
 
-.xml.ps:
+%.ps: %.xml $(dist_doc_DATA)
 	$(AM_V_GEN)$(XMLTO) $(XMLTO_FLAGS) --with-fop ps $<
 
 endif HAVE_XMLTO
