@@ -11,10 +11,10 @@ AM_INIT_AUTOMAKE([foreign dist-bzip2])
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
 
-# Require xorg-macros: XORG_DEFAULT_OPTIONS
+# Require xorg-macros minimum of 1.10 for HAVE_STYLESHEETS in XORG_CHECK_SGML_DOCTOOLS
 m4_ifndef([XORG_MACROS_VERSION],
-	  [m4_fatal([must install xorg-macros 1.6 or later before running autoconf/autogen])])
-XORG_MACROS_VERSION(1.6)
+	  [m4_fatal([must install xorg-macros 1.10 or later before running autoconf/autogen])])
+XORG_MACROS_VERSION(1.10)
 
 # Check for progs
 AC_PROG_CC
