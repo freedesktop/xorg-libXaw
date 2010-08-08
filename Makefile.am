@@ -31,10 +31,8 @@ EXTRA_DIST = 		   \
 	old-doc/Changelog  \
 	old-doc/CHANGES
 
-if !PLATFORM_WIN32
 install-exec-hook:
-	cd $(DESTDIR)$(libdir) && rm -f libXaw.@LIBEXT@ && ln -s $(DEFAULT_LIB) libXaw.@LIBEXT@
-endif
+	cd $(DESTDIR)$(libdir) && rm -f libXaw.@LIBEXT@ && $(LN_S) $(DEFAULT_LIB) libXaw.@LIBEXT@
 
 
 .PHONY: ChangeLog INSTALL

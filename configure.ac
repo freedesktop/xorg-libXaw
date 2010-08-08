@@ -54,6 +54,7 @@ platform_darwin=no
 LIBEXT=so
 case $host_os in
     cygwin*|mingw*)
+	LIBEXT=dll.a
 	platform_win32=yes
 	;;
     darwin*)
