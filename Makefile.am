@@ -34,6 +34,9 @@ EXTRA_DIST = 		   \
 install-exec-hook:
 	cd $(DESTDIR)$(libdir) && rm -f libXaw.@LIBEXT@ && $(LN_S) $(DEFAULT_LIB) libXaw.@LIBEXT@
 
+uninstall-local:
+	-rm -f $(DESTDIR)$(libdir)/libXaw.@LIBEXT@
+
 
 .PHONY: ChangeLog INSTALL
 
