@@ -537,10 +537,10 @@ CvtEditModeToString(Display *dpy, XrmValuePtr args, Cardinal *num_args,
     Cardinal size;
 
     switch (*(XawTextEditType *)fromVal->addr) {
-	case XawtextAppend:
 	case XawtextRead:
 	    buffer = XtEtextRead;
 	    break;
+	case XawtextAppend:
 	    buffer = XtEtextAppend;
 	    break;
 	case XawtextEdit:
