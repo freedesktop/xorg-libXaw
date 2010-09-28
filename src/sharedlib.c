@@ -1,4 +1,3 @@
-/* $Xorg: sharedlib.c,v 1.4 2001/02/09 02:03:47 xorgcvs Exp $ */
 /*
 
 Copyright 1991, 1994, 1998  The Open Group

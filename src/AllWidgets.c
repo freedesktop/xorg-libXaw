@@ -1,5 +1,3 @@
-/* $Xorg: AllWidgets.c,v 1.4 2001/02/09 02:03:42 xorgcvs Exp $ */
-
 /*
 
 Copyright (c) 1991, 1994, 1998  The Open Group
@@ -25,7 +23,6 @@ used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from The Open Group.
 
 */
-/* $XFree86: xc/lib/Xaw/AllWidgets.c,v 1.3 2001/08/23 21:49:51 tsi Exp $ */
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

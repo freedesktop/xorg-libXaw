@@ -17,7 +17,6 @@ are:
 ..
 <!-- .CB -->
 <!-- .\".so ../../lib/Xaw/Template.h -->
-/* XConsortium: Template.h,v 1.2 88/10/25 17:22:09 swick Exp $ */
 /* Copyright (c) X Consortium 1987, 1988 */
 
 #ifndef _Template_h
@@ -132,8 +131,6 @@ are:
 <!-- .CB -->
 <!-- .\".so ../../lib/Xaw/TemplateP.h -->
 <literallayout class="monospaced">
-/* XConsortium: TemplateP.h,v 1.2 88/10/25 17:31:47 swick Exp $ */
-
 /* Copyright (c) X Consortium 1987, 1988
  */
 
@@ -218,8 +215,6 @@ are:
 <!-- .CB -->
 <!-- .\".so ../../lib/Xaw/Template.c -->
 <literallayout class="monospaced">
-/* XConsortium: Template.c,v 1.2 88/10/25 17:40:25 swick Exp $ */
-
 /* Copyright (c) X Consortium 1987, 1988
  */
 

@@ -17,7 +17,6 @@ are:
 ..
 <!-- .CB -->
 <!-- .\".so ../../lib/Xaw/Template.h -->
-/* XConsortium: Template.h,v 1.2 88/10/25 17:22:09 swick Exp $ */
 /* Copyright (c) X Consortium 1987, 1988 */
 
 #ifndef _Template_h
