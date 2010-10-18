@@ -20,7 +20,6 @@ XORG_MACROS_VERSION(1.10)
 AC_PROG_CC
 AC_PROG_LIBTOOL
 AC_PROG_AWK
-AC_PROG_SED
 AM_PROG_CC_C_O
 
 # Need to call this explicitly since the first call to PKG_CHECK_MODULES
