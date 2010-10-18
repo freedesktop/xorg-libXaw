@@ -31,8 +31,6 @@ EXTRA_DIST = $(libman_PRE)
 
 CLEANFILES = $(libman_DATA)
 
-SED = sed
-
 # Strings to replace in man pages
 XORGRELSTRING = @PACKAGE_STRING@
   XORGMANNAME = X Version 11
