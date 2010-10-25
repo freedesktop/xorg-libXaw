@@ -34,6 +34,8 @@ CLEANFILES = $(libman_DATA)
 SUFFIXES = .$(LIB_MAN_SUFFIX) .man
 
 # String replacements in MAN_SUBSTS now come from xorg-macros.m4 via configure
+MAN_SUBSTS += -e 's|__docdir__|$(docdir)|g'
+
 .man.$(LIB_MAN_SUFFIX):
 	$(AM_V_GEN)$(SED) $(MAN_SUBSTS) < $< > $@
 
