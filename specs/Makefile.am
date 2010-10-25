@@ -27,7 +27,7 @@ dist_doc_DATA = $(doc_sources)				\
 	AsciiSink.xml					\
 	AsciiSource.xml					\
 	AsciiText.xml					\
-	Box.xml						\					
+	Box.xml						\
 	CH1.xml						\
 	CH2.xml						\
 	CH3.xml						\
@@ -46,7 +46,7 @@ dist_doc_DATA = $(doc_sources)				\
 	Panner.xml					\
 	Porthole.xml					\
 	Repeater.xml					\
-	Scrollbar.xml					\	
+	Scrollbar.xml					\
 	SimpleMenu.xml					\
 	Simple.xml					\
 	SmeBSB.xml					\
