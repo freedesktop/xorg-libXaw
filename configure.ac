@@ -17,7 +17,6 @@ m4_ifndef([XORG_MACROS_VERSION],
 XORG_MACROS_VERSION(1.10)
 
 # Check for progs
-AC_PROG_CC
 AC_PROG_LIBTOOL
 AC_PROG_AWK
 AM_PROG_CC_C_O
@@ -73,8 +72,6 @@ AC_ARG_ENABLE(xaw6, AC_HELP_STRING([--disable-xaw6],
 
 if test "x$build_v6" = xyes; then
    PKG_CHECK_MODULES(XAW6, xproto x11 xext xextproto xt xmu)
-   AC_SUBST(XAW6_CFLAGS)
-   AC_SUBST(XAW6_LIBS)
 fi
 
 
@@ -86,8 +83,6 @@ AC_ARG_ENABLE(xaw7, AC_HELP_STRING([--disable-xaw7],
 
 if test "x$build_v7" = xyes; then
    PKG_CHECK_MODULES(XAW7, xproto x11 xext xextproto xt xmu xpm)
-   AC_SUBST(XAW7_CFLAGS)
-   AC_SUBST(XAW7_LIBS)
 fi
 
 
