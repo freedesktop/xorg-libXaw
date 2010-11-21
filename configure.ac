@@ -93,7 +93,7 @@ AC_HEADER_STDC
 AC_CHECK_HEADERS([wctype.h wchar.h widec.h])
 
 # Checks for functions
-AC_CHECK_FUNCS([iswalnum])
+AC_CHECK_FUNCS([iswalnum getpagesize])
 
 AC_OUTPUT([Makefile
 	  include/Makefile
