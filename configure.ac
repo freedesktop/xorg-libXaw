@@ -95,16 +95,18 @@ AC_CHECK_HEADERS([wctype.h wchar.h widec.h])
 # Checks for functions
 AC_CHECK_FUNCS([iswalnum getpagesize])
 
-AC_OUTPUT([Makefile
-	  include/Makefile
-	  man/Makefile
-	  specs/Makefile
-	  src/Makefile])
+AC_CONFIG_FILES([Makefile
+		include/Makefile
+		man/Makefile
+		specs/Makefile
+		src/Makefile])
 
 if test "x$build_v6" = xyes; then
-   AC_OUTPUT(xaw6.pc)
+   AC_CONFIG_FILES(xaw6.pc)
 fi
 
 if test "x$build_v7" = xyes; then
-   AC_OUTPUT(xaw7.pc)
+   AC_CONFIG_FILES(xaw7.pc)
 fi
+
+AC_OUTPUT
