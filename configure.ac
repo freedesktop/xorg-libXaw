@@ -1,20 +1,25 @@
 dnl Process this file with autoconf to create configure.
 
+# Initialize Autoconf
 AC_PREREQ([2.60])
+AC_INIT([libXaw], [1.0.8],
+        [https://bugs.freedesktop.org/enter_bug.cgi?product=xorg], [libXaw])
+AC_CONFIG_SRCDIR([Makefile.am])
+AC_CONFIG_HEADERS([config.h])
 
-AC_INIT([libXaw],
-	[1.0.8],
-	[https://bugs.freedesktop.org/enter_bug.cgi?product=xorg],
-	libXaw)
-
+# Initialize Automake
 AM_INIT_AUTOMAKE([foreign dist-bzip2])
 AM_MAINTAINER_MODE
-AM_CONFIG_HEADER(config.h)
 
 # Require xorg-macros minimum of 1.10 for HAVE_STYLESHEETS in XORG_CHECK_SGML_DOCTOOLS
 m4_ifndef([XORG_MACROS_VERSION],
 	  [m4_fatal([must install xorg-macros 1.10 or later before running autoconf/autogen])])
 XORG_MACROS_VERSION(1.10)
+XORG_DEFAULT_OPTIONS
+XORG_ENABLE_SPECS
+XORG_WITH_XMLTO(0.0.20)
+XORG_WITH_FOP
+XORG_CHECK_SGML_DOCTOOLS(1.5)
 
 # Check for progs
 AC_PROG_LIBTOOL
@@ -24,12 +29,6 @@ AM_PROG_CC_C_O
 # Need to call this explicitly since the first call to PKG_CHECK_MODULES
 # is in an if statement, and later calls would break if it's skipped.
 PKG_PROG_PKG_CONFIG
-
-XORG_DEFAULT_OPTIONS
-XORG_ENABLE_SPECS
-XORG_WITH_XMLTO(0.0.20)
-XORG_WITH_FOP
-XORG_CHECK_SGML_DOCTOOLS(1.5)
 
 #
 # fix libtool to set SONAME to libXaw.so.$major
