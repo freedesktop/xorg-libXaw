@@ -392,9 +392,10 @@ XawBoxQueryGeometry(Widget widget, XtWidgetGeometry *constraint,
 	if (preferred_width <= constraint->width) {
 	    width = preferred_width;
 	    do { /* find some width big enough to stay within this height */
-		width <<= 1;
-		if (width > constraint->width)
+		if (width > (constraint->width >> 1)) /* avoid short int overflow */
 		    width = constraint->width;
+		else
+		    width <<= 1;
 		DoLayout(w, width, 0, &preferred_width, &preferred_height, False);
 	    } while (preferred_height > constraint->height
 		     && width < constraint->width);
