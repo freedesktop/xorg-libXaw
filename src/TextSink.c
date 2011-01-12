@@ -228,7 +228,7 @@ XawTextSinkClassPartInitialize(WidgetClass wc)
     Qdefault = XrmPermStringToQuark("default");
 #endif
 
-    /* 
+    /*
      * We don't need to check for null super since we'll get to TextSink
      * eventually.
      */
@@ -416,7 +416,7 @@ static void
 ClearToBackground(Widget w, int x, int y,
 		  unsigned int width, unsigned int height)
 {
-    /* 
+    /*
      * Don't clear in height or width are zero
      * XClearArea() has special semantic for these values
      */
@@ -736,7 +736,7 @@ XawTextSinkFindPosition(Widget w, XawTextPosition fromPos, int fromx, int width,
     TextSinkObjectClass cclass = (TextSinkObjectClass)w->core.widget_class;
 
     (*cclass->text_sink_class.FindPosition)(w, fromPos, fromx, width,
-					    stopAtWordBreak, 
+					    stopAtWordBreak,
 					    resPos, resWidth, resHeight);
 }
 
@@ -759,7 +759,7 @@ XawTextSinkFindPosition(Widget w, XawTextPosition fromPos, int fromx, int width,
 /*ARGSUSED*/
 void
 XawTextSinkFindDistance(Widget w, XawTextPosition fromPos, int fromx,
-			XawTextPosition toPos, int *resWidth, 
+			XawTextPosition toPos, int *resWidth,
 			XawTextPosition *resPos, int *resHeight)
 {
     TextSinkObjectClass cclass = (TextSinkObjectClass)w->core.widget_class;

@@ -90,7 +90,7 @@ typedef struct _SimpleMenuPart {
 
 typedef struct _SimpleMenuRec {
     CorePart		core;
-    CompositePart 	composite;
+    CompositePart	composite;
     ShellPart		shell;
     OverrideShellPart	override;
     SimpleMenuPart	simple_menu;

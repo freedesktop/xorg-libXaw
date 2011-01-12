@@ -27,13 +27,13 @@ Copyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts.
 
                         All Rights Reserved
 
-Permission to use, copy, modify, and distribute this software and its 
-documentation for any purpose and without fee is hereby granted, 
+Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby granted,
 provided that the above copyright notice appear in all copies and that
-both that copyright notice and this permission notice appear in 
+both that copyright notice and this permission notice appear in
 supporting documentation, and that the name of Digital not be
 used in advertising or publicity pertaining to distribution of the
-software without specific, written prior permission.  
+software without specific, written prior permission.
 
 DIGITAL DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING
 ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL
@@ -321,7 +321,7 @@ XawSimpleRealize(Widget w, Mask *valueMask, XSetWindowAttributes *attributes)
 	if (((SimpleWidget)w)->simple.insensitive_border == None)
 	    ((SimpleWidget)w)->simple.insensitive_border =
 		XmuCreateStippledPixmap(XtScreen(w),
-					w->core.border_pixel, 
+					w->core.border_pixel,
 					w->core.background_pixel,
 					w->core.depth);
         border_pixmap = w->core.border_pixmap;
@@ -372,7 +372,7 @@ ConvertCursor(Widget w)
     SimpleWidget simple = (SimpleWidget) w;
     XrmValue from, to;
     Cursor cursor = None;
-   
+
     if (simple->simple.cursor_name == NULL)
 	return;
 
@@ -410,7 +410,7 @@ XawSimpleSetValues(Widget current, Widget request, Widget cnew,
 
     if (s_old->simple.cursor != s_new->simple.cursor)
 	new_cursor = True;
-	
+
     /*
      * We are not handling the string cursor_name correctly here
      */
@@ -488,7 +488,7 @@ ChangeSensitive(Widget w)
 	    if (((SimpleWidget)w)->simple.insensitive_border == None)
 		((SimpleWidget)w)->simple.insensitive_border =
 		    XmuCreateStippledPixmap(XtScreen(w),
-					    w->core.border_pixel, 
+					    w->core.border_pixel,
 					    w->core.background_pixel,
 					    w->core.depth);
 	    XSetWindowBorderPixmap(XtDisplay(w), XtWindow(w),

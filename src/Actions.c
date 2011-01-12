@@ -10,7 +10,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- *  
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
@@ -501,13 +501,13 @@ XawSetValuesAction(Widget w, XEvent *event,
 void
 XawGetValuesAction(Widget w, XEvent *event,
 		   String *params, Cardinal *num_params)
-{     
+{
   XawActionResList *rlist;
   XawActionVarList *vlist;
   String value;
   Cardinal count;
 
-  if (!(*num_params & 1)) 
+  if (!(*num_params & 1))
     {
       XawPrintActionErrorMsg("get-values", w, params, num_params);
       return;
@@ -529,7 +529,7 @@ XawGetValuesAction(Widget w, XEvent *event,
 void
 XawDeclareAction(Widget w, XEvent *event,
 		 String *params, Cardinal *num_params)
-{     
+{
   XawActionVarList *vlist;
   Cardinal count;
 
@@ -585,7 +585,7 @@ XawConvertActionRes(XawActionResList *list, Widget w, String name)
   Arg arg;
   char  c_1;
   short c_2;
-  int   c_4;   
+  int   c_4;
 #ifdef LONG64
   long  c_8;
 #endif
@@ -681,7 +681,7 @@ XawGetActionResList(WidgetClass wc)
 static int
 qcmp_action_resource_list(register _Xconst void *left,
 			  register _Xconst void *right)
-{   
+{
   return ((char *)((*(XawActionResList **)left)->widget_class) -
           (char *)((*(XawActionResList **)right)->widget_class));
 }
@@ -727,7 +727,7 @@ bcmp_action_resource_list(register _Xconst void *wc,
 
 static XawActionResList *
 _XawFindActionResList(WidgetClass wc)
-{  
+{
   XawActionResList **list;
 
   if (!resource_list)
@@ -831,8 +831,8 @@ bcmp_action_resource(register _Xconst void *string,
 {
   return (strcmp((String)string,
 		 XrmQuarkToString((*(XawActionRes **)resource)->qname)));
-}   
-    
+}
+
 static XawActionRes *
 _XawFindActionRes(XawActionResList *list, Widget detail, String name)
 {

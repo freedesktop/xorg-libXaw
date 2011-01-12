@@ -28,7 +28,7 @@ in this Software without prior written authorization from The Open Group.
  * Date:    April 3, 1989
  *
  * By:      Chris D. Peterson
- *          MIT X Consortium 
+ *          MIT X Consortium
  *          kit@expo.lcs.mit.edu
  */
 
@@ -224,7 +224,7 @@ static XtResource resources[] = {
     XtCBackingStore,
     XtRBackingStore,
     sizeof(int),
-    offset(backing_store), 
+    offset(backing_store),
     XtRImmediate,
     (XtPointer)(Always + WhenMapped + NotUseful)
   },
@@ -234,12 +234,12 @@ static XtResource resources[] = {
     XawCDisplayList,
     XawRDisplayList,
     sizeof(XawDisplayList*),
-    offset(display_list), 
+    offset(display_list),
     XtRImmediate,
     NULL
   },
 #endif
-};  
+};
 #undef offset
 
 static char defaultTranslations[] =
@@ -266,7 +266,7 @@ static XtActionsRec actionsList[] =
   {"call-proc",		XawCallProcAction},
 #endif
 };
- 
+
 static CompositeClassExtensionRec extension_rec = {
   NULL,					/* next_extension */
   NULLQUARK,				/* record_type */
@@ -399,7 +399,7 @@ XawSimpleMenuInitialize(Widget request, Widget cnew,
 
     XmuCallInitializers(XtWidgetToApplicationContext(cnew));
 
-    if (smw->simple_menu.label_class == NULL) 
+    if (smw->simple_menu.label_class == NULL)
 	smw->simple_menu.label_class = smeBSBObjectClass;
 
     smw->simple_menu.label = NULL;
@@ -473,7 +473,7 @@ XawSimpleMenuRedisplay(Widget w, XEvent *event, Region region)
 	if (!XtIsManaged((Widget)*entry))
 	    continue;
 
-	if (region != NULL) 
+	if (region != NULL)
 	    switch(XRectInRegion(region, XtX(*entry),XtY(*entry),
 				 XtWidth(*entry), XtHeight(*entry))) {
 		case RectangleIn:
@@ -600,7 +600,7 @@ XawSimpleMenuSetValues(Widget current, Widget request, Widget cnew,
 	    CreateLabel(cnew);
 	else {						    /* Change */
 	    Arg arglist[1];
-	    
+
 	    XtSetArg(arglist[0], XtNlabel, smw_new->simple_menu.label_string);
 	    XtSetValues((Widget)smw_new->simple_menu.label, arglist, ONE);
 	}
@@ -609,7 +609,7 @@ XawSimpleMenuSetValues(Widget current, Widget request, Widget cnew,
     if (smw_old->simple_menu.label_class != smw_new->simple_menu.label_class)
 	XtAppWarning(XtWidgetToApplicationContext(cnew),
 		     "No Dynamic class change of the SimpleMenu Label.");
-    
+
     if (smw_old->simple_menu.top_margin != smw_new->simple_menu.top_margin
 	|| smw_old->simple_menu.bottom_margin
 	!= smw_new->simple_menu.bottom_margin) {
@@ -638,7 +638,7 @@ XawSimpleMenuSetValues(Widget current, Widget request, Widget cnew,
     return (ret_val);
 }
 
-/* 
+/*
  * Function:
  *	XawSimpleMenuSetValuesHook
  *
@@ -655,10 +655,10 @@ XawSimpleMenuSetValuesHook(Widget w, ArgList arglist, Cardinal *num_args)
 {
     Cardinal i;
     Dimension width, height;
-    
+
     width = XtWidth(w);
     height = XtHeight(w);
-    
+
     for (i = 0 ; i < *num_args ; i++) {
 	if (streq(arglist[i].name, XtNwidth))
 	    width = (Dimension)arglist[i].value;
@@ -769,14 +769,14 @@ XawSimpleMenuChangeManaged(Widget w)
 
 /*
  * Global Action Routines
- * 
+ *
  * These actions routines will be added to the application's
  * global action list
  */
 /*
  * Function:
  *	PositionMenuAction
- * 
+ *
  * Parameters:
  *	w	   - a widget (no the simple menu widget)
  *	event	   - the event that caused this action
@@ -791,7 +791,7 @@ XawSimpleMenuChangeManaged(Widget w)
 static void
 PositionMenuAction(Widget w, XEvent *event,
 		   String *params, Cardinal *num_params)
-{ 
+{
     Widget menu;
     XPoint loc;
 
@@ -811,7 +811,7 @@ PositionMenuAction(Widget w, XEvent *event,
 	XtAppWarning(XtWidgetToApplicationContext(w), error_buf);
 	return;
     }
-  
+
     switch (event->type) {
 	case ButtonPress:
 	case ButtonRelease:
@@ -834,7 +834,7 @@ PositionMenuAction(Widget w, XEvent *event,
 	    PositionMenu(menu, NULL);
 	    break;
     }
-}  
+}
 
 /*
  * Widget Action Routines
@@ -848,17 +848,17 @@ PositionMenuAction(Widget w, XEvent *event,
  *	event	   - event that caused this action
  *	params	   - not used
  *	num_params - ""
- * 
+ *
  * Description:
  *	Unhighlights current entry.
  */
 /*ARGSUSED*/
 static void
 Unhighlight(Widget w, XEvent *event, String *params, Cardinal *num_params)
-{ 
+{
     SimpleMenuWidget smw = (SimpleMenuWidget)w;
     SmeObject entry = smw->simple_menu.entry_set;
- 
+
     if (entry == NULL)
 	return;
 
@@ -987,7 +987,7 @@ XawSimpleMenuAddGlobalActions(XtAppContext app_con)
 {
     XtInitializeWidgetClass(simpleMenuWidgetClass);
     XmuCallInitializers(app_con);
-} 
+}
 
 /*
  * Function:
@@ -1008,7 +1008,7 @@ XawSimpleMenuGetActiveEntry(Widget w)
     SimpleMenuWidget smw = (SimpleMenuWidget)w;
 
     return ((Widget)smw->simple_menu.entry_set);
-} 
+}
 
 /*
  * Function:
@@ -1026,7 +1026,7 @@ XawSimpleMenuClearActiveEntry(Widget w)
     SimpleMenuWidget smw = (SimpleMenuWidget)w;
 
     smw->simple_menu.entry_set = NULL;
-} 
+}
 
 /*
  * Private Functions
@@ -1037,7 +1037,7 @@ XawSimpleMenuClearActiveEntry(Widget w)
  *
  * Parameters:
  *	w - smw widget
- * 
+ *
  * Description:
  * Creates the label object and makes sure it is the first child in
  * in the list.
@@ -1060,8 +1060,8 @@ CreateLabel(Widget w)
 
     XtSetArg(args[0], XtNlabel, smw->simple_menu.label_string);
     XtSetArg(args[1], XtNjustify, XtJustifyCenter);
-    smw->simple_menu.label = (SmeObject) 
-	XtCreateManagedWidget("menuLabel", 
+    smw->simple_menu.label = (SmeObject)
+	XtCreateManagedWidget("menuLabel",
 			      smw->simple_menu.label_class, w, args, TWO);
 
     next_child = NULL;
@@ -1266,7 +1266,7 @@ Layout(Widget w, Dimension *width_ret, Dimension *height_ret)
 	    *height_ret = XtHeight(current_entry);
     }
 }
-    
+
 /*
  * Function:
  *	AddPositionAction
@@ -1304,11 +1304,11 @@ AddPositionAction(XtAppContext app_con, XPointer data)
  * Returns:
  *	The menu widget or NULL.
  */
-static Widget 
+static Widget
 FindMenu(Widget widget, String name)
 {
     Widget w, menu;
-    
+
     for (w = widget; w != NULL; w = XtParent(w))
 	if ((menu = XtNameToWidget(w, name)) != NULL)
 	    return (menu);
@@ -1333,12 +1333,12 @@ PositionMenu(Widget w, XPoint *location)
     SimpleMenuWidget smw = (SimpleMenuWidget)w;
     SmeObject entry;
     XPoint t_point;
-    
+
     if (location == NULL) {
 	Window temp1, temp2;
 	int root_x, root_y, tempX, tempY;
 	unsigned int tempM;
-	
+
 	location = &t_point;
 	if (XQueryPointer(XtDisplay(w), XtWindow(w), &temp1, &temp2,
 			  &root_x, &root_y, &tempX, &tempY, &tempM) == False) {
@@ -1350,14 +1350,14 @@ PositionMenu(Widget w, XPoint *location)
 	location->x = (short) root_x;
 	location->y = (short) root_y;
     }
-    
+
     /*
      * The width will not be correct unless it is realized
      */
     XtRealizeWidget(w);
-    
+
     location->x -= XtWidth(w) >> 1;
-    
+
     if (smw->simple_menu.popup_entry == NULL)
 	entry = smw->simple_menu.label;
     else
@@ -1388,20 +1388,20 @@ MoveMenu(Widget w, int x, int y)
     Arg arglist[2];
     Cardinal num_args = 0;
     SimpleMenuWidget smw = (SimpleMenuWidget)w;
-    
+
     if (smw->simple_menu.menu_on_screen) {
 	int width = XtWidth(w) + (XtBorderWidth(w) << 1);
 	int height = XtHeight(w) + (XtBorderWidth(w) << 1);
-	
+
 	if (x >= 0) {
 	    int scr_width = WidthOfScreen(XtScreen(w));
 
 	    if (x + width > scr_width)
 		x = scr_width - width;
 	}
-	if (x < 0) 
+	if (x < 0)
 	    x = 0;
-	
+
 	if (y >= 0) {
 	    int scr_height = HeightOfScreen(XtScreen(w));
 
@@ -1411,7 +1411,7 @@ MoveMenu(Widget w, int x, int y)
 	if (y < 0)
 	    y = 0;
     }
-    
+
     XtSetArg(arglist[num_args], XtNx, x); num_args++;
     XtSetArg(arglist[num_args], XtNy, y); num_args++;
     XtSetValues(w, arglist, num_args);
@@ -1435,14 +1435,14 @@ static void
 ChangeCursorOnGrab(Widget w, XtPointer temp1, XtPointer temp2)
 {
     SimpleMenuWidget smw = (SimpleMenuWidget)w;
-    
+
     /*
      * The event mask here is what is currently in the MIT implementation.
      * There really needs to be a way to get the value of the mask out
      * of the toolkit (CDP 5/26/89).
      */
     XChangeActivePointerGrab(XtDisplay(w), ButtonPressMask | ButtonReleaseMask,
-			     smw->simple_menu.cursor, 
+			     smw->simple_menu.cursor,
 			     XtLastTimestampProcessed(XtDisplay(w)));
 }
 
@@ -1461,7 +1461,7 @@ MakeSetValuesRequest(Widget w, unsigned int width, unsigned int height)
     SimpleMenuWidget smw = (SimpleMenuWidget)w;
     Arg arglist[2];
     Cardinal num_args = 0;
-    
+
     if (!smw->simple_menu.recursive_set_values) {
 	if (XtWidth(smw) != width || XtHeight(smw) != height) {
 	    smw->simple_menu.recursive_set_values = True;
@@ -1495,7 +1495,7 @@ DoGetEventEntry(Widget w, int x_loc, int y_loc)
 		return (*entry);
 	}
     }
-    
+
     return (NULL);
 }
 
@@ -1544,7 +1544,7 @@ GetEventEntry(Widget w, XEvent *event)
 		       "Unknown event type in GetEventEntry().");
 	    return (NULL);
     }
-    
+
     if (x_loc < 0 || x_loc >= XtWidth(smw) ||
 	y_loc < 0 || y_loc >= XtHeight(smw))
 	return (NULL);
@@ -1702,7 +1702,7 @@ MakeResizeRequest(Widget w)
 {
     int tries;
     Dimension width, height;
-  
+
     width = XtWidth(w);
     height = XtHeight(w);
 
@@ -1762,7 +1762,7 @@ PopupSubMenu(SimpleMenuWidget smw)
 
     popleft = (smw->simple_menu.state & SMW_POPLEFT) != 0;
 
-    if (popleft) 
+    if (popleft)
 	XtTranslateCoords((Widget)smw, -(int)XtWidth(menu),
 			  XtY(entry) - XtBorderWidth(menu), &menu_x, &menu_y);
     else

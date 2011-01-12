@@ -32,7 +32,7 @@ in this Software without prior written authorization from The Open Group.
  * Date:    May 2, 1989
  *
  * By:      Chris D. Peterson
- *          MIT X Consortium 
+ *          MIT X Consortium
  *          kit@expo.lcs.mit.edu
  */
 
@@ -65,7 +65,7 @@ static void PopupMenu(Widget, XEvent*, String*, Cardinal*);
  */
 #define superclass ((CommandWidgetClass)&commandClassRec)
 
-static char defaultTranslations[] = 
+static char defaultTranslations[] =
 "<Enter>:"	"highlight()\n"
 "<Leave>:"	"reset()\n"
 "Any<BtnDown>:"	"reset() PopupMenu()\n";
@@ -96,7 +96,7 @@ MenuButtonClassRec menuButtonClassRec = {
   {
     (WidgetClass)superclass,		/* superclass		  */
     "MenuButton",			/* class_name		  */
-    sizeof(MenuButtonRec),       	/* size			  */
+    sizeof(MenuButtonRec),		/* size			  */
     XawMenuButtonClassInitialize,	/* class_initialize	  */
     NULL,				/* class_part_initialize  */
     False,				/* class_inited		  */
@@ -122,14 +122,14 @@ MenuButtonClassRec menuButtonClassRec = {
     NULL,				/* accept_focus		  */
     XtVersion,				/* version		  */
     NULL,				/* callback_private	  */
-    defaultTranslations,               	/* tm_table		  */
+    defaultTranslations,		/* tm_table		  */
     XtInheritQueryGeometry,		/* query_geometry	  */
     XtInheritDisplayAccelerator,	/* display_accelerator	  */
     NULL,				/* extension */
   },
   /* simple */
   {
-    XtInheritChangeSensitive		/* change_sensitive	  */ 
+    XtInheritChangeSensitive		/* change_sensitive	  */
   },
   /* label */
   {
@@ -212,7 +212,7 @@ PopupMenu(Widget w, XEvent *event, String *params, Cardinal *num_params)
     temp = w;
     while(temp != NULL) {
 	menu = XtNameToWidget(temp, mbw->menu_button.menu_name);
-	if (menu == NULL) 
+	if (menu == NULL)
 	    temp = XtParent(temp);
 	else
 	    break;
@@ -230,7 +230,7 @@ PopupMenu(Widget w, XEvent *event, String *params, Cardinal *num_params)
 
     if (!XtIsRealized(menu))
 	XtRealizeWidget(menu);
-  
+
     menu_width = XtWidth(menu) + (XtBorderWidth(menu) << 1);
     button_height = XtHeight(w) + (XtBorderWidth(w) << 1);
     menu_height = XtHeight(menu) + (XtBorderWidth(menu) << 1);
@@ -260,7 +260,7 @@ PopupMenu(Widget w, XEvent *event, String *params, Cardinal *num_params)
 	if (menu_x + menu_width > scr_width)
 	    menu_x = scr_width - menu_width;
     }
-    if (menu_x < 0) 
+    if (menu_x < 0)
 	menu_x = 0;
 
     num_args = 0;
