@@ -89,7 +89,6 @@ AM_CONDITIONAL(BUILD_XAW6, [test x$build_v6 = xyes])
 AM_CONDITIONAL(BUILD_XAW7, [test x$build_v7 = xyes])
 
 # Checks for header files.
-AC_HEADER_STDC
 AC_CHECK_HEADERS([wctype.h wchar.h widec.h])
 
 # Checks for functions
