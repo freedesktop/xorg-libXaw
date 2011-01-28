@@ -65,7 +65,7 @@ AM_CONDITIONAL(PLATFORM_DARWIN, test "x$platform_darwin" = "xyes")
 
 # Whether to build Xaw6
 
-AC_ARG_ENABLE(xaw6, AC_HELP_STRING([--disable-xaw6],
+AC_ARG_ENABLE(xaw6, AS_HELP_STRING([--disable-xaw6],
 				[Disable building of libXaw.so.6]),
 			[build_v6=$enableval], [build_v6=yes])
 
@@ -76,7 +76,7 @@ fi
 
 # Whether to build Xaw7
 
-AC_ARG_ENABLE(xaw7, AC_HELP_STRING([--disable-xaw7],
+AC_ARG_ENABLE(xaw7, AS_HELP_STRING([--disable-xaw7],
 				[Disable building of libXaw.so.7]),
 			[build_v7=$enableval], [build_v7=yes])
 
