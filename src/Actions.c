@@ -386,7 +386,7 @@ prim(XawEvalInfo *info)
 
 	info->token = ERROR;
 	XmuSnprintf(msg, sizeof(msg),
-		    "evaluate(): sintax error, at \"%s\"", info->lp);
+		    "evaluate(): syntax error, at \"%s\"", info->lp);
 	XtAppWarning(XtWidgetToApplicationContext(info->widget), msg);
       } return (False);
     }
