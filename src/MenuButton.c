@@ -42,7 +42,6 @@ in this Software without prior written authorization from The Open Group.
 #include <stdio.h>
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
-#include <X11/Xmu/SysUtil.h>
 #include <X11/Xaw/MenuButtoP.h>
 #include <X11/Xaw/XawInit.h>
 #include "Private.h"
@@ -221,9 +220,9 @@ PopupMenu(Widget w, XEvent *event, String *params, Cardinal *num_params)
     if (menu == NULL) {
 	char error_buf[BUFSIZ];
 
-	(void)XmuSnprintf(error_buf, sizeof(error_buf),
-			  "MenuButton:  Could not find menu widget named %s.",
-			  mbw->menu_button.menu_name);
+	snprintf(error_buf, sizeof(error_buf),
+		 "MenuButton:  Could not find menu widget named %s.",
+		 mbw->menu_button.menu_name);
 	XtAppWarning(XtWidgetToApplicationContext(w), error_buf);
 	return;
     }

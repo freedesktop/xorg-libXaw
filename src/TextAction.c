@@ -39,7 +39,6 @@ in this Software without prior written authorization from The Open Group.
 #include <X11/Xmu/Atoms.h>
 #include <X11/Xmu/Misc.h>
 #include <X11/Xmu/StdSel.h>
-#include <X11/Xmu/SysUtil.h>
 #include <X11/Xaw/MultiSinkP.h>
 #include <X11/Xaw/MultiSrcP.h>
 #include <X11/Xaw/TextP.h>
@@ -3399,9 +3398,10 @@ Numeric(Widget w, XEvent *event, String *params, Cardinal *num_params)
 		InsertChar(w, event, params, num_params);
 		return;
 	    }
-	    XmuSnprintf(err_buf, sizeof(err_buf),
-			"numeric: Invalid argument%s'%s'",
-			*num_params ? ", " : "", *num_params ? params[0] : "");
+	    snprintf(err_buf, sizeof(err_buf),
+		     "numeric: Invalid argument%s'%s'",
+		     *num_params ? ", " : "",
+		     *num_params ? params[0] : "");
 	    XtAppWarning(XtWidgetToApplicationContext(w), err_buf);
 	    ctx->text.numeric = False;
 	    ctx->text.mult = 1;
@@ -3495,9 +3495,9 @@ Multiply(Widget w, XEvent *event, String *params, Cardinal *num_params)
 	if ((mult = atoi(params[0])) == 0) {
 	char buf[BUFSIZ];
 
-	XmuSnprintf(buf, sizeof(buf),
-		    "%s %s", "Xaw Text Widget: multiply() argument",
-		    "must be a number greater than zero, or 'Reset'.");
+	snprintf(buf, sizeof(buf),
+		 "Xaw Text Widget: multiply() argument "
+		 "must be a number greater than zero, or 'Reset'.");
 	XtAppError(XtWidgetToApplicationContext(w), buf);
 	XBell(XtDisplay(w), 50);
 	return;

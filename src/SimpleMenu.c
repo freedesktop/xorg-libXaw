@@ -39,7 +39,6 @@ in this Software without prior written authorization from The Open Group.
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
 #include <X11/Xmu/Initer.h>
-#include <X11/Xmu/SysUtil.h>
 #include <X11/Xaw/Cardinals.h>
 #include <X11/Xaw/SimpleMenP.h>
 #include <X11/Xaw/SmeBSBP.h>
@@ -805,9 +804,9 @@ PositionMenuAction(Widget w, XEvent *event,
     if ((menu = FindMenu(w, params[0])) == NULL) {
 	char error_buf[BUFSIZ];
 
-	(void)XmuSnprintf(error_buf, sizeof(error_buf),
-			  "SimpleMenuWidget: could not find menu named %s.",
-			  params[0]);
+	snprintf(error_buf, sizeof(error_buf),
+		 "SimpleMenuWidget: could not find menu named %s.",
+		 params[0]);
 	XtAppWarning(XtWidgetToApplicationContext(w), error_buf);
 	return;
     }

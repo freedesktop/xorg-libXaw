@@ -53,7 +53,6 @@ in this Software without prior written authorization from The Open Group.
 #include <X11/Shell.h>
 #include <X11/Xos.h>
 #include <X11/Xmu/CharSet.h>
-#include <X11/Xmu/SysUtil.h>
 #include <X11/Xaw/TextP.h>
 #include <X11/Xaw/AsciiText.h>
 #include <X11/Xaw/Cardinals.h>
@@ -268,7 +267,7 @@ DoInsert(Widget w, XtPointer closure, XtPointer call_data)
     char buf[BUFSIZ], msg[BUFSIZ];
     Widget temp_widget;
 
-    (void)XmuSnprintf(buf, sizeof(buf), "%s.%s", FORM_NAME, TEXT_NAME);
+    snprintf(buf, sizeof(buf), "%s.%s", FORM_NAME, TEXT_NAME);
     if ((temp_widget = XtNameToWidget(ctx->text.file_insert, buf)) == NULL) {
 	(void)strcpy(msg,
 		     "Error: Could not get text widget from file insert popup");
@@ -278,7 +277,7 @@ DoInsert(Widget w, XtPointer closure, XtPointer call_data)
 	return;
     }
     else
-	(void)XmuSnprintf(msg, sizeof(msg), "Error: %s", strerror(errno));
+	snprintf(msg, sizeof(msg), "Error: %s", strerror(errno));
 
     (void)SetResourceByName(ctx->text.file_insert,
 			    LABEL_NAME, XtNlabel, (XtArgVal)msg);
@@ -536,9 +535,9 @@ _XawTextSearch(Widget w, XEvent *event, String *params, Cardinal *num_params)
     wchar_t wcs[1];
 
     if (*num_params < 1 || *num_params > 2) {
-	(void)XmuSnprintf(buf, sizeof(buf), "%s %s\n%s", SEARCH_HEADER,
-			  "This action must have only",
-			  "one or two parameters");
+	snprintf(buf, sizeof(buf), "%s %s\n%s", SEARCH_HEADER,
+		 "This action must have only",
+		 "one or two parameters");
 	XtAppWarning(XtWidgetToApplicationContext(w), buf);
 	return;
     }
@@ -564,9 +563,9 @@ _XawTextSearch(Widget w, XEvent *event, String *params, Cardinal *num_params)
 	    dir = XawsdRight;
 	    break;
 	default:
-	    (void)XmuSnprintf(buf, sizeof(buf), "%s %s\n%s", SEARCH_HEADER,
-			      "The first parameter must be",
-			      "Either 'backward' or 'forward'");
+	    snprintf(buf, sizeof(buf), "%s %s\n%s", SEARCH_HEADER,
+		     "The first parameter must be",
+		     "Either 'backward' or 'forward'");
 	    XtAppWarning(XtWidgetToApplicationContext(w), buf);
 	    return;
     }
@@ -879,7 +878,7 @@ DoSearch(struct SearchAndReplace *search)
 
 	ptr = GetString(search->search_text);
 	len = strlen(ptr);
-	(void)XmuSnprintf(msg, sizeof(msg), "%s", ptr);
+	snprintf(msg, sizeof(msg), "%s", ptr);
 
 	ptr = strchr(msg, '\n');
 	if (ptr != NULL || sizeof(msg) - 1 < len) {
@@ -1040,7 +1039,7 @@ Replace(struct SearchAndReplace *search, Bool once_only, Bool show_current)
 
 		    ptr = GetString(search->search_text);
 		    len = strlen(ptr);
-		    (void)XmuSnprintf(msg, sizeof(msg), "%s", ptr);
+		    snprintf(msg, sizeof(msg), "%s", ptr);
 		    ptr = strchr(msg, '\n');
 		    if (ptr != NULL || sizeof(msg) - 1 < len) {
 			if (ptr != NULL)
@@ -1264,7 +1263,7 @@ SetResourceByName(Widget shell, char *name, char *res_name, XtArgVal value)
     Widget temp_widget;
     char buf[BUFSIZ];
 
-    (void)XmuSnprintf(buf, sizeof(buf), "%s.%s", FORM_NAME, name);
+    snprintf(buf, sizeof(buf), "%s.%s", FORM_NAME, name);
 
     if ((temp_widget = XtNameToWidget(shell, buf)) != NULL) {
 	SetResource(temp_widget, res_name, value);
@@ -1503,7 +1502,7 @@ WMProtocols(Widget w, XEvent *event, String *params, Cardinal *num_params)
 	Widget cancel;
 	char descendant[DISMISS_NAME_LEN + 2];
 
-	(void)XmuSnprintf(descendant, sizeof(descendant), "*%s", DISMISS_NAME);
+	snprintf(descendant, sizeof(descendant), "*%s", DISMISS_NAME);
 	cancel = XtNameToWidget(w, descendant);
 	if (cancel)
 	    XtCallCallbacks(cancel, XtNcallback, NULL);

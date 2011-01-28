@@ -64,7 +64,6 @@ SOFTWARE.
 #include <X11/Xmu/CharSet.h>
 #include <X11/Xmu/Converters.h>
 #include <X11/Xmu/Misc.h>
-#include <X11/Xmu/SysUtil.h>
 #include <X11/Xaw/Grip.h>
 #include <X11/Xaw/PanedP.h>
 #include <X11/Xaw/XawImP.h>

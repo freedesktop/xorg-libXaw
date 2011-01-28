@@ -83,7 +83,6 @@ SOFTWARE.
 #include <X11/Xfuncs.h>
 #include <X11/Xutil.h>
 #include <X11/Xmu/Misc.h>
-#include <X11/Xmu/SysUtil.h>
 #include <X11/Xmu/Xmu.h>
 #include <X11/Xaw/Cardinals.h>
 #include <X11/Xaw/MultiSinkP.h>
