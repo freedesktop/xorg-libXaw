@@ -1,4 +1,3 @@
-dnl Process this file with autoconf to create configure.
 
 # Initialize Autoconf
 AC_PREREQ([2.60])
@@ -11,6 +10,9 @@ AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE([foreign dist-bzip2])
 AM_MAINTAINER_MODE
 
+# Initialize libtool
+AC_PROG_LIBTOOL
+
 # Require xorg-macros minimum of 1.10 for HAVE_STYLESHEETS in XORG_CHECK_SGML_DOCTOOLS
 m4_ifndef([XORG_MACROS_VERSION],
 	  [m4_fatal([must install xorg-macros 1.10 or later before running autoconf/autogen])])
@@ -21,10 +23,11 @@ XORG_WITH_XMLTO(0.0.20)
 XORG_WITH_FOP
 XORG_CHECK_SGML_DOCTOOLS(1.5)
 
-# Check for progs
-AC_PROG_LIBTOOL
-AC_PROG_AWK
+# Some compilers do not support per target -c and -o flags
 AM_PROG_CC_C_O
+
+# Checks for programs.
+AC_PROG_AWK
 
 # Need to call this explicitly since the first call to PKG_CHECK_MODULES
 # is in an if statement, and later calls would break if it's skipped.
