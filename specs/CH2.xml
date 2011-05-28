@@ -1880,11 +1880,12 @@ can be used, as in the first approach, for easier code maintenance.
 The best way to understand how to use any programming library is by
 trying some simple examples.  A collection of example programs that
 introduces each of the widgets in that Athena widget set, as well as many
-important toolkit programming concepts, is available in the X11R6
+important toolkit programming concepts, is available in the X11R5 contrib
 release as distributed by the X Consortium.  It can be found in the
-distribution directory <function>contrib/examples/mit/Xaw</function>, but see your
-site administrator for the exact location of these files on your system.
-See the README file from that directory for a guide to the examples.
+directory <filename>contrib/examples/mit/Xaw</filename> in the archive
+at <ulink url="http://www.x.org/releases/X11R5/contrib-1.tar.Z" />
+See the <filename>README</filename> file from that directory for a guide
+to the examples.
 </para>
 </sect2>
 </sect1>
