@@ -980,7 +980,7 @@ To enable or disable a child's request for pane resizing,
 use
 <function>XawPanedAllowResize :</function>
 <!-- .IN "XawPanedAllowResize" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xawpanedallowresize'>
 <funcprototype>
   <funcdef>void<function> XawPanedAllowResize</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -1029,7 +1029,7 @@ constraint resource for the child.
 To change the minimum and maximum height settings for a pane, use
 <function>XawPanedSetMinMax :</function>
 <!-- .IN "XawPanedSetMinMax" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xawpanedsetminmax'>
 <funcprototype>
   <funcdef>void<function> XawPanedSetMinMax</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -1082,7 +1082,7 @@ constraint resources for the child.
 To retrieve the minimum and maximum height settings for a pane, use
 <function>XawPanedGetMinMax :</function>
 <!-- .IN "XawPanedGetMinMax" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xawpanedgetminmax'>
 <funcprototype>
   <funcdef>void<function> XawPanedGetMinMax</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -1137,7 +1137,7 @@ To enable or disable automatic recalculation of pane sizes and positions,
 use
 <function>XawPanedSetRefigureMode :</function>
 <!-- .IN "XawPanedSetRefigureMode" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xawpanedsetrefiguremode'>
 <funcprototype>
   <funcdef>void<function> XawPanedSetRefigureMode</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -1182,7 +1182,7 @@ relayout until after all changes have been made.
 To retrieve the number of panes in a paned widget use
 <function>XawPanedGetNumSub</function>:
 <!-- .IN "XawPanedGetNumSub" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xawpanedgetnumsub'>
 <funcprototype>
   <funcdef>int<function> XawPanedGetNumSub</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>

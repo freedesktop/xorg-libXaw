@@ -77,7 +77,7 @@ a tree of widgets created by this application.
 <!-- .IN "toolkit initialization" "" "@DEF@" -->
 <!-- .IN "XtAppInitialize" "" "@DEF@" -->
 <!-- .IN "fallback resources" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xtappinitialize'>
 <funcprototype>
   <funcdef>Widget<function> XtAppInitialize</function></funcdef>
   <paramdef>XtAppContext<parameter> app_context_return</parameter></paramdef>
@@ -231,7 +231,7 @@ managed if the parent is already realized.
 To allocate, initialize, and manage a widget, use
 <function>XtCreateManagedWidget .</function>
 <!-- .IN "XtCreateManagedWidget" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xtcreatemanagedwidget'>
 <funcprototype>
   <funcdef>Widget<function> XtCreateManagedWidget</function></funcdef>
   <paramdef>String<parameter> name</parameter></paramdef>
@@ -675,7 +675,7 @@ for performance reasons.
 Creates an X window for the widget and, if it is a composite widget,
 realizes each of its managed children.
 <!-- .IN "XtRealizeWidget" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xtrealizewidget'>
 <funcprototype>
   <funcdef>void<function> XtRealizeWidget</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -710,7 +710,7 @@ widgets, it is ready to process the events that will be delivered by the
 X Server to this client.  A function call that will process the
 events is <function>XtAppMainLoop</function>.
 <!-- .IN "XtAppMainLoop" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xtappmainloop'>
 <funcprototype>
   <funcdef>void<function> XtAppMainLoop</function></funcdef>
   <paramdef>XtAppContext<parameter> app_context</parameter></paramdef>
@@ -792,7 +792,7 @@ widget windows are mapped (made viewable) automatically by
 <!-- .IN "XtSetMappedWhenManaged" "" "@DEF@" -->
 <!-- .IN "XtMapWidget" "" "" -->
 <!-- .IN "XtRealizeWidget" "" "" -->
-<funcsynopsis>
+<funcsynopsis id='xtsetmappedwhenmanaged'>
 <funcprototype>
   <funcdef>void<function> XtSetMappedWhenManaged</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -837,7 +837,7 @@ The definition for
 <function>XtMapWidget</function>
 is:
 <!-- .IN "XtMapWidget" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xtmapwidget'>
 <funcprototype>
   <funcdef>void<function> XtMapWidget</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -868,7 +868,7 @@ parent can avoid wasteful duplication of geometry processing and the
 associated ``screen flash''.
 <!-- .IN "XtManageChildren" "" "@DEF@" -->
 <!-- .IN "XtCreateWidget" "" "" -->
-<funcsynopsis>
+<funcsynopsis id='xtmanagechildren'>
 <funcprototype>
   <funcdef>void<function> XtManageChildren</function></funcdef>
   <paramdef>WidgetList<parameter> children</parameter></paramdef>
@@ -918,7 +918,7 @@ see the <emphasis remap='I'>X Toolkit Intrinsics - C Language Interface</emphasi
 To destroy a widget instance of any type, use
 <function>XtDestroyWidget</function>
 <!-- .IN "XtDestroyWidget" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xtdestroywidget'>
 <funcprototype>
   <funcdef>void<function> XtDestroyWidget</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -957,7 +957,7 @@ To retrieve the current value of a resource attribute associated
 with a widget instance, use
 <function>XtGetValues .</function>
 <!-- .IN "XtGetValues" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xtgetvalues'>
 <funcprototype>
   <funcdef>void<function> XtGetValues</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -1018,7 +1018,7 @@ To modify the current value of a resource attribute associated with a
 widget instance, use
 <function>XtSetValues .</function>
 <!-- .IN "XtSetValues" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xtsetvalues'>
 <funcprototype>
   <funcdef>void<function> XtSetValues</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -1100,7 +1100,7 @@ Widgets can communicate changes in their state to their clients
 by means of a callback facility.
 The format for a client's callback handler is:
 <!-- .IN "CallbackProc" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='callbackproc'>
 <funcprototype>
   <funcdef>void<function> CallbackProc</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -1194,7 +1194,7 @@ The second method for registering callbacks is to use
 <function>XtAddCallback</function>
 after the widget has been created.
 <!-- .IN "XtAddCallback" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xtaddcallback'>
 <funcprototype>
   <funcdef>void<function> XtAddCallback</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>

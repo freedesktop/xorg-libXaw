@@ -691,7 +691,7 @@ application uses dynamic menu creation.  In these cases an application will
 need to register this global action routine by calling
 <function>XawSimpleMenuAddGlobalActions</function>:
 <!-- .IN "XawSimpleMenuAddGlobalActions" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xawsimplemenuaddglobalactions'>
 <funcprototype>
   <funcdef>void<function> XawSimpleMenuAddGlobalActions</function></funcdef>
   <paramdef>XtAppContext<parameter> app_con</parameter></paramdef>
@@ -725,7 +725,7 @@ is realized.
 To get the currently highlighted menu entry use
 <function>XawSimpleMenuGetActiveEntry</function>:
 <!-- .IN "XawSimpleMenuGetActiveEntry" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xawsimplemenugetactiveentry'>
 <funcprototype>
   <funcdef>Widget<function> XawSimpleMenuGetActiveEntry</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -757,7 +757,7 @@ To clear the SimpleMenu widget's internal information about the
 currently highlighted menu entry use
 <function>XawSimpleMenuClearActiveEntry</function>:
 <!-- .IN "XawSimpleMenuClearActiveEntry" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xawsimplemenuclearactiveentry'>
 <funcprototype>
   <funcdef>Widget<function> XawSimpleMenuClearActiveEntry</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>

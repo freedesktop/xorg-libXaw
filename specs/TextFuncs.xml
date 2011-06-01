@@ -109,7 +109,7 @@ deprecated and will eventually be removed from the implementation.
 To select a piece of text, use
 <function>XawTextSetSelection : </function>
 <!-- .IN "XawTextSetSelection" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xawtextsetselection'>
 <funcprototype>
   <funcdef>void<function> XawTextSetSelection</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -168,7 +168,7 @@ effect on <function>CUT_BUFFER0</function>.
 To unhighlight previously highlighted text in a widget, use
 <function>XawTextUnsetSelection</function>:
 <!-- .IN "XawTextUnsetSelection" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xawtextunsetselection'>
 <funcprototype>
   <funcdef>void<function> XawTextUnsetSelection</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -196,7 +196,7 @@ Specifies the Text widget.
 To retrieve the text that has been selected by this
 text widget use <function>XawTextGetSelectionPos</function>:
 <!-- .IN "XawTextGetSelectionPos" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xawtextgetselectionpos'>
 <funcprototype>
   <funcdef>void<function> XawTextGetSelectionPos</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -249,7 +249,7 @@ If the returned values are equal, no text is currently selected.
 <!-- .LP -->
 To modify the text in an editable Text widget use <function>XawTextReplace</function>:
 <!-- .IN "XawTextReplace" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xawtextreplace'>
 <funcprototype>
   <funcdef>int<function> XawTextReplace</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -373,7 +373,7 @@ text is inserted after <emphasis remap='I'>start</emphasis>.
 To search for a string in the Text widget, use
 <function>XawTextSearch</function>:
 <!-- .IN "XawTextSearch" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xawtextsearch'>
 <funcprototype>
   <funcdef>XawTextPosition<function> XawTextSearch</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -433,7 +433,7 @@ found then the value <function>XawTextSearchError</function> is returned.
 <!-- .LP -->
 To redisplay a range of characters, use <function>XawTextInvalidate</function>:
 <!-- .IN "XawTextInvalidate" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xawtextinvalidate'>
 <funcprototype>
   <funcdef>void<function> XawTextInvalidate</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -487,7 +487,7 @@ enabled.
 <!-- .sp 1 -->
 To enable redisplay, use <function>XawTextEnableRedisplay</function>:
 <!-- .IN "XawTextEnableRedisplay" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xawtextenableredisplay'>
 <funcprototype>
   <funcdef>void<function> XawTextEnableRedisplay</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -519,7 +519,7 @@ was called and allows future changes to be reflected immediately.
 To disable redisplay while making several changes, use
 <function>XawTextDisableRedisplay</function>.
 <!-- .IN "XawTextDisableRedisplay" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xawtextdisableredisplay'>
 <funcprototype>
   <funcdef>void<function> XawTextDisableRedisplay</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -550,7 +550,7 @@ is called.
 <!-- .sp 1 -->
 To display batched updates, use <function>XawTextDisplay</function>:
 <!-- .IN "XawTextDisplay" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xawtextdisplay'>
 <funcprototype>
   <funcdef>void<function> XawTextDisplay</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -584,7 +584,7 @@ To obtain the character position of the left-most character on the
 first line displayed in the widget (the value of the
 <function>displayPosition</function> resource), use <function>XawTextTopPosition</function>.
 <!-- .IN "XawTextTopPosition" "" @DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xawtexttopposition'>
 <funcprototype>
   <funcdef>XawTextPosition<function> XawTextTopPosition</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -610,7 +610,7 @@ Specifies the Text widget.
 To assign a new selection array to a text widget use
 <function>XawTextSetSelectionArray</function>:
 <!-- .IN "XawTextSetSelectionArray" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xawtextsetselectionarray'>
 <funcprototype>
   <funcdef>void<function> XawTextSetSelectionArray</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -653,7 +653,7 @@ Calling this function is equivalent to setting the value of the
 To move the insertion point to the specified source position, use
 <function>XawTextSetInsertionPoint</function>:
 <!-- .IN "XawTextSetInsertionPoint" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xawtextsetinsertionpoint'>
 <funcprototype>
   <funcdef>void<function> XawTextSetInsertionPoint</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -697,7 +697,7 @@ equivalent to setting the <function>insertPosition</function> resource.
 To obtain the current position of the insertion point, use
 <function>XawTextGetInsertionPoint</function>:
 <!-- .IN "XawTextGetInsertionPoint" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xawtextgetinsertionpoint'>
 <funcprototype>
   <funcdef>XawTextPosition<function> XawTextGetInsertionPoint</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -729,7 +729,7 @@ The result is equivalent to retrieving the value of the
 To replace the text source in the specified widget, use
 <function>XawTextSetSource</function>:
 <!-- .IN "XawTextSetSource" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xawtextsetsource'>
 <funcprototype>
   <funcdef>void<function> XawTextSetSource</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -783,7 +783,7 @@ A display update will be performed if redisplay is enabled.
 To obtain the current text source for the specified widget, use
 <function>XawTextGetSource</function>:
 <!-- .IN "XawTextGetSource" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xawtextgetsource'>
 <funcprototype>
   <funcdef>Widget<function> XawTextGetSource</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -814,7 +814,7 @@ using.
 To enable and disable the insertion point, use
 <function>XawTextDisplayCaret</function>:
 <!-- .IN "XawTextDisplayCaret" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xawtextdisplaycaret'>
 <funcprototype>
   <funcdef>void<function> XawTextDisplayCaret</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>

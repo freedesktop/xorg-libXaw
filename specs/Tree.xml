@@ -383,7 +383,7 @@ to False and then use the
 routine to arrange the children.
 </para>
 
-<funcsynopsis>
+<funcsynopsis id='xawtreeforcelayout'>
 <funcprototype>
   <funcdef>void<function> XawTreeForceLayout</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>

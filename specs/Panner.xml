@@ -688,7 +688,7 @@ The default bindings for Panner are:
 The functions registered on the <function>reportCallback</function> list are invoked by
 the <function>notify</function> action as follows:
 <!-- .IN "ReportProc" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='panner_reportproc'>
 <funcprototype>
   <funcdef>void<function> ReportProc</function></funcdef>
   <paramdef>Widget<parameter> panner</parameter></paramdef>

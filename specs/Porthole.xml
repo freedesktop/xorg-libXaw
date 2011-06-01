@@ -262,7 +262,7 @@ Panner widget.
 The functions registered on the <function>reportCallback</function> list are invoked whenever
 the managed child changes size or position:
 <!-- .IN "ReportProc" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='porthole_reportproc'>
 <funcprototype>
   <funcdef>void<function> ReportProc</function></funcdef>
   <paramdef>Widget<parameter> porthole</parameter></paramdef>

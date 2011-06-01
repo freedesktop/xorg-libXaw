@@ -488,7 +488,7 @@ To force or defer a re-layout of the Form, use
 <!-- .PN XawFormDoLayout . -->
 <!-- .IN "Form widget" "re-layout" -->
 <!-- .IN "XawFormDoLayout" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xawformdolayout'>
 <funcprototype>
   <funcdef>void<function> XawFormDoLayout</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>

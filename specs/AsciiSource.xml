@@ -224,7 +224,7 @@ requested with a call to <function>XtGetValues</function>.  This memory is alloc
 fly, and remains valid until the next time a string needs to be allocated.
 You may save memory by freeing this string as soon as you are done
 with it by calling <function>XawAsciiSourceFreeString</function>.
-<funcsynopsis>
+<funcsynopsis id='xawasciisourcefreestring'>
 <funcprototype>
   <funcdef>void<function> XawAsciiSourceFreeString</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -257,7 +257,7 @@ the next call to <function>XtGetValues</function> occurs, or when the widget is 
 <!-- .LP -->
 To save the changes made in the current text source into a file use
 <function>XawAsciiSave</function>.
-<funcsynopsis>
+<funcsynopsis id='xawasciisave'>
 <funcprototype>
   <funcdef>Boolean<function> XawAsciiSave</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -289,7 +289,7 @@ only works on an AsciiSrc of type <function>XawAsciiFile</function>.
 <!-- .sp 1 -->
 To save the contents of the current text buffer into a named file use
 <function>XawAsciiSaveAsFile</function>.
-<funcsynopsis>
+<funcsynopsis id='xawasciisaveasfile'>
 <funcprototype>
   <funcdef>Boolean<function> XawAsciiSaveAsFile</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -335,7 +335,7 @@ To find out if the text buffer in an AsciiSrc object has changed
 since the last time it was saved with <function>XawAsciiSave</function> or queried
 <!-- .IN "XawAsciiSave" "" -->
 use <function>XawAsciiSourceChanged</function>.
-<funcsynopsis>
+<funcsynopsis id='xawasciisourcechanged'>
 <funcprototype>
   <funcdef>Boolean<function> XawAsciiSourceChanged</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>

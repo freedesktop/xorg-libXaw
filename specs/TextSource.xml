@@ -140,7 +140,7 @@ used as a source by itself and bad things will probably happen.
 To read the text in a text source use the <function>Read</function> function:
 <!-- .IN "TextSrc object" "Read" "@DEF@" -->
 </para>
-<funcsynopsis>
+<funcsynopsis id='read'>
 <funcprototype>
   <funcdef>XawTextPosition<function> Read</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -210,7 +210,7 @@ portion of the text buffer is fully retrieved.
 To replace or edit the text in a text buffer use the <function>Replace</function> function:
 </para>
 
-<funcsynopsis>
+<funcsynopsis id='replace'>
 <funcprototype>
   <funcdef>XawTextPosition<function> Replace</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -310,7 +310,7 @@ To search the text source for one of the predefined boundary types use
 the <function>Scan</function> function:
 </para>
 
-<funcsynopsis>
+<funcsynopsis id='scan'>
 <funcprototype>
   <funcdef>XawTextPosition<function> Scan</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -396,7 +396,7 @@ position of that end.
 To search for a particular string use the <function>Search</function> function.
 </para>
 
-<funcsynopsis>
+<funcsynopsis id='search'>
 <funcprototype>
   <funcdef>XawTextPosition<function> Search</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -466,7 +466,7 @@ the <function>ConvertSelection</function> function, to attempt the selection
 conversion.
 </para>
 
-<funcsynopsis>
+<funcsynopsis id='convertselections'>
 <funcprototype>
   <funcdef>Boolean<function> ConvertSelections</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -571,7 +571,7 @@ If the source needs to know when the text selection is modified it
 should define a <function>SetSelection</function> procedure:
 </para>
 
-<funcsynopsis>
+<funcsynopsis id='setselection'>
 <funcprototype>
   <funcdef>void<function> SetSelection</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>

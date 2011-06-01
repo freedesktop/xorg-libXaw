@@ -608,7 +608,7 @@ the Toggle to a radio group, or remove the Toggle from a radio group, use
 <function>XawToggleChangeRadioGroup</function>.
 </para>
 
-<funcsynopsis>
+<funcsynopsis id='xawtogglechangeradiogroup'>
 <funcprototype>
   <funcdef>void<function> XawToggleChangeRadioGroup</function></funcdef>
   <paramdef>Widgetw,<parameter> radio_group</parameter></paramdef>
@@ -654,7 +654,7 @@ To find the currently selected Toggle in a radio group of Toggle widgets
 use <function>XawToggleGetCurrent</function>.
 </para>
 
-<funcsynopsis>
+<funcsynopsis id='xawtogglegetcurrent'>
 <funcprototype>
   <funcdef>XtPointer<function> XawToggleGetCurrent</function></funcdef>
   <paramdef>XtPointer<parameter> XawToggleGetCurrent(radio_group)</parameter></paramdef>
@@ -690,7 +690,7 @@ To change the Toggle that is currently set in a radio group use
 <function>XawToggleSetCurrent</function>.
 </para>
 
-<funcsynopsis>
+<funcsynopsis id='xawtogglesetcurrent'>
 <funcprototype>
   <funcdef>void<function> XawToggleSetCurrent</function></funcdef>
   <paramdef>voidXawToggleSetCurrent(radio_group,<parameter> radio_data)</parameter></paramdef>
@@ -743,7 +743,7 @@ To unset all Toggle widgets in a radio group use
 <function>XawToggleUnsetCurrent</function>.
 </para>
 
-<funcsynopsis>
+<funcsynopsis id='xawtoggleunsetcurrent'>
 <funcprototype>
   <funcdef>void<function> XawToggleUnsetCurrent</function></funcdef>
   <paramdef>void<parameter> XawToggleUnsetCurrent(radio_group)</parameter></paramdef>

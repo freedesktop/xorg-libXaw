@@ -652,7 +652,7 @@ operating systems, and had to be changed.
 To change the list that is displayed, use
 <function>XawListChange .</function>
 <!-- .IN "XawListChange" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xawlistchange'>
 <funcprototype>
   <funcdef>void<function> XawListChange</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -738,7 +738,7 @@ has been changed again with this function or with <function>XtSetValues</functio
 To highlight an item in the list, use
 <function>XawListHighlight .</function>
 <!-- .IN "XawListHighlight" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xawlisthighlight'>
 <funcprototype>
   <funcdef>void<function> XawListHighlight</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -786,7 +786,7 @@ the highlighted item is unhighlighted before the new item is highlighted.
 To unhighlight the currently highlighted item in the list, use
 <function>XawListUnhighlight .</function>
 <!-- .IN "XawListUnhighlight" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xawlistunhighlight'>
 <funcprototype>
   <funcdef>void<function> XawListUnhighlight</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -814,7 +814,7 @@ Specifies the List widget.
 To retrieve the list element that is currently <emphasis remap='I'>set</emphasis>, use
 <function>XawListShowCurrent .</function>
 <!-- .IN "XawListShowCurrent" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xawlistshowcurrent'>
 <funcprototype>
   <funcdef>XawListReturnStruct<function> *XawListShowCurrent</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>

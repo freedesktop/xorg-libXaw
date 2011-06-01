@@ -580,7 +580,7 @@ available through the Dialog widget itself.
 To return the character string in the text field, use
 <!-- .PN XawDialogGetValueString . -->
 <!-- .IN "XawDialogGetValueString" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xawdialoggetvaluestring'>
 <funcprototype>
   <funcdef>String<function> XawDialogGetValueString</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -617,7 +617,7 @@ the function <function>XawAsciiSourceFreeString</function>.
 To add a new button to the Dialog widget use
 <function>XawDialogAddButton</function>.
 <!-- .IN "XawDialogAddButton" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='xawdialogaddbutton'>
 <funcprototype>
   <funcdef>void<function> XawDialogAddButton</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>

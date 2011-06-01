@@ -192,7 +192,7 @@ to be used as a sink by itself.
 To display a section of the text buffer contained in the text source
 use the function <function>DisplayText</function>:
 <!-- .IN "TextSink object" "DisplayText" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='displaytext'>
 <funcprototype>
   <funcdef>void<function> DisplayText</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -283,7 +283,7 @@ be displayed.
 The function that controls the display of the text cursor is
 <function>InsertCursor</function>.  This function will be called whenever the text
 widget desires to change the state of, or move the insert point.
-<funcsynopsis>
+<funcsynopsis id='insertcursor'>
 <funcprototype>
   <funcdef>void<function> InsertCursor</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -352,7 +352,7 @@ This behavior will be used if you specify
 <function>XtInheritClearToBackground</function> for this method.
 <!-- .IN "XtInheritClearToBackground" "" -->
 <!-- .IN "TextSink object" "ClearToBackground" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='cleartobackground'>
 <funcprototype>
   <funcdef>void<function> ClearToBackground</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -426,7 +426,7 @@ Specifies the height, in pixels, of the Region to clear.
 To find the text character position that will be rendered at a given x
 location the Text widget uses the function <function>FindPosition</function>:
 <!-- .IN "TextSink object" "FindPosition" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='findposition'>
 <funcprototype>
   <funcdef>void<function> FindPosition</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -540,7 +540,7 @@ widget will only call it one line at a time.
 Another means of finding a text position is provided by the <function>Resolve</function>
 function:
 <!-- .IN "TextSink object" "Resolve" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='resolve'>
 <funcprototype>
   <funcdef>void<function> Resolve</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -625,7 +625,7 @@ functionality.
 To find the distance in pixels between two text positions on the same
 line use the function <function>FindDistance</function>.
 <!-- .IN "TextSink object" "FindDistance" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='finddistance'>
 <funcprototype>
   <funcdef>void<function> FindDistance</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -731,7 +731,7 @@ widget, use the function <function>MaxLines</function>.  The TextSink already de
 this function to compute the maximum number of lines by using the height
 of <function>font</function>.
 <!-- .IN "TextSink object" "MaxLines" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='maxlines'>
 <funcprototype>
   <funcdef>int<function> MaxLines</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -774,7 +774,7 @@ the function <function>MaxHeight</function>.  The TextSink already defines this
 function to compute the maximum height of the window by using the
 height of <function>font</function>.
 <!-- .IN "TextSink object" "MaxHeight" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='maxheight'>
 <funcprototype>
   <funcdef>int<function> MaxHeight</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -819,7 +819,7 @@ The TextSink already defines this function to set the tab x location in
 pixels to be the number of characters times the figure width of
 <function>font</function>.
 <!-- .IN "TextSink object" "SetTabs" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='settabs'>
 <funcprototype>
   <funcdef>void<function> SetTabs</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
@@ -873,7 +873,7 @@ to it into whatever internal positions the TextSink uses for tab placement.
 To get the size and location of the insert point use the
 <function>GetCursorBounds</function> function.
 <!-- .IN "TextSink object" "GetCursorBounds" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='getcursorbounds'>
 <funcprototype>
   <funcdef>void<function> GetCursorBounds</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>

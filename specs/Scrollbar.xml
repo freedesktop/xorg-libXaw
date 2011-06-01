@@ -663,7 +663,7 @@ The procedural interface for these functions is described here.
 The calling interface to the <function>scrollProc</function> callback procedure is:
 <!-- .IN "ScrollProc" "" "@DEF@" -->
 </para>
-<funcsynopsis>
+<funcsynopsis id='scrollproc'>
 <funcprototype>
   <funcdef>void<function> ScrollProc</function></funcdef>
   <paramdef>Widget<parameter> scrollbar</parameter></paramdef>
@@ -720,7 +720,7 @@ be greater than the length of the Scrollbar.
 The calling interface to the <function>jumpProc</function> callback procedure is:
 </para>
 <!-- .IN "jumpProc" "" "@DEF@" -->
-<funcsynopsis>
+<funcsynopsis id='jumpproc'>
 <funcprototype>
   <funcdef>void<function> JumpProc</function></funcdef>
   <paramdef>Widget<parameter> scrollbar</parameter></paramdef>
@@ -792,7 +792,7 @@ To set the position and length of a Scrollbar thumb, use
 <!-- .PN XawScrollbarSetThumb . -->
 <!-- .IN "XawScrollbarSetThumb" "" "@DEF@" -->
 </para>
-<funcsynopsis>
+<funcsynopsis id='xawscrollbarsetthumb'>
 <funcprototype>
   <funcdef>void<function> XawScrollbarSetThumb</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
