@@ -1,6 +1,5 @@
 
 if ENABLE_SPECS
-if HAVE_XMLTO
 
 # Main DocBook/XML files (DOCTYPE book)
 docbook = libXaw.xml 
@@ -59,5 +58,4 @@ shelfdir = $(docdir)
 # Generate DocBook/XML output formats with or without stylesheets
 include $(top_srcdir)/docbook.am
 
-endif HAVE_XMLTO
 endif ENABLE_SPECS
