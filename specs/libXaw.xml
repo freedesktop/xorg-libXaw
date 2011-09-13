@@ -14,6 +14,7 @@
    <authorgroup>
       <author>
          <firstname>Chris</firstname><surname>Peterson</surname>
+         <affiliation><orgname>formerly MIT X Consortium</orgname></affiliation>
       </author>
    </authorgroup>
    <copyright><year>1985</year><holder>X Consortium</holder></copyright>
@@ -24,7 +25,6 @@
    <copyright><year>1991</year><holder>X Consortium</holder></copyright>
    <copyright><year>1994</year><holder>X Consortium</holder></copyright>
    <releaseinfo>libXaw 1.0.7</releaseinfo>
-   <affiliation><orgname>formerly MIT X Consortium</orgname></affiliation>
 
 <legalnotice>
 
