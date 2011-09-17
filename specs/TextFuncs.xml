@@ -152,7 +152,7 @@ Specifies the character position at which the selection ends.
 </para>
 <para>
 <!-- .LP -->
-See section 5.4 for a description of <function>XawTextPosition</function>.  <!-- xref --> 
+See section 5.4 for a description of <function>XawTextPosition</function>.  <!-- xref -->
 If redisplay is enabled, this function highlights the text and
 makes it the <function>PRIMARY</function> selection.  This function does not have any
 effect on <function>CUT_BUFFER0</function>.
@@ -239,7 +239,7 @@ Returns the end of the text selection.
 </para>
 <para>
 <!-- .LP -->
-See section 5.4 for a description of <function>XawTextPosition</function>. <!-- xref --> 
+See section 5.4 for a description of <function>XawTextPosition</function>. <!-- xref -->
 If the returned values are equal, no text is currently selected.
 </para>
 </sect2>

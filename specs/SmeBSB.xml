@@ -189,7 +189,7 @@ All callback functions on this list are called when the SimpleMenu
 <emphasis remap='I'>notifies</emphasis> this entry that the user has selected it.
       </para>
     </listitem>
-  </varlistentry> 
+  </varlistentry>
   <varlistentry>
     <term>font</term>
     <listitem>

@@ -126,7 +126,7 @@ first letter of the application name. For example, the application named
 Specifies how to parse the command line for any application-specific
 resources.
 The options argument is passed as a parameter to
-<function>XrmParseCommand</function> . 
+<function>XrmParseCommand</function> .
 For further information,
 see <emphasis remap='I'>Xlib - C Language Interface</emphasis>.
       </para>

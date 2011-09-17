@@ -281,7 +281,7 @@ the managed child changes size or position:
 Specifies the Porthole widget.
       </para>
     </listitem>
-  </varlistentry> 
+  </varlistentry>
   <varlistentry>
     <term>client_data</term>
     <listitem>
@@ -290,7 +290,7 @@ Specifies the Porthole widget.
 Specifies the client data.
       </para>
     </listitem>
-  </varlistentry> 
+  </varlistentry>
   <varlistentry>
     <term>report</term>
     <listitem>
@@ -300,7 +300,7 @@ Specifies a pointer to an <function>XawPannerReport</function> structure contain
 the location and size of the slider and the size of the canvas.
       </para>
     </listitem>
-  </varlistentry> 
+  </varlistentry>
 </variablelist>
 </sect2>
 </sect1>

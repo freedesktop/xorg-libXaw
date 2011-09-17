@@ -130,7 +130,7 @@ Format of the Widget Reference Chapters
 </para>
 <para>
 <!-- .LP -->
-In addition to the terms already defined for X programming (see 
+In addition to the terms already defined for X programming (see
 <emphasis remap='I'>Xlib - C Language Interface</emphasis>),
 the following terms are specific to the Intrinsics and Athena widget set
 and used throughout this document.
@@ -716,7 +716,7 @@ resource defaults to <function>False</function> in the Intrinsics, but is redefi
 default to <function>True</function> when an application is using the Athena widget
 set.  An application programmer may override this default and set the
 resource back to <function>False</function> if the application does not need the window
-manager to give it the input focus.  See the 
+manager to give it the input focus.  See the
 <emphasis remap='I'>X Toolkit Intrinsics - C Language Interface</emphasis> for details
 on the <emphasis remap='I'>input</emphasis> resource.
 

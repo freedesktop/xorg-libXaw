@@ -2,7 +2,7 @@
 if ENABLE_SPECS
 
 # Main DocBook/XML files (DOCTYPE book)
-docbook = libXaw.xml 
+docbook = libXaw.xml
 
 # Included chapters, appendix, images
 chapters =						\
