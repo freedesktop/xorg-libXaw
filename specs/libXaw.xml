@@ -13,18 +13,14 @@
    <releaseinfo>X Version 11, Release &fullrelvers;</releaseinfo>
    <authorgroup>
       <author>
-         <firstname>Chris</firstname><surname>Peterson</surname>
+         <firstname>Chris</firstname><othername>D.</othername><surname>Peterson</surname>
          <affiliation><orgname>formerly MIT X Consortium</orgname></affiliation>
       </author>
    </authorgroup>
-   <copyright><year>1985</year><holder>X Consortium</holder></copyright>
-   <copyright><year>1986</year><holder>X Consortium</holder></copyright>
-   <copyright><year>1987</year><holder>X Consortium</holder></copyright>
-   <copyright><year>1988</year><holder>X Consortium</holder></copyright>
-   <copyright><year>1989</year><holder>X Consortium</holder></copyright>
-   <copyright><year>1991</year><holder>X Consortium</holder></copyright>
-   <copyright><year>1994</year><holder>X Consortium</holder></copyright>
-   <releaseinfo>libXaw 1.0.7</releaseinfo>
+   <copyright><year>1985</year><year>1986</year><year>1987</year><year>1988</year>
+     <year>1989</year><year>1991</year><year>1994</year>
+     <holder>X Consortium</holder>
+   </copyright>
 
 <legalnotice>
 
@@ -59,6 +55,14 @@ be used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from the X Consortium.
 </para>
 
+<para>X Window System is a trademark of The OpenGroup.</para>
+</legalnotice>
+
+<legalnotice>
+<para role ="multiLicensing">Copyright © 1985, 1986, 1987, 1988, 1989, 1991
+Digital Equipment Corporation, Maynard, Massachusetts.
+</para>
+
 <para>
 Permission to use, copy, modify and distribute this documentation for any
 purpose and without fee is hereby granted, provided that the above copyright
@@ -68,16 +72,11 @@ Digital not be used in in advertising or publicity pertaining
 to distribution of the software without specific, written prior permission.
 Digital makes no representations about the suitability of the
 software described herein for any purpose.
-It is provided ``as is'' without express or implied warranty.
-</para>
-
-<para>
-Except as contained in this notice, the name of the X Consortium shall not be
-used in advertising or otherwise to promote the sale, use or other dealings
-in this Software without prior written authorization from the X Consortium.
+It is provided &ldquo;as is&rdquo; without express or implied warranty.
 </para>
 </legalnotice>
 </bookinfo>
+
 <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="CH1.xml"/>
 <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="CH2.xml"/>
 <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="CH3.xml"/>
