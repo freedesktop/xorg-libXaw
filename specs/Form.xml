@@ -42,7 +42,7 @@ at the right and bottom edges.  If a width and height is assigned
 to the Form that is too small for the layout, the children will
 be clipped by the right and bottom edges of the Form.
 </para>
-<sect2 id="form_resources">
+<sect2 id='Form::Resources'>
 <title>Resources</title>
 <para>
 <!-- .LP -->
@@ -243,7 +243,7 @@ retrieved from the argument list or from the resource database:
 <!-- .Xy -->
 </para>
 </sect2>
-<sect2 id="form_constraint_resources">
+<sect2 id='Form::Constraint_Resources'>
 <title>Constraint Resources</title>
 <para>
 <!-- .LP -->
@@ -372,7 +372,7 @@ resizable      If this resource is False then the parent
 </literallayout>
 <!-- .Bt -->
 </sect2>
-<sect2 id="form_layout_semantics">
+<sect2 id='Form::Layout_Semantics'>
 <title>Layout Semantics</title>
 <para>
 The Form widget uses two different sets of layout semantics.
@@ -468,7 +468,7 @@ children when the Form widget is resized.
   </tgroup>
 </informaltable>
 </para>
-<sect3 id="form_example">
+<sect3 id='Form::Example'>
 <title>Example</title>
 <para>
 <!-- .LP -->
@@ -480,7 +480,7 @@ Form, and never to resize.
 </para>
 </sect3>
 </sect2>
-<sect2 id="form_convenience_routines">
+<sect2 id='Form::Convenience_Routines'>
 <title>Convenience Routines</title>
 <para>
 <!-- .LP -->
@@ -488,7 +488,7 @@ To force or defer a re-layout of the Form, use
 <!-- .PN XawFormDoLayout . -->
 <!-- .IN "Form widget" "re-layout" -->
 <!-- .IN "XawFormDoLayout" "" "@DEF@" -->
-<funcsynopsis id='xawformdolayout'>
+<funcsynopsis id='XawFormDoLayout'>
 <funcprototype>
   <funcdef>void<function> XawFormDoLayout</function></funcdef>
   <paramdef>Widget<parameter> w</parameter></paramdef>
