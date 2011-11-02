@@ -184,14 +184,14 @@ static VendorShellWidget SearchVendorShell(Widget w)
     return(NULL);
 }
 
-static XContext extContext = (XContext)NULL;
+static XContext extContext = (XContext)0;
 
 static XawVendorShellExtPart *
 SetExtPart(VendorShellWidget w, XawVendorShellExtWidget vew)
 {
     contextDataRec *contextData;
 
-    if (extContext == (XContext)NULL) extContext = XUniqueContext();
+    if (extContext == (XContext)0) extContext = XUniqueContext();
 
     contextData = XtNew(contextDataRec);
     contextData->parent = (Widget)w;
@@ -296,13 +296,13 @@ ConfigureCB(Widget w, XtPointer closure, XEvent *event, Boolean *unused)
     }
 }
 
-static XContext errContext = (XContext)NULL;
+static XContext errContext = (XContext)0;
 
 static Widget SetErrCnxt(Widget w, XIM xim)
 {
     contextErrDataRec *contextErrData;
 
-    if (errContext == (XContext)NULL) errContext = XUniqueContext();
+    if (errContext == (XContext)0) errContext = XUniqueContext();
 
     contextErrData = XtNew(contextErrDataRec);
     contextErrData->widget = w;
@@ -1407,12 +1407,12 @@ Destroy(Widget w, XawVendorShellExtPart *ve)
 	return;
     XtFree( (char*) ve->im.resources );
 
-    if (extContext != (XContext)NULL &&
+    if (extContext != (XContext)0 &&
 	!XFindContext (XtDisplay (w), (Window)w,
 		       extContext, (XPointer*)&contextData))
         XtFree( (char*) contextData );
 
-    if (errContext != (XContext)NULL &&
+    if (errContext != (XContext)0 &&
 	!XFindContext (XDisplayOfIM( ve->im.xim ), (Window) ve->im.xim,
 		       errContext, (XPointer*) &contextErrData))
         XtFree( (char*) contextErrData );
