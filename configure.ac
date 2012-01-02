@@ -98,6 +98,15 @@ AC_CHECK_HEADERS([wctype.h wchar.h widec.h])
 # Checks for functions
 AC_CHECK_FUNCS([iswalnum getpagesize])
 
+# Link with winsock if mingw target
+case $host_os in
+	*mingw*)
+		AC_CHECK_LIB([ws2_32],[main])
+	;;
+	*)
+	;;
+esac
+
 AC_CONFIG_FILES([Makefile
 		include/Makefile
 		man/Makefile
