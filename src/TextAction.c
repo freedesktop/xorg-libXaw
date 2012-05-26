@@ -2278,7 +2278,7 @@ DoFormatText(TextWidget ctx, XawTextPosition left, Bool force, int level,
 			    text.length = bytes;
 			bytes -= text.length;
 			if (_XawTextReplace(ctx, tmp, tmp, &text)) {
-			    XawStackFree(buf, text.ptr);
+			    XawStackFree(text.ptr, buf);
 			    return (XawEditError);
 			}
 			if (num_pos) {
@@ -2293,7 +2293,7 @@ DoFormatText(TextWidget ctx, XawTextPosition left, Bool force, int level,
 		    }
 		    position += count;
 		    right += count;
-		    XawStackFree(buf, text.ptr);
+		    XawStackFree(text.ptr, buf);
 		}
 		break;
 	}
