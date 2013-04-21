@@ -1260,6 +1260,8 @@ InitStringOrFile(MultiSrcObject src, Bool newString)
 		src->multi_src.length = (XawTextPosition)ftell(file);
 		return(file);
 	    }
+	    else
+		close(fd);
 	}
 	{
 	    String params[2];
