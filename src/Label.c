@@ -63,9 +63,6 @@ SOFTWARE.
 
 #define MULTI_LINE_LABEL 32767
 
-#ifdef CRAY
-#define WORD64
-#endif
 
 /*
  * Class Methods
@@ -83,10 +80,6 @@ static Boolean XawLabelSetValues(Widget, Widget, Widget,
 /*
  * Prototypes
  */
-#ifdef WORD64
-static int _XawLabelWidth16(XFontStruct*, char*, int);
-static void _XawLabelDraw16(Display*, Drawable, GC, int, int, char*, int);
-#endif
 static void compute_bitmap_offsets(LabelWidget);
 static void GetGrayGC(LabelWidget);
 static void GetNormalGC(LabelWidget);
@@ -281,53 +274,7 @@ XawLabelClassInitialize(void)
 		       NULL, 0, XtCacheNone, NULL);
 }
 
-#ifndef WORD64
 #define TXT16 XChar2b
-#else
-#define TXT16 char
-
-static XChar2b *buf2b;
-static int buf2blen = 0;
-
-static int
-_XawLabelWidth16(XFontStruct *fs, char *str, int n)
-{
-    int i;
-    XChar2b *ptr;
-
-    if (n > buf2blen) {
-	buf2b = (XChar2b *)XtRealloc((char *)buf2b, n * sizeof(XChar2b));
-	buf2blen = n;
-    }
-    for (ptr = buf2b, i = n; --i >= 0; ptr++) {
-	ptr->byte1 = *str++;
-	ptr->byte2 = *str++;
-    }
-
-    return (XTextWidth16(fs, buf2b, n));
-}
-
-static void
-_XawLabelDraw16(Display *dpy, Drawable d, GC gc, int x, int y,
-		char *str, int n)
-{
-    int i;
-    XChar2b *ptr;
-
-    if (n > buf2blen) {
-	buf2b = (XChar2b *)XtRealloc((char *)buf2b, n * sizeof(XChar2b));
-	buf2blen = n;
-    }
-    for (ptr = buf2b, i = n; --i >= 0; ptr++) {
-	ptr->byte1 = *str++;
-	ptr->byte2 = *str++;
-    }
-    XDrawString16(dpy, d, gc, x, y, buf2b, n);
-}
-
-#define XTextWidth16 _XawLabelWidth16
-#define XDrawString16 _XawLabelDraw16
-#endif /* WORD64 */
 
 /*
  * Calculate width and height of displayed text in pixels
