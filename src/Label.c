@@ -274,8 +274,6 @@ XawLabelClassInitialize(void)
 		       NULL, 0, XtCacheNone, NULL);
 }
 
-#define TXT16 XChar2b
-
 /*
  * Calculate width and height of displayed text in pixels
  */
@@ -349,7 +347,7 @@ SetTextWidthAndHeight(LabelWidget lw)
 		int width;
 
 		if (lw->label.encoding)
-		    width = XTextWidth16(fs, (TXT16*)label, (int)(nl - label) / 2);
+		    width = XTextWidth16(fs, (XChar2b *)label, (int)(nl - label) / 2);
 		else
 		    width = XTextWidth(fs, label, (int)(nl - label));
 		if (width > (int)lw->label.label_width)
@@ -363,7 +361,7 @@ SetTextWidthAndHeight(LabelWidget lw)
 		int width = XTextWidth(fs, label, strlen(label));
 
 		if (lw->label.encoding)
-		    width = XTextWidth16(fs, (TXT16*)label, strlen(label) / 2);
+		    width = XTextWidth16(fs, (XChar2b *)label, strlen(label) / 2);
 		else
 		    width = XTextWidth(fs, label, strlen(label));
 		if (width > (int) lw->label.label_width)
@@ -374,7 +372,7 @@ SetTextWidthAndHeight(LabelWidget lw)
 	    lw->label.label_len = strlen(lw->label.label);
 	    if (lw->label.encoding)
 		lw->label.label_width =
-		    XTextWidth16(fs, (TXT16*)lw->label.label,
+		    XTextWidth16(fs, (XChar2b *)lw->label.label,
 			   (int)lw->label.label_len / 2);
 	    else
 		lw->label.label_width =
@@ -558,7 +556,7 @@ XawLabelRedisplay(Widget gw, XEvent *event, Region region)
 		    if (w->label.encoding)
 			XDrawString16(XtDisplay(gw), XtWindow(gw), gc,
 				      w->label.label_x, y,
-				      (TXT16*)label, (int)(nl - label) / 2);
+				      (XChar2b *)label, (int)(nl - label) / 2);
 		    else
 			XDrawString(XtDisplay(gw), XtWindow(gw), gc,
 				    w->label.label_x, y, label, (int)(nl - label));
@@ -571,7 +569,7 @@ XawLabelRedisplay(Widget gw, XEvent *event, Region region)
 	    if (len) {
 		if (w->label.encoding)
 		    XDrawString16(XtDisplay(gw), XtWindow(gw), gc,
-				  w->label.label_x, y, (TXT16*)label, len / 2);
+				  w->label.label_x, y, (XChar2b *)label, len / 2);
 		else
 		    XDrawString(XtDisplay(gw), XtWindow(gw), gc,
 				w->label.label_x, y, label, len);
