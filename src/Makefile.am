@@ -84,10 +84,10 @@ if !PLATFORM_WIN32
 install-exec-hook::
 if PLATFORM_DARWIN
 	$(AM_V_at)rm -f $(DESTDIR)$(libdir)/libXaw.6.@LIBEXT@
-	$(AM_V_GEN)(cd $(DESTDIR)$(libdir) && ln -s libXaw6.6.@LIBEXT@ libXaw.6.@LIBEXT@)
+	$(AM_V_GEN)(cd $(DESTDIR)$(libdir) && $(LN_S) libXaw6.6.@LIBEXT@ libXaw.6.@LIBEXT@)
 else
 	$(AM_V_at)rm -f $(DESTDIR)$(libdir)/libXaw.@LIBEXT@.6
-	$(AM_V_GEN)(cd $(DESTDIR)$(libdir) && ln -s libXaw6.@LIBEXT@.6 libXaw.@LIBEXT@.6)
+	$(AM_V_GEN)(cd $(DESTDIR)$(libdir) && $(LN_S) libXaw6.@LIBEXT@.6 libXaw.@LIBEXT@.6)
 endif
 
 uninstall-local::
@@ -123,10 +123,10 @@ if !PLATFORM_WIN32
 install-exec-hook::
 if PLATFORM_DARWIN
 	$(AM_V_at)rm -f $(DESTDIR)$(libdir)/libXaw.7.@LIBEXT@
-	$(AM_V_GEN)(cd $(DESTDIR)$(libdir) && ln -s libXaw7.7.@LIBEXT@ libXaw.7.@LIBEXT@)
+	$(AM_V_GEN)(cd $(DESTDIR)$(libdir) && $(LN_S) libXaw7.7.@LIBEXT@ libXaw.7.@LIBEXT@)
 else
 	$(AM_V_at)rm -f $(DESTDIR)$(libdir)/libXaw.@LIBEXT@.7
-	$(AM_V_GEN)(cd $(DESTDIR)$(libdir) && ln -s libXaw7.@LIBEXT@.7 libXaw.@LIBEXT@.7)
+	$(AM_V_GEN)(cd $(DESTDIR)$(libdir) && $(LN_S) libXaw7.@LIBEXT@.7 libXaw.@LIBEXT@.7)
 endif
 
 uninstall-local::
