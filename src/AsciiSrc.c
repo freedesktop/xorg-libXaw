@@ -1514,7 +1514,7 @@ LoadPieces(AsciiSrcObject src, FILE *file, char *string)
 		int len;
 
 		left = 0;
-		fseek(file, 0, 0);
+		fseek(file, 0, SEEK_SET);
 		while (left < src->ascii_src.length) {
 		    ptr = XtMalloc((unsigned)src->ascii_src.piece_size);
 		    if ((len = fread(ptr, sizeof(unsigned char),

@@ -1321,7 +1321,7 @@ LoadPieces(MultiSrcObject src, FILE *file, char *string)
 	if (src->multi_src.length != 0) {
 	    temp_mb_holder =
 		XtMalloc((src->multi_src.length + 1) * sizeof(unsigned char));
-	    fseek(file, 0, 0);
+	    fseek(file, 0, SEEK_SET);
 	    src->multi_src.length = fread(temp_mb_holder,
 					  sizeof(unsigned char),
 					  (size_t)src->multi_src.length, file);
