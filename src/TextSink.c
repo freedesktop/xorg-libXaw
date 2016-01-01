@@ -1808,6 +1808,14 @@ CvtPropertyListToString(Display *dpy, XrmValue *args, Cardinal *num_args,
     XawTextPropertyList *propl;
 
     propl = *(XawTextPropertyList**)fromVal[0].addr;
+    if (propl == NULL) {
+        XtAppWarningMsg(XtDisplayToApplicationContext(dpy),
+		      "wrongParameters", "cvtPropertyListToString",
+		      "ToolkitError",
+		      "textProperties to String conversion needs property list argument",
+		      NULL, NULL);
+	return (False);
+    }
 
     buffer = XrmQuarkToString(propl->identifier);
     size = strlen(buffer) + 1;
