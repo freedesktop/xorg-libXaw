@@ -1704,9 +1704,9 @@ XawAsciiSinkInitialize(Widget request, Widget cnew,
 {
     AsciiSinkObject sink = (AsciiSinkObject)cnew;
 
-    GetGC(sink);
-
     if (!sink->ascii_sink.font) XtError("Aborting: no font found\n");
+
+    GetGC(sink);
 
     sink->ascii_sink.cursor_position = 0;
     sink->ascii_sink.laststate = XawisOff;
