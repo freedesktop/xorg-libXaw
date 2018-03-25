@@ -57,6 +57,8 @@ SOFTWARE.
 #include "Private.h"
 
 #define MS_PER_SEC 1000
+#define NUM_VALUEDATA(w) (sizeof((w)->strip_chart.valuedata) / \
+                          sizeof((w)->strip_chart.valuedata[0]))
 
 /*
  * Class Methods
@@ -317,7 +319,8 @@ draw_it(XtPointer client_data, XtIntervalId *id)
 			    w->strip_chart.update * MS_PER_SEC,draw_it,
 			    client_data);
 
-    if (w->strip_chart.interval >= XtWidth(w))
+    if ((w->strip_chart.interval >= XtWidth(w)) ||
+        (w->strip_chart.interval >= NUM_VALUEDATA(w)))
 	MoveChart((StripChartWidget)w, True);
 
     /* Get the value, stash the point and draw corresponding line */
@@ -410,6 +413,9 @@ repaint_window(StripChartWidget w, int left, int width)
 	if (next < ++width)
 	    width = next;
 
+	if (width > NUM_VALUEDATA(w))
+	    width = NUM_VALUEDATA(w);
+
 	/* Draw data point lines */
 	for (i = left; i < width; i++) {
 	    int y = XtHeight(w) - (XtHeight(w) * w->strip_chart.valuedata[i])
@@ -449,12 +455,16 @@ MoveChart(StripChartWidget w, Bool blit)
     if (!XtIsRealized((Widget)w))
 	return;
 
+    if (XtWidth(w) > NUM_VALUEDATA(w))
+	j = (int) NUM_VALUEDATA(w);
+    else
+	j = (int) XtWidth(w);
     if (w->strip_chart.jump_val < 0)
 	w->strip_chart.jump_val = DEFAULT_JUMP;
     if (w->strip_chart.jump_val == DEFAULT_JUMP)
-	j = XtWidth(w) >> 1;
+	j = j >> 1;
     else {
-	j = (int)XtWidth(w) - w->strip_chart.jump_val;
+	j -= w->strip_chart.jump_val;
 	if (j < 0)
 	    j = 0;
     }
