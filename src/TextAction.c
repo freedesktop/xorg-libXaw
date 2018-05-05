@@ -837,7 +837,7 @@ MovePage(TextWidget ctx, XEvent *event, XawTextScanDirection dir)
 	case XawsdLeft:
 	    if (ctx->text.lt.top != 0)
 		scroll_val = -Max(1, ctx->text.lt.lines - 1);
-		break;
+	    break;
 	case XawsdRight:
 	    if (!IsPositionVisible(ctx, Max(0, ctx->text.lastPos)))
 		scroll_val = Max(1, ctx->text.lt.lines - 1);
