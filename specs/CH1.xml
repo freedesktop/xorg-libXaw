@@ -124,12 +124,10 @@ Format of the Widget Reference Chapters
 </sect1>
 <sect1 id="Terminology">
 <title>Terminology</title>
-<para>
 <!-- .LP -->
 <!-- .XS -->
 <!-- 	Terminology -->
 <!-- .XE -->
-</para>
 <para>
 <!-- .LP -->
 In addition to the terms already defined for X programming (see
@@ -138,111 +136,85 @@ In addition to the terms already defined for X programming (see
 the following terms are specific to the Intrinsics and Athena widget set
 and used throughout this document.
 </para>
-<para>
-<!-- .LP -->
-<function>Application programmer</function>
+<glosslist>
+<glossentry>
+  <glossterm>Application programmer</glossterm>
 <indexterm significance="preferred"><primary>application programmer</primary></indexterm>
-</para>
-<itemizedlist>
-  <listitem>
+  <glossdef>
     <para>
 A programmer who uses the X Toolkit to produce an application user interface.
     </para>
-  </listitem>
-</itemizedlist>
-<para>
-<!-- .LP -->
-<function>Child</function>
+  </glossdef>
+</glossentry>
+<glossentry>
+  <glossterm>Child</glossterm>
 <indexterm significance="preferred"><primary>child</primary></indexterm>
-</para>
-<itemizedlist>
-  <listitem>
+  <glossdef>
     <para>
 A widget that is contained within another "parent" widget.
     </para>
-  </listitem>
-</itemizedlist>
-<para>
-<!-- .LP -->
-<function>Class</function>
+  </glossdef>
+</glossentry>
+<glossentry>
+  <glossterm>Class</glossterm>
 <indexterm significance="preferred"><primary>class</primary></indexterm>
-</para>
-<itemizedlist>
-  <listitem>
+  <glossdef>
     <para>
 The general group to which a specific object belongs.
     </para>
-  </listitem>
-</itemizedlist>
-<para>
-<!-- .LP -->
-<function>Client</function>
+  </glossdef>
+</glossentry>
+<glossentry>
+  <glossterm>Client</glossterm>
 <indexterm significance="preferred"><primary>client</primary></indexterm>
-</para>
-<itemizedlist>
-  <listitem>
+  <glossdef>
     <para>
 A function that uses a widget in an application or for composing
 other widgets.
     </para>
-  </listitem>
-</itemizedlist>
-<para>
-<!-- .LP -->
-<function>FullName</function>
+  </glossdef>
+</glossentry>
+<glossentry>
+  <glossterm>FullName</glossterm>
 <indexterm significance="preferred"><primary>FullName</primary></indexterm>
-</para>
-<itemizedlist>
-  <listitem>
+  <glossdef>
     <para>
 The name of a widget instance appended to the full name of its parent.
     </para>
-  </listitem>
-</itemizedlist>
-<para>
-<!-- .LP -->
-<function>Instance</function>
+  </glossdef>
+</glossentry>
+<glossentry>
+  <glossterm>Instance</glossterm>
 <indexterm significance="preferred"><primary>instance</primary></indexterm>
-</para>
-<itemizedlist>
-  <listitem>
+  <glossdef>
     <para>
 A specific widget object as opposed to a general widget class.
     </para>
-  </listitem>
-</itemizedlist>
-<para>
-<!-- .LP -->
-<function>Method</function>
+  </glossdef>
+</glossentry>
+<glossentry>
+  <glossterm>Method</glossterm>
 <indexterm significance="preferred"><primary>method</primary></indexterm>
-</para>
-<itemizedlist>
-  <listitem>
+  <glossdef>
     <para>
 A function or procedure implemented by a widget class.
     </para>
-  </listitem>
-</itemizedlist>
-<para>
-<!-- .LP -->
-<function>Name</function>
+  </glossdef>
+</glossentry>
+<glossentry>
+  <glossterm>Name</glossterm>
 <indexterm significance="preferred"><primary>name</primary><secondary>widget</secondary></indexterm>
-</para>
-<itemizedlist>
-  <listitem>
+  <glossdef>
     <para>
 The name that is specific to an instance of a widget for a given client.
 This name is specified at creation time and cannot be modified.
     </para>
-  </listitem>
-</itemizedlist>
-<para>
-<!-- .LP -->
-<function>Object</function>
+  </glossdef>
+</glossentry>
+<glossentry>
+  <glossterm>Object</glossterm>
 <indexterm significance="preferred"><primary>object</primary></indexterm>
-</para>
-<itemizedlist>
-  <listitem>
+  <glossdef>
     <para>
 A data abstraction consisting of private data and private and public
 functions that operate on the private data.
@@ -258,97 +230,77 @@ types of widgets.
 If a function is unique to a single widget type,
 the widget exports the function.
     </para>
-  </listitem>
-</itemizedlist>
-<para>
-<!-- .LP -->
-<function>Parent</function>
+  </glossdef>
+</glossentry>
+<glossentry>
+  <glossterm>Parent</glossterm>
 <indexterm significance="preferred"><primary>parent</primary></indexterm>
-</para>
-<itemizedlist>
-  <listitem>
+  <glossdef>
     <para>
 A widget that contains at least one other ("child") widget.
 A parent widget is also known as a composite widget.
     </para>
-  </listitem>
-</itemizedlist>
-<para>
-<!-- .LP -->
-<function>Resource</function>
+  </glossdef>
+</glossentry>
+<glossentry>
+  <glossterm>Resource</glossterm>
 <indexterm significance="preferred"><primary>resource</primary></indexterm>
-</para>
-<itemizedlist>
-  <listitem>
+  <glossdef>
     <para>
 A named piece of data in a widget that can be set by a client,
 by an application, or by user defaults.
     </para>
-  </listitem>
-</itemizedlist>
-<para>
-<!-- .LP -->
-<function>Superclass</function>
+  </glossdef>
+</glossentry>
+<glossentry>
+  <glossterm>Superclass</glossterm>
 <indexterm significance="preferred"><primary>superclass</primary></indexterm>
-</para>
-<itemizedlist>
-  <listitem>
+  <glossdef>
     <para>
 A larger class of which a specific class is a member.
 All members of a class are also members of the superclass.
     </para>
-  </listitem>
-</itemizedlist>
-<para>
-<!-- .LP -->
-<function>User</function>
+  </glossdef>
+</glossentry>
+<glossentry>
+  <glossterm>User</glossterm>
 <indexterm significance="preferred"><primary>user</primary></indexterm>
-</para>
-<itemizedlist>
-  <listitem>
+  <glossdef>
     <para>
 A person interacting with a workstation.
     </para>
-  </listitem>
-</itemizedlist>
-<para>
-<!-- .LP -->
-<function>Widget</function>
+  </glossdef>
+</glossentry>
+<glossentry>
+  <glossterm>Widget</glossterm>
 <indexterm significance="preferred"><primary>widget</primary></indexterm>
-</para>
-<itemizedlist>
-  <listitem>
+  <glossdef>
     <para>
 An object providing a user-interface abstraction (for example, a Scrollbar
 widget).
     </para>
-  </listitem>
-</itemizedlist>
-<para>
-<!-- .LP -->
-<function>Widget class</function>
+  </glossdef>
+</glossentry>
+<glossentry>
+  <glossterm>Widget class</glossterm>
 <indexterm significance="preferred"><primary>widget class</primary></indexterm>
-</para>
-<itemizedlist>
-  <listitem>
+  <glossdef>
     <para>
 The general group to which a specific widget belongs,
 otherwise known as the type of the widget.
     </para>
-  </listitem>
-</itemizedlist>
-<para>
-<!-- .LP -->
-<function>Widget programmer</function>
+  </glossdef>
+</glossentry>
+<glossentry>
+  <glossterm>Widget programmer</glossterm>
 <indexterm significance="preferred"><primary>widget programmer</primary></indexterm>
-</para>
-<itemizedlist>
-  <listitem>
+  <glossdef>
     <para>
 A programmer who adds new widgets to the X Toolkit.
     </para>
-  </listitem>
-</itemizedlist>
+  </glossdef>
+</glossentry>
+</glosslist>
 </sect1>
 <sect1 id="Underlying_Model">
 <title>Underlying Model</title>
