@@ -64,7 +64,7 @@ writing the new widget if an existing widget class Expose, Resize and/or
 GeometryManager method can be used by the subclass.
 </para>
 <para>
-Note that some trivial uses of a ``bare-bones'' widget may be achieved by
+Note that some trivial uses of a <quote>bare-bones</quote> widget may be achieved by
 simply creating an instance of the Core
 widget.  The class variable to use when creating a Core widget is
 <function>widgetClass</function>.

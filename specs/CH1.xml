@@ -467,7 +467,7 @@ Superclass	Composite
 <indexterm significance="preferred"><primary>application header file</primary></indexterm>
 This file must be included when an application uses this widget.
 It usually contains the class definition, and some resource macros.
-This is often called the ``public'' header file.
+This is often called the <quote>public</quote> header file.
 <indexterm significance="preferred"><primary>class header file</primary></indexterm>
       </para>
     </listitem>
@@ -480,7 +480,7 @@ This is often called the ``public'' header file.
       <para>
 This file will only be used by widget programmers.  It will need to be
 included by any widget that subclasses this widget.  This is often
-called the ``private'' header file.
+called the <quote>private</quote> header file.
 <indexterm significance="preferred"><primary>class</primary></indexterm>
       </para>
     </listitem>

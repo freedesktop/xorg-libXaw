@@ -776,7 +776,7 @@ popups, and may support other window manager protocols if necessary in
 the future.  The popup will be dismissed if the window manager sends
 a WM_DELETE_WINDOW request and there are no parameters in the action
 call, which is the default.  The popup will also be dismissed if the
-parameters include the string ``wm_delete_window,'' and the event is a
+parameters include the string <quote>wm_delete_window,</quote> and the event is a
 ClientMessage event requesting dismissal or is not a ClientMessage event.
 This action is not sensitive to the case of the strings passed as parameters.
       </para>

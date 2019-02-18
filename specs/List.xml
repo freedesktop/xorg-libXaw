@@ -850,11 +850,11 @@ the string member is undefined, and no item is currently selected.
 <title>Restrictions</title>
 <para>
 <!-- .LP -->
-Many programmers create a ``scrolled list'' by putting a List
+Many programmers create a <quote>scrolled list</quote> by putting a List
 widget with many entries as a child of a Viewport widget.  The
 List continues to create a window as big as its contents, but
 that big window is only visible where it intersects the parent
-Viewport's window.  (I.e., it is ``clipped.'')
+Viewport's window.  (I.e., it is <quote>clipped.</quote>)
 </para>
 <para>
 <!-- .LP -->

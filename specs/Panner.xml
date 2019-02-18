@@ -25,9 +25,9 @@ Superclass	Simple
 <para>
 <!-- .LP -->
 A Panner widget is a rectangle, called the
-``canvas,'' on which another rectangle, the ``slider,'' moves in two
+<quote>canvas,</quote> on which another rectangle, the <quote>slider,</quote> moves in two
 dimensions.  It is often used with a Porthole widget to move, or
-``scroll,'' a third widget in two dimensions, in which case the
+<quote>scroll,</quote> a third widget in two dimensions, in which case the
 slider's size and position gives feedback as to what portion of
 the third widget is visible.
 </para>

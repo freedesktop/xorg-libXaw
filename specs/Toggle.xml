@@ -34,7 +34,7 @@ the user to cancel the operation.
 </para>
 
 <para>
-Toggle widgets may also be part of a ``radio group.''  A radio group is a
+Toggle widgets may also be part of a <quote>radio group.</quote>  A radio group is a
 list of at least two Toggle widgets in which no more than one Toggle may
 be set at
 any time.  A radio group is identified by the widget ID of any one of

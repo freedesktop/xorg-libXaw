@@ -23,7 +23,7 @@ Superclass	Label
 <!-- .LP -->
 The Command widget is an area, often rectangular, that contains text
 or a graphical image. Command widgets are often referred to as
-``push buttons.''  When the pointer is over a Command widget, the
+<quote>push buttons.</quote>  When the pointer is over a Command widget, the
 widget becomes highlighted by drawing a rectangle around its perimeter.
 This highlighting indicates that the widget is ready for selection.
 When mouse button 1 is pressed, the Command widget indicates that

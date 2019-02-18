@@ -638,7 +638,7 @@ routine <xref linkend='XawSimpleMenuAddGlobalActions' xrefstyle='select: title'/
 <para>
 <!-- .LP -->
 Translation writers should be aware that Xt does not register grabs on
-``don't care'' modifiers, and therefore the left hand side of the
+<quote>don't care</quote> modifiers, and therefore the left hand side of the
 production should be written to exclude unspecified modifiers.
 For example these are the translations needed to popup some of
 <function>xterm's</function> menus:

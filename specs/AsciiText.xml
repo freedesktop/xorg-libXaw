@@ -31,8 +31,8 @@ Source Name	textSource
 For the ease of internationalization, the AsciiText widget class name has not
 been changed, although it is actually able to support non-ASCII locales.
 The AsciiText widget is really a collection of smaller parts.  It
-includes the Text widget itself, a ``Source'' (which supports memory management),
-and a ``Sink'' (which handles the display).  There are currently two supported
+includes the Text widget itself, a <quote>Source</quote> (which supports memory management),
+and a <quote>Sink</quote> (which handles the display).  There are currently two supported
 sources, the AsciiSrc and MultiSrc, and two supported sinks, the AsciiSink and
 <indexterm><primary>AsciiSrc object</primary></indexterm>
 <indexterm><primary>AsciiSink object</primary></indexterm>

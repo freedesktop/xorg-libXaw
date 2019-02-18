@@ -10,12 +10,12 @@ Superclass                  Simple
 </literallayout>
 
 <para>
-A Scrollbar widget is a rectangle, called the ``canvas,'' on
-which another rectangle, the ``thumb,'' moves in one
+A Scrollbar widget is a rectangle, called the <quote>canvas,</quote> on
+which another rectangle, the <quote>thumb,</quote> moves in one
 dimension, either vertically or horizontally.  A Scrollbar
 can be used alone, as a value generator, or it can be used
 within a composite widget (for example, a Viewport).  When a
-Scrollbar is used to move, or ``scroll,'' the contents of
+Scrollbar is used to move, or <quote>scroll,</quote> the contents of
 another widget, the size and the position of the thumb usually give
 feedback as to what portion of the other widget's contents
 are visible.

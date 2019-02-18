@@ -122,7 +122,7 @@ Specifies the class name of this application,
 which is usually the generic name for all instances of this application.
 A useful convention is to form the class name by capitalizing the
 first letter of the application name. For example, the application named
-``xman'' has a class name of ``Xman''.
+<quote>xman</quote> has a class name of <quote>Xman</quote>.
       </para>
     </listitem>
   </varlistentry>
@@ -893,7 +893,7 @@ list of children as they are created (using <function>XtCreateWidget</function>)
 then use <xref linkend='XtManageChildren' xrefstyle='select: title'/> to request that their parent managed
 them all at once.  By managing a list of children at one time, the
 parent can avoid wasteful duplication of geometry processing and the
-associated ``screen flash''.
+associated <quote>screen flash</quote>.
 <indexterm significance="preferred"><primary>XtManageChildren</primary></indexterm>
 <indexterm><primary>XtCreateWidget</primary></indexterm>
 <funcsynopsis id='XtManageChildren'>
@@ -1761,7 +1761,7 @@ To set up an argument list for the inline specification of widget attributes,
 you may use any of the four approaches discussed in this section.
 Each resource name has a global symbol associated with it.  This
 global symbol has the form XtN<emphasis remap='I'>resource name</emphasis>.  For example, the
-symbol for ``foreground'' is <function>XtNforeground</function>. For further information,
+symbol for <quote>foreground</quote> is <function>XtNforeground</function>. For further information,
 see the <olink targetdoc='intrinsics' targetptr='intrinsics'
 ><citetitle>X Toolkit Intrinsics - C Language Interface</citetitle></olink>.
 </para>
