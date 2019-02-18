@@ -620,7 +620,7 @@ action procedure).
       <para>
 This action moves the slider by the specified amounts.  The format
 for the amounts is a signed or unsigned floating-point number (e.g., +1.0
-or \-.5) followed
+or -.5) followed
 by either <function>p</function> indicating pages (slider sizes), or <function>c</function> indicating
 canvas sizes.  Thus, <emphasis remap='I'>page(+0,+.5p)</emphasis> represents vertical movement down
 one-half the height of the slider and <emphasis remap='I'>page(0,0)</emphasis> represents moving to
@@ -670,11 +670,11 @@ The default bindings for Panner are:
 	&lt;Btn2Down&gt;:	abort(\|)
 	&lt;Key&gt;KP_Enter:	set(rubberband,toggle)
 	&lt;Key&gt;space:	page(+1p,+1p)
-	&lt;Key&gt;Delete:	page(\-1p,\-1p)
-	&lt;Key&gt;BackSpace:	page(\-1p,\-1p)
-	&lt;Key&gt;Left:	page(\-.5p,+0)
+	&lt;Key&gt;Delete:	page(-1p,-1p)
+	&lt;Key&gt;BackSpace:	page(-1p,-1p)
+	&lt;Key&gt;Left:	page(-.5p,+0)
 	&lt;Key&gt;Right:	page(+.5p,+0)
-	&lt;Key&gt;Up:	page(+0,\-.5p)
+	&lt;Key&gt;Up:	page(+0,-.5p)
 	&lt;Key&gt;Down:	page(+0,+.5p)
 	&lt;Key&gt;Home:	page(0,0)
 </literallayout>

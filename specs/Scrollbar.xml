@@ -757,7 +757,7 @@ Specifies the client data.
     </term>
     <listitem>
       <para>
-Specifies the floating point position of the thumb (0.0 \- 1.0).
+Specifies the floating point position of the thumb (0.0 &#x2013; 1.0).
     </para>
   </listitem>
   </varlistentry>
@@ -838,8 +838,8 @@ of the Scrollbar.
 
 <para>
 <function>XawScrollbarThumb</function>
-moves the visible thumb to a new position (0.0 \- 1.0) and length (0.0 \- 1.0).
-Either the top or shown arguments can be specified as \-1.0,
+moves the visible thumb to a new position (0.0 &#x2013; 1.0) and length (0.0 &#x2013; 1.0).
+Either the top or shown arguments can be specified as -1.0,
 in which case the current value is left unchanged.
 Values greater than 1.0 are truncated to 1.0.
 </para>

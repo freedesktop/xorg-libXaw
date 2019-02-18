@@ -1362,8 +1362,6 @@ with <function>XtN</function> to help catch spelling errors.  For example,
 <function>XtNlabel</function> is defined for the <function>label</function> resource of many widgets.
 <indexterm significance="preferred"><primary>XtN</primary></indexterm>
     </para>
-  </listitem>
-  <listitem>
     <para>
 For further information, see Section 2.9.2.2.  <!-- xref -->
     </para>
@@ -1403,10 +1401,6 @@ Most applications now sit in a loop processing events using
 <function>XtAppMainLoop ,</function>
 for example:
 <indexterm><primary>XtAppMainLoop</primary></indexterm>
-    </para>
-  </listitem>
-  <listitem>
-    <para>
 <literallayout class="monospaced">
 XtCreateManagedWidget(<emphasis remap='I'>name</emphasis>, <emphasis remap='I'>class</emphasis>, <emphasis remap='I'>parent</emphasis>, <emphasis remap='I'>args</emphasis>, <emphasis remap='I'>num_args</emphasis>);
 XtRealizeWidget(<emphasis remap='I'>shell</emphasis>);
@@ -1454,8 +1448,7 @@ The following provides a sample command line:
   <listitem>
     <para>
 <literallayout class="monospaced">
-cc -o <emphasis remap='I'>application</emphasis> <emphasis remap='I'>application</emphasis>.c \-lXaw \-lXmu \-lXt \
-\-lSM \-lICE \-lXext \-lX11
+cc -o <emphasis remap='I'>application</emphasis> <emphasis remap='I'>application</emphasis>.c -lXaw -lXmu -lXt -lSM -lICE -lXext -lX11
 </literallayout>
     </para>
   </listitem>
