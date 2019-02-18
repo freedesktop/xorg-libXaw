@@ -13,7 +13,8 @@ sets it may be possible to use widgets from the Athena widget set with
 other widget sets based upon the Intrinsics.  Since widget sets may also
 implement private protocols, all functionality may not be available when
 mixing and matching widget sets.  For information about the Intrinsics, see
-the <emphasis remap='I'>X Toolkit Intrinsics - C Language Interface</emphasis>.
+the <olink targetdoc='intrinsics' targetptr='intrinsics'
+><citetitle>X Toolkit Intrinsics - C Language Interface</citetitle></olink>.
 </para>
 <para>
 The Athena widget set is a library package layered on top of the Intrinsics
@@ -84,7 +85,8 @@ A widget set for application programming
 While the majority of the Intrinsics functions are intended
 for the widget programmer,
 a subset of the Intrinsics functions are to be used by application programmers
-(see  <emphasis remap='I'>X Toolkit Intrinsics - C Language Interface</emphasis>).
+(see <olink targetdoc='intrinsics' targetptr='intrinsics'
+><citetitle>X Toolkit Intrinsics - C Language Interface</citetitle></olink>).
 The architectural model lets the widget programmer design new widgets
 by using the Intrinsics and by combining other widgets.
 The application interface layers built on top of the X Toolkit include a
@@ -717,7 +719,8 @@ default to <function>True</function> when an application is using the Athena wid
 set.  An application programmer may override this default and set the
 resource back to <function>False</function> if the application does not need the window
 manager to give it the input focus.  See the
-<emphasis remap='I'>X Toolkit Intrinsics - C Language Interface</emphasis> for details
+<olink targetdoc='intrinsics' targetptr='Shell_Widgets'
+><citetitle>X Toolkit Intrinsics - C Language Interface</citetitle></olink> for details
 on the <emphasis remap='I'>input</emphasis> resource.
 
 </para>

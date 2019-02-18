@@ -350,7 +350,8 @@ The following is an example of a translation table that uses the GripAction:
 <!-- .sp -->
 </literallayout>
 For a complete description of the format of translation tables, see the
-<emphasis remap='I'>X Toolkit Intrinsics - C Language Interface</emphasis>.
+<olink targetdoc='intrinsics' targetptr='Translation_Management'
+><citetitle>X Toolkit Intrinsics - C Language Interface</citetitle></olink>.
 
 </para>
 </sect2>

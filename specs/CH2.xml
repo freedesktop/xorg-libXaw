@@ -23,7 +23,8 @@ examples provided use the Athena widgets, though most of the concepts
 will apply to all widget sets.  Although there are several programming
 interfaces to the X Toolkit, only one is described here.  A full
 description of the programming interface is provided in the document
-<emphasis remap='I'>X Toolkit Intrinsics - C Language Interface</emphasis>.
+<olink targetdoc='intrinsics' targetptr='intrinsics'
+><citetitle>X Toolkit Intrinsics - C Language Interface</citetitle></olink>.
 </para>
 <sect2 id="Setting_the_Locale">
 <title>Setting the Locale</title>
@@ -42,7 +43,9 @@ prior to calling
 or
 <function>XtAppInitialize</function>.
 For full details, please refer to the document
-<emphasis remap='I'>X Toolkit Intrinsics - C Language Interface</emphasis>, section 2.2. However, the following simplest-case
+<olink targetdoc='intrinsics' targetptr='Establishing_the_Locale'
+><citetitle>X Toolkit Intrinsics - C Language Interface</citetitle>,
+section 2.2</olink>. However, the following simplest-case
 call is sufficient in many or most applications.
 </para>
 <para>
@@ -327,7 +330,9 @@ routine is invoked to inform the user of the error.
 </para>
 <para>
 <!-- .LP -->
-For further information, see <emphasis remap='I'>X Toolkit Intrinsics - C Language Interface</emphasis>.
+For further information, see
+<olink targetdoc='intrinsics' targetptr='Creating_Widgets'
+><citetitle>X Toolkit Intrinsics - C Language Interface</citetitle></olink>.
 </para>
 </sect2>
 <sect2 id="Common_Resources">
@@ -619,7 +624,9 @@ file path is used (see section 2.4.3). <!-- xref -->
 The string-to-pixel converter takes any name that is acceptable to
 XParseColor (see <emphasis remap='I'>Xlib - C Language Interface</emphasis>).  In addition this routine understands
 the special toolkit symbols `XtDefaultForeground' and
-`XtDefaultBackground', described in <emphasis remap='I'>X Toolkit Intrinsics - C Language Interface</emphasis>.  In short the acceptable
+`XtDefaultBackground', described in
+<olink targetdoc='intrinsics' targetptr='Predefined_Resource_Converters'
+><citetitle>X Toolkit Intrinsics - C Language Interface</citetitle></olink>.  In short the acceptable
 pixel names are:
 </para>
 <itemizedlist>
@@ -710,7 +717,8 @@ Specifies the widget.
 <para>
 <!-- .LP -->
 For further information about this function,
-see the <emphasis remap='I'>X Toolkit Intrinsics - C Language Interface</emphasis>.
+see the <olink targetdoc='intrinsics' targetptr='XtRealizeWidget'
+><citetitle>X Toolkit Intrinsics - C Language Interface</citetitle></olink>.
 </para>
 </sect2>
 <sect2 id="Processing_Events">
@@ -753,7 +761,8 @@ normally returned by <xref linkend='XtOpenApplication' xrefstyle='select: title'
 This function never returns: it is an infinite loop that processes the
 X events.  User input can be handled through callback procedures and
 application defined action routines.  More details are provided in
-<emphasis remap='I'>X Toolkit Intrinsics - C Language Interface</emphasis>.
+<olink targetdoc='intrinsics' targetptr='Event_Management'
+><citetitle>X Toolkit Intrinsics - C Language Interface</citetitle></olink>.
 </para>
 </sect2>
 <sect2 id="Standard_Widget_Manipulation_Functions">
@@ -925,7 +934,8 @@ reconfiguration is performed.
 <para>
 <!-- .LP -->
 For further information about these functions,
-see the <emphasis remap='I'>X Toolkit Intrinsics - C Language Interface</emphasis>.
+see the <olink targetdoc='intrinsics' targetptr='intrinsics'
+><citetitle>X Toolkit Intrinsics - C Language Interface</citetitle></olink>.
 </para>
 </sect3>
 <sect3 id="Destroying_Widgets">
@@ -1024,7 +1034,9 @@ The arguments and values passed in the argument list are dependent on
 the widget. Note that the caller is responsible for providing space
 into which the returned resource value is copied; the <function>ArgList</function>
 contains a pointer to this storage (e.g. x and y must be
-allocated as Position).  For further information, see the <emphasis remap='I'>X Toolkit Intrinsics - C Language Interface</emphasis>.
+allocated as Position).  For further information, see the
+<olink targetdoc='intrinsics' targetptr='Reading_and_Writing_Widget_State'
+><citetitle>X Toolkit Intrinsics - C Language Interface</citetitle></olink>.
 </para>
 </sect3>
 <sect3 id="Modifying_Widget_Resource_Values">
@@ -1088,7 +1100,9 @@ ignored.
 </para>
 <para>
 <!-- .LP -->
-For further information about these functions, see the <emphasis remap='I'>X Toolkit Intrinsics - C Language Interface</emphasis>.
+For further information about these functions, see the
+<olink targetdoc='intrinsics' targetptr='Reading_and_Writing_Widget_State'
+><citetitle>X Toolkit Intrinsics - C Language Interface</citetitle></olink>.
 <indexterm><primary>XtGetValues</primary></indexterm>
 <indexterm><primary>XtSetValues</primary></indexterm>
 <!-- .NT -->
@@ -1331,7 +1345,9 @@ Call the
 <indexterm><primary>XtOpenApplication</primary></indexterm>
 function before invoking any other toolkit or Xlib functions.
 For further information,
-see Section 2.1 and the <emphasis remap='I'>X Toolkit Intrinsics - C Language Interface</emphasis>.
+see Section 2.1 and the
+<olink targetdoc='intrinsics' targetptr='Widget_Instantiation'
+><citetitle>X Toolkit Intrinsics - C Language Interface</citetitle></olink>.
     </para>
   </listitem>
   <listitem>
@@ -1354,7 +1370,9 @@ For further information, see Section 2.9.2.2.  <!-- xref -->
     <para>
 When the argument list is set up, create the widget with the
 <xref linkend='XtCreateManagedWidget' xrefstyle='select: title'/> function.  For further information, see
-Section 2.2 and the <emphasis remap='I'>X Toolkit Intrinsics - C Language Interface</emphasis>.
+Section 2.2 and the
+<olink targetdoc='intrinsics' targetptr='XtCreateManagedWidget'
+><citetitle>X Toolkit Intrinsics - C Language Interface</citetitle></olink>.
 <indexterm><primary>XtCreateManagedWidget</primary></indexterm>
     </para>
   </listitem>
@@ -1396,7 +1414,9 @@ XtAppMainLoop(<emphasis remap='I'>app_context</emphasis>);
   </listitem>
   <listitem>
     <para>
-For information about this function, see the <emphasis remap='I'>X Toolkit Intrinsics - C Language Interface</emphasis>.
+For information about this function, see the
+<olink targetdoc='intrinsics' targetptr='Event_Management'
+><citetitle>X Toolkit Intrinsics - C Language Interface</citetitle></olink>.
     </para>
   </listitem>
   <listitem>
@@ -1457,7 +1477,10 @@ functionality.
 This method picks up resource definitions described in <emphasis remap='I'>Xlib - C Language Interface</emphasis> from
 many different locations at run time.  The locations most important to
 the application programmer are the <emphasis remap='I'>fallback resources</emphasis> and the
-<emphasis remap='I'>app-defaults</emphasis> file, (see <emphasis remap='I'>X Toolkit Intrinsics - C Language Interface</emphasis> for the complete list).
+<emphasis remap='I'>app-defaults</emphasis> file, (see
+<olink targetdoc='intrinsics' targetptr='Loading_the_Resource_Database'
+><citetitle>X Toolkit Intrinsics - C Language Interface</citetitle></olink>
+for the complete list).
 Since these resource are loaded at run time, they can be overridden by
 the user, allowing an application to be customized to fit the
 particular needs of each individual user.  These values can also be
@@ -1719,7 +1742,9 @@ will override program defaults.
 <para>
 <!-- .LP -->
 For a complete explanation of the rules of precedence, and
-other specific topics see <emphasis remap='I'>X Toolkit Intrinsics - C Language Interface</emphasis> and <emphasis remap='I'>Xlib - C Language Interface</emphasis>.
+other specific topics see
+<olink targetdoc='intrinsics' targetptr='Loading_the_Resource_Database'
+><citetitle>X Toolkit Intrinsics - C Language Interface</citetitle></olink> and <emphasis remap='I'>Xlib - C Language Interface</emphasis>.
 </para>
 </sect4>
 <sect4 id="Creating_Argument_Lists">
@@ -1732,7 +1757,8 @@ you may use any of the four approaches discussed in this section.
 Each resource name has a global symbol associated with it.  This
 global symbol has the form XtN<emphasis remap='I'>resource name</emphasis>.  For example, the
 symbol for ``foreground'' is <function>XtNforeground</function>. For further information,
-see the <emphasis remap='I'>X Toolkit Intrinsics - C Language Interface</emphasis>.
+see the <olink targetdoc='intrinsics' targetptr='intrinsics'
+><citetitle>X Toolkit Intrinsics - C Language Interface</citetitle></olink>.
 </para>
 <para>
 <!-- .LP -->

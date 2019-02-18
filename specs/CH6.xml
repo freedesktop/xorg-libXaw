@@ -102,7 +102,9 @@ Composite widget implementors.
 </para>
 <para>
 <!-- .LP -->
-For more information on geometry management consult the <emphasis remap='I'>X Toolkit Intrinsics - C Language Interface</emphasis>.
+For more information on geometry management consult the
+<olink targetdoc='intrinsics' targetptr='Geometry_Management'
+><citetitle>X Toolkit Intrinsics - C Language Interface</citetitle></olink>.
 </para>
 </note>
 

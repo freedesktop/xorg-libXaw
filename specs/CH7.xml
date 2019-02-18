@@ -112,9 +112,12 @@ un-necessarily waste many resources.
 In this section, an outline will be given of the procedure to follow to
 construct a special-purpose widget to address the items listed above.
 The reader should refer to the appropriate sections of the
-<emphasis remap='I'>X Toolkit Intrinsics - C Language Interface</emphasis>
-for complete details of the material outlined here.  Section 1.4 of
-the <emphasis remap='I'>Intrinsics</emphasis> should be read in
+<olink targetdoc='intrinsics' targetptr='intrinsics'
+><citetitle>X Toolkit Intrinsics - C Language Interface</citetitle></olink>
+for complete details of the material outlined here.
+<olink targetdoc='intrinsics' targetptr='Widgets'
+>Section 1.4 of the <citetitle>Intrinsics</citetitle></olink>
+should be read in
 conjunction with this section.
 </para>
 <para>
