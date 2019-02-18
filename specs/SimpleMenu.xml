@@ -440,7 +440,8 @@ Determines the value of the override_redirect attribute of the
 SimpleMenu's window.  The override_redirect attribute of a window
 determines whether or not a window manager may interpose itself between
 this window and the root window of the display.  For more information
-see the <emphasis remap='I'>Interclient Communications Conventions Manual</emphasis>.
+see the <olink targetdoc='icccm' targetptr='icccm'
+><citetitle>Interclient Communications Conventions Manual</citetitle></olink>.
       </para>
     </listitem>
   </varlistentry>
