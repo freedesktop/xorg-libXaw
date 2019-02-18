@@ -21,8 +21,9 @@ Superclass	Command
 </literallayout>
 <para>
 <!-- .LP -->
-The Repeater widget is a subclass of the Command widget; see the <!-- xref -->
-Command documentation for details.  The difference is that the Repeater can call its
+The Repeater widget is a subclass of the Command widget; see the
+<link linkend='Command_Widget'>Command documentation</link>
+for details.  The difference is that the Repeater can call its
 registered callbacks repeatedly, at an increasing rate.  The default translation
 does so for the duration the user holds down pointer button 1 while the pointer
 is on the Repeater.

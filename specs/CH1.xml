@@ -428,48 +428,12 @@ desired information.
 <!-- .LP -->
 The first few pages of every chapter give an overview of the widgets
 in that section.  Widgets are grouped into chapters by functionality.
-<variablelist>
-  <varlistentry>
-    <term>
-      "Chapter <!-- xref -->
-    </term>
-    <listitem>
-      <para>
-Simple Widgets
-      </para>
-    </listitem>
-  </varlistentry>
-  <varlistentry>
-    <term>
-      "Chapter <!-- xref -->
-    </term>
-    <listitem>
-      <para>
-Menus
-      </para>
-    </listitem>
-  </varlistentry>
-  <varlistentry>
-    <term>
-      "Chapter <!-- xref -->
-    </term>
-    <listitem>
-      <para>
-Text Widgets
-      </para>
-    </listitem>
-  </varlistentry>
-  <varlistentry>
-    <term>
-      "Chapter <!-- xref -->
-    </term>
-    <listitem>
-      <para>
-Composite and Constraint Widget
-    </para>
-  </listitem>
-  </varlistentry>
-</variablelist>
+<itemizedlist>
+  <listitem><para><xref linkend='Simple_Widgets'/></para></listitem>
+  <listitem><para><xref linkend='Menus'/></para></listitem>
+  <listitem><para><xref linkend='Text_Widgets'/></para></listitem>
+  <listitem><para><xref linkend='Composite_and_Constraint_Widgets'/></para></listitem>
+</itemizedlist>
 </para>
 <para>
 <!-- .LP -->

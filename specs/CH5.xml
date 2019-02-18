@@ -13,8 +13,9 @@ ease customization.  The AsciiText widget class (actually not limited to
 ASCII but so named for compatibility) is be general enough to most
 needs.  If more flexibility, special features, or extra functionality is
 needed, they can be added by implementing a new TextSource or TextSink, or
-by subclassing the Text Widget (See Section 5.8 for customization
-details.) <!-- xref -->
+by subclassing the Text Widget
+(<link linkend='Customizing_the_Text_Widget'>See Section 5.8</link>
+for customization details.)
 </para>
 <para>
 The words <emphasis remap='I'>insertion point</emphasis> are used in this chapter to refer to the text

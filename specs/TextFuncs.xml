@@ -152,7 +152,8 @@ Specifies the character position at which the selection ends.
 </para>
 <para>
 <!-- .LP -->
-See section 5.4 for a description of <function>XawTextPosition</function>.  <!-- xref -->
+<link linkend="Text_Functions">See section 5.4</link>
+for a description of <function>XawTextPosition</function>.
 If redisplay is enabled, this function highlights the text and
 makes it the <function>PRIMARY</function> selection.  This function does not have any
 effect on <function>CUT_BUFFER0</function>.
@@ -239,7 +240,8 @@ Returns the end of the text selection.
 </para>
 <para>
 <!-- .LP -->
-See section 5.4 for a description of <function>XawTextPosition</function>. <!-- xref -->
+<link linkend="Text_Functions">See section 5.4</link>
+for a description of <function>XawTextPosition</function>.
 If the returned values are equal, no text is currently selected.
 </para>
 </sect2>
@@ -309,7 +311,8 @@ be able to append text to an append-only text widget.
 </para>
 <para>
 <!-- .LP -->
-See section 5.4 for a description of <function>XawTextPosition</function> and <!-- xref -->
+<link linkend="Text_Functions">See section 5.4</link>
+for a description of <function>XawTextPosition</function> and
 <function>XawTextBlock</function>.
 </para>
 <para>
@@ -418,7 +421,8 @@ Specifies a text block structure that contains the text to search for.
 </para>
 <para>
 <!-- .LP -->
-See section 5.4 for a description of <function>XawTextPosition</function> and <function>XawTextBlock</function>. <!-- xref -->
+<link linkend="Text_Functions">See section 5.4</link> for a description of
+<function>XawTextPosition</function> and <function>XawTextBlock</function>.
 The <xref linkend='XawTextSearch' xrefstyle='select: title'/> function will begin at the insertion point
 and search in the
 direction specified for a string that matches the one passed in
@@ -476,7 +480,8 @@ Specifies the end of the text to redisplay.
 </para>
 <para>
 <!-- .LP -->
-See section 5.4 for a description of <function>XawTextPosition</function>. <!-- xref -->
+<link linkend="Text_Functions">See section 5.4</link>
+for a description of <function>XawTextPosition</function>.
 The <xref linkend='XawTextInvalidate' xrefstyle='select: title'/>
 function causes the specified range of characters to be redisplayed
 immediately if redisplay is enabled or the next time that redisplay is
@@ -635,8 +640,8 @@ Specifies the Text widget.
     </term>
     <listitem>
       <para>
-Specifies a selection array as defined in the section called \fBText
-Selections for Application Programmers\fP.
+Specifies a selection array as defined in
+<xref linkend="Text_Selections_for_Application_Programmers"/>.
     </para>
   </listitem>
   </varlistentry>
@@ -686,7 +691,8 @@ Specifies the new position for the insertion point.
 </para>
 <para>
 <!-- .LP -->
-See section 5.4 for a description of <function>XawTextPosition</function>. <!-- xref -->
+<link linkend="Text_Functions">See section 5.4</link>
+for a description of <function>XawTextPosition</function>.
 The text will be scrolled vertically if necessary to make the line
 containing the insertion point visible.  Calling this function is
 equivalent to setting the <function>insertPosition</function> resource.
@@ -719,7 +725,8 @@ Specifies the Text widget.
 </para>
 <para>
 <!-- .LP -->
-See section 5.4 for a description of <function>XawTextPosition</function>. <!-- xref -->
+<link linkend="Text_Functions">See section 5.4</link>
+for a description of <function>XawTextPosition</function>.
 The result is equivalent to retrieving the value of the
 <function>insertPosition</function> resource.
 </para>
@@ -774,7 +781,8 @@ of the displayed text.  This is usually set to zero.
 </para>
 <para>
 <!-- .LP -->
-See section 5.4 for a description of <function>XawTextPosition</function>. <!-- xref -->
+<link linkend="Text_Functions">See section 5.4</link>
+for a description of <function>XawTextPosition</function>.
 A display update will be performed if redisplay is enabled.
 </para>
 <para>

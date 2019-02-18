@@ -363,8 +363,8 @@ triggered by a button event) or text cursor location (if triggered by
 a key event).  It
 will then begin a selection at this location.  If many of these
 selection actions occur quickly in succession then the selection count
-mechanism will be invoked (see the section titled \fBText Selections for
-Application Programmers\fP for details).  <!-- xref -->
+mechanism will be invoked (see
+<xref linkend="Text_Selections_for_Application_Programmers"/> for details).
       </para>
     </listitem>
   </varlistentry>

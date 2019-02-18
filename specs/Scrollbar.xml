@@ -389,8 +389,8 @@ used to draw the thumb.
     <listitem>
       <para>
 All functions on this callback list are called when the
-<function>NotifyThumb</function> action is invoked.  See the <function>Scrollbar
-Actions</function> section for details.
+<function>NotifyThumb</function> action is invoked.  See
+<xref linkend="Scrollbar_Actions" /> for details.
       </para>
     </listitem>
   </varlistentry>
@@ -463,8 +463,8 @@ This cursor is used when scrolling forward in a horizontal scrollbar.
     <listitem>
       <para>
 All functions on this callback list may be called when the
-<function>NotifyScroll</function> action is invoked.  See the \fBScrollbar
-Actions\fP section for details.
+<function>NotifyScroll</function> action is invoked.  See
+<xref linkend="Scrollbar_Actions" /> for details.
       </para>
     </listitem>
   </varlistentry>
