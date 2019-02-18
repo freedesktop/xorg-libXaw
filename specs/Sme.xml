@@ -135,7 +135,7 @@ semantics are not very interesting.
 <variablelist>
   <varlistentry>
     <term>
-      <function>Highlight</function>(\|)
+      <function>Highlight</function>(&#x2006;)
     </term>
     <listitem>
       <para>
@@ -146,7 +146,7 @@ Called to put the menu entry into the highlighted state.
   </varlistentry>
   <varlistentry>
     <term>
-      <function>Unhighlight</function>(\|)
+      <function>Unhighlight</function>(&#x2006;)
     </term>
     <listitem>
       <para>
@@ -157,7 +157,7 @@ Called to return the widget to its normal (unhighlighted) state.
   </varlistentry>
   <varlistentry>
     <term>
-      <function>Notify</function>(\|)
+      <function>Notify</function>(&#x2006;)
     </term>
     <listitem>
       <para>

@@ -569,7 +569,7 @@ The following is the default translation table used by the List Widget:
 <literallayout class="monospaced">
 <!-- .TA .5i 2.25i -->
 <!-- .ta .5i 2.25i -->
-&lt;Btn1Down&gt;,&lt;Btn1Up&gt;:	Set(\|) Notify(\|)
+&lt;Btn1Down&gt;,&lt;Btn1Up&gt;:	Set(&#x2006;) Notify(&#x2006;)
 <!-- .sp -->
 </literallayout>
 </para>
@@ -579,7 +579,7 @@ The full list of actions supported by List widget is:
 <variablelist>
   <varlistentry>
     <term>
-      <function>Set</function>(\|)
+      <function>Set</function>(&#x2006;)
     </term>
     <listitem>
       <para>
@@ -593,7 +593,7 @@ element will be <emphasis remap='I'>unset</emphasis>.
   </varlistentry>
   <varlistentry>
     <term>
-      <function>Unset</function>(\|)
+      <function>Unset</function>(&#x2006;)
     </term>
     <listitem>
       <para>
@@ -604,7 +604,7 @@ and redraws it with normal foreground and background colors.
   </varlistentry>
   <varlistentry>
     <term>
-      <function>Notify</function>(\|)
+      <function>Notify</function>(&#x2006;)
     </term>
     <listitem>
       <para>

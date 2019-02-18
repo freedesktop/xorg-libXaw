@@ -545,10 +545,10 @@ Repeater widget:
 <literallayout class="monospaced">
 <!-- .TA .5i 2.25i -->
 <!-- .ta .5i 2.25i -->
-	&lt;EnterWindow&gt;:	highlight(\|)
-	&lt;LeaveWindow&gt;:	unhighlight(\|)
-	&lt;Btn1Down&gt;:	set(\|) start(\|)
-	&lt;Btn1Up&gt;:	stop(\|) unset(\|)
+	&lt;EnterWindow&gt;:	highlight(&#x2006;)
+	&lt;LeaveWindow&gt;:	unhighlight(&#x2006;)
+	&lt;Btn1Down&gt;:	set(&#x2006;) start(&#x2006;)
+	&lt;Btn1Up&gt;:	stop(&#x2006;) unset(&#x2006;)
 </literallayout>
 </para>
 <para>

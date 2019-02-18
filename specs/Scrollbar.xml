@@ -629,10 +629,10 @@ The default bindings for Scrollbar are:
 
 <literallayout class="monospaced">
      &lt;Btn1Down&gt;:     StartScroll(Forward)
-     &lt;Btn2Down&gt;:     StartScroll(Continuous) MoveThumb(\|) NotifyThumb(\|)
+     &lt;Btn2Down&gt;:     StartScroll(Continuous) MoveThumb(&#x2006;) NotifyThumb(&#x2006;)
      &lt;Btn3Down&gt;:     StartScroll(Backward)
-     &lt;Btn2Motion&gt;:     MoveThumb(\|) NotifyThumb(\|)
-     &lt;BtnUp&gt;:     NotifyScroll(Proportional) EndScroll(\|)
+     &lt;Btn2Motion&gt;:     MoveThumb(&#x2006;) NotifyThumb(&#x2006;)
+     &lt;BtnUp&gt;:     NotifyScroll(Proportional) EndScroll(&#x2006;)
 </literallayout>
 
 <para>
@@ -644,7 +644,7 @@ resource file are:
 *Scrollbar.Translations: \\
      ~Meta&lt;Key&gt;space:     StartScroll(Forward) NotifyScroll(FullLength) \\n\\
       Meta&lt;Key&gt;space:     StartScroll(Backward) NotifyScroll(FullLength) \\n\\
-          EndScroll(\|)
+          EndScroll(&#x2006;)
 </literallayout>
 
 </sect2>

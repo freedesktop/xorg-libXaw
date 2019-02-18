@@ -40,7 +40,7 @@ static XtActionsRec actions[] =
 };
 
 static char translations[] =
-"	&lt;Key&gt;:	template(\|) \\n\\
+"	&lt;Key&gt;:	template(&#x2006;) \\n\\
 ";
 
 TemplateClassRec templateClassRec = {
@@ -140,8 +140,8 @@ and the default input binding will be to execute the input callbacks on
 </para>
 <literallayout class="monospaced">
 static char translations[] =
-"	&lt;Key&gt;:	input(\|) \\n\\
- 	&lt;BtnDown&gt;:	input(\|) \\
+"	&lt;Key&gt;:	input(&#x2006;) \\n\\
+ 	&lt;BtnDown&gt;:	input(&#x2006;) \\
 ";
 </literallayout>
 <!-- .CE -->

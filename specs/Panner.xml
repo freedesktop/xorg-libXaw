@@ -664,10 +664,10 @@ The default bindings for Panner are:
 <literallayout class="monospaced">
 <!-- .TA .5i 1.75i -->
 <!-- .ta .5i 1.75i -->
-	&lt;Btn1Down&gt;:	start(\|)
-	&lt;Btn1Motion&gt;:	move(\|)
-	&lt;Btn1Up&gt;:	notify(\|) stop(\|)
-	&lt;Btn2Down&gt;:	abort(\|)
+	&lt;Btn1Down&gt;:	start(&#x2006;)
+	&lt;Btn1Motion&gt;:	move(&#x2006;)
+	&lt;Btn1Up&gt;:	notify(&#x2006;) stop(&#x2006;)
+	&lt;Btn2Down&gt;:	abort(&#x2006;)
 	&lt;Key&gt;KP_Enter:	set(rubberband,toggle)
 	&lt;Key&gt;space:	page(+1p,+1p)
 	&lt;Key&gt;Delete:	page(-1p,-1p)

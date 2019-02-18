@@ -546,10 +546,10 @@ by the SimpleMenu widget:
 <literallayout class="monospaced">
 <!-- .TA .5i 2.25i -->
 <!-- .ta .5i 2.25i -->
-	&lt;EnterWindow&gt;:	highlight(\|)
-	&lt;LeaveWindow&gt;:	unhighlight(\|)
-	&lt;BtnMotion&gt;:	highlight(\|)
-	&lt;BtnUp&gt;:	MenuPopdown(\|) notify(\|) unhighlight(\|)
+	&lt;EnterWindow&gt;:	highlight(&#x2006;)
+	&lt;LeaveWindow&gt;:	unhighlight(&#x2006;)
+	&lt;BtnMotion&gt;:	highlight(&#x2006;)
+	&lt;BtnUp&gt;:	MenuPopdown(&#x2006;) notify(&#x2006;) unhighlight(&#x2006;)
 </literallayout>
 <!-- .sp -->
 </para>
@@ -580,7 +580,7 @@ the menu entry.
   </varlistentry>
   <varlistentry>
     <term>
-      <function>unhighlight</function>(\|)
+      <function>unhighlight</function>(&#x2006;)
     </term>
     <listitem>
       <para>
@@ -591,7 +591,7 @@ its normal look.
   </varlistentry>
   <varlistentry>
     <term>
-      <function>notify</function>(\|)
+      <function>notify</function>(&#x2006;)
     </term>
     <listitem>
       <para>
