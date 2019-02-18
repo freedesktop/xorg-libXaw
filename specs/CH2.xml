@@ -584,7 +584,7 @@ database as a string, and is of the following forms:
 <itemizedlist>
   <listitem>
     <para>
-A standard X cursor name from <function>&lt; X11/cursorfont.h &gt;</function>.
+A standard X cursor name from <filename class="headerfile">&lt;X11/cursorfont.h&gt;</filename>.
 The names in <function>cursorfont.h</function> each describe a specific cursor.  The
 resource names for these cursors are exactly like the names in this file
 except the <function>XC_</function> is not used.  The cursor definition <function>XC_gumby</function>
@@ -1320,12 +1320,12 @@ you should make sure that your application performs the following:
   <listitem>
     <para>
 Include
-<function>&lt; X11/Intrinsic.h &gt;</function>
+<filename class="headerfile">&lt;X11/Intrinsic.h&gt;</filename>
 in your application programs.
 This header file automatically includes
-<function>&lt; X11/Xlib.h &gt;</function>,
+<filename class="headerfile">&lt;X11/Xlib.h&gt;</filename>,
 so all Xlib functions also are defined.
-It may also be necessary to include <function>&lt; X11/StringDefs.h &gt;</function> when setting
+It may also be necessary to include <filename class="headerfile">&lt;X11/StringDefs.h&gt;</filename> when setting
 up argument lists, as many of the XtN<emphasis remap='I'>something</emphasis> definitions are
 only defined in this file.
     </para>
@@ -1335,9 +1335,9 @@ only defined in this file.
 Include the widget-specific header files for each widget type
 that you need to use.
 For example,
-<function>&lt; X11/Xaw/Label.h &gt;</function>
+<filename class="headerfile">&lt;X11/Xaw/Label.h&gt;</filename>
 and
-<function>&lt; X11/Xaw/Command.h &gt;</function>.
+<filename class="headerfile">&lt;X11/Xaw/Command.h&gt;</filename>.
     </para>
   </listitem>
   <listitem>

@@ -153,11 +153,11 @@ widget implementation can be merged into other application code.
 
 <para>
 In the following example, the public header file
-<function>&lt; X11/Xaw/Template.h &gt;</function>,
+<filename class="headerfile">&lt;X11/Xaw/Template.h&gt;</filename>,
 the private header file
-<function>&lt; X11/Xaw/TemplateP.h &gt;</function>
+<filename class="headerfile">&lt;X11/Xaw/TemplateP.h&gt;</filename>
 and the source code file
-<function>&lt; X11/Xaw/Template.c &gt;</function>
+<filename class="headerfile">&lt;X11/Xaw/Template.c&gt;</filename>
 will be modified to produce the "WindowWidget" described above.
 In each case, the files have been designed so that a global string
 replacement of "Template" and "template"

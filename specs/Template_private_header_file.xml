@@ -13,7 +13,7 @@ procedures; e.g.
 <para>
 <!-- .LP -->
 The contents of the Template private header file,
-<function>&lt; X11/Xaw/TemplateP.h &gt;</function>,
+<filename class="headerfile">&lt;X11/Xaw/TemplateP.h&gt;</filename>,
 are:
 </para>
 <!-- .CB -->

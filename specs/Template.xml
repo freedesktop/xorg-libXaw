@@ -10,7 +10,7 @@ operation, or to call a public routine implemented by the widget class.
 <para>
 <!-- .LP -->
 The contents of the Template public header file,
-<function>&lt; X11/Xaw/Template.h &gt;</function>,
+<filename class="headerfile">&lt;X11/Xaw/Template.h&gt;</filename>,
 are:
 </para>
 <literallayout class="monospaced">
@@ -125,7 +125,7 @@ procedures; e.g.
 <para>
 <!-- .LP -->
 The contents of the Template private header file,
-<function>&lt; X11/Xaw/TemplateP.h &gt;</function>,
+<filename class="headerfile">&lt;X11/Xaw/TemplateP.h&gt;</filename>,
 are:
 </para>
 <!-- .CB -->
@@ -209,7 +209,7 @@ action routines added by the widget class.
 <para>
 <!-- .LP -->
 The contents of the Template implementation file,
-<function>&lt; X11/Xaw/Template.c &gt;</function>,
+<filename class="headerfile">&lt;X11/Xaw/Template.c&gt;</filename>,
 are:
 </para>
 <!-- .CB -->

@@ -10,7 +10,7 @@ operation, or to call a public routine implemented by the widget class.
 <para>
 <!-- .LP -->
 The contents of the Template public header file,
-<function>&lt; X11/Xaw/Template.h &gt;</function>,
+<filename class="headerfile">&lt;X11/Xaw/Template.h&gt;</filename>,
 are:
 </para>
 <literallayout class="monospaced">

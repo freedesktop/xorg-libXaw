@@ -10,7 +10,7 @@ action routines added by the widget class.
 <para>
 <!-- .LP -->
 The contents of the Template implementation file,
-<function>&lt; X11/Xaw/Template.c &gt;</function>,
+<filename class="headerfile">&lt;X11/Xaw/Template.c&gt;</filename>,
 are:
 </para>
 <!-- .CB -->
