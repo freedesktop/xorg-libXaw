@@ -650,7 +650,7 @@ operating systems, and had to be changed.
 <para>
 <!-- .LP -->
 To change the list that is displayed, use
-<function>XawListChange .</function>
+<function>XawListChange</function>.
 <indexterm significance="preferred"><primary>XawListChange</primary></indexterm>
 <funcsynopsis id='XawListChange'>
 <funcprototype>
@@ -736,7 +736,7 @@ has been changed again with this function or with <xref linkend='XtSetValues' xr
 <para>
 <!-- .LP -->
 To highlight an item in the list, use
-<function>XawListHighlight .</function>
+<function>XawListHighlight</function>.
 <indexterm significance="preferred"><primary>XawListHighlight</primary></indexterm>
 <funcsynopsis id='XawListHighlight'>
 <funcprototype>
@@ -784,7 +784,7 @@ the highlighted item is unhighlighted before the new item is highlighted.
 <para>
 <!-- .LP -->
 To unhighlight the currently highlighted item in the list, use
-<function>XawListUnhighlight .</function>
+<function>XawListUnhighlight</function>.
 <indexterm significance="preferred"><primary>XawListUnhighlight</primary></indexterm>
 <funcsynopsis id='XawListUnhighlight'>
 <funcprototype>
@@ -812,7 +812,7 @@ Specifies the List widget.
 <para>
 <!-- .LP -->
 To retrieve the list element that is currently <emphasis remap='I'>set</emphasis>, use
-<function>XawListShowCurrent .</function>
+<function>XawListShowCurrent</function>.
 <indexterm significance="preferred"><primary>XawListShowCurrent</primary></indexterm>
 <funcsynopsis id='XawListShowCurrent'>
 <funcprototype>

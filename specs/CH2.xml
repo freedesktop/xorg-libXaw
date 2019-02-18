@@ -250,7 +250,7 @@ managed if the parent is already realized.
 <para>
 <!-- .LP -->
 To allocate, initialize, and manage a widget, use
-<function>XtCreateManagedWidget .</function>
+<function>XtCreateManagedWidget</function>.
 <indexterm significance="preferred"><primary>XtCreateManagedWidget</primary></indexterm>
 <funcsynopsis id='XtCreateManagedWidget'>
 <funcprototype>
@@ -672,7 +672,7 @@ for each widget that wishes to convert a cursor to bitmap.  In addition
 to the directories specified in the <function>bitmapFilePath</function> resource a
 default directory is searched.  When using POSIX the default
 directory is
-<function>/usr/include/X11/bitmaps .</function>
+<function>/usr/include/X11/bitmaps</function>.
 </para>
 </sect3>
 </sect2>
@@ -973,7 +973,7 @@ Specifies the widget.
 destroys the widget and recursively destroys any children that it may have,
 including the windows created by its children.
 After calling
-<function>XtDestroyWidget ,</function>
+<function>XtDestroyWidget</function>,
 no further references should be made to the widget or any children
 that the destroyed widget may have had.
 </para>
@@ -984,7 +984,7 @@ that the destroyed widget may have had.
 <!-- .LP -->
 To retrieve the current value of a resource attribute associated
 with a widget instance, use
-<function>XtGetValues .</function>
+<function>XtGetValues</function>.
 <indexterm significance="preferred"><primary>XtGetValues</primary></indexterm>
 <funcsynopsis id='XtGetValues'>
 <funcprototype>
@@ -1047,7 +1047,7 @@ allocated as Position).  For further information, see the
 <!-- .LP -->
 To modify the current value of a resource attribute associated with a
 widget instance, use
-<function>XtSetValues .</function>
+<function>XtSetValues</function>.
 <indexterm significance="preferred"><primary>XtSetValues</primary></indexterm>
 <funcsynopsis id='XtSetValues'>
 <funcprototype>
@@ -1112,7 +1112,7 @@ The argument list entry for
 <xref linkend='XtGetValues' xrefstyle='select: title'/>
 specifies the address to which the caller wants the value copied.  The
 argument list entry for
-<function>XtSetValues ,</function>
+<function>XtSetValues</function>,
 however, contains the new value itself, if the size of value is less than
 sizeof(XtArgVal) (architecture dependent, but at least sizeof(long));
 otherwise, it is a pointer to the value.  String resources are always
@@ -1190,7 +1190,7 @@ the callback list described below or by using the special convenience
 routines <xref linkend='XtAddCallback' xrefstyle='select: title'/> and <function>XtAddCallbacks</function>.  When the widget
 is created, a pointer to a list of callback procedure and data pairs can
 be passed in the argument list to
-<function>XtCreateWidget .</function>
+<function>XtCreateWidget</function>.
 The list is of type
 <function>XtCallbackList :</function>
 <indexterm><primary>XtCallbackProc</primary></indexterm>
@@ -1213,7 +1213,7 @@ typedef struct {
 <para>
 <!-- .LP -->
 The callback list must be allocated and initialized before calling
-<function>XtCreateWidget .</function>
+<function>XtCreateWidget</function>.
 <indexterm><primary>XtCreateWidget</primary></indexterm>
 The end of the list is identified by an entry containing NULL in
 callback and closure.  Once the widget is created, the client can change
@@ -1323,7 +1323,7 @@ Include
 <function>&lt; X11/Intrinsic.h &gt;</function>
 in your application programs.
 This header file automatically includes
-<function>&lt; X11/Xlib.h &gt;,</function>
+<function>&lt; X11/Xlib.h &gt;</function>,
 so all Xlib functions also are defined.
 It may also be necessary to include <function>&lt; X11/StringDefs.h &gt;</function> when setting
 up argument lists, as many of the XtN<emphasis remap='I'>something</emphasis> definitions are
@@ -1337,7 +1337,7 @@ that you need to use.
 For example,
 <function>&lt; X11/Xaw/Label.h &gt;</function>
 and
-<function>&lt; X11/Xaw/Command.h &gt;.</function>
+<function>&lt; X11/Xaw/Command.h &gt;</function>.
     </para>
   </listitem>
   <listitem>
@@ -1398,7 +1398,7 @@ on the top level widget.
   <listitem>
     <para>
 Most applications now sit in a loop processing events using
-<function>XtAppMainLoop ,</function>
+<function>XtAppMainLoop</function>,
 for example:
 <indexterm><primary>XtAppMainLoop</primary></indexterm>
 <literallayout class="monospaced">
@@ -1852,7 +1852,7 @@ would return 10, not 2, and therefore is not useful.
 <!-- .NT -->
 You should not use auto-increment or auto-decrement
 within the first argument to
-<function>XtSetArg .</function>
+<function>XtSetArg</function>.
 As it is currently implemented,
 <function>XtSetArg</function>
 is a macro that dereferences the first argument twice.

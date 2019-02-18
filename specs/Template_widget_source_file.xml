@@ -10,7 +10,7 @@ action routines added by the widget class.
 <para>
 <!-- .LP -->
 The contents of the Template implementation file,
-<function>&lt; X11/Xaw/Template.c &gt;,</function>
+<function>&lt; X11/Xaw/Template.c &gt;</function>,
 are:
 </para>
 <!-- .CB -->
@@ -200,7 +200,7 @@ Font WindowFont(w)
 <para>
 The "WindowWidget" is now complete.  The application can retrieve the two
 drawing colors from the widget instance by calling either
-<function>XtGetValues ,</function>
+<function>XtGetValues</function>,
 or the <function>WindowColor</function> functions.  The actual window created for the
 "WindowWidget" is available by calling the
 <function>XtWindow</function> function.

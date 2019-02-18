@@ -97,7 +97,7 @@ either XawFmt8Bit or XawFmtWide.
 <para>
 <!-- .LP -->
 Note: Previous versions of Xaw used
-<function>FMT8BIT ,</function>
+<function>FMT8BIT</function>,
 which has been retained for backwards compatibility. <function>FMT8BIT</function> is
 deprecated and will eventually be removed from the implementation.
 </para>
