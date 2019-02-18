@@ -590,7 +590,7 @@ callbacks.
   </varlistentry>
   <varlistentry>
     <term>
-      <function>EndScroll</function>(\^)
+      <function>EndScroll</function>(&#x200A;)
     </term>
     <listitem>
       <para>
@@ -600,7 +600,7 @@ This must be the last action after a movement is complete.
   </varlistentry>
   <varlistentry>
     <term>
-      <function>MoveThumb</function>(\^)
+      <function>MoveThumb</function>(&#x200A;)
     </term>
     <listitem>
       <para>
@@ -610,7 +610,7 @@ Repositions the Scrollbar's thumb to the current pointer location.
   </varlistentry>
   <varlistentry>
     <term>
-      <function>NotifyThumb</function>(\^)\
+      <function>NotifyThumb</function>(&#x200A;)\
     </term>
     <listitem>
       <para>
