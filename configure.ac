@@ -110,6 +110,7 @@ AC_CONFIG_FILES([Makefile
 		include/Makefile
 		man/Makefile
 		specs/Makefile
+		specs/libXaw.ent
 		src/Makefile])
 
 if test "x$build_v6" = xyes; then
