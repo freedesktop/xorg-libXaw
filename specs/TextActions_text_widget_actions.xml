@@ -64,7 +64,7 @@ may assume this to be the case.
 <!-- .LP -->
 </para>
 <sect2 id='Cursor_Movement_Actions'>
-<title>Cursor Movement Actions\fP</title>
+<title>Cursor Movement Actions</title>
 <para>
 <!-- .LP -->
 <!-- .sp -->
@@ -712,10 +712,11 @@ The multiply action allows the user to multiply the effects of many of
 the text actions.  Thus the following action sequence
 <emphasis remap='I'>multiply(10) delete-next-word()</emphasis> will delete 10 words.  It does not
 matter whether these actions take place in one event or many events.
-Using the default translations the key sequence \fIControl-u,
-Control-d\fP will delete 4 characters.
-Multiply actions can be chained, thus \fImultiply(5)
-multiply(5)\fP is the same as <emphasis remap='I'>multiply(25)</emphasis>.  If the string
+Using the default translations the key sequence
+<emphasis remap='I'>Control-u, Control-d</emphasis> will delete 4 characters.
+Multiply actions can be chained, thus
+<emphasis remap='I'>multiply(5) multiply(5)</emphasis> is the same as
+<emphasis remap='I'>multiply(25)</emphasis>.  If the string
 <function>reset</function> is passed to the multiply action the effects of all previous
 multiplies are removed and a beep is sent to the display.
       </para>

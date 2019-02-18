@@ -443,7 +443,7 @@ used to paint the text of the list elements.
   </varlistentry>
   <varlistentry>
     <term>
-      \fPinternalHeight\fP
+      <function>internalHeight</function>
     </term>
     <listitem>
       <para>
@@ -454,7 +454,7 @@ used to paint the text of the list elements.
   </varlistentry>
   <varlistentry>
     <term>
-      \fPinternalWidth\fP
+      <function>internalWidth</function>
     </term>
     <listitem>
       <para>

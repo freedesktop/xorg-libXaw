@@ -33,9 +33,9 @@ applies to both, with MultiSrc differences noted only as they occur.
 </para>
 <para>
 <!-- .LP -->
-The AsciiSrc understands all Latin1 characters plus Tab
-and Carriage Return.  \fIThe MultiSrc understands any set of character sets that
-the underlying X implementation's internationalization handles.\fP
+The AsciiSrc understands all Latin1 characters plus Tab and Carriage Return.
+<emphasis remap='I'>The MultiSrc understands any set of character sets that
+the underlying X implementation's internationalization handles.</emphasis>
 </para>
 <para>
 <!-- .LP -->
@@ -57,8 +57,8 @@ source is in this mode the <function>useStringInPlace</function> resource is ign
 <!-- .LP -->
 AsciiSrc objects of type <function>XawAsciiString</function> have the text buffer
 implemented as a string.
-\fIMultiSrc objects of type <function>XawAsciiString</function> have the text buffer
-implemented as a wide character string.\fP
+<emphasis remap='I'>MultiSrc objects of type <function>XawAsciiString</function>
+have the text buffer implemented as a wide character string.</emphasis>
 The string owner is responsible for allocating and managing storage for the
 string.
 </para>

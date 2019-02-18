@@ -33,9 +33,9 @@ applies to both, with MultiSink differences noted only as they occur.
 The AsciiSink
 will display all printing characters in an 8 bit font, along with handling Tab
 and Carriage Return.  The name has been left as ``AsciiSink'' for compatibility.
-\fIThe MultiSink will display all printing characters in a font set, along with
-handling Tab and Carriage
-Return.\fP    The source object also reports the text window metrics to the
+<emphasis remap='I'>The MultiSink will display all printing characters in a
+font set, along with handling Tab and Carriage Return.</emphasis>
+The source object also reports the text window metrics to the
 text widgets.
 </para>
 <sect2 id='AsciiSink::Resources'>
