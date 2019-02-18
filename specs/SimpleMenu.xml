@@ -1,4 +1,4 @@
-<sect2 id="SimpleMenu_Widget">
+<sect1 id="SimpleMenu_Widget">
 <title>SimpleMenu Widget</title>
 <!-- .XS -->
 <!-- 	SimpleMenu Widget -->
@@ -28,7 +28,7 @@ only part of the menu that
 actually is associated with a window.  The SimpleMenu serves as the glue to bind
 the individual menu entries together into a menu.
 </para>
-<sect3 id="Resources">
+<sect2 id="SimpleMenu::Resources">
 <title>Resources</title>
 <para>
 <!-- .LP -->
@@ -511,8 +511,8 @@ If this is <function>True</function> then save unders will be active on the menu
   </varlistentry>
 </variablelist>
 </para>
-</sect3>
-<sect3 id="SimpleMenu_Actions">
+</sect2>
+<sect2 id="SimpleMenu_Actions">
 <title>SimpleMenu Actions</title>
 <indexterm><primary>SimpleMenu widget</primary><secondary>actions</secondary></indexterm>
 <para>
@@ -614,8 +614,8 @@ This action is defined in <emphasis remap='I'>(xT</emphasis>.
   </varlistentry>
 </variablelist>
 </para>
-</sect3>
-<sect3 id="Positioning_the_SimpleMenu">
+</sect2>
+<sect2 id="Positioning_the_SimpleMenu">
 <title>Positioning the SimpleMenu</title>
 <indexterm significance="preferred"><primary>XawPositionSimpleMenu</primary></indexterm>
 <indexterm significance="preferred"><primary>SimpleMenu widget</primary><secondary>positioning</secondary></indexterm>
@@ -678,10 +678,10 @@ placed so that the pointer cursor is centered on the entry named by the
   </varlistentry>
 </variablelist>
 </para>
-</sect3>
-<sect3 id="Convenience_Routines">
+</sect2>
+<sect2 id="SimpleMenu::Convenience_Routines">
 <title>Convenience Routines</title>
-<sect4 id="Registering_the_Global_Action_Routines">
+<sect3 id="Registering_the_Global_Action_Routines">
 <title>Registering the Global Action Routines</title>
 <para>
 <!-- .LP -->
@@ -718,8 +718,8 @@ This function need only be called once per application and must be
 called before any widget that uses <function>XawPositionSimpleMenu</function> action
 is realized.
 </para>
-</sect4>
-<sect4 id="Getting_and_Clearing_the_Current_Menu_Entry">
+</sect3>
+<sect3 id="Getting_and_Clearing_the_Current_Menu_Entry">
 <title>Getting and Clearing the Current Menu Entry</title>
 <para>
 <!-- .LP -->
@@ -786,6 +786,6 @@ alter the appearance of the active entry.  This function is primarily
 for use by implementors of menu entries.
 
 </para>
-</sect4>
 </sect3>
 </sect2>
+</sect1>

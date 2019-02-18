@@ -1,4 +1,4 @@
-<sect2 id="MenuButton_Widget">
+<sect1 id="MenuButton_Widget">
 <title>MenuButton Widget</title>
 <!-- .XS -->
 <!-- 	MenuButton Widget -->
@@ -38,7 +38,7 @@ that the MenuButton is ready for selection.  When a
 pointer button is pressed, the MenuButton widget will
 pop up the menu named in the <function>menuName</function> resource.
 </para>
-<sect3 id="Resources">
+<sect2 id="MenuButton::Resources">
 <title>Resources</title>
 <para>
 <!-- .LP -->
@@ -410,8 +410,8 @@ nonvolatile memory.
   </varlistentry>
 </variablelist>
 </para>
-</sect3>
-<sect3 id="MenuButton_Actions">
+</sect2>
+<sect2 id="MenuButton_Actions">
 <title>MenuButton Actions</title>
 <indexterm><primary>MenuButton widget</primary><secondary>actions</secondary></indexterm>
 <para>
@@ -458,8 +458,8 @@ MenuButton widget:
 	&lt;BtnDown&gt;:	reset(\|) PopupMenu(\)
 </literallayout>
 </para>
-</sect3>
-<sect3 id='MenuButton_Actions_b'>
+</sect2>
+<sect2 id='MenuButton_Actions_b'>
 <title>MenuButton Actions</title>
 <para>
 <!-- .LP -->
@@ -563,5 +563,5 @@ in the application initialization routine, or use a different translation.
 <!-- .bp -->
 
 </para>
-</sect3>
 </sect2>
+</sect1>

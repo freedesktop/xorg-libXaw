@@ -96,7 +96,9 @@ and causes any mechanism associated with this entry to be invoked.
 
 </para>
 </sect1>
-<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="Sme.xml"/>
+<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="SimpleMenu.xml"/>
 <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="SmeBSB.xml"/>
 <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="SmeLine.xml"/>
+<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="Sme.xml"/>
+<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="MenuButton.xml"/>
 </chapter>
