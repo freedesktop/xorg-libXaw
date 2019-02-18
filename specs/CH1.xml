@@ -313,11 +313,9 @@ A programmer who adds new widgets to the X Toolkit.
 The underlying architectural model is based on the following premises:
 <!-- .KS -->
 </para>
-<itemizedlist>
-  <listitem>
-    <para>
-    </para>
-  </listitem>
+<variablelist><?dbfo list-presentation="blocks"?>
+<varlistentry>
+  <term>Widgets are X windows</term>
   <listitem>
     <para>
 Every user-interface widget is associated with an X window.
@@ -328,10 +326,9 @@ output operations.
 <!-- .KS -->
     </para>
   </listitem>
-  <listitem>
-    <para>
-    </para>
-  </listitem>
+</varlistentry>
+<varlistentry>
+  <term>Information hiding</term>
   <listitem>
     <para>
 The data for every widget is private to the widget and its subclasses.
@@ -343,10 +340,9 @@ All program interaction with the widget is performed by a set of operations
 <!-- .KS -->
     </para>
   </listitem>
-  <listitem>
-    <para>
-    </para>
-  </listitem>
+</varlistentry>
+<varlistentry>
+  <term>Widget semantics and widget layout geometry</term>
   <listitem>
     <para>
 Widget semantics are clearly separated from widget layout geometry.
@@ -358,7 +354,8 @@ suggestions about their own geometry.
 <!-- .KE -->
     </para>
   </listitem>
-</itemizedlist>
+</varlistentry>
+</variablelist>
 </sect1>
 <sect1 id="Conventions_Used_in_this_Manual">
 <title>Conventions Used in this Manual</title>
