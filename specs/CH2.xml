@@ -635,7 +635,7 @@ pixel names are:
   <listitem>
     <para>
 Any color name for the rgb.txt file (typically in the directory
-/usr/lib/X11 on POSIX systems).
+/usr/share/X11 on POSIX systems).
     </para>
   </listitem>
   <listitem>
@@ -1524,7 +1524,7 @@ resources will affect any new applications started on the display that
 they were loaded onto.
 <indexterm><primary>application defaults</primary></indexterm>
 <indexterm><primary>app-defaults</primary></indexterm>
-<indexterm><primary>/usr/lib/X11/app-defaults</primary></indexterm>
+<indexterm><primary>/usr/share/X11/app-defaults</primary></indexterm>
       </para>
     </listitem>
   </varlistentry>
@@ -1533,7 +1533,7 @@ they were loaded onto.
     <listitem>
       <para>
 The application defaults (app-defaults) file (normally in
-/usr/lib/X11/app-defaults/<emphasis remap='I'>classname</emphasis>) for an application is loaded
+/usr/share/X11/app-defaults/<emphasis remap='I'>classname</emphasis>) for an application is loaded
 whenever the application is started.
     </para>
   </listitem>
