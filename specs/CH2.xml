@@ -137,7 +137,8 @@ resources.
 The options argument is passed as a parameter to
 <olink targetdoc='libX11' targetptr='XrmParseCommand'><function>XrmParseCommand</function></olink>.
 For further information,
-see <emphasis remap='I'>Xlib - C Language Interface</emphasis>.
+see <olink targetdoc='libX11' targetptr='XrmParseCommand'
+><citetitle>Xlib - C Language Interface</citetitle></olink>.
       </para>
     </listitem>
   </varlistentry>
@@ -622,7 +623,8 @@ file path is used (see section 2.4.3). <!-- xref -->
 <indexterm><primary>XtDefaultForeground</primary></indexterm>
 <indexterm><primary>XtDefaultBackground</primary></indexterm>
 The string-to-pixel converter takes any name that is acceptable to
-XParseColor (see <emphasis remap='I'>Xlib - C Language Interface</emphasis>).  In addition this routine understands
+XParseColor (see <olink targetdoc='libX11' targetptr='Color_Strings'
+><citetitle>Xlib - C Language Interface</citetitle></olink>).  In addition this routine understands
 the special toolkit symbols `XtDefaultForeground' and
 `XtDefaultBackground', described in
 <olink targetdoc='intrinsics' targetptr='Predefined_Resource_Converters'
@@ -1474,7 +1476,9 @@ functionality.
     <term>Resource Manager</term>
     <listitem>
       <para>
-This method picks up resource definitions described in <emphasis remap='I'>Xlib - C Language Interface</emphasis> from
+This method picks up resource definitions described in
+<olink targetdoc='libX11' targetptr='Resource_Manager_Functions'
+><citetitle>Xlib - C Language Interface</citetitle></olink> from
 many different locations at run time.  The locations most important to
 the application programmer are the <emphasis remap='I'>fallback resources</emphasis> and the
 <emphasis remap='I'>app-defaults</emphasis> file, (see
@@ -1744,7 +1748,8 @@ will override program defaults.
 For a complete explanation of the rules of precedence, and
 other specific topics see
 <olink targetdoc='intrinsics' targetptr='Loading_the_Resource_Database'
-><citetitle>X Toolkit Intrinsics - C Language Interface</citetitle></olink> and <emphasis remap='I'>Xlib - C Language Interface</emphasis>.
+><citetitle>X Toolkit Intrinsics - C Language Interface</citetitle></olink> and <olink targetdoc='libX11' targetptr='Resource_Manager_Functions'
+><citetitle>Xlib - C Language Interface</citetitle></olink>.
 </para>
 </sect4>
 <sect4 id="Creating_Argument_Lists">

@@ -133,7 +133,8 @@ Format of the Widget Reference Chapters
 <para>
 <!-- .LP -->
 In addition to the terms already defined for X programming (see
-<emphasis remap='I'>Xlib - C Language Interface</emphasis>),
+<olink targetdoc='libX11' targetptr='glossary'
+><citetitle>Xlib - C Language Interface</citetitle></olink>),
 the following terms are specific to the Intrinsics and Athena widget set
 and used throughout this document.
 </para>
