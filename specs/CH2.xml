@@ -35,8 +35,13 @@ description of the programming interface is provided in the document
 If it is desirable that the application take advantage of
 internationalization (i18n), you must establish locale with
 <function>XtSetLanguageProc</function>
-before <function>XtDisplayInitialize</function> or <xref linkend='XtAppInitialize' xrefstyle='select: title'/>
-is called.  For full details, please refer to the document
+prior to calling
+<xref linkend='XtOpenApplication' xrefstyle='select: title'/>,
+<function>XtOpenDisplay</function>,
+<function>XtDisplayInitialize</function>,
+or
+<function>XtAppInitialize</function>.
+For full details, please refer to the document
 <emphasis remap='I'>X Toolkit Intrinsics - C Language Interface</emphasis>, section 2.2. However, the following simplest-case
 call is sufficient in many or most applications.
 </para>
@@ -69,33 +74,34 @@ of programs in the default "C" locale.
 <!-- .XE -->
 You must call a toolkit initialization function before invoking any
 other toolkit routines (besides locale setting, above).
-<xref linkend='XtAppInitialize' xrefstyle='select: title'/>
+<xref linkend='XtOpenApplication' xrefstyle='select: title'/>,
 opens the X server connection, parses the command line,
 and creates an initial widget that will serve as the root of
 a tree of widgets created by this application.
 <!-- .IN "initialization" "" "@DEF@" -->
 <!-- .IN "toolkit initialization" "" "@DEF@" -->
-<!-- .IN "XtAppInitialize" "" "@DEF@" -->
+<!-- .IN "XtOpenApplication" "" "@DEF@" -->
 <!-- .IN "fallback resources" "" "@DEF@" -->
-<funcsynopsis id='XtAppInitialize'>
+<funcsynopsis id='XtOpenApplication'>
 <funcprototype>
-  <funcdef>Widget<function> XtAppInitialize</function></funcdef>
-  <paramdef>XtAppContext<parameter> app_context_return</parameter></paramdef>
-  <paramdef>String<parameter> application_class</parameter></paramdef>
-  <paramdef>XrmOptionDescRec<parameter> options</parameter></paramdef>
-  <paramdef>Cardinal<parameter> num_options</parameter></paramdef>
-  <paramdef>int<parameter> *argc_in_out</parameter></paramdef>
-  <paramdef>String<parameter> *argv_in_out</parameter></paramdef>
-  <paramdef>String<parameter> *fallback_resources</parameter></paramdef>
-  <paramdef>ArgList<parameter> args</parameter></paramdef>
-  <paramdef>Cardinal<parameter> num_args</parameter></paramdef>
+<funcdef>Widget <function>XtOpenApplication</function></funcdef>
+  <paramdef>XtAppContext *<parameter>app_context_return</parameter></paramdef>
+  <paramdef>String <parameter>application_class</parameter></paramdef>
+  <paramdef>XrmOptionDescList <parameter>options</parameter></paramdef>
+  <paramdef>Cardinal <parameter>num_options</parameter></paramdef>
+  <paramdef>int *<parameter>argc_in_out</parameter></paramdef>
+  <paramdef>String *<parameter>argv_in_out</parameter></paramdef>
+  <paramdef>String *<parameter>fallback_resources</parameter></paramdef>
+  <paramdef>WidgetClass <parameter>widget_class</parameter></paramdef>
+  <paramdef>ArgList <parameter>args</parameter></paramdef>
+  <paramdef>Cardinal <parameter>num_args</parameter></paramdef>
 </funcprototype>
 </funcsynopsis>
 <!-- .FN -->
 <variablelist>
   <varlistentry>
     <term>
-      <emphasis remap='I'>app_con_return</emphasis>
+      <emphasis remap='I'>app_context_return</emphasis>
     </term>
     <listitem>
       <para>
@@ -170,6 +176,17 @@ Specifies the command line parameters.
       <para>
 Specifies resource values to be used if the site-wide application class
 defaults file cannot be opened, or NULL.
+      </para>
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term>
+      <emphasis remap='I'>widget_class</emphasis>
+    </term>
+    <listitem>
+      <para>
+Specifies the class of the widget to be created.  Must be shellWidgetClass
+or a subclass.
       </para>
     </listitem>
   </varlistentry>
@@ -725,7 +742,7 @@ events is <xref linkend='XtAppMainLoop' xrefstyle='select: title'/>.
     <listitem>
       <para>
 Specifies the application context of this application.  The value is
-normally returned by <xref linkend='XtAppInitialize' xrefstyle='select: title'/>.
+normally returned by <xref linkend='XtOpenApplication' xrefstyle='select: title'/>.
     </para>
   </listitem>
   </varlistentry>
@@ -1310,8 +1327,8 @@ and
   <listitem>
     <para>
 Call the
-<xref linkend='XtAppInitialize' xrefstyle='select: title'/>
-<!-- .IN "XtAppInitialize" -->
+<xref linkend='XtOpenApplication' xrefstyle='select: title'/>
+<!-- .IN "XtOpenApplication" -->
 function before invoking any other toolkit or Xlib functions.
 For further information,
 see Section 2.1 and the <emphasis remap='I'>X Toolkit Intrinsics - C Language Interface</emphasis>.
@@ -1591,7 +1608,7 @@ This matches any widget in the Foo application that is named <emphasis remap='I'
 <para>
 <!-- .LP -->
 The root of all application widget trees is the widget returned by
-<xref linkend='XtAppInitialize' xrefstyle='select: title'/>.  Even though this is actually an
+<xref linkend='XtOpenApplication' xrefstyle='select: title'/>.  Even though this is actually an
 ApplicationShell widget, the toolkit replaces its widget class with the
 class name of the application.  The name of this widget is either
 the name used to invoke the application (<function>argv[0]</function>) or the name of
