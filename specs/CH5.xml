@@ -387,11 +387,12 @@ To unset the text selection, click pointer button 1 without moving it.
 <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="TextActions_text_widget_actions.xml"/>
 <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="TextActions_default_translation_bindings.xml"/>
 <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="TextFuncs.xml"/>
+<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="AsciiText.xml"/>
+<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="AsciiSource.xml"/>
+<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="AsciiSink.xml"/>
 <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="TextCustom.xml"/>
 <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="Text.xml"/>
-<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="TextSink.xml"/>
 <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="TextSource.xml"/>
-<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="AsciiSink.xml"/>
-<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="AsciiSource.xml"/>
-<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="AsciiText.xml"/>
+<xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="TextSink.xml"/>
+
 </chapter>
