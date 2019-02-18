@@ -2,11 +2,11 @@
 <title>Text Widget Actions</title>
 <para>
 <!-- .LP -->
-<!-- .IN "Text widget" "actions" -->
+<indexterm><primary>Text widget</primary><secondary>actions</secondary></indexterm>
 <!-- .XS -->
 <!--      Actions Supported by all Text Widgets -->
 <!-- .XE -->
-<!-- .IN "Text widget" "actions" "@DEF@" -->
+<indexterm significance="preferred"><primary>Text widget</primary><secondary>actions</secondary></indexterm>
 
 All editing functions are performed by translation manager actions that may
 be specified through the <function>translations</function> resource in the Text widget.
@@ -764,7 +764,7 @@ this argument is <emphasis remap='I'>RingBell</emphasis> then a beep is sent to 
     </term>
     <listitem>
       <para>
-<!-- .IN "XawWMProtocols" -->
+<indexterm><primary>XawWMProtocols</primary></indexterm>
 <!-- .sp -->
 This action is written specifically for the file insertion and the search
 and replace
@@ -787,7 +787,7 @@ This action is not sensitive to the case of the strings passed as parameters.
     </term>
     <listitem>
       <para>
-<!-- .IN "Input Method" -->
+<indexterm><primary>Input Method</primary></indexterm>
 When the <function>international</function> resource is <function>true</function>,
 input is usually passed to an input method, a separate
 process, for composing.  Sometimes the connection to
@@ -805,7 +805,7 @@ started before the input method.
 </sect3>
 <sect3 id="Text_Selections_for_Application_Programmers">
 <title>Text Selections for Application Programmers</title>
-<!-- .IN "Text widget" "Text Selections for Application Programmers" -->
+<indexterm><primary>Text widget</primary><secondary>Text Selections for Application Programmers</secondary></indexterm>
 <para>
 <!-- .LP -->
 The default behavior of the text selection array is described in the
@@ -814,7 +814,7 @@ a programmer must construct a <function>XawTextSelectType</function> array (call
 selection array), containing the selections desired, and pass this as
 the new value for the <function>selectionTypes</function> resource.  The selection
 array may also be modified using the <xref linkend='XawTextSetSelectionArray' xrefstyle='select: title'/>
-<!-- .IN "XawTextSetSelectionArray" "" -->
+<indexterm><primary>XawTextSetSelectionArray</primary></indexterm>
 function.  All selection arrays must end with the value
 <function>XawselectNull</function>.  The <function>selectionTypes</function> resource has no converter
 registered and cannot be modified through the resource manager.
@@ -896,7 +896,7 @@ array is set.
 <!-- .XS -->
 <!--      Default Translation Bindings -->
 <!-- .XE -->
-<!-- .IN "Text widget" "default translations" -->
+<indexterm><primary>Text widget</primary><secondary>default translations</secondary></indexterm>
 The following translations are defaults built into every Text widget.
 They can be overridden, or replaced by specifying a new value for the
 Text widget's <function>translations</function> resource.

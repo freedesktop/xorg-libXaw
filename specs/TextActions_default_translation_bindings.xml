@@ -5,7 +5,7 @@
 <!-- .XS -->
 <!--      Default Translation Bindings -->
 <!-- .XE -->
-<!-- .IN "Text widget" "default translations" -->
+<indexterm><primary>Text widget</primary><secondary>default translations</secondary></indexterm>
 The following translations are defaults built into every Text widget.
 They can be overridden, or replaced by specifying a new value for the
 Text widget's <function>translations</function> resource.

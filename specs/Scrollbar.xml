@@ -624,7 +624,7 @@ pointer as a percentage of the scroll bar length.
 </variablelist>
 <para>
 The default bindings for Scrollbar are:
-<!-- .IN "Scrollbar widget" "default translation table" -->
+<indexterm><primary>Scrollbar widget</primary><secondary>default translation table</secondary></indexterm>
 </para>
 
 <literallayout class="monospaced">
@@ -651,7 +651,7 @@ resource file are:
 
 <sect2 id="Scrollbar_Callbacks">
 <title>Scrollbar Callbacks</title>
-<!-- .IN "Scrollbar widget" "callbacks" -->
+<indexterm><primary>Scrollbar widget</primary><secondary>callbacks</secondary></indexterm>
 <para>
 <!-- .LP -->
 There are two callback lists provided by the Scrollbar widget.
@@ -661,7 +661,7 @@ The procedural interface for these functions is described here.
 <para>
 <!-- .LP -->
 The calling interface to the <function>scrollProc</function> callback procedure is:
-<!-- .IN "ScrollProc" "" "@DEF@" -->
+<indexterm significance="preferred"><primary>ScrollProc</primary></indexterm>
 </para>
 <funcsynopsis id='ScrollProc'>
 <funcprototype>
@@ -719,7 +719,7 @@ be greater than the length of the Scrollbar.
 <para>
 The calling interface to the <function>jumpProc</function> callback procedure is:
 </para>
-<!-- .IN "jumpProc" "" "@DEF@" -->
+<indexterm significance="preferred"><primary>jumpProc</primary></indexterm>
 <funcsynopsis id='JumpProc'>
 <funcprototype>
   <funcdef>void<function> JumpProc</function></funcdef>
@@ -787,10 +787,10 @@ Scrollbar.
 <sect2 id="Convenience_Routines">
 <title>Convenience Routines</title>
 <para>
-<!-- .IN "Scrollbar widget" "setting thumb values" -->
+<indexterm><primary>Scrollbar widget</primary><secondary>setting thumb values</secondary></indexterm>
 To set the position and length of a Scrollbar thumb, use
 <!-- .PN XawScrollbarSetThumb . -->
-<!-- .IN "XawScrollbarSetThumb" "" "@DEF@" -->
+<indexterm significance="preferred"><primary>XawScrollbarSetThumb</primary></indexterm>
 </para>
 <funcsynopsis id='XawScrollbarSetThumb'>
 <funcprototype>
@@ -852,7 +852,7 @@ If called from <function>jumpProc</function>, <xref linkend='XawScrollbarSetThum
 
 <sect2 id="Setting_Float_Resources">
 <title>Setting Float Resources</title>
-<!-- .IN "float resources" "setting" -->
+<indexterm><primary>float resources</primary><secondary>setting</secondary></indexterm>
 <para>
 The <function>shown</function> and <function>topOfThumb</function> resources are of type
 <emphasis remap='I'>float</emphasis>.  These resources can be difficult to get into an

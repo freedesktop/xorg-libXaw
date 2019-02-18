@@ -85,5 +85,6 @@ It is provided &ldquo;as is&rdquo; without express or implied warranty.
 <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="CH6.xml"/>
 <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="CH7.xml"/>
 <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="TPage_Credits.xml"/>
+<index />
 </book>
 

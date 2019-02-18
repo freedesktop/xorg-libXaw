@@ -3,19 +3,19 @@
 <!-- .XS -->
 <!-- 	Repeater Widget -->
 <!-- .XE -->
-<!-- .IN "Repeater widget" "" "@DEF@" -->
+<indexterm significance="preferred"><primary>Repeater widget</primary></indexterm>
 <literallayout class="monospaced">
 <!-- .TA 2.0i -->
 <!-- .ta 2.0i -->
 <!-- .sp -->
 Application header file	&lt;X11/Xaw/Repeater.h&gt;
-<!-- .IN "Repeater.h" "" -->
+<indexterm><primary>Repeater.h</primary></indexterm>
 Class header file	&lt;X11/Xaw/RepeaterP.h&gt;
-<!-- .IN "RepeaterP.h" "" -->
+<indexterm><primary>RepeaterP.h</primary></indexterm>
 Class	repeaterWidgetClass
-<!-- .IN "repeaterWidgetClass" "" -->
+<indexterm><primary>repeaterWidgetClass</primary></indexterm>
 Class Name	Repeater
-<!-- .IN "Repeater widget" "class name" -->
+<indexterm><primary>Repeater widget</primary><secondary>class name</secondary></indexterm>
 Superclass	Command
 <!-- .sp -->
 </literallayout>
@@ -36,7 +36,7 @@ retrieved from the argument list or from the resource database:
 </para>
 <para>
 <!-- .LP -->
-<!-- .IN "Repeater widget" "resources" -->
+<indexterm><primary>Repeater widget</primary><secondary>resources</secondary></indexterm>
 <informaltable>
   <tgroup cols='5' align='center'>
   <colspec colname='c1'/>
@@ -500,7 +500,7 @@ is set to NULL.
 </sect2>
 <sect2 id="Repeater_Actions">
 <title>Repeater Actions</title>
-<!-- .IN "Repeater widget" "actions" -->
+<indexterm><primary>Repeater widget</primary><secondary>actions</secondary></indexterm>
 <para>
 <!-- .LP -->
 The Repeater widget supports the following actions beyond those of the Command
@@ -535,7 +535,7 @@ further timers from occuring until the next <function>start</function> action.
 <para>
 <!-- .LP -->
 <!-- .sp -->
-<!-- .IN "Repeater widget" "translation bindings" -->
+<indexterm><primary>Repeater widget</primary><secondary>translation bindings</secondary></indexterm>
 The following are the default translation bindings used by the
 Repeater widget:
 </para>

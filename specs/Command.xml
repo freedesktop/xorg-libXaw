@@ -3,19 +3,19 @@
 <!-- .XS -->
 <!-- 	Command Widget -->
 <!-- .XE -->
-<!-- .IN "Command widget" "" "@DEF@" -->
+<indexterm significance="preferred"><primary>Command widget</primary></indexterm>
 <literallayout class="monospaced">
 <!-- .TA 2.0i -->
 <!-- .ta 2.0i -->
 <!-- .sp -->
 Application header file	&lt;X11/Xaw/Command.h&gt;
-<!-- .IN "Command.h" "" -->
+<indexterm><primary>Command.h</primary></indexterm>
 Class header file	&lt;X11/Xaw/CommandP.h&gt;
-<!-- .IN "CommandP.h" "" -->
+<indexterm><primary>CommandP.h</primary></indexterm>
 Class	commandWidgetClass
-<!-- .IN "commandWidgetClass" "" -->
+<indexterm><primary>commandWidgetClass</primary></indexterm>
 Class Name	Command
-<!-- .IN "Command widget" "class name" -->
+<indexterm><primary>Command widget</primary><secondary>class name</secondary></indexterm>
 Superclass	Label
 <!-- .sp -->
 </literallayout>
@@ -44,7 +44,7 @@ retrieved from the argument list or from the resource database:
 </para>
 <para>
 <!-- .LP -->
-<!-- .IN "Command widget" "resources" -->
+<indexterm><primary>Command widget</primary><secondary>resources</secondary></indexterm>
 <informaltable>
   <tgroup cols='5' align='center'>
   <colspec colname='c1'/>
@@ -375,7 +375,7 @@ retrieved from the argument list or from the resource database:
 </sect2>
 <sect2 id="Command_Actions">
 <title>Command Actions</title>
-<!-- .IN "Command widget" "actions" -->
+<indexterm><primary>Command widget</primary><secondary>actions</secondary></indexterm>
 <para>
 <!-- .LP -->
 The Command widget supports the following actions:
@@ -401,7 +401,7 @@ and unhighlighted states with <function>highlight</function> and <function>unhig
 </itemizedlist>
 <para>
 <!-- .LP -->
-<!-- .IN "Command widget" "translation bindings" -->
+<indexterm><primary>Command widget</primary><secondary>translation bindings</secondary></indexterm>
 The following are the default translation bindings used by the
 Command widget:
 </para>

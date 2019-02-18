@@ -49,7 +49,7 @@ of radically differing widget implementations.
 <!-- .XS -->
 <!-- 	Introduction to the X Toolkit -->
 <!-- .XE -->
-<!-- .IN "introduction" "" "@DEF@" -->
+<indexterm significance="preferred"><primary>introduction</primary></indexterm>
 The X Toolkit provides tools that simplify the design of
 application user interfaces in the X Window System programming environment.
 It assists application programmers by providing a set of common
@@ -138,7 +138,7 @@ and used throughout this document.
 <para>
 <!-- .LP -->
 <function>Application programmer</function>
-<!-- .IN "application programmer" "" "@DEF@" -->
+<indexterm significance="preferred"><primary>application programmer</primary></indexterm>
 </para>
 <itemizedlist>
   <listitem>
@@ -150,7 +150,7 @@ A programmer who uses the X Toolkit to produce an application user interface.
 <para>
 <!-- .LP -->
 <function>Child</function>
-<!-- .IN "child" "" "@DEF" -->
+<indexterm significance="preferred"><primary>child</primary></indexterm>
 </para>
 <itemizedlist>
   <listitem>
@@ -162,7 +162,7 @@ A widget that is contained within another "parent" widget.
 <para>
 <!-- .LP -->
 <function>Class</function>
-<!-- .IN "class" "" "@DEF@" -->
+<indexterm significance="preferred"><primary>class</primary></indexterm>
 </para>
 <itemizedlist>
   <listitem>
@@ -174,7 +174,7 @@ The general group to which a specific object belongs.
 <para>
 <!-- .LP -->
 <function>Client</function>
-<!-- .IN "client" "" "@DEF@" -->
+<indexterm significance="preferred"><primary>client</primary></indexterm>
 </para>
 <itemizedlist>
   <listitem>
@@ -187,7 +187,7 @@ other widgets.
 <para>
 <!-- .LP -->
 <function>FullName</function>
-<!-- .IN "FullName" "" "@DEF" -->
+<indexterm significance="preferred"><primary>FullName</primary></indexterm>
 </para>
 <itemizedlist>
   <listitem>
@@ -199,7 +199,7 @@ The name of a widget instance appended to the full name of its parent.
 <para>
 <!-- .LP -->
 <function>Instance</function>
-<!-- .IN "instance" "" "@DEF@" -->
+<indexterm significance="preferred"><primary>instance</primary></indexterm>
 </para>
 <itemizedlist>
   <listitem>
@@ -211,7 +211,7 @@ A specific widget object as opposed to a general widget class.
 <para>
 <!-- .LP -->
 <function>Method</function>
-<!-- .IN "method" "" "@DEF@" -->
+<indexterm significance="preferred"><primary>method</primary></indexterm>
 </para>
 <itemizedlist>
   <listitem>
@@ -223,7 +223,7 @@ A function or procedure implemented by a widget class.
 <para>
 <!-- .LP -->
 <function>Name</function>
-<!-- .IN "name" "widget" "@DEF@" -->
+<indexterm significance="preferred"><primary>name</primary><secondary>widget</secondary></indexterm>
 </para>
 <itemizedlist>
   <listitem>
@@ -236,7 +236,7 @@ This name is specified at creation time and cannot be modified.
 <para>
 <!-- .LP -->
 <function>Object</function>
-<!-- .IN "object" "" "@DEF@" -->
+<indexterm significance="preferred"><primary>object</primary></indexterm>
 </para>
 <itemizedlist>
   <listitem>
@@ -260,7 +260,7 @@ the widget exports the function.
 <para>
 <!-- .LP -->
 <function>Parent</function>
-<!-- .IN "parent" "" "@DEF@" -->
+<indexterm significance="preferred"><primary>parent</primary></indexterm>
 </para>
 <itemizedlist>
   <listitem>
@@ -273,7 +273,7 @@ A parent widget is also known as a composite widget.
 <para>
 <!-- .LP -->
 <function>Resource</function>
-<!-- .IN "resource" "" "@DEF@" -->
+<indexterm significance="preferred"><primary>resource</primary></indexterm>
 </para>
 <itemizedlist>
   <listitem>
@@ -286,7 +286,7 @@ by an application, or by user defaults.
 <para>
 <!-- .LP -->
 <function>Superclass</function>
-<!-- .IN "superclass" "" "@DEF@" -->
+<indexterm significance="preferred"><primary>superclass</primary></indexterm>
 </para>
 <itemizedlist>
   <listitem>
@@ -299,7 +299,7 @@ All members of a class are also members of the superclass.
 <para>
 <!-- .LP -->
 <function>User</function>
-<!-- .IN "user" "" "@DEF@" -->
+<indexterm significance="preferred"><primary>user</primary></indexterm>
 </para>
 <itemizedlist>
   <listitem>
@@ -311,7 +311,7 @@ A person interacting with a workstation.
 <para>
 <!-- .LP -->
 <function>Widget</function>
-<!-- .IN "widget" "" "@DEF@" -->
+<indexterm significance="preferred"><primary>widget</primary></indexterm>
 </para>
 <itemizedlist>
   <listitem>
@@ -324,7 +324,7 @@ widget).
 <para>
 <!-- .LP -->
 <function>Widget class</function>
-<!-- .IN "widget class" "" "@DEF@" -->
+<indexterm significance="preferred"><primary>widget class</primary></indexterm>
 </para>
 <itemizedlist>
   <listitem>
@@ -337,7 +337,7 @@ otherwise known as the type of the widget.
 <para>
 <!-- .LP -->
 <function>Widget programmer</function>
-<!-- .IN "widget programmer" "" "@DEF@" -->
+<indexterm significance="preferred"><primary>widget programmer</primary></indexterm>
 </para>
 <itemizedlist>
   <listitem>
@@ -354,7 +354,7 @@ A programmer who adds new widgets to the X Toolkit.
 <!-- .XS -->
 <!-- 	Underlying Model -->
 <!-- .XE -->
-<!-- .IN "underlying model" "" "@DEF@" -->
+<indexterm significance="preferred"><primary>underlying model</primary></indexterm>
 The underlying architectural model is based on the following premises:
 <!-- .KS -->
 </para>
@@ -410,7 +410,7 @@ suggestions about their own geometry.
 <itemizedlist>
   <listitem>
     <para>
-<!-- .IN "conventions" "used in manual" "@DEF@" -->
+<indexterm significance="preferred"><primary>conventions</primary><secondary>used in manual</secondary></indexterm>
 All resources available to the widgets are listed with each widget.  Many
 of these are available to more than one widget class due to the object
 oriented nature of the Intrinsics.  The new resources for each widget are
@@ -454,8 +454,8 @@ All other pointers passed to these functions are used for reading
 only.  A few arguments use pointers to structures that are used for
 both input and output and are indicated by using the <emphasis remap='I'>_in_out</emphasis>
 suffix.
-<!-- .IN "_return" "" "@DEF@" -->
-<!-- .IN "_in_out" "" "@DEF@" -->
+<indexterm significance="preferred"><primary>_return</primary></indexterm>
+<indexterm significance="preferred"><primary>_in_out</primary></indexterm>
     </para>
   </listitem>
 </itemizedlist>
@@ -464,8 +464,8 @@ suffix.
 <title>Format of the Widget Reference Chapters</title>
 <para>
 <!-- .LP -->
-<!-- .IN "conventions" "chapter format" "@DEF@" -->
-<!-- .IN "chapter format" "" "@DEF@" -->
+<indexterm significance="preferred"><primary>conventions</primary><secondary>chapter format</secondary></indexterm>
+<indexterm significance="preferred"><primary>chapter format</primary></indexterm>
 The majority of this document is a reference guide for the Athena
 widget set.  Chapters three through six give the programmer all
 information necessary to use the widgets.  The layout of the chapters
@@ -548,11 +548,11 @@ Superclass	Composite
     </term>
     <listitem>
       <para>
-<!-- .IN "application header file" "" "@DEF@" -->
+<indexterm significance="preferred"><primary>application header file</primary></indexterm>
 This file must be included when an application uses this widget.
 It usually contains the class definition, and some resource macros.
 This is often called the ``public'' header file.
-<!-- .IN "class header file" "" "@DEF@" -->
+<indexterm significance="preferred"><primary>class header file</primary></indexterm>
       </para>
     </listitem>
   </varlistentry>
@@ -565,7 +565,7 @@ This is often called the ``public'' header file.
 This file will only be used by widget programmers.  It will need to be
 included by any widget that subclasses this widget.  This is often
 called the ``private'' header file.
-<!-- .IN "class" "" "@DEF@" -->
+<indexterm significance="preferred"><primary>class</primary></indexterm>
       </para>
     </listitem>
   </varlistentry>
@@ -578,7 +578,7 @@ called the ``private'' header file.
 This is the widget class of this widget.  This global symbol is passed to
 <function>XtCreateWidget</function> so that the Intrinsics will know which type of widget
 to create.
-<!-- .IN "class name" "" "@DEF@" -->
+<indexterm significance="preferred"><primary>class name</primary></indexterm>
       </para>
     </listitem>
   </varlistentry>
@@ -590,7 +590,7 @@ to create.
       <para>
 This is the resource name of this class.  This name can be used in
 a resource file to match any widget of this class.
-<!-- .IN "superclass" "" -->
+<indexterm><primary>superclass</primary></indexterm>
       </para>
     </listitem>
   </varlistentry>
@@ -622,11 +622,11 @@ The next section is a table showing the
 name, class, type and default value of each resource that is available
 to this widget.  There is also a column containing notes describing
 special restrictions placed upon individual resources.
-<!-- .IN "notes" "" "@DEF@" -->
-<!-- .IN "A, note" "" "@DEF@" -->
-<!-- .IN "D, note" "" "@DEF@" -->
-<!-- .IN "C, note" "" "@DEF@" -->
-<!-- .IN "R, note" "" "@DEF@" -->
+<indexterm significance="preferred"><primary>notes</primary></indexterm>
+<indexterm significance="preferred"><primary>A, note</primary></indexterm>
+<indexterm significance="preferred"><primary>D, note</primary></indexterm>
+<indexterm significance="preferred"><primary>C, note</primary></indexterm>
+<indexterm significance="preferred"><primary>R, note</primary></indexterm>
 <variablelist>
   <varlistentry>
     <term>
@@ -704,9 +704,9 @@ the widget.
 <!-- .XS -->
 <!-- 	Input Focus -->
 <!-- .XE -->
-<!-- .IN "input focus" "" "@DEF@" -->
-<!-- .IN "input" "" "@DEF@" -->
-<!-- .IN "XtNinput" "" "@DEF@" -->
+<indexterm significance="preferred"><primary>input focus</primary></indexterm>
+<indexterm significance="preferred"><primary>input</primary></indexterm>
+<indexterm significance="preferred"><primary>XtNinput</primary></indexterm>
 <para>
 <!-- .LP -->
 The Intrinsics define a resource on all Shell widgets that interact with

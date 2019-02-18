@@ -3,19 +3,19 @@
 <!-- .XS -->
 <!-- 	MenuButton Widget -->
 <!-- .XE -->
-<!-- .IN "MenuButton widget" "" "@DEF@" -->
+<indexterm significance="preferred"><primary>MenuButton widget</primary></indexterm>
 <!-- .sp -->
 <literallayout class="monospaced">
 <!-- .TA 2.0i -->
 <!-- .ta 2.0i -->
 Application Header file	&lt;X11/Xaw/MenuButton.h&gt;
-<!-- .IN "MenuButton.h" "" -->
+<indexterm><primary>MenuButton.h</primary></indexterm>
 Class Header file	&lt;X11/Xaw/MenuButtonP.h&gt;
-<!-- .IN "MenuButtonP.h" "" -->
+<indexterm><primary>MenuButtonP.h</primary></indexterm>
 Class		menuButtonWidgetClass
-<!-- .IN "menuButtonWidgetClass" "" -->
+<indexterm><primary>menuButtonWidgetClass</primary></indexterm>
 Class Name	MenuButton
-<!-- .IN "MenuButton widget" "class name" -->
+<indexterm><primary>MenuButton widget</primary><secondary>class name</secondary></indexterm>
 Superclass	Command
 </literallayout>
 <para>
@@ -48,7 +48,7 @@ or from the resource database:
 </para>
 <para>
 <!-- .LP -->
-<!-- .IN "MenuButton widget" "resources" -->
+<indexterm><primary>MenuButton widget</primary><secondary>resources</secondary></indexterm>
 <informaltable>
   <tgroup cols='5' align='center'>
   <colspec colname='c1'/>
@@ -413,7 +413,7 @@ nonvolatile memory.
 </sect3>
 <sect3 id="MenuButton_Actions">
 <title>MenuButton Actions</title>
-<!-- .IN "MenuButton widget" "actions" -->
+<indexterm><primary>MenuButton widget</primary><secondary>actions</secondary></indexterm>
 <para>
 <!-- .LP -->
 The MenuButton widget supports the following actions:
