@@ -11,6 +11,12 @@
 #include <unistd.h>	/* for sysconf(), and getpagesize() */
 #endif
 
+#if defined(_WIN32) && !defined(__CYGWIN__)
+/* AC_CHECK_FUNCS([getpagesize]) may report a false positive for
+   getpagesize() when using MinGW gcc, since it's present in libgcc.a */
+#undef HAVE_GETPAGESIZE
+#endif
+
 #if defined(linux)
 /* kernel header doesn't work with -ansi */
 /* #include <asm/page.h> *//* for PAGE_SIZE */
