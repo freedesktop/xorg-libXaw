@@ -110,7 +110,7 @@ static Bool prim(XawEvalInfo*);
 /* resources */
 static String XawConvertActionRes(XawActionResList*, Widget w, String);
 
-static String _XawEscapeActionVarValue(String);
+static char * _XawEscapeActionVarValue(String);
 static String _XawUnescapeActionVarValue(String);
 static XawActionResList *_XawCreateActionResList(WidgetClass);
 static XawActionResList *_XawFindActionResList(WidgetClass);
@@ -859,10 +859,10 @@ _XawFindActionRes(XawActionResList *list, Widget detail, String name)
  * Start of Variables Implementation Code
  */
 /* For speed, only does memory allocation when really required */
-static String
+static char *
 _XawEscapeActionVarValue(String value)
 {
-  String escape;
+  char * escape;
 
   if (value[0] == '$' || value[0] == '\\')
     {

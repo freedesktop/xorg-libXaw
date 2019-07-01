@@ -94,7 +94,7 @@ static FILE *InitStringOrFile(AsciiSrcObject, Bool);
 static void LoadPieces(AsciiSrcObject, FILE*, char*);
 static void RemoveOldStringOrFile(AsciiSrcObject, Bool);
 static void RemovePiece(AsciiSrcObject, Piece*);
-static String StorePiecesInString(AsciiSrcObject);
+static char * StorePiecesInString(AsciiSrcObject);
 static Bool WriteToFile(String, String, unsigned);
 static Bool WritePiecesToFile(AsciiSrcObject, String);
 static void GetDefaultPieceSize(Widget, int, XrmValue*);
@@ -1362,10 +1362,10 @@ WritePiecesToFile(AsciiSrcObject src, String name)
  * Description:
  *	Store the pieces in memory into a standard ascii string.
  */
-static String
+static char *
 StorePiecesInString(AsciiSrcObject src)
 {
-    String string;
+    char * string;
     XawTextPosition first;
     Piece *piece;
 

@@ -1498,7 +1498,8 @@ XawTextSinkConvertPropertyList(String name, String spec, Screen *screen,
     XawTextPropertyList **ptr = NULL;
     XawTextPropertyList *propl, *prev = NULL;
     XawTextProperty *def_prop = NULL;
-    String str, tok, tmp;
+    String str, tok;
+    char *tmp;
     char buffer[BUFSIZ];
 
     if (prop_lists) ptr = (XawTextPropertyList**)
