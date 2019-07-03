@@ -259,7 +259,7 @@ _XawCvtBooleanToString(Display *dpy, XrmValue *args, Cardinal *num_args,
 
   snprintf(buffer, sizeof(buffer), "%s",
 	   *(Boolean *)fromVal->addr ? XtEtrue : XtEfalse);
-  size = strlen(buffer) + 1;
+  size = (Cardinal)(strlen(buffer) + 1);
 
   string_done(buffer);
 }
@@ -278,7 +278,7 @@ _XawCvtBoolToString(Display *dpy, XrmValue *args, Cardinal *num_args,
 
   snprintf(buffer, sizeof(buffer), "%s",
 	   *(Bool *)fromVal->addr ? XtEtrue : XtEfalse);
-  size = strlen(buffer) + 1;
+  size = (Cardinal)(strlen(buffer) + 1);
 
   string_done(buffer);
 }
@@ -296,7 +296,7 @@ _XawCvtPositionToString(Display *dpy, XrmValue *args, Cardinal *num_args,
     TypeToStringNoArgsWarning(dpy, XtRPosition);
 
   snprintf(buffer, sizeof(buffer), "%d", *(Position *)fromVal->addr);
-  size = strlen(buffer) + 1;
+  size = (Cardinal)(strlen(buffer) + 1);
 
   string_done(buffer);
 }
@@ -314,7 +314,7 @@ _XawCvtShortToString(Display *dpy, XrmValue *args, Cardinal *num_args,
     TypeToStringNoArgsWarning(dpy, XtRShort);
 
   snprintf(buffer, sizeof(buffer), "%d", *(short *)fromVal->addr);
-  size = strlen(buffer) + 1;
+  size = (Cardinal)(strlen(buffer) + 1);
 
   string_done(buffer);
 }
@@ -332,7 +332,7 @@ _XawCvtDimensionToString(Display *dpy, XrmValue *args, Cardinal *num_args,
     TypeToStringNoArgsWarning(dpy, XtRDimension);
 
   snprintf(buffer, sizeof(buffer), "%u", *(Dimension *)fromVal->addr);
-  size = strlen(buffer) + 1;
+  size = (Cardinal)(strlen(buffer) + 1);
 
   string_done(buffer);
 }
@@ -350,7 +350,7 @@ _XawCvtCARD32ToString(Display *dpy, XrmValue *args, Cardinal *num_args,
     TypeToStringNoArgsWarning(dpy, "CARD32");
 
   snprintf(buffer, sizeof(buffer), "0x%08hx", *(int *)fromVal->addr);
-  size = strlen(buffer) + 1;
+  size = (Cardinal)(strlen(buffer) + 1);
 
   string_done(buffer);
 }
@@ -368,7 +368,7 @@ _XawCvtIntToString(Display *dpy, XrmValue *args, Cardinal *num_args,
     TypeToStringNoArgsWarning(dpy, XtRInt);
 
   snprintf(buffer, sizeof(buffer), "%d", *(int *)fromVal->addr);
-  size = strlen(buffer) + 1;
+  size = (Cardinal)(strlen(buffer) + 1);
 
   string_done(buffer);
 }
@@ -386,7 +386,7 @@ _XawCvtCardinalToString(Display *dpy, XrmValue *args, Cardinal *num_args,
     TypeToStringNoArgsWarning(dpy, XtRCardinal);
 
   snprintf(buffer, sizeof(buffer), "%u", *(Cardinal *)fromVal->addr);
-  size = strlen(buffer) + 1;
+  size = (Cardinal)(strlen(buffer) + 1);
 
   string_done(buffer);
 }
@@ -419,7 +419,7 @@ _XawCvtAtomToString(Display *dpy, XrmValue *args, Cardinal *num_args,
       return (False);
     }
 
-  size = strlen(buffer) + 1;
+  size = (Cardinal)(strlen(buffer) + 1);
 
   string_done(buffer);
 }
@@ -455,7 +455,7 @@ _XawCvtPixelToString(Display *dpy, XrmValue *args, Cardinal *num_args,
   XQueryColor(dpy, colormap, &color);
   snprintf(buffer, sizeof(buffer), "rgb:%04hx/%04hx/%04hx",
 	   color.red, color.green, color.blue);
-  size = strlen(buffer) + 1;
+  size = (Cardinal)(strlen(buffer) + 1);
 
   string_done(buffer);
 }
@@ -486,7 +486,7 @@ _XawCvtFontStructToString(Display *dpy, XrmValue *args, Cardinal *num_args,
       if (tmp)
 	{
 	  snprintf(buffer, sizeof(buffer), "%s", tmp);
-	  size = strlen(tmp);
+	  size = (Cardinal)strlen(tmp);
 	  XFree(tmp);
 	}
     }
@@ -516,7 +516,7 @@ _XawCvtUnsignedCharToString(Display *dpy, XrmValue *args, Cardinal *num_args,
 
   snprintf(buffer, sizeof(buffer), "%u",
 	   *(unsigned char *)fromVal->addr);
-  size = strlen(buffer) + 1;
+  size = (Cardinal)(strlen(buffer) + 1);
 
   string_done(buffer);
 }
@@ -577,7 +577,7 @@ _XawCvtDisplayListToString(Display *dpy, XrmValue *args, Cardinal *num_args,
     TypeToStringNoArgsWarning(dpy, XawRDisplayList);
 
   buffer = XawDisplayListString(*(XawDisplayList **)(fromVal[0].addr));
-  size = strlen(buffer) + 1;
+  size = (Cardinal)(strlen(buffer) + 1);
 
   string_done(buffer);
 }
@@ -690,7 +690,7 @@ _XawCvtPixmapToString(Display *dpy, XrmValue *args, Cardinal *num_args,
     return (_XawCvtCARD32ToString(dpy, args, num_args, fromVal, toVal,
 				  converter_data));
 
-  size = strlen(buffer) + 1;
+  size = (Cardinal)(strlen(buffer) + 1);
 
   string_done(buffer);
 }
