@@ -228,7 +228,7 @@ tic(XtPointer client_data, XtIntervalId *id)
     }
     DO_CALLBACK(rw);
 
-    rw->repeater.timer = ADD_TIMEOUT(rw, rw->repeater.next_delay);
+    rw->repeater.timer = ADD_TIMEOUT(rw, (unsigned long)rw->repeater.next_delay);
 
     if (rw->repeater.decay) {
 	rw->repeater.next_delay -= rw->repeater.decay;
@@ -282,7 +282,7 @@ ActionStart(Widget gw, XEvent *event, String *params, Cardinal *num_params)
 	XtCallCallbackList(gw, rw->repeater.start_callbacks, NULL);
 
     DO_CALLBACK(rw);
-    rw->repeater.timer = ADD_TIMEOUT(rw, rw->repeater.initial_delay);
+    rw->repeater.timer = ADD_TIMEOUT(rw, (unsigned long)rw->repeater.initial_delay);
     rw->repeater.next_delay = rw->repeater.repeat_delay;
 }
 
