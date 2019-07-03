@@ -295,9 +295,9 @@ HighlightRegion(CommandWidget cbw)
     rect.width = XtWidth(cbw);
     rect.height = XtHeight(cbw);
     XUnionRectWithRegion(&rect, emptyRegion, outerRegion);
-    rect.x = rect.y = cbw->command.highlight_thickness;
-    rect.width -= cbw->command.highlight_thickness * 2;
-    rect.height -= cbw->command.highlight_thickness * 2;
+    rect.x = rect.y = (short)cbw->command.highlight_thickness;
+    rect.width = (rect.width - cbw->command.highlight_thickness * 2);
+    rect.height = (rect.height - cbw->command.highlight_thickness * 2);
     XUnionRectWithRegion(&rect, emptyRegion, innerRegion);
     XSubtractRegion(outerRegion, innerRegion, outerRegion);
 
@@ -469,13 +469,13 @@ PaintCommandWidget(Widget w, XEvent *event, Region region, Bool change)
 		XClearArea(XtDisplay(w), XtWindow(w),
 			   0, cbw->command.highlight_thickness,
 			   cbw->command.highlight_thickness,
-			   XtHeight(cbw) - (cbw->command.highlight_thickness<<1),
+			   (unsigned)(XtHeight(cbw) - (cbw->command.highlight_thickness<<1)),
 			   False);
 		XClearArea(XtDisplay(w), XtWindow(w),
 			   XtWidth(cbw) - cbw->command.highlight_thickness,
 			   cbw->command.highlight_thickness,
 			   cbw->command.highlight_thickness,
-			   XtHeight(cbw) - (cbw->command.highlight_thickness<<1),
+			   (unsigned)(XtHeight(cbw) - (cbw->command.highlight_thickness<<1)),
 			   False);
 		XClearArea(XtDisplay(w), XtWindow(w),
 			   0, XtHeight(cbw) - cbw->command.highlight_thickness,
@@ -486,8 +486,8 @@ PaintCommandWidget(Widget w, XEvent *event, Region region, Bool change)
 		int offset = cbw->command.highlight_thickness / 2;
 
 		XDrawRectangle(XtDisplay(w),XtWindow(w), rev_gc, offset, offset,
-			       XtWidth(cbw) - cbw->command.highlight_thickness,
-			      XtHeight(cbw) - cbw->command.highlight_thickness);
+			       (unsigned)(XtWidth(cbw) - cbw->command.highlight_thickness),
+			       (unsigned)(XtHeight(cbw) - cbw->command.highlight_thickness));
 	   }
 	}
     }
@@ -593,7 +593,7 @@ ShapeButton(CommandWidget cbw, Bool checkRectangular)
     if (cbw->command.shape_style == XawShapeRoundedRectangle) {
 	corner_size = XtWidth(cbw) < XtHeight(cbw) ?
 			XtWidth(cbw) : XtHeight(cbw);
-	corner_size = (corner_size * cbw->command.corner_round) / 100;
+	corner_size = (Dimension)((corner_size * cbw->command.corner_round) / 100);
     }
 
     if (checkRectangular || cbw->command.shape_style != XawShapeRectangle) {
