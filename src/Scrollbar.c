@@ -363,7 +363,7 @@ FractionLoc(ScrollbarWidget w, int x, int y)
 {
     float   result;
 
-    result = PICKLENGTH(w, x / (float)XtWidth(w), y / (float)XtHeight(w));
+    result = PICKLENGTH(w, (float)x / (float)XtWidth(w), (float)y / (float)XtHeight(w));
 
     return (FloatInRange(result, 0.0, 1.0));
 }
@@ -382,26 +382,26 @@ FillArea(ScrollbarWidget w, int top, int bottom, int thumb)
     if (bottom <= top)
 	return;
 
-    length = bottom - top;
+    length = (Dimension)(bottom - top);
 
     switch(thumb) {
 	/* Fill the new Thumb location */
 	case 1:
 	    if (w->scrollbar.orientation == XtorientHorizontal)
 		XFillRectangle(XtDisplay(w), XtWindow(w), w->scrollbar.gc,
-			       top, 1, length, XtHeight(w) - 2);
+			       top, 1, length, (unsigned)(XtHeight(w) - 2));
 	    else
 		XFillRectangle(XtDisplay(w), XtWindow(w), w->scrollbar.gc,
-			       1, top, XtWidth(w) - 2, length);
+			       1, top, (unsigned)(XtWidth(w) - 2), length);
 	    break;
 	/* Clear the old Thumb location */
 	case 0:
 	    if (w->scrollbar.orientation == XtorientHorizontal)
 		XClearArea(XtDisplay(w), XtWindow(w),
-			   top, 1, length, XtHeight(w) - 2, False);
+			   top, 1, length, (unsigned)(XtHeight(w) - 2), False);
 	    else
 		XClearArea(XtDisplay(w), XtWindow(w),
-			   1, top, XtWidth(w) - 2, length, False);
+			   1, top, (unsigned)(XtWidth(w) - 2), length, False);
 	    break;
     }
 }
@@ -416,13 +416,13 @@ PaintThumb(ScrollbarWidget w)
     Position oldtop, oldbot, newtop, newbot;
 
     oldtop = w->scrollbar.topLoc;
-    oldbot = oldtop + w->scrollbar.shownLength;
-    newtop = w->scrollbar.length * w->scrollbar.top;
-    newbot = newtop + (int)(w->scrollbar.length * w->scrollbar.shown);
+    oldbot = (Position)(oldtop + w->scrollbar.shownLength);
+    newtop = (Position)(w->scrollbar.length * w->scrollbar.top);
+    newbot = (Position)(newtop + (int)(w->scrollbar.length * w->scrollbar.shown));
     if (newbot < newtop + (int)w->scrollbar.min_thumb)
-	newbot = newtop + w->scrollbar.min_thumb;
+	newbot = (Position)(newtop + w->scrollbar.min_thumb);
     w->scrollbar.topLoc = newtop;
-    w->scrollbar.shownLength = newbot - newtop;
+    w->scrollbar.shownLength = (Dimension)(newbot - newtop);
 
     if (XtIsRealized((Widget)w)) {
 	if (newtop < oldtop)
@@ -595,20 +595,20 @@ XawScrollbarRedisplay(Widget gw, XEvent *event, Region region)
     if (w->scrollbar.orientation == XtorientHorizontal) {
 	x = w->scrollbar.topLoc;
 	y = 1;
-	width = w->scrollbar.shownLength;
-	height = XtHeight(w) - 2;
+	width = (unsigned)(w->scrollbar.shownLength);
+	height = (unsigned)(XtHeight(w) - 2);
     }
     else {
 	x = 1;
 	y = w->scrollbar.topLoc;
-	width = XtWidth(w) - 2;
-	height = w->scrollbar.shownLength;
+	width = (unsigned)(XtWidth(w) - 2);
+	height = (unsigned)(w->scrollbar.shownLength);
     }
 
     if (region == NULL ||
 	XRectInRegion(region, x, y, width, height) != RectangleOut) {
 	/* Forces entire thumb to be painted */
-	w->scrollbar.topLoc = -(w->scrollbar.length + 1);
+	w->scrollbar.topLoc = (Position)(-(w->scrollbar.length + 1));
 	PaintThumb(w);
     }
 }
@@ -729,23 +729,23 @@ ExtractPosition(XEvent *event, Position *x, Position *y)
 {
     switch(event->type) {
 	case MotionNotify:
-	    *x = event->xmotion.x;
-	    *y = event->xmotion.y;
+	    *x = (Position)event->xmotion.x;
+	    *y = (Position)event->xmotion.y;
 	    break;
 	case ButtonPress:
 	case ButtonRelease:
-	    *x = event->xbutton.x;
-	    *y = event->xbutton.y;
+	    *x = (Position)event->xbutton.x;
+	    *y = (Position)event->xbutton.y;
 	    break;
 	case KeyPress:
 	case KeyRelease:
-	    *x = event->xkey.x;
-	    *y = event->xkey.y;
+	    *x = (Position)event->xkey.x;
+	    *y = (Position)event->xkey.y;
 	    break;
 	case EnterNotify:
 	case LeaveNotify:
-	    *x = event->xcrossing.x;
-	    *y = event->xcrossing.y;
+	    *x = (Position)event->xcrossing.x;
+	    *y = (Position)event->xcrossing.y;
 	    break;
 	default:
 	    *x = 0;
@@ -876,9 +876,16 @@ XawScrollbarSetThumb(Widget gw,
     if (w->scrollbar.direction == 'c')	/* if still thumbing */
 	return;
 
-    w->scrollbar.top = top > 1.0 ? 1.0 : top >= 0.0 ? top : w->scrollbar.top;
+    w->scrollbar.top = (float)((top > 1.0)
+			       ? 1.0
+			       : ((top >= 0.0)
+			          ? top
+			          : w->scrollbar.top));
 
-    w->scrollbar.shown = shown > 1.0 ? 1.0 : shown >= 0.0 ?
-				shown : w->scrollbar.shown;
+    w->scrollbar.shown = (float)((shown > 1.0)
+				  ? 1.0
+				  : (shown >= 0.0
+				     ? shown
+				     : w->scrollbar.shown));
     PaintThumb(w);
 }
