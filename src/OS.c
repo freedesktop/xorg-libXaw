@@ -34,12 +34,12 @@ _XawGetPageSize(void)
     /* Try each supported method in the preferred order */
 
 #if defined(_SC_PAGESIZE) || defined(HAS_SC_PAGESIZE)
-    pagesize = sysconf(_SC_PAGESIZE);
+    pagesize = (int) sysconf(_SC_PAGESIZE);
 #endif
 
 #ifdef _SC_PAGE_SIZE
     if (pagesize == -1)
-	pagesize = sysconf(_SC_PAGE_SIZE);
+	pagesize = (int) sysconf(_SC_PAGE_SIZE);
 #endif
 
 #ifdef HAVE_GETPAGESIZE
