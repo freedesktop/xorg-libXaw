@@ -297,9 +297,9 @@ XawCvtCompoundTextToString(Display *dpy, XrmValuePtr args, Cardinal *num_args,
 	"conversion from CT to MB failed.", NULL, NULL);
 	return False;
     }
-    len = strlen(*list);
-    toVal->size = len;
-    mbs = XtRealloc(mbs, len + 1); /* keep buffer because no one call free :( */
+    len = (int)strlen(*list);
+    toVal->size = (unsigned)len;
+    mbs = XtRealloc(mbs, (Cardinal)(len + 1)); /* keep buffer because no one call free :( */
     strcpy(mbs, *list);
     XFreeStringList(list);
     toVal->addr = (XtPointer)mbs;
@@ -432,7 +432,9 @@ XawVendorShellExtResize(Widget w)
 	for( i = 0; i < sw->composite.num_children; i++ ) {
 	    if( XtIsManaged( sw->composite.children[ i ] ) ) {
 		childwid = sw->composite.children[ i ];
-		XtResizeWidget( childwid, sw->core.width, core_height,
+		XtResizeWidget( childwid,
+			       (Dimension)sw->core.width,
+			       (Dimension)core_height,
 			       childwid->core.border_width );
 	    }
 	}
@@ -467,8 +469,8 @@ XawVendorShellGeometryManager(Widget wid, XtWidgetGeometry *request,
 	    my_request.request_mode |= CWWidth;
 	}
 	if (request->request_mode & CWHeight) {
-	    my_request.height = request->height
-			      + _XawImGetImAreaHeight( wid );
+	    my_request.height = (Dimension)(request->height
+			      + _XawImGetImAreaHeight( wid ));
 	    my_request.request_mode |= CWHeight;
 	}
 	if (request->request_mode & CWBorderWidth) {
@@ -489,7 +491,7 @@ XawVendorShellGeometryManager(Widget wid, XtWidgetGeometry *request,
 	    wid->core.width = shell->core.width;
 	    wid->core.height = shell->core.height;
 	    if (request->request_mode & CWBorderWidth) {
-		wid->core.x = wid->core.y = -request->border_width;
+		wid->core.x = wid->core.y = (Position)(-request->border_width);
 	    }
 	    _XawImCallVendorShellExtResize(wid);
 	    return XtGeometryYes;
@@ -504,7 +506,7 @@ XawVendorShellChangeManaged(Widget wid)
 	int i;
 
 	(*SuperClass->composite_class.change_managed)(wid);
-	for (i = w->composite.num_children, childP = w->composite.children;
+	for (i = (int)w->composite.num_children, childP = w->composite.children;
 	     i; i--, childP++) {
 	    if (XtIsManaged(*childP)) {
 		XtSetKeyboardFocus(wid, *childP);
