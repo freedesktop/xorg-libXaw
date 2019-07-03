@@ -423,15 +423,15 @@ ClearToBackground(Widget w, int x, int y,
     TextWidget xaw = (TextWidget)XtParent(w);
     Position x1, y1, x2, y2;
 
-    x1 = XawMax(x, xaw->text.r_margin.left);
-    y1 = XawMax(y, xaw->text.r_margin.top);
-    x2 = XawMin(x + (int)width, (int)XtWidth(xaw) - xaw->text.r_margin.right);
-    y2 = XawMin(y + (int)height, (int)XtHeight(xaw) - xaw->text.r_margin.bottom);
+    x1 = (XawMax(x, xaw->text.r_margin.left));
+    y1 = (XawMax(y, xaw->text.r_margin.top));
+    x2 = (XawMin(x + (int)width, (int)XtWidth(xaw) - xaw->text.r_margin.right));
+    y2 = (XawMin(y + (int)height, (int)XtHeight(xaw) - xaw->text.r_margin.bottom));
 
     x = x1;
     y = y1;
-    width = XawMax(0, x2 - x1);
-    height = XawMax(0, y2 - y1);
+    width = (unsigned)(XawMax(0, x2 - x1));
+    height = (unsigned)(XawMax(0, y2 - y1));
 
     if (height != 0 && width != 0)
 	XClearArea(XtDisplayOfObject(w), XtWindowOfObject(w),
@@ -594,7 +594,7 @@ SetTabs(Widget w, int tab_count, short *tabs)
 static void
 GetCursorBounds(Widget w, XRectangle *rect)
 {
-    rect->x = rect->y = rect->width = rect->height = 0;
+    rect->x = rect->y = (short)(rect->width = rect->height = 0);
 }
 
 /*
@@ -858,7 +858,7 @@ XawTextSinkSetTabs(Widget w, int tab_count, int *tabs)
 {
     if (tab_count > 0) {
 	TextSinkObjectClass cclass = (TextSinkObjectClass)w->core.widget_class;
-	short *char_tabs = (short*)XtMalloc((unsigned)tab_count * sizeof(short));
+	short *char_tabs = (short*)XtMalloc((Cardinal)((unsigned)tab_count * sizeof(short)));
 	short *tab, len = 0;
 	int i;
 
@@ -1015,7 +1015,7 @@ static Cardinal num_prop_lists;
 static int
 bcmp_qident(_Xconst void *left, _Xconst void *right)
 {
-    return ((long)left - (*(XawTextProperty**)right)->identifier);
+    return (int)((long)left - (*(XawTextProperty**)right)->identifier);
 }
 
 static int
@@ -1102,7 +1102,7 @@ SetXlfdDefaults(Display *display, XawTextProperty *property)
     atom = XInternAtom(display, "UNDERLINE_THICKNESS", True);
     if (XGetFontProperty(property->font, atom, &value) &&
 	(str = XGetAtomName(display, value)) != NULL) {
-	property->underline_thickness = atoi(str);
+	property->underline_thickness = (short)(atoi(str));
 	XFree(str);
     }
     else {
@@ -1115,9 +1115,9 @@ SetXlfdDefaults(Display *display, XawTextProperty *property)
 	 */
 	if (property->pixel_size != NULLQUARK) {
 	    property->underline_thickness =
-		atoi(XrmQuarkToString(property->pixel_size)) / 10;
+		(short)(atoi(XrmQuarkToString(property->pixel_size)) / 10);
 	    property->underline_thickness =
-		XawMax(1, property->underline_thickness);
+		(XawMax(1, property->underline_thickness));
 	}
 	else
 	    property->underline_thickness = 1;
@@ -1126,7 +1126,7 @@ SetXlfdDefaults(Display *display, XawTextProperty *property)
     atom = XInternAtom(display, "UNDERLINE_POSITION", True);
     if (XGetFontProperty(property->font, atom, &value) &&
 	(str = XGetAtomName(display, value)) != NULL) {
-	property->underline_position = atoi(str);
+	property->underline_position = (short)(atoi(str));
 	XFree(str);
     }
     else
@@ -1139,8 +1139,8 @@ SetXlfdDefaults(Display *display, XawTextProperty *property)
 
     /* I am assuming xlfd does not consider that lines are
      * centered in the path */
-    property->underline_position += property->underline_thickness >> 1;
-
+    property->underline_position = (short)(property->underline_position
+					   + (property->underline_thickness >> 1));
 }
 
 static void
@@ -1194,7 +1194,7 @@ XawTextSinkCopyProperty(Widget w, XrmQuark property)
     if (cur)
 	memcpy(ret, cur, sizeof(XawTextProperty));
     ret->identifier = NULLQUARK;
-    ret->mask &= ~XAW_TPROP_FONT;
+    ret->mask &= (unsigned long)(~XAW_TPROP_FONT);
 
     return (ret);
 }
@@ -1324,7 +1324,7 @@ _XawTextSinkAddProperty(XawTextPropertyList *list, XawTextProperty *property,
 	    SetXlfdDefaults(DisplayOfScreen(list->screen), result);
 	}
 	else
-	    result->mask &= ~XAW_TPROP_FONT;
+	    result->mask &= (unsigned long)(~XAW_TPROP_FONT);
     }
 
     if (result->font)
@@ -1356,8 +1356,9 @@ _XawTextSinkAddProperty(XawTextPropertyList *list, XawTextProperty *property,
     }
 
     list->properties = (XawTextProperty**)
-	XtRealloc((XtPointer)list->properties, sizeof(XawTextProperty*) *
-		  (list->num_properties + 1));
+	XtRealloc((XtPointer)list->properties,
+		  (Cardinal)(sizeof(XawTextProperty*) *
+			     (list->num_properties + 1)));
     list->properties[list->num_properties++] = result;
     qsort((void*)list->properties, list->num_properties,
 	      sizeof(XawTextProperty*), qcmp_qident);
@@ -1713,8 +1714,9 @@ XawTextSinkConvertPropertyList(String name, String spec, Screen *screen,
     }
 
     prop_lists = (XawTextPropertyList**)
-    XtRealloc((XtPointer)prop_lists, sizeof(XawTextPropertyList*) *
-	      (num_prop_lists + 1));
+    XtRealloc((XtPointer)prop_lists,
+	      (Cardinal)(sizeof(XawTextPropertyList*) *
+			 (num_prop_lists + 1)));
     prop_lists[num_prop_lists++] = propl;
     qsort((void*)prop_lists, num_prop_lists, sizeof(XawTextPropertyList*),
 	  qcmp_qident);
@@ -1759,7 +1761,7 @@ CvtStringToPropertyList(Display *dpy, XrmValue *args, Cardinal *num_args,
 	if (ptr) {
 	    Screen *screen = w->core.screen;
 	    Colormap colormap = w->core.colormap;
-	    int depth = w->core.depth;
+	    int depth = (int)w->core.depth;
 
 	    propl = *ptr;
 	    while (propl) {
@@ -1819,7 +1821,7 @@ CvtPropertyListToString(Display *dpy, XrmValue *args, Cardinal *num_args,
     }
 
     buffer = XrmQuarkToString(propl->identifier);
-    size = strlen(buffer) + 1;
+    size = (Cardinal)(strlen(buffer) + 1);
 
     if (toVal->addr != NULL) {
 	if (toVal->size < size) {
