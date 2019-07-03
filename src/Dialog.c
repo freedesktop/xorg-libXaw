@@ -357,7 +357,7 @@ static void
 XawDialogGetValuesHook(Widget w, ArgList args, Cardinal *num_args)
 {
     Arg a[1];
-    String s;
+    char * s;
     DialogWidget src = (DialogWidget)w;
     unsigned int i;
 
