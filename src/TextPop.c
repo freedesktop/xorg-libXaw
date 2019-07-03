@@ -313,12 +313,12 @@ InsertFileNamed(Widget tw, char *str)
     fseek(file, 0L, SEEK_END);
 
     text.firstPos = 0;
-    text.length = ftell(file);
-    text.ptr = XtMalloc(text.length + 1);
+    text.length = (int)ftell(file);
+    text.ptr = XtMalloc((Cardinal)(text.length + 1));
     text.format = XawFmt8Bit;
 
     fseek(file, 0L, SEEK_SET);
-    if (fread(text.ptr, 1, text.length, file) != text.length)
+    if (fread(text.ptr, 1, (size_t)text.length, file) != text.length)
 	XtErrorMsg("readError", "insertFileNamed", "XawError",
 		   "fread returned error", NULL, NULL);
 
@@ -844,10 +844,10 @@ DoSearch(struct SearchAndReplace *search)
 
     text.firstPos = 0;
     text.ptr = GetStringRaw(search->search_text);
-    if ((text.format = _XawTextFormat(ctx)) == XawFmtWide)
-	text.length = wcslen((wchar_t*)text.ptr);
+    if ((text.format = (unsigned long)_XawTextFormat(ctx)) == XawFmtWide)
+	text.length = (int)wcslen((wchar_t*)text.ptr);
     else {
-	text.length = strlen(text.ptr);
+	text.length = (int)strlen(text.ptr);
 
 #ifndef OLDXAW
 	if (search->case_sensitive) {
@@ -877,15 +877,15 @@ DoSearch(struct SearchAndReplace *search)
 	int len;
 
 	ptr = GetString(search->search_text);
-	len = strlen(ptr);
+	len = (int)strlen(ptr);
 	snprintf(msg, sizeof(msg), "%s", ptr);
 
 	ptr = strchr(msg, '\n');
 	if (ptr != NULL || sizeof(msg) - 1 < len) {
 	    if (ptr != NULL)
-		len = ptr - msg + 4;
+		len = (int)(ptr - msg + 4);
 	    else
-		len = strlen(msg);
+		len = (int)strlen(msg);
 
 	    if (len < 4)
 		strcpy(msg, "...");
@@ -1006,18 +1006,18 @@ Replace(struct SearchAndReplace *search, Bool once_only, Bool show_current)
     Bool redisplay;
 
     find.ptr = GetStringRaw(search->search_text);
-    if ((find.format = _XawTextFormat(ctx)) == XawFmtWide)
-	find.length = (XawTextPosition)wcslen((wchar_t*)find.ptr);
+    if ((find.format = (unsigned long)_XawTextFormat(ctx)) == XawFmtWide)
+	find.length = (int)(XawTextPosition)wcslen((wchar_t*)find.ptr);
     else
-	find.length = (XawTextPosition)strlen(find.ptr);
+	find.length = (int)(XawTextPosition)strlen(find.ptr);
     find.firstPos = 0;
 
     replace.ptr = GetStringRaw(search->rep_text);
     replace.firstPos = 0;
-    if ((replace.format = _XawTextFormat(ctx)) == XawFmtWide)
-	replace.length = wcslen((wchar_t*)replace.ptr);
+    if ((replace.format = (unsigned long)_XawTextFormat(ctx)) == XawFmtWide)
+	replace.length = (int)wcslen((wchar_t*)replace.ptr);
     else
-	replace.length = strlen(replace.ptr);
+	replace.length = (int)strlen(replace.ptr);
 
     dir = (XawTextScanDirection)(unsigned long)
       ((XPointer)XawToggleGetCurrent(search->left_toggle) - R_OFFSET);
@@ -1038,14 +1038,14 @@ Replace(struct SearchAndReplace *search, Bool once_only, Bool show_current)
 		    int len;
 
 		    ptr = GetString(search->search_text);
-		    len = strlen(ptr);
+		    len = (int)strlen(ptr);
 		    snprintf(msg, sizeof(msg), "%s", ptr);
 		    ptr = strchr(msg, '\n');
 		    if (ptr != NULL || sizeof(msg) - 1 < len) {
 			if (ptr != NULL)
-			    len = ptr - msg + 4;
+			    len = (int)(ptr - msg + 4);
 			else
-			    len = strlen(msg);
+			    len = (int)strlen(msg);
 
 			if (len < 4)
 			    strcpy(msg, "...");
@@ -1356,13 +1356,13 @@ CenterWidgetOnPoint(Widget w, XEvent *event)
 	switch (event->type) {
 	    case ButtonPress:
 	    case ButtonRelease:
-		x = event->xbutton.x_root;
-		y = event->xbutton.y_root;
+		x = (Position)event->xbutton.x_root;
+		y = (Position)event->xbutton.y_root;
 		break;
 	    case KeyPress:
 	    case KeyRelease:
-		x = event->xkey.x_root;
-		y = event->xkey.y_root;
+		x = (Position)event->xkey.x_root;
+		y = (Position)event->xkey.y_root;
 		break;
 	    default:
 		return;
@@ -1377,16 +1377,16 @@ CenterWidgetOnPoint(Widget w, XEvent *event)
     XtSetArg(args[num_args], XtNborderWidth, &b_width); num_args++;
     XtGetValues(w, args, num_args);
 
-    width += b_width << 1;
-    height += b_width << 1;
+    width = (Dimension)(width + (b_width << 1));
+    height = (Dimension)(height + (b_width << 1));
 
-    x -= (Position)(width >> 1);
+    x = (Position)(x - (width >> 1));
     if (x < 0)
 	x = 0;
     if (x > (max_x = (Position)(XtScreen(w)->width - width)))
 	x = max_x;
 
-    y -= (Position)(height >> 1);
+    y = (Position)(y - (height >> 1));
     if (y < 0)
 	y = 0;
     if (y > (max_y = (Position)(XtScreen(w)->height - height)))
@@ -1537,7 +1537,7 @@ SetWMProtocolTranslations(Widget w)
 	actions[0].proc = WMProtocols;
 	list_size++;
 	app_context_list = (XtAppContext *)XtRealloc
-	    ((char *)app_context_list, list_size * sizeof(XtAppContext));
+	    ((char *)app_context_list, (Cardinal)(list_size * sizeof(XtAppContext)));
 	XtAppAddActions(app_context, actions, 1);
 	app_context_list[i] = app_context;
     }
