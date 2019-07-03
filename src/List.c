@@ -374,10 +374,10 @@ CalculatedValues(Widget w)
 	for (i = 0 ; i < lw->list.nitems; i++) {
 	    if (lw->simple.international == True)
 		len = XmbTextEscapement(lw->list.fontset, lw->list.list[i],
-					strlen(lw->list.list[i]));
+					(int)strlen(lw->list.list[i]));
 	    else
 		len = XTextWidth(lw->list.font, lw->list.list[i],
-				 strlen(lw->list.list[i]));
+				 (int)strlen(lw->list.list[i]));
 	    if (len > lw->list.longest)
 		lw->list.longest = len;
 	}
@@ -435,8 +435,8 @@ ChangeSize(Widget w, unsigned int width, unsigned int height)
     XtWidgetGeometry request, reply;
 
     request.request_mode = CWWidth | CWHeight;
-    request.width = width;
-    request.height = height;
+    request.width = (Dimension)width;
+    request.height = (Dimension)height;
 
     switch (XtMakeGeometryRequest(w, &request, &reply)) {
 	case XtGeometryYes:
@@ -628,10 +628,10 @@ static void
 HighlightBackground(Widget w, int x, int y, GC gc)
 {
     ListWidget lw = (ListWidget)w;
-    Dimension width = lw->list.col_width;
-    Dimension height = lw->list.row_height;
-    Dimension frame_limited_width = XtWidth(w) - lw->list.internal_width - x;
-    Dimension frame_limited_height= XtHeight(w) - lw->list.internal_height - y;
+    Dimension width = (Dimension)lw->list.col_width;
+    Dimension height = (Dimension)lw->list.row_height;
+    Dimension frame_limited_width = (Dimension)(XtWidth(w) - lw->list.internal_width - x);
+    Dimension frame_limited_height= (Dimension)(XtHeight(w) - lw->list.internal_height - y);
 
     /* Clip the rectangle width and height to the edge of the drawable area */
     if  (width > frame_limited_width)
@@ -641,11 +641,11 @@ HighlightBackground(Widget w, int x, int y, GC gc)
 
     /* Clip the rectangle x and y to the edge of the drawable area */
     if (x < lw->list.internal_width) {
-	width = width - (lw->list.internal_width - x);
+	width = (Dimension)(width - (lw->list.internal_width - x));
 	x = lw->list.internal_width;
     }
     if (y < lw->list.internal_height) {
-      height = height - (lw->list.internal_height - y);
+      height = (Dimension)(height - (lw->list.internal_height - y));
 	y = lw->list.internal_height;
     }
 
@@ -670,12 +670,12 @@ ClipToShadowInteriorAndLongest(ListWidget lw, GC *gc_p, unsigned int x)
 {
     XRectangle rect;
 
-    rect.x = x;
-    rect.y = lw->list.internal_height;
-    rect.height = XtHeight(lw) - (lw->list.internal_height << 1);
-    rect.width = XtWidth(lw) - lw->list.internal_width - x;
+    rect.x = (short)x;
+    rect.y = (short)lw->list.internal_height;
+    rect.height = (unsigned short)(XtHeight(lw) - (lw->list.internal_height << 1));
+    rect.width = (unsigned short)(XtWidth(lw) - (unsigned)lw->list.internal_width - x);
     if (rect.width > lw->list.longest)
-	rect.width = lw->list.longest;
+	rect.width = (unsigned short)lw->list.longest;
 
     XSetClipRectangles(XtDisplay((Widget)lw), *gc_p, 0, 0, &rect, 1, YXBanded);
 }
@@ -748,13 +748,13 @@ PaintItemName(Widget w, int item)
 
     str =  lw->list.list[item];	/* draw it */
 
-    ClipToShadowInteriorAndLongest(lw, &gc, x);
+    ClipToShadowInteriorAndLongest(lw, &gc, (unsigned)x);
 
     if (lw->simple.international == True)
 	XmbDrawString(XtDisplay(w), XtWindow(w), lw->list.fontset,
-		      gc, x, str_y, str, strlen(str));
+		      gc, x, str_y, str, (int)strlen(str));
     else
-	XDrawString(XtDisplay(w), XtWindow(w), gc, x, str_y, str, strlen(str));
+	XDrawString(XtDisplay(w), XtWindow(w), gc, x, str_y, str, (int)strlen(str));
 
     XSetClipMask(XtDisplay(w), gc, None);
 }
@@ -876,13 +876,13 @@ Layout(Widget w, Bool xfree, Bool yfree, Dimension *width, Dimension *height)
 	    /* this counts the same number
 	       of inter-column column_space 's as columns.  There should thus
 	       be a half column_space margin on each side of each column...*/
-	    width2 = lw->list.ncols * lw->list.col_width +
-		     (lw->list.internal_width << 1);
+	    width2 = (unsigned long)(lw->list.ncols * lw->list.col_width +
+		     (lw->list.internal_width << 1));
 	    change = True;
 	}
 	if (yfree) {
-	    height2 = lw->list.nrows * lw->list.row_height +
-		      (lw->list.internal_height << 1);
+	    height2 = (unsigned long)(lw->list.nrows * lw->list.row_height +
+		      (lw->list.internal_height << 1));
 	    change = True;
 	}
     }
@@ -902,10 +902,10 @@ Layout(Widget w, Bool xfree, Bool yfree, Dimension *width, Dimension *height)
 		|| (lw->list.ncols = wid / lw->list.col_width) <= 0)
 		lw->list.ncols = 1;
 	}
-	width2 = lw->list.ncols * lw->list.col_width
-	+ (lw->list.internal_width << 1);
-	height2 = (lw->list.nrows * lw->list.row_height)
-	+ (lw->list.internal_height << 1);
+	width2 = (unsigned long)((lw->list.ncols * lw->list.col_width)
+		  + (lw->list.internal_width << 1));
+	height2 = (unsigned long)((lw->list.nrows * lw->list.row_height)
+		   + (lw->list.internal_height << 1));
 	change = True;
     }
 
@@ -921,8 +921,8 @@ Layout(Widget w, Bool xfree, Bool yfree, Dimension *width, Dimension *height)
 	    lw->list.ncols = 1;
 	lw->list.nrows = ((lw->list.nitems - 1) / lw->list.ncols) + 1;
 	if (yfree) {
-	    height2 = lw->list.nrows * lw->list.row_height +
-		      (lw->list.internal_height << 1);
+	    height2 = (unsigned long)((lw->list.nrows * lw->list.row_height) +
+		      (lw->list.internal_height << 1));
 	    change = True;
 	}
     }
@@ -938,8 +938,8 @@ Layout(Widget w, Bool xfree, Bool yfree, Dimension *width, Dimension *height)
 	if (lw->list.nrows <= 0)
 	    lw->list.nrows = 1;
 	lw->list.ncols = ((lw->list.nitems - 1) / lw->list.nrows) + 1;
-	width2 = lw->list.ncols * lw->list.col_width  +
-		 (lw->list.internal_width << 1);
+	width2 = (unsigned long)((lw->list.ncols * lw->list.col_width) +
+		 (lw->list.internal_width << 1));
 	change = True;
     }
 
@@ -947,10 +947,10 @@ Layout(Widget w, Bool xfree, Bool yfree, Dimension *width, Dimension *height)
 	/*CONSTCOND*/
 	while (1) {
 	    lw->list.nrows = ((lw->list.nitems - 1) / lw->list.ncols) + 1;
-	    width2 = lw->list.ncols * lw->list.col_width +
-		     (lw->list.internal_width << 1);
-	    height2 = lw->list.nrows * lw->list.row_height +
-		      (lw->list.internal_height << 1);
+	    width2 = (unsigned long)((lw->list.ncols * lw->list.col_width) +
+		     (lw->list.internal_width << 1));
+	    height2 = (unsigned long)((lw->list.nrows * lw->list.row_height) +
+		      (lw->list.internal_height << 1));
 	    if (width2 >= MaxSize && height2 >= MaxSize)
 		break;
 	    if (height2 > MaxSize)
@@ -962,9 +962,9 @@ Layout(Widget w, Bool xfree, Bool yfree, Dimension *width, Dimension *height)
 	}
     }
     if (width2)
-	*width = width2;
+	*width = (Dimension)width2;
     if (height2)
-	*height = height2;
+	*height = (Dimension)height2;
 
     return (change);
 }
@@ -1001,7 +1001,7 @@ Notify(Widget w, XEvent *event, String *params, Cardinal *num_params)
 	return;
     }
 
-    item_len = strlen(lw->list.list[item]);
+    item_len = (int)strlen(lw->list.list[item]);
 
     if (lw->list.paste)		/* if XtNpasteBuffer set then paste it */
 	XStoreBytes(XtDisplay(w), lw->list.list[item], item_len);
@@ -1143,7 +1143,7 @@ XawListSetValues(Widget current, Widget request, Widget cnew,
 	redraw = True;
     }
 
-    return (redraw);
+    return (Boolean)(redraw);
 }
 
 static void
