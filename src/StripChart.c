@@ -266,7 +266,7 @@ XawStripChartInitialize(Widget greq, Widget gnew,
     if (w->strip_chart.update > 0)
     w->strip_chart.interval_id =
     XtAppAddTimeOut(XtWidgetToApplicationContext(gnew),
-		    w->strip_chart.update * MS_PER_SEC,
+		    (unsigned long)(w->strip_chart.update * MS_PER_SEC),
 		    draw_it, (XtPointer)gnew);
     CreateGC(w, ALL_GCS);
 
@@ -316,7 +316,7 @@ draw_it(XtPointer client_data, XtIntervalId *id)
     if (w->strip_chart.update > 0)
 	w->strip_chart.interval_id =
 	    XtAppAddTimeOut(XtWidgetToApplicationContext((Widget)w),
-			    w->strip_chart.update * MS_PER_SEC,draw_it,
+			    (unsigned long)(w->strip_chart.update * MS_PER_SEC), draw_it,
 			    client_data);
 
     if ((w->strip_chart.interval >= XtWidth(w)) ||
@@ -349,13 +349,13 @@ draw_it(XtPointer client_data, XtIntervalId *id)
 
 	XFillRectangle(XtDisplay(w), XtWindow(w), w->strip_chart.fgGC,
 		       w->strip_chart.interval, y,
-		       1, XtHeight(w) - y);
+		       1, (unsigned)(XtHeight(w) - y));
 
 	/*
 	 * Fill in the graph lines we just painted over
 	 */
 	if (w->strip_chart.points != NULL) {
-	    w->strip_chart.points[0].x = w->strip_chart.interval;
+	    w->strip_chart.points[0].x = (short)w->strip_chart.interval;
 	    XDrawPoints(XtDisplay(w), XtWindow(w), w->strip_chart.hiGC,
 			w->strip_chart.points, w->strip_chart.scale - 1,
 			CoordModePrevious);
@@ -386,7 +386,7 @@ repaint_window(StripChartWidget w, int left, int width)
     /* Compute the minimum scale required to graph the data, but don't go
        lower than min_scale */
     if (w->strip_chart.interval != 0 || scale <= w->strip_chart.max_value)
-	scale = w->strip_chart.max_value + 1;
+	scale = (int)(w->strip_chart.max_value + 1);
 	if (scale < w->strip_chart.min_scale)
 	    scale = w->strip_chart.min_scale;
 
@@ -418,11 +418,11 @@ repaint_window(StripChartWidget w, int left, int width)
 
 	/* Draw data point lines */
 	for (i = left; i < width; i++) {
-	    int y = XtHeight(w) - (XtHeight(w) * w->strip_chart.valuedata[i])
-				   / w->strip_chart.scale;
+	    int y = (int)(XtHeight(w) - (XtHeight(w) * w->strip_chart.valuedata[i])
+				   / w->strip_chart.scale);
 
 	    XFillRectangle(dpy, win, w->strip_chart.fgGC,
-			   i, y, 1, XtHeight(w) - y);
+			   i, y, 1, (unsigned)(XtHeight(w) - y));
 	}
 
 	/* Draw graph reference lines */
@@ -471,7 +471,7 @@ MoveChart(StripChartWidget w, Bool blit)
 
     (void)memmove((char *)w->strip_chart.valuedata,
 		  (char *)(w->strip_chart.valuedata + next - j),
-		  j * sizeof(double));
+		  (size_t)j * sizeof(double));
     next = w->strip_chart.interval = j;
 
     /*
@@ -495,10 +495,10 @@ MoveChart(StripChartWidget w, Bool blit)
     }
 
     XCopyArea(XtDisplay((Widget)w), XtWindow((Widget)w), XtWindow((Widget)w),
-	      w->strip_chart.hiGC, (int)XtWidth(w) - j, 0, j, XtHeight(w), 0, 0);
+	      w->strip_chart.hiGC, (int)XtWidth(w) - j, 0, (unsigned)j, XtHeight(w), 0, 0);
 
     XClearArea(XtDisplay((Widget)w), XtWindow((Widget)w),
-	       j, 0, XtWidth(w) - j, XtHeight(w), False);
+	       j, 0, (unsigned)(XtWidth(w) - j), XtHeight(w), False);
 
     /* Draw graph reference lines */
     left = j;
@@ -525,7 +525,7 @@ XawStripChartSetValues(Widget current, Widget request, Widget cnew,
 	if (w->strip_chart.update > 0)
 	    w->strip_chart.interval_id =
 		XtAppAddTimeOut(XtWidgetToApplicationContext(cnew),
-				w->strip_chart.update * MS_PER_SEC,
+				(unsigned long)(w->strip_chart.update * MS_PER_SEC),
 				draw_it, (XtPointer)w);
     }
 
@@ -545,7 +545,7 @@ XawStripChartSetValues(Widget current, Widget request, Widget cnew,
     DestroyGC(old, new_gc);
     CreateGC(w, new_gc);
 
-    return (ret_val);
+    return (Boolean)(ret_val);
 }
 
 /*
@@ -572,7 +572,7 @@ XawStripChartResize(Widget widget)
 	return;
     }
 
-    size = sizeof(XPoint) * (w->strip_chart.scale - 1);
+    size = (Cardinal)(sizeof(XPoint) * (size_t)(w->strip_chart.scale - 1));
 
     points = (XPoint *)XtRealloc((XtPointer)w->strip_chart.points, size);
     w->strip_chart.points = points;
@@ -581,6 +581,6 @@ XawStripChartResize(Widget widget)
 
     for (i = 1; i < w->strip_chart.scale; i++) {
 	points[i - 1].x = 0;
-	points[i - 1].y = XtHeight(w) / w->strip_chart.scale;
+	points[i - 1].y = (short)(XtHeight(w) / w->strip_chart.scale);
     }
 }
