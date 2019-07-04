@@ -140,8 +140,8 @@ XawRunDisplayList(Widget w, _XawDisplayList *list,
 #define DLEND  1
 #define DLNAME 2
 #define DLARG  3
-static char *
-read_token(char *src, char *dst, Cardinal size, int *status)
+static String
+read_token(String src, char *dst, Cardinal size, int *status)
 {
   int ch;
   Bool esc, quote;
@@ -235,7 +235,9 @@ _XawDisplayList *XawCreateDisplayList(String string, Screen *screen,
   XawDLProc *proc;
   char cname[64], fname[64], aname[1024];
   Cardinal i;
-  char *cp, *fp, *lp;
+  String cp;
+  String fp;
+  String lp;
   int status;
 
   xlibc = XawGetDisplayListClass(xlib);
