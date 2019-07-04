@@ -948,9 +948,9 @@ Text widget's <function>translations</function> resource.
      :Meta&lt;Key&gt;]:     forward-paragraph() \\n\\
      :Meta&lt;Key&gt;[:     backward-paragraph() \\n\\
      ~Shift Meta&lt;Key&gt;Delete:          delete-previous-word() \\n\\
-     \ Shift Meta&lt;Key&gt;Delete:          backward-kill-word() \\n\\
+      Shift Meta&lt;Key&gt;Delete:          backward-kill-word() \\n\\
      ~Shift Meta&lt;Key&gt;Backspace:     delete-previous-word() \\n\\
-     \ Shift Meta&lt;Key&gt;Backspace:     backward-kill-word() \\n\\
+      Shift Meta&lt;Key&gt;Backspace:     backward-kill-word() \\n\\
      &lt;Key&gt;Right:     forward-character() \\n\\
      &lt;Key&gt;Left:     backward-character() \\n\\
      &lt;Key&gt;Down:     next-line() \\n\\

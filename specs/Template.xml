@@ -98,7 +98,7 @@ convenience procedures, so we need to add
 
 extern Pixel WindowColor1(&#x2006;/* Widget */&#x2006;);
 extern Pixel WindowColor2(&#x2006;/* Widget */&#x2006;);
-extern Font\ \ WindowFont(&#x2006;/* Widget */&#x2006;);
+extern Font  WindowFont(&#x2006;/* Widget */&#x2006;);
 <!-- .CE -->
 </literallayout>
 <para>
@@ -244,41 +244,41 @@ static char translations[] =
 
 TemplateClassRec templateClassRec = {
   { /* core fields */
-	/* superclass	*/	(WidgetClass) &amp;widgetClassRec,
-	/* class_name	*/	"Template",
-	/* widget_size	*/	sizeof(TemplateRec),
-	/* class_initialize	*/	NULL,
-	/* class_part_initialize	*/	NULL,
-	/* class_inited	*/	FALSE,
-	/* initialize	*/	NULL,
-	/* initialize_hook	*/	NULL,
-	/* realize	*/	XtInheritRealize,
-	/* actions	*/	actions,
-	/* num_actions	*/	XtNumber(actions),
-	/* resources	*/	resources,
-	/* num_resources	*/	XtNumber(resources),
-	/* xrm_class	*/	NULLQUARK,
-	/* compress_motion	*/	TRUE,
-	/* compress_exposure	*/	TRUE,
-	/* compress_enterleave */	TRUE,
-	/* visible_interest	*/	FALSE,
-	/* destroy	*/	NULL,
-	/* resize	*/	NULL,
-	/* expose	*/	NULL,
-	/* set_values	*/	NULL,
-	/* set_values_hook	*/	NULL,
-	/* set_values_almost	*/	XtInheritSetValuesAlmost,
-	/* get_values_hook	*/	NULL,
-	/* accept_focus	*/	NULL,
-	/* version	*/	XtVersion,
-	/* callback_private	*/	NULL,
-	/* tm_table	*/	translations,
-	/* query_geometry	*/	XtInheritQueryGeometry,
-	/* display_accelerator	*/	XtInheritDisplayAccelerator,
-	/* extension	*/	NULL
+        /* superclass           */      (WidgetClass) &amp;widgetClassRec,
+        /* class_name           */      "Template",
+        /* widget_size          */      sizeof(TemplateRec),
+        /* class_initialize     */      NULL,
+        /* class_part_initialize */     NULL,
+        /* class_inited         */      FALSE,
+        /* initialize           */      NULL,
+        /* initialize_hook      */      NULL,
+        /* realize              */      XtInheritRealize,
+        /* actions              */      actions,
+        /* num_actions          */      XtNumber(actions),
+        /* resources            */      resources,
+        /* num_resources        */      XtNumber(resources),
+        /* xrm_class            */      NULLQUARK,
+        /* compress_motion      */      TRUE,
+        /* compress_exposure    */      TRUE,
+        /* compress_enterleave  */      TRUE,
+        /* visible_interest     */      FALSE,
+        /* destroy              */      NULL,
+        /* resize               */      NULL,
+        /* expose               */      NULL,
+        /* set_values           */      NULL,
+        /* set_values_hook      */      NULL,
+        /* set_values_almost    */      XtInheritSetValuesAlmost,
+        /* get_values_hook      */      NULL,
+        /* accept_focus         */      NULL,
+        /* version              */      XtVersion,
+        /* callback_private     */      NULL,
+        /* tm_table             */      translations,
+        /* query_geometry       */      XtInheritQueryGeometry,
+        /* display_accelerator  */      XtInheritDisplayAccelerator,
+        /* extension            */      NULL
   },
   { /* template fields */
-	/* empty	*/	0
+        /* empty                */      0
   }
 };
 

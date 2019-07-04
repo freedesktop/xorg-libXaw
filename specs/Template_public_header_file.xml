@@ -30,18 +30,18 @@ are:
 
 /* Resources:
 
- Name	Class		RepType	Default Value
- ----		-----		-------	-------------
- background	Background		Pixel	XtDefaultBackground
- border	BorderColor		Pixel	XtDefaultForeground
- borderWidth	BorderWidth		Dimension	1
- destroyCallback	Callback		Pointer	NULL
- height	Height		Dimension	0
- mappedWhenManaged	MappedWhenManaged	Boolean	True
- sensitive	Sensitive		Boolean	True
- width	Width		Dimension	0
- x		Position		Position	0
- y		Position		Position	0
+ Name                Class               RepType     Default Value
+ ----                -----               -------     -------------
+ background          Background          Pixel       XtDefaultBackground
+ border              BorderColor         Pixel       XtDefaultForeground
+ borderWidth         BorderWidth         Dimension   1
+ destroyCallback     Callback            Pointer     NULL
+ height              Height              Dimension   0
+ mappedWhenManaged   MappedWhenManaged   Boolean     True
+ sensitive           Sensitive           Boolean     True
+ width               Width               Dimension   0
+ x                   Position            Position    0
+ y                   Position            Position    0
 
 */
 
@@ -84,11 +84,11 @@ convenience procedures, so we need to add
 <!-- .CB -->
 /* Resources:
 	...
- callback	Callback	Callback	NULL
- drawingColor1	Color	Pixel		XtDefaultForeground
- drawingColor2	Color	Pixel		XtDefaultForeground
- exposeCallback	Callback	Callback	NULL
- font		Font	XFontStruct*	XtDefaultFont
+ callback       Callback        Callback        NULL
+ drawingColor1  Color           Pixel           XtDefaultForeground
+ drawingColor2  Color           Pixel           XtDefaultForeground
+ exposeCallback Callback        Callback        NULL
+ font           Font            XFontStruct*    XtDefaultFont
 	...
  */
 
@@ -98,7 +98,7 @@ convenience procedures, so we need to add
 
 extern Pixel WindowColor1(&#x2006;/* Widget */&#x2006;);
 extern Pixel WindowColor2(&#x2006;/* Widget */&#x2006;);
-extern Font\ \ WindowFont(&#x2006;/* Widget */&#x2006;);
+extern Font  WindowFont(&#x2006;/* Widget */&#x2006;);
 <!-- .CE -->
 </literallayout>
 <para>

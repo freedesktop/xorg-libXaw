@@ -865,16 +865,16 @@ getting a float into an argument list.
      top = 0.5;
      if (sizeof(float) &gt; sizeof(XtArgVal)) {
      /*
-     \ * If a float is larger than an XtArgVal then pass this
-     \ * resource value by reference.
-     \ */
+      * If a float is larger than an XtArgVal then pass this
+      * resource value by reference.
+      */
           XtSetArg(args[0], XtNshown, &amp;top);
      }
      else {
      /*
-     \ * Convince C not to perform an automatic conversion, which
-     \ * would truncate 0.5 to 0.
-     \ */
+      * Convince C not to perform an automatic conversion, which
+      * would truncate 0.5 to 0.
+      */
           XtArgVal * l_top = (XtArgVal *) &amp;top;
           XtSetArg(args[0], XtNshown, *l_top);
      }
