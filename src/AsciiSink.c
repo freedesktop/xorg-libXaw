@@ -580,7 +580,7 @@ AsciiPreparePaint(Widget w, int y, int line,
 	    for (i = 0; i < block.length; i++) {
 		unsigned char c = (unsigned char)block.ptr[i];
 
-		if (paint->length + 4 > bufsiz)
+		if ((paint->length + 4) > (unsigned)bufsiz)
 		    paint->text = XtRealloc(paint->text, (Cardinal)(bufsiz += 32));
 		paint->text[paint->length] = (char)c;
 		if (c == '\n') {
@@ -724,8 +724,8 @@ AsciiPreparePaint(Widget w, int y, int line,
 static int
 qcmp_paint_struct(_Xconst void *left, _Xconst void *right)
 {
-    return (int)((*(XawTextPaintStruct**)left)->property -
-	         (*(XawTextPaintStruct**)right)->property);
+    return (int)((*(XawTextPaintStruct* _Xconst *)left)->property -
+	         (*(XawTextPaintStruct* _Xconst *)right)->property);
 }
 
 static void
@@ -1088,7 +1088,7 @@ DisplayText(Widget w, int x, int y,
     for (j = 0; pos1 < pos2;) {
 	pos1 = XawTextSourceRead(source, pos1, &blk, (int)(pos2 - pos1));
 	for (k = 0; k < blk.length; k++) {
-	    if (j >= sizeof(buf) - 4) {	/* buffer full, dump the text */
+	    if ((unsigned)j >= sizeof(buf) - 4) {	/* buffer full, dump the text */
 		if ((x = (int)((unsigned)x + PaintText(w, gc, x, y, (char*)buf, j, clear_bg)))
 		    >= max_x)
 		    return;
@@ -1475,7 +1475,7 @@ FindDistance(Widget w, XawTextPosition fromPos, int fromx,
 	    if (blk.length == 0)
 		break;
 	}
-	c = blk.ptr[i];
+	c = (unsigned char)blk.ptr[i];
 	rWidth += CharWidth(sink, font, fromx + rWidth, c);
 	if (c == XawLF) {
 	    idx++;
@@ -1603,7 +1603,7 @@ FindPosition(Widget w, XawTextPosition fromPos, int fromx, int width,
 	    if (blk.length == 0)
 		break;
 	}
-	c = blk.ptr[i];
+	c = (unsigned char)blk.ptr[i];
 	lastWidth = rWidth;
 	rWidth += CharWidth(sink, font, fromx + rWidth, c);
 
@@ -1656,7 +1656,7 @@ GetGC(AsciiSinkObject sink)
     XGCValues values;
 
     /* XXX We dont want do share a gc that will change the clip-mask */
-    values.clip_x_origin = (int)sink;
+    values.clip_x_origin = (int)(long)sink;
     values.clip_mask = None;
     values.font = sink->ascii_sink.font->fid;
     values.graphics_exposures = False;
@@ -1706,6 +1706,10 @@ XawAsciiSinkInitialize(Widget request, Widget cnew,
 		       ArgList args, Cardinal *num_args)
 {
     AsciiSinkObject sink = (AsciiSinkObject)cnew;
+
+    (void)request;
+    (void)args;
+    (void)num_args;
 
     if (!sink->ascii_sink.font) XtError("Aborting: no font found\n");
 
@@ -1803,6 +1807,10 @@ XawAsciiSinkSetValues(Widget current, Widget request, Widget cnew,
 {
     AsciiSinkObject w = (AsciiSinkObject)cnew;
     AsciiSinkObject old_w = (AsciiSinkObject)current;
+
+    (void)request;
+    (void)args;
+    (void)num_args;
 
     if (w->ascii_sink.font != old_w->ascii_sink.font
 	|| w->text_sink.background != old_w->text_sink.background
