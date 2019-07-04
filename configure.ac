@@ -106,6 +106,14 @@ case $host_os in
 	;;
 esac
 
+AC_MSG_CHECKING(if C const-support is wanted)
+AC_ARG_ENABLE(const, AS_HELP_STRING([--disable-const], [Disable const-support]),
+	USE_CONST="$enableval", USE_CONST="yes")
+AC_MSG_RESULT($USE_CONST)
+if test "x$USE_CONST" = "xyes" ; then
+	AC_DEFINE(_CONST_X_STRING, 1, [Define to 1 to use standard C const feature.])
+fi
+
 AC_CONFIG_FILES([Makefile
 		include/Makefile
 		man/Makefile
