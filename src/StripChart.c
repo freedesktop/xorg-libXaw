@@ -200,6 +200,13 @@ StripChartClassRec stripChartClassRec = {
   /* simple */
   {
     XtInheritChangeSensitive,		/* change_sensitive */
+#ifndef OLDXAW
+    NULL
+#endif
+  },
+  /* strip_chart_class */
+  {
+    NULL
   }
 };
 
@@ -320,7 +327,7 @@ draw_it(XtPointer client_data, XtIntervalId *id)
 			    client_data);
 
     if ((w->strip_chart.interval >= XtWidth(w)) ||
-        (w->strip_chart.interval >= NUM_VALUEDATA(w)))
+        ((Cardinal)w->strip_chart.interval >= NUM_VALUEDATA(w)))
 	MoveChart((StripChartWidget)w, True);
 
     /* Get the value, stash the point and draw corresponding line */
@@ -413,7 +420,7 @@ repaint_window(StripChartWidget w, int left, int width)
 	if (next < ++width)
 	    width = next;
 
-	if (width > NUM_VALUEDATA(w))
+	if ((Cardinal)width > NUM_VALUEDATA(w))
 	    width = NUM_VALUEDATA(w);
 
 	/* Draw data point lines */
