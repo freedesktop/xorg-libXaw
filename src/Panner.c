@@ -67,7 +67,7 @@ static void check_knob(PannerWidget, Bool);
 static void get_default_size(PannerWidget, Dimension*, Dimension*);
 static Bool get_event_xy(PannerWidget, XEvent*, int*, int*);
 static void move_shadow(PannerWidget);
-static int parse_page_string(char*, int, int, Bool*);
+static int parse_page_string(String, int, int, Bool*);
 static void rescale(PannerWidget);
 static void reset_shadow_gc(PannerWidget);
 static void reset_slider_gc(PannerWidget);
@@ -323,6 +323,9 @@ PannerClassRec pannerClassRec = {
   /* simple */
   {
     XtInheritChangeSensitive,		/* change_sensitive */
+#ifndef OLDXAW
+    NULL,
+#endif
   },
   /* panner */
   {
@@ -563,9 +566,9 @@ get_event_xy(PannerWidget pw, XEvent *event, int *x, int *y)
 }
 
 static int
-parse_page_string(char *s, int pagesize, int canvassize, Bool *relative)
+parse_page_string(String s, int pagesize, int canvassize, Bool *relative)
 {
-    char *cp;
+    String cp;
     double val = 1.0;
     Bool rel = False;
 
