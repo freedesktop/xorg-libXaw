@@ -644,7 +644,7 @@ static Boolean
 CvtJustifyModeToString(Display *dpy, XrmValue *args, Cardinal *num_args,
 		       XrmValue *fromVal, XrmValue *toVal, XtPointer *data)
 {
-    static char *buffer;
+    static String buffer;
     Cardinal size;
 
     switch (*(XawTextJustifyMode *)fromVal->addr) {
@@ -1382,8 +1382,8 @@ _BuildLineTable(TextWidget ctx, XawTextPosition position, int line)
 	    lt->y = y;
 	    ctx->text.clear_to_eol = True;
 	}
-	if (lt->textWidth != width) {
-	    if (lt->textWidth > width)
+	if (lt->textWidth != (Cardinal)width) {
+	    if (lt->textWidth > (Cardinal)width)
 		ctx->text.clear_to_eol = True;
 	    lt->textWidth = (unsigned)width;
 	}
@@ -1805,7 +1805,7 @@ UpdateTextInLine(TextWidget ctx, int line, int x1, int x2)
 			    False, &left, &width, &height);
     if (line == ctx->text.lt.lines)
 	right = -1;
-    else if (x2 >= (lt->textWidth - (unsigned)from_x))
+    else if ((Cardinal)x2 >= (lt->textWidth - (unsigned)from_x))
 	right = lt[1].position - 1;
     else {
 	from_x += width;
@@ -4151,6 +4151,9 @@ TextClassRec textClassRec = {
   /* simple */
   {
     XawTextChangeSensitive,		/* change_sensitive */
+#ifndef OLDXAW
+    NULL,
+#endif
   },
   /* text */
   {
