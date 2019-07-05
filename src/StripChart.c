@@ -387,8 +387,8 @@ repaint_window(StripChartWidget w, int left, int width)
        lower than min_scale */
     if (w->strip_chart.interval != 0 || scale <= w->strip_chart.max_value)
 	scale = (int)(w->strip_chart.max_value + 1);
-	if (scale < w->strip_chart.min_scale)
-	    scale = w->strip_chart.min_scale;
+    if (scale < w->strip_chart.min_scale)
+	scale = w->strip_chart.min_scale;
 
     if (scale != w->strip_chart.scale) {
 	w->strip_chart.scale = scale;
