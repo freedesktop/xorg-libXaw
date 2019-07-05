@@ -1148,7 +1148,7 @@ DestroyTextPropertyList(XawTextPropertyList *list)
 {
     int i;
 
-    for (i = 0; i < list->num_properties; i++) {
+    for (i = 0; (Cardinal)i < list->num_properties; i++) {
 	if (list->properties[i]->font)
 	    XFreeFont(DisplayOfScreen(list->screen), list->properties[i]->font);
 	XtFree((char*)list->properties[i]);
@@ -1499,7 +1499,8 @@ XawTextSinkConvertPropertyList(String name, String spec, Screen *screen,
     XawTextPropertyList **ptr = NULL;
     XawTextPropertyList *propl, *prev = NULL;
     XawTextProperty *def_prop = NULL;
-    String str, tok;
+    char * str;
+    String tok;
     char *tmp;
     char buffer[BUFSIZ];
 
