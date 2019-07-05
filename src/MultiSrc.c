@@ -112,7 +112,7 @@ static FILE *InitStringOrFile(MultiSrcObject, Bool);
 static void LoadPieces(MultiSrcObject, FILE*, char*);
 static void RemovePiece(MultiSrcObject, MultiPiece*);
 static void RemoveOldStringOrFile(MultiSrcObject, Bool);
-static String StorePiecesInString(MultiSrcObject);
+static char * StorePiecesInString(MultiSrcObject);
 static Bool WriteToFile(String, String);
 static void GetDefaultPieceSize(Widget, int, XrmValue*);
 
@@ -234,6 +234,9 @@ MultiSrcClassRec multiSrcClassRec = {
     Search,				/* Search */
     XtInheritSetSelection,		/* SetSelection */
     XtInheritConvertSelection,		/* ConvertSelection */
+#ifndef OLDXAW
+    NULL
+#endif
   },
   /* multi_src */
   {
@@ -841,7 +844,7 @@ XawMultiSrcSetValues(Widget current, Widget request, Widget cnew,
 
     if ( !total_reset && old_src->multi_src.piece_size
 	 != src->multi_src.piece_size) {
-	String mb_string = StorePiecesInString(old_src);
+	char * mb_string = StorePiecesInString(old_src);
 
 	if (mb_string != 0) {
 	    FreeAllPieces(old_src);
@@ -1031,13 +1034,13 @@ Bool
 _XawMultiSaveAsFile(Widget w, _Xconst char* name)
 {
     MultiSrcObject src = (MultiSrcObject)w;
-    String mb_string;
+    char * mb_string;
     Bool ret;
 
     mb_string = StorePiecesInString(src);
 
     if (mb_string != 0) {
-	ret = WriteToFile(mb_string, (char *)name);
+	ret = WriteToFile(mb_string, (String)name);
 	XtFree(mb_string);
 
 	return (ret);
@@ -1114,7 +1117,7 @@ WriteToFile(String string, String name)
  *	(or)
  *	NULL:		conversion error
  */
-static String
+static char *
 StorePiecesInString(MultiSrcObject src)
 {
     wchar_t *wc_string;
@@ -1173,7 +1176,7 @@ InitStringOrFile(MultiSrcObject src, Bool newString)
 
 	else if (!src->multi_src.use_string_in_place) {
 	    int length;
-	    String temp = XtNewString((char *)src->multi_src.string);
+	    char * temp = XtNewString((char *)src->multi_src.string);
 
 	    if (src->multi_src.allocated_string)
 		XtFree((char *)src->multi_src.string);
@@ -1240,7 +1243,7 @@ InitStringOrFile(MultiSrcObject src, Bool newString)
     /* If is_tempfile, allocate a private copy of the text
      * Unlikely to be changed, just to set allocated_string */
     if (newString || src->multi_src.is_tempfile) {
-	String temp = XtNewString((char *)src->multi_src.string);
+	char * temp = XtNewString((char *)src->multi_src.string);
 
 	if (src->multi_src.allocated_string)
 	    XtFree((char *)src->multi_src.string);
