@@ -390,8 +390,8 @@ XawSimpleMenuClassPartInitialize(WidgetClass wc)
  */
 /*ARGSUSED*/
 static void
-XawSimpleMenuInitialize(Widget request, Widget cnew,
-			ArgList args, Cardinal *num_args)
+XawSimpleMenuInitialize(Widget request _X_UNUSED, Widget cnew,
+			ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     SimpleMenuWidget smw = (SimpleMenuWidget)cnew;
     Dimension width, height;
@@ -451,7 +451,7 @@ XawSimpleMenuInitialize(Widget request, Widget cnew,
  */
 /*ARGSUSED*/
 static void
-XawSimpleMenuRedisplay(Widget w, XEvent *event, Region region)
+XawSimpleMenuRedisplay(Widget w, XEvent *event _X_UNUSED, Region region)
 {
     SimpleMenuWidget smw = (SimpleMenuWidget)w;
     SmeObject *entry;
@@ -567,8 +567,8 @@ XawSimpleMenuResize(Widget w)
  */
 /*ARGSUSED*/
 static Boolean
-XawSimpleMenuSetValues(Widget current, Widget request, Widget cnew,
-		       ArgList args, Cardinal *num_args)
+XawSimpleMenuSetValues(Widget current, Widget request _X_UNUSED, Widget cnew,
+		       ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     SimpleMenuWidget smw_old = (SimpleMenuWidget)current;
     SimpleMenuWidget smw_new = (SimpleMenuWidget)cnew;
@@ -853,7 +853,7 @@ PositionMenuAction(Widget w, XEvent *event,
  */
 /*ARGSUSED*/
 static void
-Unhighlight(Widget w, XEvent *event, String *params, Cardinal *num_params)
+Unhighlight(Widget w, XEvent *event _X_UNUSED, String *params _X_UNUSED, Cardinal *num_params _X_UNUSED)
 {
     SimpleMenuWidget smw = (SimpleMenuWidget)w;
     SmeObject entry = smw->simple_menu.entry_set;
@@ -952,7 +952,7 @@ Highlight(Widget w, XEvent *event, String *params, Cardinal *num_params)
  */
 /*ARGSUSED*/
 static void
-Notify(Widget w, XEvent *event, String *params, Cardinal *num_params)
+Notify(Widget w, XEvent *event, String *params _X_UNUSED, Cardinal *num_params _X_UNUSED)
 {
     SmeObject entry;
     SmeObjectClass cclass;
@@ -1280,7 +1280,7 @@ Layout(Widget w, Dimension *width_ret, Dimension *height_ret)
  */
 /*ARGSUSED*/
 static void
-AddPositionAction(XtAppContext app_con, XPointer data)
+AddPositionAction(XtAppContext app_con, XPointer data _X_UNUSED)
 {
     static XtActionsRec pos_action[] = {
 	{"XawPositionSimpleMenu",	PositionMenuAction},
@@ -1431,7 +1431,7 @@ MoveMenu(Widget w, int x, int y)
  */
 /*ARGSUSED*/
 static void
-ChangeCursorOnGrab(Widget w, XtPointer temp1, XtPointer temp2)
+ChangeCursorOnGrab(Widget w, XtPointer temp1 _X_UNUSED, XtPointer temp2 _X_UNUSED)
 {
     SimpleMenuWidget smw = (SimpleMenuWidget)w;
 
@@ -1824,7 +1824,7 @@ PopdownSubMenu(SimpleMenuWidget smw)
 
 /*ARGSUSED*/
 static void
-PopupCB(Widget w, XtPointer client_data, XtPointer call_data)
+PopupCB(Widget w, XtPointer client_data _X_UNUSED, XtPointer call_data _X_UNUSED)
 {
     SimpleMenuWidget smw = (SimpleMenuWidget)w;
 

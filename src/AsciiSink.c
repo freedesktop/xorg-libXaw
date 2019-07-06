@@ -207,7 +207,7 @@ WidgetClass asciiSinkObjectClass = (WidgetClass)&asciiSinkClassRec;
  * Implementation
  */
 static void
-XawAsciiSinkClassPartInitialize(WidgetClass wc)
+XawAsciiSinkClassPartInitialize(WidgetClass wc _X_UNUSED)
 {
 #ifndef OLDXAW
     AsciiSinkObjectClass cclass = (AsciiSinkObjectClass)wc;
@@ -1702,14 +1702,10 @@ GetGC(AsciiSinkObject sink)
  */
 /*ARGSUSED*/
 static void
-XawAsciiSinkInitialize(Widget request, Widget cnew,
-		       ArgList args, Cardinal *num_args)
+XawAsciiSinkInitialize(Widget request _X_UNUSED, Widget cnew,
+		       ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     AsciiSinkObject sink = (AsciiSinkObject)cnew;
-
-    (void)request;
-    (void)args;
-    (void)num_args;
 
     if (!sink->ascii_sink.font) XtError("Aborting: no font found\n");
 
@@ -1802,15 +1798,11 @@ XawAsciiSinkResize(Widget w)
  */
 /*ARGSUSED*/
 static Boolean
-XawAsciiSinkSetValues(Widget current, Widget request, Widget cnew,
-		      ArgList args, Cardinal *num_args)
+XawAsciiSinkSetValues(Widget current, Widget request _X_UNUSED, Widget cnew,
+		      ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     AsciiSinkObject w = (AsciiSinkObject)cnew;
     AsciiSinkObject old_w = (AsciiSinkObject)current;
-
-    (void)request;
-    (void)args;
-    (void)num_args;
 
     if (w->ascii_sink.font != old_w->ascii_sink.font
 	|| w->text_sink.background != old_w->text_sink.background

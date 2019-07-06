@@ -265,8 +265,8 @@ DestroyGC(StripChartWidget w, unsigned int which)
 
 /*ARGSUSED*/
 static void
-XawStripChartInitialize(Widget greq, Widget gnew,
-			ArgList args, Cardinal *num_args)
+XawStripChartInitialize(Widget greq _X_UNUSED, Widget gnew,
+			ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     StripChartWidget w = (StripChartWidget)gnew;
 
@@ -303,7 +303,7 @@ XawStripChartDestroy(Widget gw)
  */
 /*ARGSUSED*/
 static void
-XawStripChartRedisplay(Widget w, XEvent *event, Region region)
+XawStripChartRedisplay(Widget w, XEvent *event, Region region _X_UNUSED)
 {
     if (event->type == GraphicsExpose)
 	(void)repaint_window((StripChartWidget)w, event->xgraphicsexpose.x,
@@ -315,7 +315,7 @@ XawStripChartRedisplay(Widget w, XEvent *event, Region region)
 
 /*ARGSUSED*/
 static void
-draw_it(XtPointer client_data, XtIntervalId *id)
+draw_it(XtPointer client_data, XtIntervalId *id _X_UNUSED)
 {
     StripChartWidget w = (StripChartWidget)client_data;
     double value;
@@ -518,8 +518,8 @@ MoveChart(StripChartWidget w, Bool blit)
 
 /*ARGSUSED*/
 static Boolean
-XawStripChartSetValues(Widget current, Widget request, Widget cnew,
-		       ArgList args, Cardinal *num_args)
+XawStripChartSetValues(Widget current, Widget request _X_UNUSED, Widget cnew,
+		       ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     StripChartWidget old = (StripChartWidget)current;
     StripChartWidget w = (StripChartWidget)cnew;

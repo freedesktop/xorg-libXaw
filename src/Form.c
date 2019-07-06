@@ -325,15 +325,12 @@ XawFormRedisplay(Widget w, XEvent *event, Region region)
 
 /*ARGSUSED*/
 static void
-_CvtStringToEdgeType(XrmValuePtr args, Cardinal *num_args,
+_CvtStringToEdgeType(XrmValuePtr args _X_UNUSED, Cardinal *num_args _X_UNUSED,
 		     XrmValuePtr fromVal, XrmValuePtr toVal)
 {
     static XtEdgeType edgeType;
     XrmQuark q;
     char name[12];
-
-    (void)args;
-    (void)num_args;
 
     XmuNCopyISOLatin1Lowered(name, (char*)fromVal->addr, sizeof(name));
     q = XrmStringToQuark(name);
@@ -361,15 +358,11 @@ _CvtStringToEdgeType(XrmValuePtr args, Cardinal *num_args,
 
 /*ARGSUSED*/
 Boolean
-CvtEdgeTypeToString(Display *dpy, XrmValuePtr args, Cardinal *num_args,
-		    XrmValuePtr fromVal, XrmValuePtr toVal, XtPointer *data)
+CvtEdgeTypeToString(Display *dpy, XrmValuePtr args _X_UNUSED, Cardinal *num_args _X_UNUSED,
+		    XrmValuePtr fromVal, XrmValuePtr toVal, XtPointer *data _X_UNUSED)
 {
     static String buffer;
     Cardinal size;
-
-    (void)args;
-    (void)num_args;
-    (void)data;
 
     switch (*(XtEdgeType *)fromVal->addr) {
 	case XtChainLeft:
@@ -453,14 +446,10 @@ XawFormClassPartInitialize(WidgetClass cclass)
 
 /*ARGSUSED*/
 static void
-XawFormInitialize(Widget request, Widget cnew,
-		  ArgList args, Cardinal *num_args)
+XawFormInitialize(Widget request _X_UNUSED, Widget cnew,
+		  ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     FormWidget fw = (FormWidget)cnew;
-
-    (void)request;
-    (void)args;
-    (void)num_args;
 
     fw->form.old_width = fw->form.old_height = 0;
     fw->form.no_refigure = False;
@@ -554,7 +543,7 @@ ChangeFormGeometry(Widget w, Bool query_only,
  */
 /*ARGSUSED*/
 static Boolean
-Layout(FormWidget fw, unsigned int width, unsigned int height,
+Layout(FormWidget fw, unsigned int width _X_UNUSED, unsigned int height _X_UNUSED,
        Bool force_relayout)
 {
     int num_children = (int)fw->composite.num_children;
@@ -562,9 +551,6 @@ Layout(FormWidget fw, unsigned int width, unsigned int height,
     Widget *childP;
     Dimension maxx, maxy;
     Boolean ret_val;
-
-    (void)width;
-    (void)height;
 
     for (childP = children; childP - children < num_children; childP++) {
 	FormConstraints form = (FormConstraints)(*childP)->core.constraints;
@@ -820,15 +806,13 @@ XawFormResize(Widget w)
 /*ARGSUSED*/
 static XtGeometryResult
 XawFormGeometryManager(Widget w, XtWidgetGeometry *request,
-		       XtWidgetGeometry *reply)
+		       XtWidgetGeometry *reply _X_UNUSED)
 {
     Dimension old_width, old_height;
     FormWidget fw = (FormWidget)XtParent(w);
     FormConstraints form = (FormConstraints)w->core.constraints;
     XtWidgetGeometry allowed;
     XtGeometryResult ret_val;
-
-    (void)reply;
 
     if ((request->request_mode & (unsigned)~(XtCWQueryOnly | CWWidth | CWHeight))
 	|| !form->form.allow_resize) {
@@ -955,16 +939,12 @@ XawFormGeometryManager(Widget w, XtWidgetGeometry *request,
 
 /*ARGSUSED*/
 static Boolean
-XawFormSetValues(Widget current, Widget request, Widget cnew,
-		 ArgList args, Cardinal *num_args)
+XawFormSetValues(Widget current _X_UNUSED, Widget request _X_UNUSED, Widget cnew _X_UNUSED,
+		 ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
 #ifndef OLDXAW
     FormWidget f_old = (FormWidget)current;
     FormWidget f_new = (FormWidget)cnew;
-
-    (void)request;
-    (void)args;
-    (void)num_args;
 
     if (f_old->core.background_pixmap != f_new->core.background_pixmap) {
 	XawPixmap *opix, *npix;
@@ -983,15 +963,11 @@ XawFormSetValues(Widget current, Widget request, Widget cnew,
 
 /* ARGSUSED */
 static void
-XawFormConstraintInitialize(Widget request, Widget cnew,
-			    ArgList args, Cardinal *num_args)
+XawFormConstraintInitialize(Widget request _X_UNUSED, Widget cnew,
+			    ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     FormConstraints form = (FormConstraints)cnew->core.constraints;
     FormWidget fw = (FormWidget)cnew->core.parent;
-
-    (void)request;
-    (void)args;
-    (void)num_args;
 
 #ifndef OLDXAW
     form->form.virtual_x = XtX(cnew);
@@ -1011,15 +987,11 @@ XawFormConstraintInitialize(Widget request, Widget cnew,
 
 /*ARGSUSED*/
 static Boolean
-XawFormConstraintSetValues(Widget current, Widget request, Widget cnew,
-			   ArgList args, Cardinal *num_args)
+XawFormConstraintSetValues(Widget current, Widget request _X_UNUSED, Widget cnew,
+			   ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     FormConstraints cfc = (FormConstraints)current->core.constraints;
     FormConstraints nfc = (FormConstraints)cnew->core.constraints;
-
-    (void)request;
-    (void)args;
-    (void)num_args;
 
     if (cfc->form.top != nfc->form.top || cfc->form.bottom != nfc->form.bottom
 	|| cfc->form.left != nfc->form.left || cfc->form.right != nfc->form.right

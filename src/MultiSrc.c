@@ -277,8 +277,8 @@ XawMultiSrcClassInitialize(void)
  */
 /*ARGSUSED*/
 static void
-XawMultiSrcInitialize(Widget request, Widget cnew,
-		      ArgList args, Cardinal *num_args)
+XawMultiSrcInitialize(Widget request _X_UNUSED, Widget cnew,
+		      ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     MultiSrcObject src = (MultiSrcObject)cnew;
     FILE *file;
@@ -796,7 +796,7 @@ Search(Widget w, register XawTextPosition position, XawTextScanDirection dir,
  *	True if redisplay is needed
  */
 static Boolean
-XawMultiSrcSetValues(Widget current, Widget request, Widget cnew,
+XawMultiSrcSetValues(Widget current, Widget request _X_UNUSED, Widget cnew,
 		     ArgList args, Cardinal *num_args)
 {
     MultiSrcObject src = (MultiSrcObject)cnew;
@@ -1539,7 +1539,7 @@ BreakPiece(MultiSrcObject src, MultiPiece *piece)
 
 /*ARGSUSED*/
 static void
-CvtStringToMultiType(XrmValuePtr args, Cardinal *num_args,
+CvtStringToMultiType(XrmValuePtr args _X_UNUSED, Cardinal *num_args _X_UNUSED,
 		     XrmValuePtr fromVal, XrmValuePtr toVal)
 {
     static XawAsciiType type = XawAsciiString;
@@ -1565,9 +1565,9 @@ CvtStringToMultiType(XrmValuePtr args, Cardinal *num_args,
 
 /*ARGSUSED*/
 static Boolean
-CvtMultiTypeToString(Display *dpy, XrmValuePtr args, Cardinal *num_args,
+CvtMultiTypeToString(Display *dpy, XrmValuePtr args _X_UNUSED, Cardinal *num_args _X_UNUSED,
 		     XrmValuePtr fromVal, XrmValuePtr toVal,
-		     XtPointer *data)
+		     XtPointer *data _X_UNUSED)
 {
     static String buffer;
     Cardinal size;
@@ -1603,7 +1603,7 @@ CvtMultiTypeToString(Display *dpy, XrmValuePtr args, Cardinal *num_args,
 
 /*ARGSUSED*/
 static void
-GetDefaultPieceSize(Widget w, int offset, XrmValue *value)
+GetDefaultPieceSize(Widget w _X_UNUSED, int offset _X_UNUSED, XrmValue *value)
 {
     static XPointer pagesize;
 

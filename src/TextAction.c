@@ -365,9 +365,9 @@ struct _SelectionList {
 
 /*ARGSUSED*/
 static void
-_SelectionReceived(Widget w, XtPointer client_data, Atom *selection,
+_SelectionReceived(Widget w, XtPointer client_data, Atom *selection _X_UNUSED,
 		   Atom *type, XtPointer value, unsigned long *length,
-		   int *format)
+		   int *format _X_UNUSED)
 {
     Display *d = XtDisplay(w);
     TextWidget ctx = (TextWidget)w;
@@ -548,14 +548,14 @@ Move(TextWidget ctx, XEvent *event, XawTextScanDirection dir,
 
 /*ARGSUSED*/
 static void
-MoveForwardChar(Widget w, XEvent *event, String *p, Cardinal *n)
+MoveForwardChar(Widget w, XEvent *event, String *p _X_UNUSED, Cardinal *n _X_UNUSED)
 {
     Move((TextWidget)w, event, XawsdRight, XawstPositions, True);
 }
 
 /*ARGSUSED*/
 static void
-MoveBackwardChar(Widget w, XEvent *event, String *p, Cardinal *n)
+MoveBackwardChar(Widget w, XEvent *event, String *p _X_UNUSED, Cardinal *n _X_UNUSED)
 {
     Move((TextWidget)w, event, XawsdLeft, XawstPositions, True);
 }
@@ -670,14 +670,14 @@ MoveBackwardParagraph(Widget w, XEvent *event, String *p, Cardinal *n)
 
 /*ARGSUSED*/
 static void
-MoveToLineEnd(Widget w, XEvent *event, String *p, Cardinal *n)
+MoveToLineEnd(Widget w, XEvent *event, String *p _X_UNUSED, Cardinal *n _X_UNUSED)
 {
     Move((TextWidget)w, event, XawsdRight, XawstEOL, False);
 }
 
 /*ARGSUSED*/
 static void
-MoveToLineStart(Widget w, XEvent *event, String *p, Cardinal *n)
+MoveToLineStart(Widget w, XEvent *event, String *p _X_UNUSED, Cardinal *n _X_UNUSED)
 {
     Move((TextWidget)w, event, XawsdLeft, XawstEOL, False);
 }
@@ -770,14 +770,14 @@ MovePreviousLine(Widget w, XEvent *event, String *p, Cardinal *n)
 
 /*ARGSUSED*/
 static void
-MoveBeginningOfFile(Widget w, XEvent *event, String *p, Cardinal *n)
+MoveBeginningOfFile(Widget w, XEvent *event, String *p _X_UNUSED, Cardinal *n _X_UNUSED)
 {
     Move((TextWidget)w, event, XawsdLeft, XawstAll, True);
 }
 
 /*ARGSUSED*/
 static void
-MoveEndOfFile(Widget w, XEvent *event, String *p, Cardinal *n)
+MoveEndOfFile(Widget w, XEvent *event, String *p _X_UNUSED, Cardinal *n _X_UNUSED)
 {
     Move((TextWidget)w, event, XawsdRight, XawstAll, True);
 }
@@ -814,20 +814,20 @@ Scroll(TextWidget ctx, XEvent *event, XawTextScanDirection dir)
 
 /*ARGSUSED*/
 static void
-ScrollOneLineUp(Widget w, XEvent *event, String *p, Cardinal *n)
+ScrollOneLineUp(Widget w, XEvent *event, String *p _X_UNUSED, Cardinal *n _X_UNUSED)
 {
     Scroll((TextWidget)w, event, XawsdLeft);
 }
 
 /*ARGSUSED*/
 static void
-ScrollOneLineDown(Widget w, XEvent *event, String *p, Cardinal *n)
+ScrollOneLineDown(Widget w, XEvent *event, String *p _X_UNUSED, Cardinal *n _X_UNUSED)
 {
     Scroll((TextWidget)w, event, XawsdRight);
 }
 
 static void
-MovePage(TextWidget ctx, XEvent *event, XawTextScanDirection dir)
+MovePage(TextWidget ctx, XEvent *event _X_UNUSED, XawTextScanDirection dir)
 {
     int scroll_val = 0;
     XawTextPosition old_pos;
@@ -1144,7 +1144,7 @@ LoseSelection(Widget w, Atom *selection)
 }
 
 static void
-_LoseSelection(Widget w, Atom *selection, char **contents, int *length)
+_LoseSelection(Widget w, Atom *selection, char **contents _X_UNUSED, int *length _X_UNUSED)
 {
     TextWidget ctx = (TextWidget)w;
     Atom *atomP;
@@ -1412,14 +1412,14 @@ DeleteChar(Widget w, XEvent *event, XawTextScanDirection dir)
 
 /*ARGSUSED*/
 static void
-DeleteForwardChar(Widget w, XEvent *event, String *p, Cardinal *n)
+DeleteForwardChar(Widget w, XEvent *event, String *p _X_UNUSED, Cardinal *n _X_UNUSED)
 {
     DeleteChar(w, event, XawsdRight);
 }
 
 /*ARGSUSED*/
 static void
-DeleteBackwardChar(Widget w, XEvent *event, String *p, Cardinal *n)
+DeleteBackwardChar(Widget w, XEvent *event, String *p _X_UNUSED, Cardinal *n _X_UNUSED)
 {
     DeleteChar(w, event, XawsdLeft);
 }
@@ -1478,7 +1478,7 @@ KillBackwardWord(Widget w, XEvent *event, String *params, Cardinal *num_params)
 
 /*ARGSUSED*/
 static void
-KillToEndOfLine(Widget w, XEvent *event, String *p, Cardinal *n)
+KillToEndOfLine(Widget w, XEvent *event, String *p _X_UNUSED, Cardinal *n _X_UNUSED)
 {
     TextWidget ctx = (TextWidget)w;
     XawTextPosition end_of_line;
@@ -1506,7 +1506,7 @@ KillToEndOfLine(Widget w, XEvent *event, String *p, Cardinal *n)
 
 /*ARGSUSED*/
 static void
-KillToEndOfParagraph(Widget w, XEvent *event, String *p, Cardinal *n)
+KillToEndOfParagraph(Widget w, XEvent *event, String *p _X_UNUSED, Cardinal *n _X_UNUSED)
 {
     DeleteOrKill((TextWidget)w, event, XawsdRight, XawstParagraph, False, True);
 }
@@ -1521,7 +1521,7 @@ _XawTextZapSelection(TextWidget ctx, XEvent *event, Bool kill)
 
 /*ARGSUSED*/
 static void
-KillCurrentSelection(Widget w, XEvent *event, String *p, Cardinal *n)
+KillCurrentSelection(Widget w, XEvent *event, String *p _X_UNUSED, Cardinal *n _X_UNUSED)
 {
     _XawTextZapSelection((TextWidget) w, event, True);
 }
@@ -1529,7 +1529,7 @@ KillCurrentSelection(Widget w, XEvent *event, String *p, Cardinal *n)
 #ifndef OLDXAW
 /*ARGSUSED*/
 static void
-KillRingYank(Widget w, XEvent *event, String *params, Cardinal *num_params)
+KillRingYank(Widget w, XEvent *event, String *params _X_UNUSED, Cardinal *num_params _X_UNUSED)
 {
     TextWidget ctx = (TextWidget)w;
     XawTextPosition insertPos = ctx->text.insertPos;
@@ -1579,7 +1579,7 @@ KillRingYank(Widget w, XEvent *event, String *params, Cardinal *num_params)
 
 /*ARGSUSED*/
 static void
-DeleteCurrentSelection(Widget w, XEvent *event, String *p, Cardinal *n)
+DeleteCurrentSelection(Widget w, XEvent *event, String *p _X_UNUSED, Cardinal *n _X_UNUSED)
 {
     _XawTextZapSelection((TextWidget)w, event, False);
 }
@@ -2317,7 +2317,7 @@ DoFormatText(TextWidget ctx, XawTextPosition left, Bool force, int level,
 
 /*ARGSUSED*/
 static void
-Indent(Widget w, XEvent *event, String *params, Cardinal *num_params)
+Indent(Widget w, XEvent *event, String *params _X_UNUSED, Cardinal *num_params _X_UNUSED)
 {
     TextWidget ctx = (TextWidget)w;
     TextSrcObject src = (TextSrcObject)ctx->text.source;
@@ -2458,7 +2458,7 @@ Indent(Widget w, XEvent *event, String *params, Cardinal *num_params)
 
 /*ARGSUSED*/
 static void
-ToggleOverwrite(Widget w, XEvent *event, String *params, Cardinal *num_params)
+ToggleOverwrite(Widget w, XEvent *event _X_UNUSED, String *params _X_UNUSED, Cardinal *num_params _X_UNUSED)
 {
     TextWidget ctx = (TextWidget)w;
 
@@ -2531,7 +2531,7 @@ InsertNewLineAndBackupInternal(TextWidget ctx)
 
 /*ARGSUSED*/
 static void
-InsertNewLineAndBackup(Widget w, XEvent *event, String *p, Cardinal *n)
+InsertNewLineAndBackup(Widget w, XEvent *event, String *p _X_UNUSED, Cardinal *n _X_UNUSED)
 {
     TextWidget ctx = (TextWidget)w;
     XawTextPosition insertPos = ctx->text.insertPos;
@@ -2558,14 +2558,14 @@ LocalInsertNewLine(TextWidget ctx, XEvent *event)
 
 /*ARGSUSED*/
 static void
-InsertNewLine(Widget w, XEvent *event, String *p, Cardinal *n)
+InsertNewLine(Widget w, XEvent *event, String *p _X_UNUSED, Cardinal *n _X_UNUSED)
 {
     (void)LocalInsertNewLine((TextWidget)w, event);
 }
 
 /*ARGSUSED*/
 static void
-InsertNewLineAndIndent(Widget w, XEvent *event, String *p, Cardinal *n)
+InsertNewLineAndIndent(Widget w, XEvent *event, String *p _X_UNUSED, Cardinal *n _X_UNUSED)
 {
     XawTextBlock text;
     XawTextPosition pos1;
@@ -2798,7 +2798,7 @@ SelectSave(Widget  w, XEvent *event, String *params, Cardinal *num_params)
  */
 /*ARGSUSED*/
 static void
-SetKeyboardFocus(Widget w, XEvent *event, String *params, Cardinal *num_params)
+SetKeyboardFocus(Widget w, XEvent *event _X_UNUSED, String *params _X_UNUSED, Cardinal *num_params _X_UNUSED)
 {
     Widget shell, parent;
 
@@ -2813,7 +2813,7 @@ SetKeyboardFocus(Widget w, XEvent *event, String *params, Cardinal *num_params)
 
 /*ARGSUSED*/
 static void
-RedrawDisplay(Widget w, XEvent *event, String *p, Cardinal *n)
+RedrawDisplay(Widget w, XEvent *event, String *p _X_UNUSED, Cardinal *n _X_UNUSED)
 {
     StartAction((TextWidget)w, event);
     _XawTextClearAndCenterDisplay((TextWidget)w);
@@ -2833,7 +2833,7 @@ static Cardinal num_focus;
 
 /*ARGSUSED*/
 static void
-DestroyFocusCallback(Widget w, XtPointer user_data, XtPointer call_data)
+DestroyFocusCallback(Widget w, XtPointer user_data, XtPointer call_data _X_UNUSED)
 {
     struct _focus *f = (struct _focus*)(user_data);
 
@@ -2903,7 +2903,7 @@ TextFocusIn(Widget w, XEvent *event, String *p, Cardinal *n)
 
 /*ARGSUSED*/
 static void
-TextFocusOut(Widget w, XEvent *event, String *p, Cardinal *n)
+TextFocusOut(Widget w, XEvent *event, String *p _X_UNUSED, Cardinal *n _X_UNUSED)
 {
     TextWidget ctx = (TextWidget)w;
     Bool display_caret = ctx->text.display_caret;
@@ -2945,7 +2945,7 @@ TextFocusOut(Widget w, XEvent *event, String *p, Cardinal *n)
 
 /*ARGSUSED*/
 static void
-TextEnterWindow(Widget w, XEvent *event, String *params, Cardinal *num_params)
+TextEnterWindow(Widget w, XEvent *event, String *params _X_UNUSED, Cardinal *num_params _X_UNUSED)
 {
     TextWidget ctx = (TextWidget)w;
 
@@ -2956,7 +2956,7 @@ TextEnterWindow(Widget w, XEvent *event, String *params, Cardinal *num_params)
 
 /*ARGSUSED*/
 static void
-TextLeaveWindow(Widget w, XEvent *event, String *params, Cardinal *num_params)
+TextLeaveWindow(Widget w, XEvent *event, String *params _X_UNUSED, Cardinal *num_params _X_UNUSED)
 {
     TextWidget ctx = (TextWidget)w;
 
@@ -3034,7 +3034,7 @@ AutoFill(TextWidget ctx)
 
 /*ARGSUSED*/
 static void
-InsertChar(Widget w, XEvent *event, String *p, Cardinal *n)
+InsertChar(Widget w, XEvent *event, String *p _X_UNUSED, Cardinal *n _X_UNUSED)
 {
     TextWidget ctx = (TextWidget)w;
     char *ptr, strbuf[128], ptrbuf[512];
@@ -3437,7 +3437,7 @@ Numeric(Widget w, XEvent *event, String *params, Cardinal *num_params)
 
 /*ARGSUSED*/
 static void
-KeyboardReset(Widget w, XEvent *event, String *params, Cardinal *num_params)
+KeyboardReset(Widget w, XEvent *event _X_UNUSED, String *params _X_UNUSED, Cardinal *num_params _X_UNUSED)
 {
     TextWidget ctx = (TextWidget)w;
 
@@ -3467,7 +3467,7 @@ KeyboardReset(Widget w, XEvent *event, String *params, Cardinal *num_params)
  * The string reset will reset the mutiplication factor to 1. */
 /*ARGSUSED*/
 static void
-Multiply(Widget w, XEvent *event, String *params, Cardinal *num_params)
+Multiply(Widget w, XEvent *event _X_UNUSED, String *params, Cardinal *num_params)
 {
     TextWidget ctx = (TextWidget)w;
     int mult;
@@ -3902,7 +3902,7 @@ GetBlockBoundaries(TextWidget ctx,
  * removes and reinserts CRs to maximize line length without clipping */
 /*ARGSUSED*/
 static void
-FormParagraph(Widget w, XEvent *event, String *params, Cardinal *num_params)
+FormParagraph(Widget w, XEvent *event, String *params _X_UNUSED, Cardinal *num_params _X_UNUSED)
 {
     TextWidget ctx = (TextWidget)w;
     XawTextPosition from, to, buf[32], *pos;
@@ -4015,7 +4015,7 @@ FormParagraph(Widget w, XEvent *event, String *params, Cardinal *num_params)
 /*ARGSUSED*/
 static void
 TransposeCharacters(Widget w, XEvent *event,
-		    String *params, Cardinal *num_params)
+		    String *params _X_UNUSED, Cardinal *num_params _X_UNUSED)
 {
     TextWidget ctx = (TextWidget)w;
     XawTextPosition start, end;
@@ -4088,7 +4088,7 @@ TransposeCharacters(Widget w, XEvent *event,
 #ifndef OLDXAW
 /*ARGSUSED*/
 static void
-Undo(Widget w, XEvent *event, String *params, Cardinal *num_params)
+Undo(Widget w, XEvent *event, String *params _X_UNUSED, Cardinal *num_params _X_UNUSED)
 {
     TextWidget ctx = (TextWidget)w;
     int mul = MULT(ctx);
@@ -4121,7 +4121,7 @@ Undo(Widget w, XEvent *event, String *params, Cardinal *num_params)
  */
 /*ARGSUSED*/
 static void
-NoOp(Widget w, XEvent *event, String *params, Cardinal *num_params)
+NoOp(Widget w, XEvent *event _X_UNUSED, String *params, Cardinal *num_params)
 {
     if (*num_params != 1)
 	return;
@@ -4143,7 +4143,7 @@ NoOp(Widget w, XEvent *event, String *params, Cardinal *num_params)
  */
 /*ARGSUSED*/
 static void
-Reconnect(Widget w, XEvent *event, String *params, Cardinal *num_params)
+Reconnect(Widget w, XEvent *event _X_UNUSED, String *params _X_UNUSED, Cardinal *num_params _X_UNUSED)
 {
     _XawImReconnect(w);
 }
@@ -4286,21 +4286,21 @@ CaseProc(Widget w, XEvent *event, int cmd)
 
 /*ARGSUSED*/
 static void
-CapitalizeWord(Widget w, XEvent *event, String *params, Cardinal *num_params)
+CapitalizeWord(Widget w, XEvent *event, String *params _X_UNUSED, Cardinal *num_params _X_UNUSED)
 {
     CaseProc(w, event, CAPITALIZE);
 }
 
 /*ARGSUSED*/
 static void
-DowncaseWord(Widget w, XEvent *event, String *params, Cardinal *num_params)
+DowncaseWord(Widget w, XEvent *event, String *params _X_UNUSED, Cardinal *num_params _X_UNUSED)
 {
     CaseProc(w, event, DOWNCASE);
 }
 
 /*ARGSUSED*/
 static void
-UpcaseWord(Widget w, XEvent *event, String *params, Cardinal *num_params)
+UpcaseWord(Widget w, XEvent *event, String *params _X_UNUSED, Cardinal *num_params _X_UNUSED)
 {
     CaseProc(w, event, UPCASE);
 }

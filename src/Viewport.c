@@ -280,8 +280,8 @@ CreateScrollbar(ViewportWidget w, Bool horizontal)
 
 /*ARGSUSED*/
 static void
-XawViewportInitialize(Widget request, Widget cnew,
-		      ArgList args, Cardinal *num_args)
+XawViewportInitialize(Widget request _X_UNUSED, Widget cnew,
+		      ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     ViewportWidget w = (ViewportWidget)cnew;
     static Arg clip_args[8];
@@ -344,8 +344,8 @@ XawViewportInitialize(Widget request, Widget cnew,
 
 /*ARGSUSED*/
 static void
-XawViewportConstraintInitialize(Widget request, Widget cnew,
-				ArgList args, Cardinal *num_args)
+XawViewportConstraintInitialize(Widget request _X_UNUSED, Widget cnew,
+				ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     ((ViewportConstraints)cnew->core.constraints)->viewport.reparented = False;
 }
@@ -375,8 +375,8 @@ XawViewportRealize(Widget widget, XtValueMask *value_mask,
 
 /*ARGSUSED*/
 static Boolean
-XawViewportSetValues(Widget current, Widget request, Widget cnew,
-		     ArgList args, Cardinal *num_args)
+XawViewportSetValues(Widget current, Widget request _X_UNUSED, Widget cnew,
+		     ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     ViewportWidget w = (ViewportWidget)cnew;
     ViewportWidget cw = (ViewportWidget)current;
@@ -795,7 +795,7 @@ XawViewportResize(Widget widget)
 
 /*ARGSUSED*/
 static Boolean
-Layout(FormWidget w, unsigned int width, unsigned int height, Bool force)
+Layout(FormWidget w, unsigned int width _X_UNUSED, unsigned int height _X_UNUSED, Bool force _X_UNUSED)
 {
     ComputeLayout((Widget)w, True, True);
     w->form.preferred_width = XtWidth(w);

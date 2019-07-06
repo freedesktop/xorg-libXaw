@@ -467,7 +467,7 @@ ChangeSize(Widget w, unsigned int width, unsigned int height)
 
 /*ARGSUSED*/
 static void
-XawListInitialize(Widget temp1, Widget cnew, ArgList args, Cardinal *num_args)
+XawListInitialize(Widget temp1 _X_UNUSED, Widget cnew, ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     ListWidget lw = (ListWidget)cnew;
 
@@ -976,7 +976,7 @@ Layout(Widget w, Bool xfree, Bool yfree, Dimension *width, Dimension *height)
  * then the name of the item is also put in CUT_BUFFER0 */
 /*ARGSUSED*/
 static void
-Notify(Widget w, XEvent *event, String *params, Cardinal *num_params)
+Notify(Widget w, XEvent *event, String *params _X_UNUSED, Cardinal *num_params _X_UNUSED)
 {
     ListWidget lw = (ListWidget)w;
     int item, item_len;
@@ -1023,7 +1023,7 @@ Notify(Widget w, XEvent *event, String *params, Cardinal *num_params)
  * unhighlights the current element */
 /*ARGSUSED*/
 static void
-Unset(Widget w, XEvent *event, String *params, Cardinal *num_params)
+Unset(Widget w, XEvent *event _X_UNUSED, String *params _X_UNUSED, Cardinal *num_params _X_UNUSED)
 {
     XawListUnhighlight(w);
 }
@@ -1033,7 +1033,7 @@ Unset(Widget w, XEvent *event, String *params, Cardinal *num_params)
  * Highlights the current element */
 /*ARGSUSED*/
 static void
-Set(Widget w, XEvent *event, String *params, Cardinal *num_params)
+Set(Widget w, XEvent *event, String *params _X_UNUSED, Cardinal *num_params _X_UNUSED)
 {
     int item;
     ListWidget lw = (ListWidget)w;
@@ -1053,7 +1053,7 @@ Set(Widget w, XEvent *event, String *params, Cardinal *num_params)
 /*ARGSUSED*/
 static Boolean
 XawListSetValues(Widget current, Widget request, Widget cnew,
-		 ArgList args, Cardinal *num_args)
+		 ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     ListWidget cl = (ListWidget)current;
     ListWidget rl = (ListWidget)request;

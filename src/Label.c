@@ -467,8 +467,8 @@ set_bitmap_info(LabelWidget lw)
 
 /*ARGSUSED*/
 static void
-XawLabelInitialize(Widget request, Widget cnew,
-		   ArgList args, Cardinal *num_args)
+XawLabelInitialize(Widget request _X_UNUSED, Widget cnew,
+		   ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     LabelWidget lw = (LabelWidget)cnew;
 

@@ -481,7 +481,7 @@ static XrmQuark QJustifyLeft, QJustifyRight, QJustifyCenter, QJustifyFull;
 
 /*ARGSUSED*/
 static void
-CvtStringToScrollMode(XrmValuePtr args, Cardinal *num_args,
+CvtStringToScrollMode(XrmValuePtr args _X_UNUSED, Cardinal *num_args _X_UNUSED,
 		      XrmValuePtr fromVal, XrmValuePtr toVal)
 {
     static XawTextScrollMode scrollMode = XawtextScrollNever;
@@ -507,8 +507,8 @@ CvtStringToScrollMode(XrmValuePtr args, Cardinal *num_args,
 
 /*ARGSUSED*/
 static Boolean
-CvtScrollModeToString(Display *dpy, XrmValue *args, Cardinal *num_args,
-		      XrmValue *fromVal, XrmValue *toVal, XtPointer *data)
+CvtScrollModeToString(Display *dpy, XrmValue *args _X_UNUSED, Cardinal *num_args _X_UNUSED,
+		      XrmValue *fromVal, XrmValue *toVal _X_UNUSED, XtPointer *data _X_UNUSED)
 {
     static char *buffer;
     Cardinal size;
@@ -544,7 +544,7 @@ CvtScrollModeToString(Display *dpy, XrmValue *args, Cardinal *num_args,
 
 /*ARGSUSED*/
 static void
-CvtStringToWrapMode(XrmValuePtr args, Cardinal *num_args,
+CvtStringToWrapMode(XrmValuePtr args _X_UNUSED, Cardinal *num_args _X_UNUSED,
 		    XrmValuePtr fromVal, XrmValuePtr toVal)
 {
     static XawTextWrapMode wrapMode = XawtextWrapNever;
@@ -569,8 +569,8 @@ CvtStringToWrapMode(XrmValuePtr args, Cardinal *num_args,
 
 /*ARGSUSED*/
 static Boolean
-CvtWrapModeToString(Display *dpy, XrmValue *args, Cardinal *num_args,
-		    XrmValue *fromVal, XrmValue *toVal, XtPointer *data)
+CvtWrapModeToString(Display *dpy, XrmValue *args _X_UNUSED, Cardinal *num_args _X_UNUSED,
+		    XrmValue *fromVal, XrmValue *toVal _X_UNUSED, XtPointer *data _X_UNUSED)
 {
     static char *buffer;
     Cardinal size;
@@ -608,8 +608,8 @@ CvtWrapModeToString(Display *dpy, XrmValue *args, Cardinal *num_args,
 
 /*ARGSUSED*/
 static Boolean
-CvtStringToJustifyMode(Display *dpy, XrmValue *args, Cardinal *num_args,
-		       XrmValue *fromVal, XrmValue *toVal, XtPointer *data)
+CvtStringToJustifyMode(Display *dpy _X_UNUSED, XrmValue *args _X_UNUSED, Cardinal *num_args _X_UNUSED,
+		       XrmValue *fromVal, XrmValue *toVal, XtPointer *data _X_UNUSED)
 {
     XawTextJustifyMode justify;
     XrmQuark q;
@@ -641,8 +641,8 @@ CvtStringToJustifyMode(Display *dpy, XrmValue *args, Cardinal *num_args,
 
 /*ARGSUSED*/
 static Boolean
-CvtJustifyModeToString(Display *dpy, XrmValue *args, Cardinal *num_args,
-		       XrmValue *fromVal, XrmValue *toVal, XtPointer *data)
+CvtJustifyModeToString(Display *dpy, XrmValue *args _X_UNUSED, Cardinal *num_args _X_UNUSED,
+		       XrmValue *fromVal, XrmValue *toVal, XtPointer *data _X_UNUSED)
 {
     static String buffer;
     Cardinal size;
@@ -899,8 +899,8 @@ DestroyHScrollBar(TextWidget ctx)
 
 /*ARGSUSED*/
 static void
-XawTextInitialize(Widget request, Widget cnew,
-		  ArgList args, Cardinal *num_args)
+XawTextInitialize(Widget request _X_UNUSED, Widget cnew,
+		  ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     TextWidget ctx = (TextWidget)cnew;
 
@@ -1735,7 +1735,7 @@ _XawTextVScroll(TextWidget ctx, int n)
 
 /*ARGSUSED*/
 static void
-HScroll(Widget w, XtPointer closure, XtPointer callData)
+HScroll(Widget w _X_UNUSED, XtPointer closure, XtPointer callData)
 {
     TextWidget ctx = (TextWidget)closure;
     long pixels = (long)callData;
@@ -1827,7 +1827,7 @@ UpdateTextInLine(TextWidget ctx, int line, int x1, int x2)
  */
 /*ARGSUSED*/
 static void
-VScroll(Widget w, XtPointer closure, XtPointer callData)
+VScroll(Widget w _X_UNUSED, XtPointer closure, XtPointer callData)
 {
     TextWidget ctx = (TextWidget)closure;
     long height, lines = (long)callData;
@@ -1843,7 +1843,7 @@ VScroll(Widget w, XtPointer closure, XtPointer callData)
 
 /*ARGSUSED*/
 static void
-VJump(Widget w, XtPointer closure, XtPointer callData)
+VJump(Widget w _X_UNUSED, XtPointer closure, XtPointer callData)
 {
     float percent = *(float *)callData;
     TextWidget ctx = (TextWidget)closure;
@@ -2496,7 +2496,7 @@ ResolveColumnNumber(TextWidget ctx)
 
 void
 _XawTextSourceChanged(Widget w, XawTextPosition left, XawTextPosition right,
-		      XawTextBlock *block, int lines)
+		      XawTextBlock *block, int lines _X_UNUSED)
 {
     TextWidget ctx = (TextWidget)w;
     Widget src = ctx->text.source;
@@ -3096,7 +3096,7 @@ TextSinkResize(Widget w)
 
 /* ARGSUSED */
 void
-_XawTextCheckResize(TextWidget ctx)
+_XawTextCheckResize(TextWidget ctx _X_UNUSED)
 {
     return;
 }
@@ -3645,7 +3645,7 @@ XawTextResize(Widget w)
  */
 /*ARGSUSED*/
 static Boolean
-XawTextSetValues(Widget current, Widget request, Widget cnew,
+XawTextSetValues(Widget current, Widget request _X_UNUSED, Widget cnew,
 		 ArgList args, Cardinal *num_args)
 {
     TextWidget oldtw = (TextWidget)current;

@@ -259,8 +259,8 @@ XawSmeBSBClassInitialize(void)
  */
 /*ARGSUSED*/
 static void
-XawSmeBSBInitialize(Widget request, Widget cnew,
-		    ArgList args, Cardinal *num_args)
+XawSmeBSBInitialize(Widget request _X_UNUSED, Widget cnew,
+		    ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     SmeBSBObject entry = (SmeBSBObject)cnew;
 
@@ -312,7 +312,7 @@ XawSmeBSBDestroy(Widget w)
  */
 /* ARGSUSED */
 static void
-XawSmeBSBRedisplay(Widget w, XEvent *event, Region region)
+XawSmeBSBRedisplay(Widget w, XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
     GC gc;
     SmeBSBObject entry = (SmeBSBObject)w;
@@ -424,8 +424,8 @@ XawSmeBSBRedisplay(Widget w, XEvent *event, Region region)
 
 /*ARGSUSED*/
 static Boolean
-XawSmeBSBSetValues(Widget current, Widget request, Widget cnew,
-		   ArgList args, Cardinal *num_args)
+XawSmeBSBSetValues(Widget current, Widget request _X_UNUSED, Widget cnew,
+		   ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     SmeBSBObject entry = (SmeBSBObject)cnew;
     SmeBSBObject old_entry = (SmeBSBObject)current;

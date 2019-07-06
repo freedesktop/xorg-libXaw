@@ -296,8 +296,8 @@ XawTextSrcClassPartInitialize(WidgetClass wc)
 
 /*ARGSUSED*/
 static void
-XawTextSrcInitialize(Widget request, Widget cnew,
-		     ArgList args, Cardinal *num_args)
+XawTextSrcInitialize(Widget request _X_UNUSED, Widget cnew _X_UNUSED,
+		     ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
 #ifndef OLDXAW
     TextSrcObject src = (TextSrcObject)cnew;
@@ -326,7 +326,7 @@ XawTextSrcInitialize(Widget request, Widget cnew,
 }
 
 static void
-XawTextSrcDestroy(Widget w)
+XawTextSrcDestroy(Widget w _X_UNUSED)
 {
 #ifndef OLDXAW
     TextSrcObject src = (TextSrcObject)w;
@@ -357,8 +357,8 @@ XawTextSrcDestroy(Widget w)
 
 /*ARGSUSED*/
 static Boolean
-XawTextSrcSetValues(Widget current, Widget request, Widget cnew,
-		    ArgList args, Cardinal *num_args)
+XawTextSrcSetValues(Widget current _X_UNUSED, Widget request _X_UNUSED, Widget cnew _X_UNUSED,
+		    ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
 #ifndef OLDXAW
     TextSrcObject oldtw = (TextSrcObject)current;
@@ -411,7 +411,7 @@ XawTextSrcSetValues(Widget current, Widget request, Widget cnew,
  */
 /*ARGSUSED*/
 static XawTextPosition
-Read(Widget w, XawTextPosition pos, XawTextBlock *text, int length)
+Read(Widget w _X_UNUSED, XawTextPosition pos _X_UNUSED, XawTextBlock *text _X_UNUSED, int length _X_UNUSED)
 {
     return ((XawTextPosition)0);
 }
@@ -431,8 +431,8 @@ Read(Widget w, XawTextPosition pos, XawTextBlock *text, int length)
  */
 /*ARGSUSED*/
 static int
-Replace(Widget w, XawTextPosition startPos, XawTextPosition endPos,
-	XawTextBlock *text)
+Replace(Widget w _X_UNUSED, XawTextPosition startPos _X_UNUSED, XawTextPosition endPos _X_UNUSED,
+	XawTextBlock *text _X_UNUSED)
 {
     return (XawEditError);
 }
@@ -455,8 +455,8 @@ Replace(Widget w, XawTextPosition startPos, XawTextPosition endPos,
  */
 /*ARGSUSED*/
 static XawTextPosition
-Scan(Widget w, XawTextPosition position, XawTextScanType type,
-     XawTextScanDirection dir, int count, Bool include)
+Scan(Widget w _X_UNUSED, XawTextPosition position _X_UNUSED, XawTextScanType type _X_UNUSED,
+     XawTextScanDirection dir _X_UNUSED, int count _X_UNUSED, Bool include _X_UNUSED)
 {
     return ((XawTextPosition)0);
 }
@@ -476,30 +476,30 @@ Scan(Widget w, XawTextPosition position, XawTextScanType type,
  */
 /*ARGSUSED*/
 static XawTextPosition
-Search(Widget w, XawTextPosition position, XawTextScanDirection dir,
-       XawTextBlock *text)
+Search(Widget w _X_UNUSED, XawTextPosition position _X_UNUSED, XawTextScanDirection dir _X_UNUSED,
+       XawTextBlock *text _X_UNUSED)
 {
     return (XawTextSearchError);
 }
 
 /*ARGSUSED*/
 static Boolean
-ConvertSelection(Widget w, Atom *selection, Atom *target, Atom *type,
-		 XtPointer *value, unsigned long *length, int *format)
+ConvertSelection(Widget w _X_UNUSED, Atom *selection _X_UNUSED, Atom *target _X_UNUSED, Atom *type _X_UNUSED,
+		 XtPointer *value _X_UNUSED, unsigned long *length _X_UNUSED, int *format _X_UNUSED)
 {
     return (False);
 }
 
 /*ARGSUSED*/
 static void
-SetSelection(Widget w, XawTextPosition left, XawTextPosition right,
-	     Atom selection)
+SetSelection(Widget w _X_UNUSED, XawTextPosition left _X_UNUSED, XawTextPosition right _X_UNUSED,
+	     Atom selection _X_UNUSED)
 {
 }
 
 /*ARGSUSED*/
 static void
-CvtStringToEditMode(XrmValuePtr args, Cardinal *num_args,
+CvtStringToEditMode(XrmValuePtr args _X_UNUSED, Cardinal *num_args _X_UNUSED,
 		    XrmValuePtr fromVal, XrmValuePtr toVal)
 {
     static XawTextEditType editType;
@@ -526,9 +526,9 @@ CvtStringToEditMode(XrmValuePtr args, Cardinal *num_args,
 
 /*ARGSUSED*/
 static Boolean
-CvtEditModeToString(Display *dpy, XrmValuePtr args, Cardinal *num_args,
+CvtEditModeToString(Display *dpy, XrmValuePtr args _X_UNUSED, Cardinal *num_args _X_UNUSED,
 		    XrmValuePtr fromVal, XrmValuePtr toVal,
-		    XtPointer *data)
+		    XtPointer *data _X_UNUSED)
 {
     static String buffer;
     Cardinal size;

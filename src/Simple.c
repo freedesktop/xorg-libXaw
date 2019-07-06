@@ -286,8 +286,8 @@ XawSimpleClassPartInitialize(WidgetClass cclass)
 #ifndef OLDXAW
 /*ARGSUSED*/
 static void
-XawSimpleInitialize(Widget request, Widget cnew,
-		    ArgList args, Cardinal *num_args)
+XawSimpleInitialize(Widget request _X_UNUSED, Widget cnew,
+		    ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     SimpleWidget simple = (SimpleWidget)cnew;
 
@@ -393,8 +393,8 @@ ConvertCursor(Widget w)
 
 /*ARGSUSED*/
 static Boolean
-XawSimpleSetValues(Widget current, Widget request, Widget cnew,
-		   ArgList args, Cardinal *num_args)
+XawSimpleSetValues(Widget current, Widget request _X_UNUSED, Widget cnew,
+		   ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     SimpleWidget s_old = (SimpleWidget)current;
     SimpleWidget s_new = (SimpleWidget)cnew;

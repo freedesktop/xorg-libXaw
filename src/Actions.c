@@ -1102,7 +1102,7 @@ _XawFindActionVar(XawActionVarList *list, String name)
 
 /*ARGSUSED*/
 static void
-_XawDestroyActionVarList(Widget w, XtPointer client_data, XtPointer call_data)
+_XawDestroyActionVarList(Widget w, XtPointer client_data, XtPointer call_data _X_UNUSED)
 {
   XawActionVarList *list = (XawActionVarList *)client_data;
   Cardinal i;

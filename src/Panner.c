@@ -641,7 +641,7 @@ XmuLocatePixmapFile(pw->core.screen, pw->panner.stipple_name,		\
 
 /*ARGSUSED*/
 static void
-XawPannerInitialize(Widget greq, Widget gnew, ArgList args, Cardinal *num_args)
+XawPannerInitialize(Widget greq, Widget gnew, ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     PannerWidget req = (PannerWidget)greq, cnew = (PannerWidget)gnew;
     Dimension defwidth, defheight;
@@ -756,8 +756,8 @@ XawPannerRedisplay(Widget gw, XEvent *event, Region region)
 
 /*ARGSUSED*/
 static Boolean
-XawPannerSetValues(Widget gcur, Widget greq, Widget gnew,
-		   ArgList args, Cardinal *num_args)
+XawPannerSetValues(Widget gcur, Widget greq _X_UNUSED, Widget gnew,
+		   ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     PannerWidget cur = (PannerWidget)gcur;
     PannerWidget cnew = (PannerWidget)gnew;
@@ -868,7 +868,7 @@ XawPannerQueryGeometry(Widget gw, XtWidgetGeometry *intended,
 
 /*ARGSUSED*/
 static void
-ActionStart(Widget gw, XEvent *event, String *params, Cardinal *num_params)
+ActionStart(Widget gw, XEvent *event, String *params _X_UNUSED, Cardinal *num_params _X_UNUSED)
 {
     PannerWidget pw = (PannerWidget)gw;
     int x, y;
@@ -891,7 +891,7 @@ ActionStart(Widget gw, XEvent *event, String *params, Cardinal *num_params)
 
 /*ARGSUSED*/
 static void
-ActionStop(Widget gw, XEvent *event, String *params, Cardinal *num_params)
+ActionStop(Widget gw, XEvent *event, String *params _X_UNUSED, Cardinal *num_params _X_UNUSED)
 {
     PannerWidget pw = (PannerWidget)gw;
     int x, y;
@@ -999,7 +999,7 @@ ActionPage(Widget gw, XEvent *event, String *params, Cardinal *num_params)
 
 /*ARGSUSED*/
 static void
-ActionNotify(Widget gw, XEvent *event, String *params, Cardinal *num_params)
+ActionNotify(Widget gw, XEvent *event _X_UNUSED, String *params _X_UNUSED, Cardinal *num_params _X_UNUSED)
 {
     PannerWidget pw = (PannerWidget)gw;
 
@@ -1051,7 +1051,7 @@ ActionNotify(Widget gw, XEvent *event, String *params, Cardinal *num_params)
 
 /*ARGSUSED*/
 static void
-ActionSet(Widget gw, XEvent *event, String *params, Cardinal *num_params)
+ActionSet(Widget gw, XEvent *event _X_UNUSED, String *params, Cardinal *num_params)
 {
     PannerWidget pw = (PannerWidget)gw;
     Bool rb;

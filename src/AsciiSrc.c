@@ -288,8 +288,8 @@ XawAsciiSrcClassInitialize(void)
  */
 /*ARGSUSED*/
 static void
-XawAsciiSrcInitialize(Widget request, Widget cnew,
-		      ArgList args, Cardinal *num_args)
+XawAsciiSrcInitialize(Widget request _X_UNUSED, Widget cnew,
+		      ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     AsciiSrcObject src = (AsciiSrcObject)cnew;
     FILE *file;
@@ -967,7 +967,7 @@ Search(Widget w, register XawTextPosition position, XawTextScanDirection dir,
  *	True if redisplay is needed
  */
 static Boolean
-XawAsciiSrcSetValues(Widget current, Widget request, Widget cnew,
+XawAsciiSrcSetValues(Widget current, Widget request _X_UNUSED, Widget cnew,
 		     ArgList args, Cardinal *num_args)
 {
     AsciiSrcObject src = (AsciiSrcObject)cnew;
@@ -1707,7 +1707,7 @@ BreakPiece(AsciiSrcObject src, Piece *piece)
 
 /*ARGSUSED*/
 static void
-CvtStringToAsciiType(XrmValuePtr args, Cardinal *num_args,
+CvtStringToAsciiType(XrmValuePtr args _X_UNUSED, Cardinal *num_args _X_UNUSED,
 		     XrmValuePtr fromVal, XrmValuePtr toVal)
 {
     static XawAsciiType type;
@@ -1733,9 +1733,9 @@ CvtStringToAsciiType(XrmValuePtr args, Cardinal *num_args,
 
 /*ARGSUSED*/
 static Boolean
-CvtAsciiTypeToString(Display *dpy, XrmValuePtr args, Cardinal *num_args,
+CvtAsciiTypeToString(Display *dpy, XrmValuePtr args _X_UNUSED, Cardinal *num_args _X_UNUSED,
 		     XrmValuePtr fromVal, XrmValuePtr toVal,
-		     XtPointer *data)
+		     XtPointer *data _X_UNUSED)
 {
     static String buffer;
     Cardinal size;
@@ -1771,7 +1771,7 @@ CvtAsciiTypeToString(Display *dpy, XrmValuePtr args, Cardinal *num_args,
 
 /*ARGSUSED*/
 static void
-GetDefaultPieceSize(Widget w, int offset, XrmValue *value)
+GetDefaultPieceSize(Widget w _X_UNUSED, int offset _X_UNUSED, XrmValue *value)
 {
     static XPointer pagesize;
 

@@ -346,7 +346,7 @@ XawTreeClassInitialize(void)
 /*ARGSUSED*/
 static void
 XawTreeInitialize(Widget grequest, Widget gnew,
-		  ArgList args, Cardinal *num_args)
+		  ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     TreeWidget request = (TreeWidget) grequest, cnew = (TreeWidget) gnew;
     Arg arglist[2];
@@ -402,8 +402,8 @@ XawTreeInitialize(Widget grequest, Widget gnew,
 
 /* ARGSUSED */
 static void
-XawTreeConstraintInitialize(Widget request, Widget cnew,
-			    ArgList args, Cardinal *num_args)
+XawTreeConstraintInitialize(Widget request _X_UNUSED, Widget cnew,
+			    ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     TreeConstraints tc = TREE_CONSTRAINT(cnew);
     TreeWidget tw = (TreeWidget) cnew->core.parent;
@@ -433,8 +433,8 @@ XawTreeConstraintInitialize(Widget request, Widget cnew,
 
 /* ARGSUSED */
 static Boolean
-XawTreeSetValues(Widget gcurrent, Widget grequest, Widget gnew,
-		 ArgList args, Cardinal *num_args)
+XawTreeSetValues(Widget gcurrent, Widget grequest _X_UNUSED, Widget gnew,
+		 ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     TreeWidget current = (TreeWidget) gcurrent, cnew = (TreeWidget) gnew;
     Boolean redraw = FALSE;
@@ -480,8 +480,8 @@ XawTreeSetValues(Widget gcurrent, Widget grequest, Widget gnew,
 
 /* ARGSUSED */
 static Boolean
-XawTreeConstraintSetValues(Widget current, Widget request, Widget cnew,
-			   ArgList args, Cardinal *num_args)
+XawTreeConstraintSetValues(Widget current, Widget request _X_UNUSED, Widget cnew,
+			   ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     TreeConstraints newc = TREE_CONSTRAINT(cnew);
     TreeConstraints curc = TREE_CONSTRAINT(current);
@@ -538,7 +538,7 @@ XawTreeConstraintDestroy(Widget w)
 /* ARGSUSED */
 static XtGeometryResult
 XawTreeGeometryManager(Widget w, XtWidgetGeometry *request,
-		       XtWidgetGeometry *reply)
+		       XtWidgetGeometry *reply _X_UNUSED)
 {
 
     TreeWidget tw = (TreeWidget) w->core.parent;
@@ -584,7 +584,7 @@ XawTreeDestroy(Widget gw)
 
 /* ARGSUSED */
 static void
-XawTreeRedisplay(Widget gw, XEvent *event, Region region)
+XawTreeRedisplay(Widget gw, XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
     TreeWidget tw = (TreeWidget) gw;
 

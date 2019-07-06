@@ -499,8 +499,8 @@ CreateGC(Widget w)
 
 /* ARGSUSED */
 static void
-XawScrollbarInitialize(Widget request, Widget cnew,
-		       ArgList args, Cardinal *num_args)
+XawScrollbarInitialize(Widget request _X_UNUSED, Widget cnew,
+		       ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     ScrollbarWidget w = (ScrollbarWidget)cnew;
 
@@ -540,8 +540,8 @@ XawScrollbarRealize(Widget gw, Mask *valueMask,
 
 /*ARGSUSED*/
 static Boolean
-XawScrollbarSetValues(Widget current, Widget request, Widget desired,
-		      ArgList args, Cardinal *num_args)
+XawScrollbarSetValues(Widget current, Widget request _X_UNUSED, Widget desired,
+		      ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     ScrollbarWidget w = (ScrollbarWidget)current;
     ScrollbarWidget dw = (ScrollbarWidget)desired;
@@ -615,7 +615,7 @@ XawScrollbarRedisplay(Widget gw, XEvent *event, Region region)
 
 /*ARGSUSED*/
 static void
-StartScroll(Widget gw, XEvent *event, String *params, Cardinal *num_params)
+StartScroll(Widget gw, XEvent *event _X_UNUSED, String *params, Cardinal *num_params)
 {
     ScrollbarWidget w = (ScrollbarWidget)gw;
     Cursor cursor;
@@ -802,7 +802,7 @@ NotifyScroll(Widget gw, XEvent *event, String *params, Cardinal *num_params)
 
 /*ARGSUSED*/
 static void
-EndScroll(Widget gw, XEvent *event, String *params, Cardinal *num_params)
+EndScroll(Widget gw, XEvent *event _X_UNUSED, String *params _X_UNUSED, Cardinal *num_params _X_UNUSED)
 {
     ScrollbarWidget w = (ScrollbarWidget)gw;
 
@@ -814,7 +814,7 @@ EndScroll(Widget gw, XEvent *event, String *params, Cardinal *num_params)
 
 /*ARGSUSED*/
 static void
-MoveThumb(Widget gw, XEvent *event, String *params, Cardinal *num_params)
+MoveThumb(Widget gw, XEvent *event, String *params _X_UNUSED, Cardinal *num_params _X_UNUSED)
 {
     ScrollbarWidget w = (ScrollbarWidget)gw;
     Position x, y;
@@ -834,7 +834,7 @@ MoveThumb(Widget gw, XEvent *event, String *params, Cardinal *num_params)
 
 /*ARGSUSED*/
 static void
-NotifyThumb(Widget gw, XEvent *event, String *params, Cardinal *num_params)
+NotifyThumb(Widget gw, XEvent *event, String *params _X_UNUSED, Cardinal *num_params _X_UNUSED)
 {
     ScrollbarWidget w = (ScrollbarWidget)gw;
     union {

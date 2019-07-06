@@ -293,8 +293,8 @@ XawTextSinkClassPartInitialize(WidgetClass wc)
  */
 /*ARGSUSED*/
 static void
-XawTextSinkInitialize(Widget request, Widget cnew,
-		      ArgList args, Cardinal *num_args)
+XawTextSinkInitialize(Widget request _X_UNUSED, Widget cnew,
+		      ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     TextSinkObject sink = (TextSinkObject)cnew;
 
@@ -342,8 +342,8 @@ XawTextSinkDestroy(Widget w)
  */
 /*ARGSUSED*/
 static Boolean
-XawTextSinkSetValues(Widget current, Widget request, Widget cnew,
-		     ArgList args, Cardinal *num_args)
+XawTextSinkSetValues(Widget current, Widget request _X_UNUSED, Widget cnew,
+		     ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     TextSinkObject w = (TextSinkObject)cnew;
     TextSinkObject old_w = (TextSinkObject)current;
@@ -371,8 +371,8 @@ XawTextSinkSetValues(Widget current, Widget request, Widget cnew,
  */
 /*ARGSUSED*/
 static void
-DisplayText(Widget w, int x, int y,
-	    XawTextPosition pos1, XawTextPosition pos2, Bool highlight)
+DisplayText(Widget w _X_UNUSED, int x _X_UNUSED, int y _X_UNUSED,
+	    XawTextPosition pos1 _X_UNUSED, XawTextPosition pos2 _X_UNUSED, Bool highlight _X_UNUSED)
 {
     return;
 }
@@ -392,7 +392,7 @@ DisplayText(Widget w, int x, int y,
  */
 /*ARGSUSED*/
 static void
-InsertCursor(Widget w, int x, int y, XawTextInsertState state)
+InsertCursor(Widget w _X_UNUSED, int x _X_UNUSED, int y _X_UNUSED, XawTextInsertState state _X_UNUSED)
 {
     return;
 }
@@ -457,8 +457,8 @@ ClearToBackground(Widget w, int x, int y,
  */
 /*ARGSUSED*/
 static void
-FindPosition(Widget w, XawTextPosition fromPos, int fromx, int width,
-	     Bool stopAtWordBreak, XawTextPosition *resPos,
+FindPosition(Widget w _X_UNUSED, XawTextPosition fromPos _X_UNUSED, int fromx _X_UNUSED, int width _X_UNUSED,
+	     Bool stopAtWordBreak _X_UNUSED, XawTextPosition *resPos,
 	     int *resWidth, int *resHeight)
 {
     *resPos = fromPos;
@@ -483,8 +483,8 @@ FindPosition(Widget w, XawTextPosition fromPos, int fromx, int width,
  */
 /*ARGSUSED*/
 static void
-FindDistance(Widget w, XawTextPosition fromPos, int fromx,
-	     XawTextPosition toPos, int *resWidth,
+FindDistance(Widget w _X_UNUSED, XawTextPosition fromPos, int fromx _X_UNUSED,
+	     XawTextPosition toPos _X_UNUSED, int *resWidth,
 	     XawTextPosition *resPos, int *resHeight)
 {
     *resWidth = *resHeight = 0;
@@ -507,7 +507,7 @@ FindDistance(Widget w, XawTextPosition fromPos, int fromx,
  */
 /*ARGSUSED*/
 static void
-Resolve(Widget w, XawTextPosition pos, int fromx, int width,
+Resolve(Widget w _X_UNUSED, XawTextPosition pos _X_UNUSED, int fromx _X_UNUSED, int width _X_UNUSED,
 	XawTextPosition *resPos)
 {
     *resPos = pos;
@@ -529,7 +529,7 @@ Resolve(Widget w, XawTextPosition pos, int fromx, int width,
  */
 /*ARGSUSED*/
 static int
-MaxLines(Widget w, unsigned int height)
+MaxLines(Widget w _X_UNUSED, unsigned int height _X_UNUSED)
 {
     /*
      * The fontset has gone down to descent Sink Widget, so
@@ -556,7 +556,7 @@ MaxLines(Widget w, unsigned int height)
  */
 /*ARGSUSED*/
 static int
-MaxHeight(Widget w, int lines)
+MaxHeight(Widget w _X_UNUSED, int lines _X_UNUSED)
 {
     return (0);
 }
@@ -574,7 +574,7 @@ MaxHeight(Widget w, int lines)
  */
 /*ARGSUSED*/
 static void
-SetTabs(Widget w, int tab_count, short *tabs)
+SetTabs(Widget w _X_UNUSED, int tab_count _X_UNUSED, short *tabs _X_UNUSED)
 {
     return;
 }
@@ -592,7 +592,7 @@ SetTabs(Widget w, int tab_count, short *tabs)
  */
 /*ARGSUSED*/
 static void
-GetCursorBounds(Widget w, XRectangle *rect)
+GetCursorBounds(Widget w _X_UNUSED, XRectangle *rect)
 {
     rect->x = rect->y = (short)(rect->width = rect->height = 0);
 }
@@ -1376,7 +1376,7 @@ XawTextSinkAddProperty(Widget w, XawTextProperty *property)
 }
 
 XawTextProperty *
-XawTextSinkCombineProperty(Widget w,
+XawTextSinkCombineProperty(Widget w _X_UNUSED,
 			   XawTextProperty *property, XawTextProperty *combine,
 			   Bool override)
 {
@@ -1731,7 +1731,7 @@ XawTextSinkConvertPropertyList(String name, String spec, Screen *screen,
 static Boolean
 CvtStringToPropertyList(Display *dpy, XrmValue *args, Cardinal *num_args,
 			XrmValue *fromVal, XrmValue *toVal,
-			XtPointer *converter_data)
+			XtPointer *converter_data _X_UNUSED)
 {
     XawTextPropertyList *propl = NULL;
     String name;
@@ -1803,9 +1803,9 @@ CvtStringToPropertyList(Display *dpy, XrmValue *args, Cardinal *num_args,
 
 /*ARGSUSED*/
 static Boolean
-CvtPropertyListToString(Display *dpy, XrmValue *args, Cardinal *num_args,
+CvtPropertyListToString(Display *dpy, XrmValue *args _X_UNUSED, Cardinal *num_args _X_UNUSED,
 			XrmValue *fromVal, XrmValue *toVal,
-			XtPointer *converter_data)
+			XtPointer *converter_data _X_UNUSED)
 {
     static char *buffer;
     Cardinal size;

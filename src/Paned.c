@@ -1188,7 +1188,7 @@ CommitGripAdjustment(PanedWidget pw)
  */
 /*ARGSUSED*/
 static void
-HandleGrip(Widget grip, XtPointer temp, XtPointer callData)
+HandleGrip(Widget grip, XtPointer temp _X_UNUSED, XtPointer callData)
 {
     XawGripCallData call_data = (XawGripCallData)callData;
     PanedWidget pw = (PanedWidget) XtParent(grip);
@@ -1693,8 +1693,8 @@ XawPanedGeometryManager(Widget w, XtWidgetGeometry *request,
 
 /*ARGSUSED*/
 static void
-XawPanedInitialize(Widget request, Widget cnew,
-		   ArgList args, Cardinal *num_args)
+XawPanedInitialize(Widget request _X_UNUSED, Widget cnew,
+		   ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     PanedWidget pw = (PanedWidget)cnew;
 
@@ -1851,15 +1851,15 @@ XawPanedResize(Widget w)
 
 /*ARGSUSED*/
 static void
-XawPanedRedisplay(Widget w, XEvent *event, Region region)
+XawPanedRedisplay(Widget w, XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
     DrawInternalBorders((PanedWidget)w);
 }
 
 /*ARGSUSED*/
 static Boolean
-XawPanedSetValues(Widget old, Widget request, Widget cnew,
-		  ArgList args, Cardinal *num_args)
+XawPanedSetValues(Widget old, Widget request _X_UNUSED, Widget cnew,
+		  ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     PanedWidget old_pw = (PanedWidget)old;
     PanedWidget new_pw = (PanedWidget)cnew;
@@ -1916,8 +1916,8 @@ XawPanedSetValues(Widget old, Widget request, Widget cnew,
 
 /*ARGSUSED*/
 static Boolean
-XawPanedPaneSetValues(Widget old, Widget request, Widget cnew,
-		      ArgList args, Cardinal *num_args)
+XawPanedPaneSetValues(Widget old, Widget request _X_UNUSED, Widget cnew,
+		      ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     Pane old_pane = PaneInfo(old);
     Pane new_pane = PaneInfo(cnew);

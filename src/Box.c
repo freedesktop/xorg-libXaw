@@ -523,7 +523,7 @@ TryNewLayout(BoxWidget bbw)
 /*ARGSUSED*/
 static XtGeometryResult
 XawBoxGeometryManager(Widget w, XtWidgetGeometry *request,
-		      XtWidgetGeometry *reply)
+		      XtWidgetGeometry *reply _X_UNUSED)
 {
     Dimension	width, height, borderWidth;
     BoxWidget bbw;
@@ -597,8 +597,8 @@ XawBoxClassInitialize(void)
 
 /*ARGSUSED*/
 static void
-XawBoxInitialize(Widget request, Widget cnew,
-		 ArgList args, Cardinal *num_args)
+XawBoxInitialize(Widget request _X_UNUSED, Widget cnew,
+		 ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     BoxWidget newbbw = (BoxWidget)cnew;
 
@@ -636,8 +636,8 @@ XawBoxRealize(Widget w, Mask *valueMask, XSetWindowAttributes *attributes)
 
 /*ARGSUSED*/
 static Boolean
-XawBoxSetValues(Widget current, Widget request, Widget cnew,
-		ArgList args, Cardinal *num_args)
+XawBoxSetValues(Widget current _X_UNUSED, Widget request _X_UNUSED, Widget cnew _X_UNUSED,
+		ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
      /* need to relayout if h_space or v_space change */
 #ifndef OLDXAW

@@ -711,8 +711,8 @@ XawMultiSinkClassInitialize(void)
  */
 /* ARGSUSED */
 static void
-XawMultiSinkInitialize(Widget request, Widget cnew,
-		       ArgList args, Cardinal *num_args)
+XawMultiSinkInitialize(Widget request _X_UNUSED, Widget cnew,
+		       ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     MultiSinkObject sink = (MultiSinkObject)cnew;
 
@@ -809,8 +809,8 @@ XawMultiSinkResize(Widget w)
  */
 /*ARGSUSED*/
 static Boolean
-XawMultiSinkSetValues(Widget current, Widget request, Widget cnew,
-		      ArgList args, Cardinal *num_args)
+XawMultiSinkSetValues(Widget current, Widget request _X_UNUSED, Widget cnew,
+		      ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     MultiSinkObject w = (MultiSinkObject)cnew;
     MultiSinkObject old_w = (MultiSinkObject)current;

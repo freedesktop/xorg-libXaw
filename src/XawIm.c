@@ -262,7 +262,7 @@ GetInputStyleOfIC(XawVendorShellExtPart *ve)
 
 /*ARGSUSED*/
 static void
-ConfigureCB(Widget w, XtPointer closure, XEvent *event, Boolean *unused)
+ConfigureCB(Widget w, XtPointer closure _X_UNUSED, XEvent *event, Boolean *unused _X_UNUSED)
 {
     XawIcTableList		p;
     XawVendorShellExtPart	*ve;
@@ -416,7 +416,7 @@ FreeAllDataOfVendorShell(XawVendorShellExtPart *ve, VendorShellWidget vw)
 }
 
 static void
-VendorShellDestroyed(Widget w, XtPointer cl_data, XtPointer ca_data)
+VendorShellDestroyed(Widget w, XtPointer cl_data _X_UNUSED, XtPointer ca_data _X_UNUSED)
 {
     XawVendorShellExtPart	*ve;
 
@@ -617,7 +617,7 @@ ResizeVendorShell(VendorShellWidget vw, XawVendorShellExtPart *ve)
 }
 
 static XawIcTableList
-CreateIcTable(Widget w, XawVendorShellExtPart *ve)
+CreateIcTable(Widget w, XawVendorShellExtPart *ve _X_UNUSED)
 {
     XawIcTableList	table;
 
@@ -1062,7 +1062,7 @@ SetICValues(Widget w, XawVendorShellExtPart *ve, Bool focus)
 
 static void
 SharedICChangeFocusWindow(Widget w, XawVendorShellExtPart *ve,
-			  XawIcTableList p)
+			  XawIcTableList p _X_UNUSED)
 {
     XawIcTableList	pp;
 
@@ -1600,7 +1600,7 @@ _XawImCallVendorShellExtResize(Widget w)
  * core Destroy method.  Sheeran, Omron KK 93/08/05 */
 
 void
-_XawImDestroy(Widget w, Widget ext)
+_XawImDestroy(Widget w, Widget ext _X_UNUSED)
 {
     XawVendorShellExtPart        *ve;
 

@@ -165,8 +165,8 @@ static char rep_text_trans[] =
  */
 /*ARGSUSED*/
 void
-_XawTextInsertFileAction(Widget w, XEvent *event,
-			 String *params, Cardinal *num_params)
+_XawTextInsertFileAction(Widget w, XEvent *event _X_UNUSED,
+			 String *params _X_UNUSED, Cardinal *num_params _X_UNUSED)
 {
     DoInsert(w, (XtPointer)XtParent(XtParent(XtParent(w))), NULL);
 }
@@ -239,7 +239,7 @@ _XawTextInsertFile(Widget w, XEvent *event,
  */
 /*ARGSUSED*/
 static void
-PopdownFileInsert(Widget w, XtPointer closure, XtPointer call_data)
+PopdownFileInsert(Widget w _X_UNUSED, XtPointer closure, XtPointer call_data _X_UNUSED)
 {
     TextWidget ctx = (TextWidget)closure;
 
@@ -423,7 +423,7 @@ AddInsertFileChildren(Widget form, String ptr, Widget tw)
  */
 /*ARGSUSED*/
 void
-_XawTextDoSearchAction(Widget w, XEvent *event,
+_XawTextDoSearchAction(Widget w, XEvent *event _X_UNUSED,
 		       String *params, Cardinal *num_params)
 {
     TextWidget tw = (TextWidget)XtParent(XtParent(XtParent(w)));
@@ -446,8 +446,8 @@ _XawTextDoSearchAction(Widget w, XEvent *event,
  */
 /*ARGSUSED*/
 void
-_XawTextPopdownSearchAction(Widget w, XEvent *event,
-			    String *params, Cardinal *num_params)
+_XawTextPopdownSearchAction(Widget w, XEvent *event _X_UNUSED,
+			    String *params _X_UNUSED, Cardinal *num_params _X_UNUSED)
 {
     TextWidget tw = (TextWidget)XtParent(XtParent(XtParent(w)));
 
@@ -468,7 +468,7 @@ _XawTextPopdownSearchAction(Widget w, XEvent *event,
  */
 /*ARGSUSED*/
 static void
-PopdownSearch(Widget w, XtPointer closure, XtPointer call_data)
+PopdownSearch(Widget w _X_UNUSED, XtPointer closure, XtPointer call_data _X_UNUSED)
 {
     struct SearchAndReplace *search = (struct SearchAndReplace *)closure;
 
@@ -490,7 +490,7 @@ PopdownSearch(Widget w, XtPointer closure, XtPointer call_data)
  */
 /*ARGSUSED*/
 static void
-SearchButton(Widget w, XtPointer closure, XtPointer call_data)
+SearchButton(Widget w _X_UNUSED, XtPointer closure, XtPointer call_data _X_UNUSED)
 {
     (void)DoSearch((struct SearchAndReplace *)closure);
 }
@@ -926,7 +926,7 @@ DoSearch(struct SearchAndReplace *search)
  */
 /*ARGSUSED*/
 void
-_XawTextDoReplaceAction(Widget w, XEvent *event,
+_XawTextDoReplaceAction(Widget w, XEvent *event _X_UNUSED,
 			String *params, Cardinal *num_params)
 {
     TextWidget ctx = (TextWidget)XtParent(XtParent(XtParent(w)));
@@ -954,7 +954,7 @@ _XawTextDoReplaceAction(Widget w, XEvent *event,
  */
 /*ARGSUSED*/
 static void
-DoReplaceOne(Widget w, XtPointer closure, XtPointer call_data)
+DoReplaceOne(Widget w _X_UNUSED, XtPointer closure, XtPointer call_data _X_UNUSED)
 {
     Replace((struct SearchAndReplace *)closure, True, False);
 }
@@ -974,7 +974,7 @@ DoReplaceOne(Widget w, XtPointer closure, XtPointer call_data)
  */
 /*ARGSUSED*/
 static void
-DoReplaceAll(Widget w, XtPointer closure, XtPointer call_data)
+DoReplaceAll(Widget w _X_UNUSED, XtPointer closure, XtPointer call_data _X_UNUSED)
 {
     Replace((struct SearchAndReplace *)closure, False, False);
 }
@@ -1171,7 +1171,7 @@ SetSearchLabels(struct SearchAndReplace *search, String msg1, String msg2,
  */
 /*ARGSUSED*/
 void
-_XawTextSetField(Widget w, XEvent *event, String *params, Cardinal *num_params)
+_XawTextSetField(Widget w, XEvent *event _X_UNUSED, String *params, Cardinal *num_params)
 {
     struct SearchAndReplace *search;
     Widget cnew, old;

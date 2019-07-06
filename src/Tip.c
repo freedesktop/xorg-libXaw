@@ -239,7 +239,7 @@ XawTipClassInitialize(void)
 
 /*ARGSUSED*/
 static void
-XawTipInitialize(Widget req, Widget w, ArgList args, Cardinal *num_args)
+XawTipInitialize(Widget req _X_UNUSED, Widget w _X_UNUSED, ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     TipWidget tip = (TipWidget)w;
     XGCValues values;
@@ -370,8 +370,8 @@ XawTipExpose(Widget w, XEvent *event, Region region)
 
 /*ARGSUSED*/
 static Boolean
-XawTipSetValues(Widget current, Widget request, Widget cnew,
-		ArgList args, Cardinal *num_args)
+XawTipSetValues(Widget current, Widget request _X_UNUSED, Widget cnew,
+		ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     TipWidget curtip = (TipWidget)current;
     TipWidget newtip = (TipWidget)cnew;
@@ -555,7 +555,7 @@ ResetTip(XawTipInfo *info, Bool add_timeout)
 }
 
 static void
-TipTimeoutCallback(XtPointer closure, XtIntervalId *id)
+TipTimeoutCallback(XtPointer closure, XtIntervalId *id _X_UNUSED)
 {
     XawTipInfo *info = (XawTipInfo*)closure;
     Arg args[3];
@@ -580,16 +580,16 @@ TipTimeoutCallback(XtPointer closure, XtIntervalId *id)
 
 /*ARGSUSED*/
 static void
-TipShellEventHandler(Widget w, XtPointer client_data, XEvent *event,
-		     Boolean *continue_to_dispatch)
+TipShellEventHandler(Widget w, XtPointer client_data _X_UNUSED, XEvent *event _X_UNUSED,
+		     Boolean *continue_to_dispatch _X_UNUSED)
 {
     ResetTip(FindTipInfo(w), False);
 }
 
 /*ARGSUSED*/
 static void
-TipEventHandler(Widget w, XtPointer client_data, XEvent *event,
-		Boolean *continue_to_dispatch)
+TipEventHandler(Widget w, XtPointer client_data _X_UNUSED, XEvent *event,
+		Boolean *continue_to_dispatch _X_UNUSED)
 {
     XawTipInfo *info = FindTipInfo(w);
     Boolean add_timeout;

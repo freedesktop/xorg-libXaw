@@ -276,9 +276,9 @@ externaldef(xawvendorshellwidgetclass) WidgetClass
 
 /*ARGSUSED*/
 static Boolean
-XawCvtCompoundTextToString(Display *dpy, XrmValuePtr args, Cardinal *num_args,
+XawCvtCompoundTextToString(Display *dpy, XrmValuePtr args _X_UNUSED, Cardinal *num_args _X_UNUSED,
 			   XrmValue *fromVal, XrmValue *toVal,
-			   XtPointer *cvt_data)
+			   XtPointer *cvt_data _X_UNUSED)
 {
     XTextProperty prop;
     char **list;
@@ -362,7 +362,7 @@ void _XawFixupVendorShell()
 
 /* ARGSUSED */
 static void
-XawVendorShellInitialize(Widget req, Widget cnew,
+XawVendorShellInitialize(Widget req _X_UNUSED, Widget cnew,
 			 ArgList args, Cardinal *num_args)
 {
     XtAddEventHandler(cnew, (EventMask) 0, TRUE, _XEditResCheckMessages, NULL);
@@ -373,8 +373,8 @@ XawVendorShellInitialize(Widget req, Widget cnew,
 
 /* ARGSUSED */
 static Boolean
-XawVendorShellSetValues(Widget old, Widget ref, Widget cnew,
-			ArgList args, Cardinal *num_args)
+XawVendorShellSetValues(Widget old _X_UNUSED, Widget ref _X_UNUSED, Widget cnew _X_UNUSED,
+			ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
 	return FALSE;
 }
@@ -398,8 +398,8 @@ XawVendorShellExtClassInitialize(void)
 
 /* ARGSUSED */
 static void
-XawVendorShellExtInitialize(Widget req, Widget cnew,
-			    ArgList args, Cardinal *num_args)
+XawVendorShellExtInitialize(Widget req _X_UNUSED, Widget cnew,
+			    ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     _XawImInitialize(cnew->core.parent, cnew);
 }
@@ -413,8 +413,8 @@ XawVendorShellExtDestroy(Widget w)
 
 /* ARGSUSED */
 static Boolean
-XawVendorShellExtSetValues(Widget old, Widget ref, Widget cnew,
-			   ArgList args, Cardinal *num_args)
+XawVendorShellExtSetValues(Widget old _X_UNUSED, Widget ref _X_UNUSED, Widget cnew _X_UNUSED,
+			   ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
 	return FALSE;
 }
@@ -442,8 +442,8 @@ XawVendorShellExtResize(Widget w)
 
 /*ARGSUSED*/
 void
-XawVendorStructureNotifyHandler(Widget w, XtPointer closure, XEvent *event,
-				Boolean *continue_to_dispatch)
+XawVendorStructureNotifyHandler(Widget w, XtPointer closure _X_UNUSED, XEvent *event _X_UNUSED,
+				Boolean *continue_to_dispatch _X_UNUSED)
 {
   XawVendorShellExtResize(w);
 }
@@ -451,7 +451,7 @@ XawVendorStructureNotifyHandler(Widget w, XtPointer closure, XEvent *event,
 /*ARGSUSED*/
 static XtGeometryResult
 XawVendorShellGeometryManager(Widget wid, XtWidgetGeometry *request,
-			      XtWidgetGeometry *reply)
+			      XtWidgetGeometry *reply _X_UNUSED)
 {
 	ShellWidget shell = (ShellWidget)(wid->core.parent);
 	XtWidgetGeometry my_request;

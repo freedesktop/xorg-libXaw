@@ -247,9 +247,9 @@ TypeToStringNoArgsWarning(Display *dpy, String type)
 
 /*ARGSUSED*/
 static Boolean
-_XawCvtBooleanToString(Display *dpy, XrmValue *args, Cardinal *num_args,
+_XawCvtBooleanToString(Display *dpy, XrmValue *args _X_UNUSED, Cardinal *num_args,
 		       XrmValue *fromVal, XrmValue *toVal,
-		       XtPointer *converter_data)
+		       XtPointer *converter_data _X_UNUSED)
 {
   static char buffer[6];
   Cardinal size;
@@ -266,9 +266,9 @@ _XawCvtBooleanToString(Display *dpy, XrmValue *args, Cardinal *num_args,
 
 /*ARGSUSED*/
 static Boolean
-_XawCvtBoolToString(Display *dpy, XrmValue *args, Cardinal *num_args,
+_XawCvtBoolToString(Display *dpy, XrmValue *args _X_UNUSED, Cardinal *num_args,
 		    XrmValue *fromVal, XrmValue *toVal,
-		    XtPointer *converter_data)
+		    XtPointer *converter_data _X_UNUSED)
 {
   static char buffer[6];
   Cardinal size;
@@ -285,9 +285,9 @@ _XawCvtBoolToString(Display *dpy, XrmValue *args, Cardinal *num_args,
 
 /*ARGSUSED*/
 static Boolean
-_XawCvtPositionToString(Display *dpy, XrmValue *args, Cardinal *num_args,
+_XawCvtPositionToString(Display *dpy, XrmValue *args _X_UNUSED, Cardinal *num_args,
 			XrmValue *fromVal, XrmValue *toVal,
-			XtPointer *converter_data)
+			XtPointer *converter_data _X_UNUSED)
 {
   static char buffer[7];
   Cardinal size;
@@ -303,9 +303,9 @@ _XawCvtPositionToString(Display *dpy, XrmValue *args, Cardinal *num_args,
 
 /*ARGSUSED*/
 static Boolean
-_XawCvtShortToString(Display *dpy, XrmValue *args, Cardinal *num_args,
+_XawCvtShortToString(Display *dpy, XrmValue *args _X_UNUSED, Cardinal *num_args,
 		     XrmValue *fromVal, XrmValue *toVal,
-		     XtPointer *converter_data)
+		     XtPointer *converter_data _X_UNUSED)
 {
   static char buffer[7];
   Cardinal size;
@@ -321,9 +321,9 @@ _XawCvtShortToString(Display *dpy, XrmValue *args, Cardinal *num_args,
 
 /*ARGSUSED*/
 static Boolean
-_XawCvtDimensionToString(Display *dpy, XrmValue *args, Cardinal *num_args,
+_XawCvtDimensionToString(Display *dpy, XrmValue *args _X_UNUSED, Cardinal *num_args,
 			 XrmValue *fromVal, XrmValue *toVal,
-			 XtPointer *converter_data)
+			 XtPointer *converter_data _X_UNUSED)
 {
   static char buffer[6];
   Cardinal size;
@@ -339,9 +339,9 @@ _XawCvtDimensionToString(Display *dpy, XrmValue *args, Cardinal *num_args,
 
 /*ARGSUSED*/
 static Boolean
-_XawCvtCARD32ToString(Display *dpy, XrmValue *args, Cardinal *num_args,
+_XawCvtCARD32ToString(Display *dpy, XrmValue *args _X_UNUSED, Cardinal *num_args,
 		      XrmValue *fromVal, XrmValue *toVal,
-		      XtPointer *converter_data)
+		      XtPointer *converter_data _X_UNUSED)
 {
   static char buffer[11];
   Cardinal size;
@@ -357,9 +357,9 @@ _XawCvtCARD32ToString(Display *dpy, XrmValue *args, Cardinal *num_args,
 
 /*ARGSUSED*/
 static Boolean
-_XawCvtIntToString(Display *dpy, XrmValue *args, Cardinal *num_args,
+_XawCvtIntToString(Display *dpy, XrmValue *args _X_UNUSED, Cardinal *num_args,
 		   XrmValue *fromVal, XrmValue *toVal,
-		   XtPointer *converter_data)
+		   XtPointer *converter_data _X_UNUSED)
 {
   static char buffer[12];
   Cardinal size;
@@ -375,9 +375,9 @@ _XawCvtIntToString(Display *dpy, XrmValue *args, Cardinal *num_args,
 
 /*ARGSUSED*/
 static Boolean
-_XawCvtCardinalToString(Display *dpy, XrmValue *args, Cardinal *num_args,
+_XawCvtCardinalToString(Display *dpy, XrmValue *args _X_UNUSED, Cardinal *num_args,
 			XrmValue *fromVal, XrmValue *toVal,
-			XtPointer *converter_data)
+			XtPointer *converter_data _X_UNUSED)
 {
   static char buffer[11];
   Cardinal size;
@@ -393,9 +393,9 @@ _XawCvtCardinalToString(Display *dpy, XrmValue *args, Cardinal *num_args,
 
 /*ARGSUSED*/
 static Boolean
-_XawCvtAtomToString(Display *dpy, XrmValue *args, Cardinal *num_args,
+_XawCvtAtomToString(Display *dpy, XrmValue *args _X_UNUSED, Cardinal *num_args,
 		    XrmValue *fromVal, XrmValue *toVal,
-		    XtPointer *converter_data)
+		    XtPointer *converter_data _X_UNUSED)
 {
   static char *buffer = NULL;
   static char *nullatom = "NULL";
@@ -428,7 +428,7 @@ _XawCvtAtomToString(Display *dpy, XrmValue *args, Cardinal *num_args,
 static Boolean
 _XawCvtPixelToString(Display *dpy, XrmValue *args, Cardinal *num_args,
 		     XrmValue *fromVal, XrmValue *toVal,
-		     XtPointer *converter_data)
+		     XtPointer *converter_data _X_UNUSED)
 {
   static char buffer[19];
   Cardinal size;
@@ -462,9 +462,9 @@ _XawCvtPixelToString(Display *dpy, XrmValue *args, Cardinal *num_args,
 
 /*ARGSUSED*/
 static Boolean
-_XawCvtFontStructToString(Display *dpy, XrmValue *args, Cardinal *num_args,
+_XawCvtFontStructToString(Display *dpy, XrmValue *args _X_UNUSED, Cardinal *num_args,
 			  XrmValue *fromVal, XrmValue *toVal,
-			  XtPointer *converter_data)
+			  XtPointer *converter_data _X_UNUSED)
 {
   static char buffer[128];
   Cardinal size;
@@ -504,9 +504,9 @@ _XawCvtFontStructToString(Display *dpy, XrmValue *args, Cardinal *num_args,
 
 /*ARGSUSED*/
 static Boolean
-_XawCvtUnsignedCharToString(Display *dpy, XrmValue *args, Cardinal *num_args,
+_XawCvtUnsignedCharToString(Display *dpy, XrmValue *args _X_UNUSED, Cardinal *num_args,
 			    XrmValue *fromVal, XrmValue *toVal,
-			    XtPointer *converter_data)
+			    XtPointer *converter_data _X_UNUSED)
 {
   static char buffer[4];
   Cardinal size;
@@ -525,7 +525,7 @@ _XawCvtUnsignedCharToString(Display *dpy, XrmValue *args, Cardinal *num_args,
 static Boolean
 _XawCvtStringToDisplayList(Display *dpy, XrmValue *args, Cardinal *num_args,
 			   XrmValue *fromVal, XrmValue *toVal,
-			   XtPointer *converter_data)
+			   XtPointer *converter_data _X_UNUSED)
 {
   XawDisplayList *dlist;
   Screen *screen;
@@ -566,9 +566,9 @@ _XawCvtStringToDisplayList(Display *dpy, XrmValue *args, Cardinal *num_args,
 
 /*ARGSUSED*/
 static Boolean
-_XawCvtDisplayListToString(Display *dpy, XrmValue *args, Cardinal *num_args,
+_XawCvtDisplayListToString(Display *dpy, XrmValue *args _X_UNUSED, Cardinal *num_args,
 			   XrmValue *fromVal, XrmValue *toVal,
-			   XtPointer *converter_data)
+			   XtPointer *converter_data _X_UNUSED)
 {
   String buffer;
   Cardinal size;
@@ -586,7 +586,7 @@ _XawCvtDisplayListToString(Display *dpy, XrmValue *args, Cardinal *num_args,
 static Boolean
 _XawCvtStringToPixmap(Display *dpy, XrmValue *args, Cardinal *num_args,
 		      XrmValue *fromVal, XrmValue *toVal,
-		      XtPointer *converter_data)
+		      XtPointer *converter_data _X_UNUSED)
 {
   XawPixmap *xaw_pixmap;
   Pixmap pixmap;

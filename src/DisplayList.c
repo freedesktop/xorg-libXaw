@@ -681,7 +681,7 @@ Dl2Points(Widget w, XtPointer args, XtPointer data, int id)
 
 /* ARGSUSED */
 static void
-DlLine(Widget w, XtPointer args, XtPointer data, XEvent *event, Region region)
+DlLine(Widget w, XtPointer args, XtPointer data, XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   Dl2Points(w, args, data, LINE);
 }
@@ -689,7 +689,7 @@ DlLine(Widget w, XtPointer args, XtPointer data, XEvent *event, Region region)
 /* ARGSUSED */
 static void
 DlDrawRectangle(Widget w, XtPointer args, XtPointer data,
-		XEvent *event, Region region)
+		XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   Dl2Points(w, args, data, DRECT);
 }
@@ -697,7 +697,7 @@ DlDrawRectangle(Widget w, XtPointer args, XtPointer data,
 /* ARGSUSED */
 static void
 DlFillRectangle(Widget w, XtPointer args, XtPointer data,
-		XEvent *event, Region region)
+		XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   Dl2Points(w, args, data, FRECT);
 }
@@ -766,7 +766,7 @@ DlXPoints(Widget w, XtPointer args, XtPointer data, int id)
 /* ARGSUSED */
 static void
 DlFillPolygon(Widget w, XtPointer args, XtPointer data,
-	      XEvent *event, Region region)
+	      XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   DlXPoints(w, args, data, FPOLY);
 }
@@ -774,7 +774,7 @@ DlFillPolygon(Widget w, XtPointer args, XtPointer data,
 /* ARGSUSED */
 static void
 DlDrawLines(Widget w, XtPointer args, XtPointer data,
-	    XEvent *event, Region region)
+	    XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   DlXPoints(w, args, data, DLINES);
 }
@@ -782,7 +782,7 @@ DlDrawLines(Widget w, XtPointer args, XtPointer data,
 /* ARGSUSED */
 static void
 DlDrawPoints(Widget w, XtPointer args, XtPointer data,
-	    XEvent *event, Region region)
+	    XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   DlXPoints(w, args, data, POINTS);
 }
@@ -790,7 +790,7 @@ DlDrawPoints(Widget w, XtPointer args, XtPointer data,
 /* ARGSUSED */
 static void
 DlForeground(Widget w, XtPointer args, XtPointer data,
-	     XEvent *event, Region region)
+	     XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   XawXlibData *xdata = (XawXlibData *)data;
   Pixel foreground = (Pixel)args;
@@ -806,7 +806,7 @@ DlForeground(Widget w, XtPointer args, XtPointer data,
 /* ARGSUSED */
 static void
 DlBackground(Widget w, XtPointer args, XtPointer data,
-	     XEvent *event, Region region)
+	     XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   XawXlibData *xdata = (XawXlibData *)data;
   Pixel background = (Pixel)args;
@@ -863,7 +863,7 @@ DlArc(Widget w, XtPointer args, XtPointer data, Bool fill)
 /* ARGSUSED */
 static void
 DlDrawArc(Widget w, XtPointer args, XtPointer data,
-	  XEvent *event, Region region)
+	  XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   DlArc(w, args, data, False);
 }
@@ -871,14 +871,14 @@ DlDrawArc(Widget w, XtPointer args, XtPointer data,
 /* ARGSUSED */
 static void
 DlFillArc(Widget w, XtPointer args, XtPointer data,
-	  XEvent *event, Region region)
+	  XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   DlArc(w, args, data, True);
 }
 
 /*ARGSUSED*/
 static void
-DlMask(Widget w, XtPointer args, XtPointer data,
+DlMask(Widget w, XtPointer args _X_UNUSED, XtPointer data,
        XEvent *event, Region region)
 {
   XawXlibData *xdata = (XawXlibData *)data;
@@ -900,8 +900,8 @@ DlMask(Widget w, XtPointer args, XtPointer data,
 
 /* ARGSUSED */
 static void
-DlUmask(Widget w, XtPointer args, XtPointer data,
-	XEvent *event, Region region)
+DlUmask(Widget w, XtPointer args _X_UNUSED, XtPointer data,
+	XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   XawXlibData *xdata = (XawXlibData *)data;
 
@@ -911,7 +911,7 @@ DlUmask(Widget w, XtPointer args, XtPointer data,
 /* ARGSUSED */
 static void
 DlLineWidth(Widget w, XtPointer args, XtPointer data,
-	    XEvent *event, Region region)
+	    XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   XawXlibData *xdata = (XawXlibData *)data;
   unsigned line_width = (unsigned)(unsigned long)args;
@@ -926,7 +926,7 @@ DlLineWidth(Widget w, XtPointer args, XtPointer data,
 
 /* ARGSUSED */
 static void
-DlDrawPoint(Widget w, XtPointer args, XtPointer data, XEvent *event, Region region)
+DlDrawPoint(Widget w, XtPointer args, XtPointer data, XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   Dl1Point(w, args, data, POINT);
 }
@@ -934,7 +934,7 @@ DlDrawPoint(Widget w, XtPointer args, XtPointer data, XEvent *event, Region regi
 /* ARGSUSED */
 static void
 DlDrawSegments(Widget w, XtPointer args, XtPointer data,
-	       XEvent *event, Region region)
+	       XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   XawDLPositionPtr *pos_ptr = (XawDLPositionPtr *)args;
   XawXlibData *xdata = (XawXlibData *)data;
@@ -987,7 +987,7 @@ DlDrawSegments(Widget w, XtPointer args, XtPointer data,
 /* ARGSUSED */
 static void
 DlArcMode(Widget w, XtPointer args, XtPointer data,
-	  XEvent *event, Region region)
+	  XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   XawXlibData *xdata = (XawXlibData *)data;
   int arc_mode  = (int)(long)args;
@@ -1002,8 +1002,8 @@ DlArcMode(Widget w, XtPointer args, XtPointer data,
 
 /* ARGSUSED */
 static void
-DlCoordMode(Widget w, XtPointer args, XtPointer data,
-	    XEvent *event, Region region)
+DlCoordMode(Widget w _X_UNUSED, XtPointer args, XtPointer data,
+	    XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   XawXlibData *xdata = (XawXlibData *)data;
   int mode  = (int)(long)args;
@@ -1013,8 +1013,8 @@ DlCoordMode(Widget w, XtPointer args, XtPointer data,
 
 /* ARGSUSED */
 static void
-DlShapeMode(Widget w, XtPointer args, XtPointer data,
-	    XEvent *event, Region region)
+DlShapeMode(Widget w _X_UNUSED, XtPointer args, XtPointer data,
+	    XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   XawXlibData *xdata = (XawXlibData *)data;
   int shape  = (int)(long)args;
@@ -1025,7 +1025,7 @@ DlShapeMode(Widget w, XtPointer args, XtPointer data,
 /* ARGSUSED */
 static void
 DlLineStyle(Widget w, XtPointer args, XtPointer data,
-	    XEvent *event, Region region)
+	    XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   XawXlibData *xdata = (XawXlibData *)data;
   int line_style = (int)(long)args;
@@ -1041,7 +1041,7 @@ DlLineStyle(Widget w, XtPointer args, XtPointer data,
 /* ARGSUSED */
 static void
 DlCapStyle(Widget w, XtPointer args, XtPointer data,
-	   XEvent *event, Region region)
+	   XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   XawXlibData *xdata = (XawXlibData *)data;
   int cap_style = (int)(long)args;
@@ -1057,7 +1057,7 @@ DlCapStyle(Widget w, XtPointer args, XtPointer data,
 /* ARGSUSED */
 static void
 DlJoinStyle(Widget w, XtPointer args, XtPointer data,
-	    XEvent *event, Region region)
+	    XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   XawXlibData *xdata = (XawXlibData *)data;
   int join_style = (int)(long)args;
@@ -1073,7 +1073,7 @@ DlJoinStyle(Widget w, XtPointer args, XtPointer data,
 /* ARGSUSED */
 static void
 DlFillStyle(Widget w, XtPointer args, XtPointer data,
-	    XEvent *event, Region region)
+	    XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   XawXlibData *xdata = (XawXlibData *)data;
   int fill_style = (int)(long)args;
@@ -1089,7 +1089,7 @@ DlFillStyle(Widget w, XtPointer args, XtPointer data,
 /* ARGSUSED */
 static void
 DlFillRule(Widget w, XtPointer args, XtPointer data,
-	   XEvent *event, Region region)
+	   XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   XawXlibData *xdata = (XawXlibData *)data;
   int fill_rule = (int)(long)args;
@@ -1105,7 +1105,7 @@ DlFillRule(Widget w, XtPointer args, XtPointer data,
 /* ARGSUSED */
 static void
 DlTile(Widget w, XtPointer args, XtPointer data,
-       XEvent *event, Region region)
+       XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   XawXlibData *xdata = (XawXlibData *)data;
   XawPixmap *pixmap = (XawPixmap *)args;
@@ -1121,7 +1121,7 @@ DlTile(Widget w, XtPointer args, XtPointer data,
 /* ARGSUSED */
 static void
 DlStipple(Widget w, XtPointer args, XtPointer data,
-	  XEvent *event, Region region)
+	  XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   XawXlibData *xdata = (XawXlibData *)data;
   XawPixmap *pixmap = (XawPixmap *)args;
@@ -1136,7 +1136,7 @@ DlStipple(Widget w, XtPointer args, XtPointer data,
 
 /* ARGSUSED */
 static void
-DlTSOrigin(Widget w, XtPointer args, XtPointer data, XEvent *event, Region region)
+DlTSOrigin(Widget w, XtPointer args, XtPointer data, XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   Dl1Point(w, args, data, TSORIGIN);
 }
@@ -1144,7 +1144,7 @@ DlTSOrigin(Widget w, XtPointer args, XtPointer data, XEvent *event, Region regio
 /* ARGSUSED */
 static void
 DlFunction(Widget w, XtPointer args, XtPointer data,
-	   XEvent *event, Region region)
+	   XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   XawXlibData *xdata = (XawXlibData *)data;
   int function = (int)(long)args;
@@ -1160,7 +1160,7 @@ DlFunction(Widget w, XtPointer args, XtPointer data,
 /* ARGSUSED */
 static void
 DlPlaneMask(Widget w, XtPointer args, XtPointer data,
-	    XEvent *event, Region region)
+	    XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   XawXlibData *xdata = (XawXlibData *)data;
   unsigned long plane_mask = (unsigned long)args;
@@ -1211,7 +1211,7 @@ DlString(Widget w, XtPointer args, XtPointer data, Bool image)
 /* ARGSUSED */
 static void
 DlDrawString(Widget w, XtPointer args, XtPointer data,
-	     XEvent *event, Region region)
+	     XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   DlString(w, args, data, False);
 }
@@ -1219,7 +1219,7 @@ DlDrawString(Widget w, XtPointer args, XtPointer data,
 /* ARGSUSED */
 static void
 DlPaintString(Widget w, XtPointer args, XtPointer data,
-	      XEvent *event, Region region)
+	      XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   DlString(w, args, data, True);
 }
@@ -1227,7 +1227,7 @@ DlPaintString(Widget w, XtPointer args, XtPointer data,
 /* ARGSUSED */
 static void
 DlFont(Widget w, XtPointer args, XtPointer data,
-       XEvent *event, Region region)
+       XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   XawXlibData *xdata = (XawXlibData *)data;
   Font font = (Font)args;
@@ -1243,7 +1243,7 @@ DlFont(Widget w, XtPointer args, XtPointer data,
 /* ARGSUSED */
 static void
 DlDashes(Widget w, XtPointer args, XtPointer data,
-	 XEvent *event, Region region)
+	 XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   XawXlibData *xdata = (XawXlibData *)data;
   char *dashes = args;
@@ -1259,7 +1259,7 @@ DlDashes(Widget w, XtPointer args, XtPointer data,
 /* ARGSUSED */
 static void
 DlSubwindowMode(Widget w, XtPointer args, XtPointer data,
-		XEvent *event, Region region)
+		XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   XawXlibData *xdata = (XawXlibData *)data;
   int subwindow_mode = (int)(long)args;
@@ -1275,7 +1275,7 @@ DlSubwindowMode(Widget w, XtPointer args, XtPointer data,
 /* ARGSUSED */
 static void
 DlExposures(Widget w, XtPointer args, XtPointer data,
-	    XEvent *event, Region region)
+	    XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   XawXlibData *xdata = (XawXlibData *)data;
   Bool graphics_exposures = (Bool)(long)args;
@@ -1290,7 +1290,7 @@ DlExposures(Widget w, XtPointer args, XtPointer data,
 
 /* ARGSUSED */
 static void
-DlClipOrigin(Widget w, XtPointer args, XtPointer data, XEvent *event, Region region)
+DlClipOrigin(Widget w, XtPointer args, XtPointer data, XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   Dl1Point(w, args, data, CLIPORIGIN);
 }
@@ -1298,7 +1298,7 @@ DlClipOrigin(Widget w, XtPointer args, XtPointer data, XEvent *event, Region reg
 /* ARGSUSED */
 static void
 DlClipMask(Widget w, XtPointer args, XtPointer data,
-	   XEvent *event, Region region)
+	   XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   XawXlibData *xdata = (XawXlibData *)data;
   XawPixmap *pixmap = (XawPixmap *)args;
@@ -1319,7 +1319,7 @@ DlClipMask(Widget w, XtPointer args, XtPointer data,
 /* ARGSUSED */
 static void
 DlClipRectangles(Widget w, XtPointer args, XtPointer data,
-		 XEvent *event, Region region)
+		 XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   XawDLPositionPtr *pos_ptr = (XawDLPositionPtr *)args;
   XawXlibData *xdata = (XawXlibData *)data;
@@ -1430,7 +1430,7 @@ DlCopy(Widget w, XtPointer args, XtPointer data, Bool plane)
 /* ARGSUSED */
 static void
 DlCopyArea(Widget w, XtPointer args, XtPointer data,
-	   XEvent *event, Region region)
+	   XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   DlCopy(w, args, data, False);
 }
@@ -1438,7 +1438,7 @@ DlCopyArea(Widget w, XtPointer args, XtPointer data,
 /* ARGSUSED */
 static void
 DlCopyPlane(Widget w, XtPointer args, XtPointer data,
-	    XEvent *event, Region region)
+	    XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   DlCopy(w, args, data, True);
 }
@@ -1451,7 +1451,7 @@ DlCopyPlane(Widget w, XtPointer args, XtPointer data,
  *	set them after calling this function.
  */
 static void
-DlImage(Widget w, XtPointer args, XtPointer data, XEvent *event, Region region)
+DlImage(Widget w, XtPointer args, XtPointer data, XEvent *event _X_UNUSED, Region region _X_UNUSED)
 {
   XawDLImageArgs *image = (XawDLImageArgs *)args;
   XawXlibData *xdata = (XawXlibData *)data;
@@ -2021,8 +2021,8 @@ _Xaw_Xlib_ArgsInitProc(String proc_name, String *params, Cardinal *num_params,
 
 /* ARGSUSED */
 static void *
-_Xaw_Xlib_DataInitProc(String class_name,
-		       Screen *screen, Colormap colormap, int depth)
+_Xaw_Xlib_DataInitProc(String class_name _X_UNUSED,
+		       Screen *screen _X_UNUSED, Colormap colormap _X_UNUSED, int depth)
 {
   XawXlibData *data;
   Window tmp_win;
@@ -2045,8 +2045,8 @@ _Xaw_Xlib_DataInitProc(String class_name,
 
 /* ARGSUSED */
 static void
-_Xaw_Xlib_ArgsDestructor(Display *display, String proc_name, XtPointer args,
-			 String *params, Cardinal *num_params)
+_Xaw_Xlib_ArgsDestructor(Display *display _X_UNUSED, String proc_name, XtPointer args,
+			 String *params _X_UNUSED, Cardinal *num_params _X_UNUSED)
 {
   Cardinal id;
   Dl_init *init;
@@ -2097,7 +2097,7 @@ _Xaw_Xlib_ArgsDestructor(Display *display, String proc_name, XtPointer args,
 
 /* ARGSUSED */
 static void
-_Xaw_Xlib_DataDestructor(Display *display, String class_name, XtPointer data)
+_Xaw_Xlib_DataDestructor(Display *display, String class_name _X_UNUSED, XtPointer data)
 {
   if (data)
     {

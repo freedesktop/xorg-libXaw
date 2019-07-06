@@ -925,7 +925,7 @@ GradientLoader(XawParams *params, Screen *screen, Colormap colormap, int depth,
 }
 
 static Bool
-XPixmapLoader(XawParams *params, Screen *screen, Colormap colormap, int depth,
+XPixmapLoader(XawParams *params, Screen *screen, Colormap colormap, int depth _X_UNUSED,
 	      Pixmap *pixmap_return, Pixmap *mask_return,
 	      Dimension *width_return, Dimension *height_return)
 {

@@ -213,7 +213,7 @@ WidgetClass repeaterWidgetClass = (WidgetClass) &repeaterClassRec;
  */
 /*ARGSUSED*/
 static void
-tic(XtPointer client_data, XtIntervalId *id)
+tic(XtPointer client_data, XtIntervalId *id _X_UNUSED)
 {
     RepeaterWidget rw = (RepeaterWidget)client_data;
 
@@ -239,8 +239,8 @@ tic(XtPointer client_data, XtIntervalId *id)
 
 /*ARGSUSED*/
 static void
-XawRepeaterInitialize(Widget greq, Widget gnew,
-		      ArgList args, Cardinal *num_args)
+XawRepeaterInitialize(Widget greq _X_UNUSED, Widget gnew,
+		      ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     RepeaterWidget cnew = (RepeaterWidget)gnew;
 
@@ -257,8 +257,8 @@ XawRepeaterDestroy(Widget gw)
 
 /*ARGSUSED*/
 static Boolean
-XawRepeaterSetValues(Widget gcur, Widget greq, Widget gnew,
-		     ArgList args, Cardinal *num_args)
+XawRepeaterSetValues(Widget gcur, Widget greq _X_UNUSED, Widget gnew,
+		     ArgList args _X_UNUSED, Cardinal *num_args _X_UNUSED)
 {
     RepeaterWidget cur = (RepeaterWidget)gcur;
     RepeaterWidget cnew = (RepeaterWidget)gnew;
@@ -273,7 +273,7 @@ XawRepeaterSetValues(Widget gcur, Widget greq, Widget gnew,
 
 /*ARGSUSED*/
 static void
-ActionStart(Widget gw, XEvent *event, String *params, Cardinal *num_params)
+ActionStart(Widget gw, XEvent *event _X_UNUSED, String *params _X_UNUSED, Cardinal *num_params _X_UNUSED)
 {
     RepeaterWidget rw = (RepeaterWidget)gw;
 
@@ -288,7 +288,7 @@ ActionStart(Widget gw, XEvent *event, String *params, Cardinal *num_params)
 
 /*ARGSUSED*/
 static void
-ActionStop(Widget gw, XEvent *event, String *params, Cardinal *num_params)
+ActionStop(Widget gw, XEvent *event _X_UNUSED, String *params _X_UNUSED, Cardinal *num_params _X_UNUSED)
 {
     RepeaterWidget rw = (RepeaterWidget)gw;
 
