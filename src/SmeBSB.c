@@ -145,7 +145,7 @@ static XtResource resources[] = {
     sizeof(Pixel),
     offset(foreground),
     XtRString,
-    XtDefaultForeground
+    (XtPointer)XtDefaultForeground
   },
   {
     XtNfont,
@@ -154,7 +154,7 @@ static XtResource resources[] = {
     sizeof(XFontStruct*),
     offset(font),
     XtRString,
-    XtDefaultFont
+    (XtPointer)XtDefaultFont
   },
   {
     XtNfontSet,
@@ -163,7 +163,7 @@ static XtResource resources[] = {
     sizeof(XFontSet),
     offset(fontset),
     XtRString,
-    XtDefaultFontSet
+    (XtPointer)XtDefaultFontSet
   },
 #ifndef OLDXAW
   {

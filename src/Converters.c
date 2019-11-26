@@ -398,7 +398,7 @@ _XawCvtAtomToString(Display *dpy, XrmValue *args _X_UNUSED, Cardinal *num_args,
 		    XtPointer *converter_data _X_UNUSED)
 {
   static char *buffer = NULL;
-  static char *nullatom = "NULL";
+  static char *nullatom = (char *)"NULL";
   Cardinal size;
   Atom atom;
 

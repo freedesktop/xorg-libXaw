@@ -105,7 +105,7 @@ static XtResource resources[] = {
     sizeof(Pixel),
     offset(list.foreground),
     XtRString,
-    XtDefaultForeground
+    (XtPointer)XtDefaultForeground
   },
   {
     XtNcursor,
@@ -114,7 +114,7 @@ static XtResource resources[] = {
     sizeof(Cursor),
     offset(simple.cursor),
     XtRString,
-    "left_ptr"
+    (XtPointer)"left_ptr"
   },
   {
     XtNfont,
@@ -123,7 +123,7 @@ static XtResource resources[] = {
     sizeof(XFontStruct*),
     offset(list.font),
     XtRString,
-    XtDefaultFont
+    (XtPointer)XtDefaultFont
   },
   {
     XtNfontSet,
@@ -132,7 +132,7 @@ static XtResource resources[] = {
     sizeof(XFontSet),
     offset(list.fontset),
     XtRString,
-    XtDefaultFontSet
+    (XtPointer)XtDefaultFontSet
   },
   {
     XtNlist,

@@ -90,7 +90,7 @@ static XtResource resources[] = {
     sizeof(Pixel),
     offset(foreground),
     XtRString,
-    XtDefaultForeground
+    (XtPointer)XtDefaultForeground
   },
 };
 #undef offset

@@ -1221,7 +1221,7 @@ InitStringOrFile(MultiSrcObject src, Bool newString)
 	case XawtextAppend:
 	case XawtextEdit:
 	    if (src->multi_src.string == NULL) {
-		src->multi_src.string = "*multi-src*";
+		src->multi_src.string = (char *)"*multi-src*";
 		src->multi_src.is_tempfile = True;
 	    }
 	    else {

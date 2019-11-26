@@ -100,7 +100,7 @@ static XtResource resources[] = {
     sizeof(Pixel),
     offset(label.foreground),
     XtRString,
-    XtDefaultForeground
+    (XtPointer)XtDefaultForeground
   },
   {
     XtNfont,
@@ -109,7 +109,7 @@ static XtResource resources[] = {
     sizeof(XFontStruct*),
     offset(label.font),
     XtRString,
-    XtDefaultFont
+    (XtPointer)XtDefaultFont
   },
   {
     XtNfontSet,
@@ -118,7 +118,7 @@ static XtResource resources[] = {
     sizeof(XFontSet),
     offset(label.fontset),
     XtRString,
-    XtDefaultFontSet
+    (XtPointer)XtDefaultFontSet
   },
   {
     XtNlabel,

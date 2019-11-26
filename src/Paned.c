@@ -256,7 +256,7 @@ static XtResource resources[] = {
     sizeof(Cursor),
     offset(v_grip_cursor),
     XtRString,
-    "sb_v_double_arrow"
+    (XtPointer)"sb_v_double_arrow"
   },
   {
     XtNhorizontalGripCursor,
@@ -265,7 +265,7 @@ static XtResource resources[] = {
     sizeof(Cursor),
     offset(h_grip_cursor),
     XtRString,
-    "sb_h_double_arrow"
+    (XtPointer)"sb_h_double_arrow"
   },
   {
     XtNbetweenCursor,
@@ -283,7 +283,7 @@ static XtResource resources[] = {
     sizeof(Cursor),
     offset(v_adjust_this_cursor),
     XtRString,
-    "sb_left_arrow"
+    (XtPointer)"sb_left_arrow"
   },
   {
     XtNhorizontalBetweenCursor,
@@ -292,7 +292,7 @@ static XtResource resources[] = {
     sizeof(Cursor),
     offset(h_adjust_this_cursor),
     XtRString,
-    "sb_up_arrow"
+    (XtPointer)"sb_up_arrow"
   },
   {
     XtNupperCursor,
@@ -301,7 +301,7 @@ static XtResource resources[] = {
     sizeof(Cursor),
     offset(adjust_upper_cursor),
     XtRString,
-    "sb_up_arrow"
+    (XtPointer)"sb_up_arrow"
   },
   {
     XtNlowerCursor,
@@ -310,7 +310,7 @@ static XtResource resources[] = {
     sizeof(Cursor),
     offset(adjust_lower_cursor),
     XtRString,
-    "sb_down_arrow"
+    (XtPointer)"sb_down_arrow"
   },
   {
     XtNleftCursor,
@@ -319,7 +319,7 @@ static XtResource resources[] = {
     sizeof(Cursor),
     offset(adjust_left_cursor),
     XtRString,
-    "sb_left_arrow"
+    (XtPointer)"sb_left_arrow"
   },
   {
     XtNrightCursor,
@@ -328,7 +328,7 @@ static XtResource resources[] = {
     sizeof(Cursor),
     offset(adjust_right_cursor),
     XtRString,
-    "sb_right_arrow"
+    (XtPointer)"sb_right_arrow"
   },
 };
 #undef offset

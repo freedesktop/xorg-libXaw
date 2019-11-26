@@ -143,7 +143,7 @@ static XtResource resources[] = {
     sizeof(XawTextEditType),
     offset(edit_mode),
     XtRString,
-    "read"
+    (XtPointer)"read"
   },
 #ifndef OLDXAW
   {

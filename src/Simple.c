@@ -117,7 +117,7 @@ static XtResource resources[] = {
     sizeof(Pixel),
     offset(pointer_fg),
     XtRString,
-    XtDefaultForeground
+    (XtPointer)XtDefaultForeground
   },
   {
     XtNpointerColorBackground,
@@ -126,7 +126,7 @@ static XtResource resources[] = {
     sizeof(Pixel),
     offset(pointer_bg),
     XtRString,
-    XtDefaultBackground
+    (XtPointer)XtDefaultBackground
   },
   {
     XtNcursorName,

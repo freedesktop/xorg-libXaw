@@ -109,7 +109,7 @@ static XtResource resources[] = {
 	XtOffsetOf(TreeRec, tree.vpad), XtRImmediate, (XtPointer) 0 },
     { XtNforeground, XtCForeground, XtRPixel, sizeof (Pixel),
 	XtOffsetOf(TreeRec, tree.foreground), XtRString,
-	XtDefaultForeground},
+	(XtPointer) XtDefaultForeground},
     { XtNlineWidth, XtCLineWidth, XtRDimension, sizeof (Dimension),
 	XtOffsetOf(TreeRec, tree.line_width), XtRImmediate, (XtPointer) 0 },
     { XtNgravity, XtCGravity, XtRGravity, sizeof (XtGravity),

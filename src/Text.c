@@ -292,7 +292,7 @@ static XtResource resources[] = {
     sizeof(Cursor),
     offset(simple.cursor),
     XtRString,
-    "xterm"
+    (XtPointer)"xterm"
   },
   {
     XtNheight,
@@ -510,7 +510,7 @@ static Boolean
 CvtScrollModeToString(Display *dpy, XrmValue *args _X_UNUSED, Cardinal *num_args _X_UNUSED,
 		      XrmValue *fromVal, XrmValue *toVal _X_UNUSED, XtPointer *data _X_UNUSED)
 {
-    static char *buffer;
+    static String buffer;
     Cardinal size;
 
     switch (*(XawTextScrollMode *)fromVal->addr) {
@@ -572,7 +572,7 @@ static Boolean
 CvtWrapModeToString(Display *dpy, XrmValue *args _X_UNUSED, Cardinal *num_args _X_UNUSED,
 		    XrmValue *fromVal, XrmValue *toVal _X_UNUSED, XtPointer *data _X_UNUSED)
 {
-    static char *buffer;
+    static String buffer;
     Cardinal size;
 
     switch (*(XawTextWrapMode *)fromVal->addr) {

@@ -100,7 +100,7 @@ static XtResource resources[] = {
     sizeof(Pixel),
     offset(foreground),
     XtRString,
-    XtDefaultForeground
+    (XtPointer)XtDefaultForeground
   },
   {
     XtNbackground,
@@ -109,7 +109,7 @@ static XtResource resources[] = {
     sizeof(Pixel),
     offset(background),
     XtRString,
-    XtDefaultBackground
+    (XtPointer)XtDefaultBackground
   },
 #ifndef OLDXAW
   {
@@ -119,7 +119,7 @@ static XtResource resources[] = {
     sizeof(Pixel),
     offset(cursor_color),
     XtRString,
-    XtDefaultForeground
+    (XtPointer)XtDefaultForeground
   },
   {
     XawNtextProperties,

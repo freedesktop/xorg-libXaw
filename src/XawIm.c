@@ -155,7 +155,7 @@ static XtResource resources[] =
 {
     {
 	XtNfontSet, XtCFontSet, XtRFontSet, sizeof(XFontSet),
-	Offset (font_set), XtRString, XtDefaultFontSet
+	Offset (font_set), XtRString, (XtPointer)XtDefaultFontSet
     },
     {
 	XtNforeground, XtCForeground, XtRPixel, sizeof(Pixel),

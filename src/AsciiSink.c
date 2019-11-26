@@ -118,7 +118,7 @@ static XtResource resources[] = {
     sizeof(XFontStruct*),
     offset(font),
     XtRString,
-    XtDefaultFont
+    (XtPointer)XtDefaultFont
   },
   {
     XtNecho,

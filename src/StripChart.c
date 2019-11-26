@@ -128,7 +128,7 @@ static XtResource resources[] = {
     sizeof(Pixel),
     offset(strip_chart.fgpixel),
     XtRString,
-    XtDefaultForeground
+    (XtPointer)XtDefaultForeground
   },
   {
     XtNhighlight,
@@ -137,7 +137,7 @@ static XtResource resources[] = {
     sizeof(Pixel),
     offset(strip_chart.hipixel),
     XtRString,
-    XtDefaultForeground
+    (XtPointer)XtDefaultForeground
   },
   {
     XtNgetValue,

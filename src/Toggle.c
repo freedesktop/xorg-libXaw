@@ -90,7 +90,7 @@ static XtResource resources[] = {
     sizeof(Boolean),
     offset(command.set),
     XtRString,
-    "off"
+    (XtPointer)"off"
   },
   {
     XtNradioGroup,

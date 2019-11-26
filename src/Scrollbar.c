@@ -182,7 +182,7 @@ static XtResource resources[] = {
     sizeof(Pixel),
     Offset(scrollbar.foreground),
     XtRString,
-    XtDefaultForeground
+    (XtPointer)XtDefaultForeground
   },
   {
     XtNshown,
@@ -209,7 +209,7 @@ static XtResource resources[] = {
     sizeof(Cursor),
     Offset(scrollbar.verCursor),
     XtRString,
-    "sb_v_double_arrow"
+    (XtPointer)"sb_v_double_arrow"
   },
   {
     XtNscrollHCursor,
@@ -218,7 +218,7 @@ static XtResource resources[] = {
     sizeof(Cursor),
     Offset(scrollbar.horCursor),
     XtRString,
-    "sb_h_double_arrow"
+    (XtPointer)"sb_h_double_arrow"
   },
   {
     XtNscrollUCursor,
@@ -227,7 +227,7 @@ static XtResource resources[] = {
     sizeof(Cursor),
     Offset(scrollbar.upCursor),
     XtRString,
-    "sb_up_arrow"
+    (XtPointer)"sb_up_arrow"
   },
   {
     XtNscrollDCursor,
@@ -236,7 +236,7 @@ static XtResource resources[] = {
     sizeof(Cursor),
     Offset(scrollbar.downCursor),
     XtRString,
-    "sb_down_arrow"
+    (XtPointer)"sb_down_arrow"
   },
   {
     XtNscrollLCursor,
@@ -245,7 +245,7 @@ static XtResource resources[] = {
     sizeof(Cursor),
     Offset(scrollbar.leftCursor),
     XtRString,
-    "sb_left_arrow"
+    (XtPointer)"sb_left_arrow"
   },
   {
     XtNscrollRCursor,
@@ -254,7 +254,7 @@ static XtResource resources[] = {
     sizeof(Cursor),
     Offset(scrollbar.rightCursor),
     XtRString,
-    "sb_right_arrow"
+    (XtPointer)"sb_right_arrow"
   },
   {
     XtNminimumThumb,
