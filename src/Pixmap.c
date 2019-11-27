@@ -238,9 +238,9 @@ XawFreeParamsStruct(XawParams *params)
 
   for (i = 0; i < params->num_args; i++)
     {
-      XtFree(params->args[i]->name);
+      XtFree((char *)params->args[i]->name);
       if (params->args[i]->value)
-	XtFree(params->args[i]->value);
+	XtFree((char *)params->args[i]->value);
       XtFree((char *)params->args[i]);
     }
 
@@ -332,9 +332,9 @@ XawAddPixmapLoader(String type, String ext, XawPixmapLoader loader)
     {
       loader_info[i]->loader = loader;
       if (loader_info[i]->type)
-	XtFree(loader_info[i]->type);
+	XtFree((char *)loader_info[i]->type);
       if (loader_info[i]->ext)
-	XtFree(loader_info[i]->ext);
+	XtFree((char *)loader_info[i]->ext);
       loader_info[i]->type = type ? XtNewString(type) : NULL;
       loader_info[i]->ext = ext ? XtNewString(ext) : NULL;
       return (True);
@@ -938,7 +938,7 @@ XPixmapLoader(XawParams *params, Screen *screen, Colormap colormap, int depth _X
     {'T',   "pixmaps"},
     {'P',   PROJECT_ROOT},
   };
-  char *filename;
+  const char *filename;
 
   if ((argval = XawFindArgVal(params, "closeness")) != NULL
       && argval->value)

@@ -683,7 +683,7 @@ ClipToShadowInteriorAndLongest(ListWidget lw, GC *gc_p, unsigned int x)
 static void
 PaintItemName(Widget w, int item)
 {
-    char *str;
+    _Xconst char *str;
     GC gc;
     int x, y, str_y;
     ListWidget lw = (ListWidget)w;
@@ -1178,7 +1178,7 @@ XawListDestroy(Widget w)
  *	If nitems is <= 0 then the list needs to be NULL terminated
  */
 void
-XawListChange(Widget w, char **list, int nitems, int longest,
+XawListChange(Widget w, _Xconst char **list, int nitems, int longest,
 #if NeedWidePrototypes
 	int resize_it
 #else

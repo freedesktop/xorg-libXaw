@@ -61,14 +61,14 @@ in this Software without prior written authorization from The Open Group.
 #include <X11/Xaw/Toggle.h>
 #include "XawI18n.h"
 
-static char* INSERT_FILE = "Enter Filename:";
-static char* SEARCH_LABEL_1 = "Use <Tab> to change fields.";
-static char* SEARCH_LABEL_2 = "Use ^q<Tab> for <Tab>.";
-static char* DISMISS_NAME = "cancel";
+static _Xconst char* INSERT_FILE = "Enter Filename:";
+static _Xconst char* SEARCH_LABEL_1 = "Use <Tab> to change fields.";
+static _Xconst char* SEARCH_LABEL_2 = "Use ^q<Tab> for <Tab>.";
+static _Xconst char* DISMISS_NAME = "cancel";
 #define DISMISS_NAME_LEN 6
-static char* FORM_NAME = "form";
-static char* LABEL_NAME = "label";
-static char* TEXT_NAME = "text";
+static _Xconst char* FORM_NAME = "form";
+static _Xconst char* LABEL_NAME = "label";
+static _Xconst char* TEXT_NAME = "text";
 
 #define R_OFFSET      1
 
@@ -88,7 +88,7 @@ static void DoReplaceOne(Widget, XtPointer, XtPointer);
 static Bool DoSearch(struct SearchAndReplace*);
 static Widget GetShell(Widget);
 static String GetString(Widget);
-static String GetStringRaw(Widget);
+static _XtString GetStringRaw(Widget);
 static void InitializeSearchWidget(struct SearchAndReplace*,
 				   XawTextScanDirection, Bool);
 static Bool InParams(String, String*, unsigned int);
@@ -1320,7 +1320,7 @@ GetString(Widget text)
     return (string);
 }
 
-static String
+static _XtString
 GetStringRaw(Widget tw)
 {
     TextWidget ctx = (TextWidget)tw;

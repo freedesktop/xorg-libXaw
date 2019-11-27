@@ -449,7 +449,8 @@ static void
 OpenIM(XawVendorShellExtPart *ve)
 {
     int		i;
-    char	*p, *s, *ns, *end, *pbuf, buf[32];
+    _Xconst char *s, *ns, *end;
+    char	*p, *pbuf, buf[32];
     XIM		xim = NULL;
     XIMStyles	*xim_styles;
     XIMStyle	input_style = 0;

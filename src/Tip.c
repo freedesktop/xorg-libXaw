@@ -318,7 +318,8 @@ XawTipExpose(Widget w, XEvent *event, Region region)
 {
     TipWidget tip = (TipWidget)w;
     GC gc = tip->tip.gc;
-    char *nl, *label = tip->tip.label;
+    char *nl;
+    _Xconst char * label = tip->tip.label;
     Position y = (Position)(tip->tip.top_margin + tip->tip.font->max_bounds.ascent);
     int len;
 
@@ -348,7 +349,7 @@ XawTipExpose(Widget w, XEvent *event, Region region)
 	    if (tip->tip.encoding)
 		XDrawString16(XtDisplay(w), XtWindow(w), gc,
 			      tip->tip.left_margin, y,
-			      (XChar2b*)label, (int)(nl - label) >> 1);
+			      (_Xconst XChar2b*)label, (int)(nl - label) >> 1);
 	    else
 		XDrawString(XtDisplay(w), XtWindow(w), gc,
 			    tip->tip.left_margin, y, label, (int)(nl - label));
@@ -360,7 +361,7 @@ XawTipExpose(Widget w, XEvent *event, Region region)
 	if (len) {
 	    if (tip->tip.encoding)
 		XDrawString16(XtDisplay(w), XtWindow(w), gc,
-			      tip->tip.left_margin, y, (XChar2b*)label, len >> 1);
+			      tip->tip.left_margin, y, (_Xconst XChar2b*)label, len >> 1);
 	    else
 		XDrawString(XtDisplay(w), XtWindow(w), gc,
 			    tip->tip.left_margin, y, label, len);
@@ -402,7 +403,8 @@ TipLayout(XawTipInfo *info)
 {
     XFontStruct	*fs = info->tip->tip.font;
     int width = 0, height;
-    char *nl, *label = info->tip->tip.label;
+    char *nl;
+    _Xconst char *label = info->tip->tip.label;
 
     if (info->tip->tip.international == True) {
 	XFontSet fset = info->tip->tip.fontset;
@@ -434,7 +436,7 @@ TipLayout(XawTipInfo *info)
 	    /*CONSTCOND*/
 	    while (True) {
 		int w = info->tip->tip.encoding ?
-		    XTextWidth16(fs, (XChar2b*)label, (int)(nl - label) >> 1) :
+		    XTextWidth16(fs, (_Xconst XChar2b*)label, (int)(nl - label) >> 1) :
 		    XTextWidth(fs, label, (int)(nl - label));
 		if (w > width)
 		    width = w;
@@ -449,7 +451,7 @@ TipLayout(XawTipInfo *info)
 	}
 	else
 	    width = info->tip->tip.encoding ?
-		XTextWidth16(fs, (XChar2b*)label, (int)(strlen(label) >> 1)) :
+		XTextWidth16(fs, (_Xconst XChar2b*)label, (int)(strlen(label) >> 1)) :
 		XTextWidth(fs, label, (int)strlen(label));
     }
     XtWidth(info->tip) = (width + info->tip->tip.left_margin +

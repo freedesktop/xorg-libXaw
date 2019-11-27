@@ -295,7 +295,7 @@ XawSmeBSBDestroy(Widget w)
 
     DestroyGCs(w);
     if (entry->sme_bsb.label != XtName(w))
-	XtFree(entry->sme_bsb.label);
+	XtFree((char *)entry->sme_bsb.label);
 }
 
 /*
@@ -349,7 +349,7 @@ XawSmeBSBRedisplay(Widget w, XEvent *event _X_UNUSED, Region region _X_UNUSED)
     if (entry->sme_bsb.label != NULL) {
 	int x_loc = entry->sme_bsb.left_margin;
 	int len = (int)strlen(entry->sme_bsb.label);
-	char *label = entry->sme_bsb.label;
+	_Xconst char *label = entry->sme_bsb.label;
 	 int width, t_width;
 
 	switch(entry->sme_bsb.justify) {

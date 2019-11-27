@@ -428,8 +428,8 @@ ClearToBackground(Widget w, int x, int y,
     x2 = (XawMin(x + (int)width, (int)XtWidth(xaw) - xaw->text.r_margin.right));
     y2 = (XawMin(y + (int)height, (int)XtHeight(xaw) - xaw->text.r_margin.bottom));
 
-    x = x1;
-    y = y1;
+    x = (int)x1;
+    y = (int)y1;
     width = (unsigned)(XawMax(0, x2 - x1));
     height = (unsigned)(XawMax(0, y2 - y1));
 
@@ -1208,10 +1208,11 @@ _XawTextSinkAddProperty(XawTextPropertyList *list, XawTextProperty *property,
     char identifier[1024];
     char foreground[16];
     char background[16];
-    char *foundry, *family, *weight, *slant, *setwidth, *addstyle, *pixel_size,
+    const char *foundry, *family, *weight, *slant, *setwidth, *addstyle, *pixel_size,
 	 *point_size, *res_x, *res_y, *spacing, *avgwidth, *registry, *encoding;
-    char *xlfd;
-    static char *asterisk = "*", *null = "";
+    const char *xlfd;
+    static const char *asterisk = "*";
+    static const char *null = "";
     XrmQuark quark;
 
     if (list == NULL || property == NULL)
