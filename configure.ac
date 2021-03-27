@@ -1,7 +1,7 @@
 
 # Initialize Autoconf
 AC_PREREQ([2.60])
-AC_INIT([libXaw], [1.0.13],
+AC_INIT([libXaw], [1.0.14],
         [https://gitlab.freedesktop.org/xorg/lib/libXaw/issues], [libXaw])
 AC_CONFIG_SRCDIR([Makefile.am])
 AC_CONFIG_HEADERS([config.h])
